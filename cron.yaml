@@ -1,0 +1,10 @@
+cron:
+- description: Daily TMS
+  url: /hooks/dailytms
+  schedule: every day 18:00
+  timezone: Asia/Singapore
+  retry_parameters:
+    job_retry_limit: 3
+    job_age_limit: 15m
+    min_backoff_seconds: 60
+    max_doublings: 3
