@@ -8,9 +8,9 @@ from google.appengine.api import urlfetch, urlfetch_errors
 from google.appengine.ext import db
 
 # Local modules
-import debug
-import html_utils
-from modules import telegram_utils
+from common import debug
+from common import html_utils
+from common import telegram_utils
 import constants
 
 

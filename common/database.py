@@ -4,7 +4,7 @@ from google.appengine.ext import db
 # Local Modules
 from common import chrono
 
-from data import Data
+from data from common import data
 
 # Database util functions
 def get_key(path, uid):

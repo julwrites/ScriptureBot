@@ -3,8 +3,8 @@
 from google.appengine.ext import db
 
 # Local Modules
-import chrono
-import database
+from common import chrono
+from common import database
 
 class User(db.Model):
     username = db.StringProperty(indexed=False)
