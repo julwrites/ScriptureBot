@@ -32,7 +32,7 @@ def cmd_tms(user, cmd, msg):
                 verse = tms.get_verse_by_pack(query[0], int(query[1]))
 
             if verse is not None:
-                verse_text = biblegateway.get_passage(verse.reference, user.version)
+                verse_text = bgw.get_passage(verse.reference, user.version)
                 verse_msg = tms.format_verse(verse, verse_text)
                 
                 debug.log("Sending TMS verse: " + verse_msg)

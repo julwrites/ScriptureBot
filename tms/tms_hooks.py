@@ -25,7 +25,7 @@ def hook_dailytms():
         user = get_user(uid)
 
         verse = tms.get_verse_by_pack(user.get_current_pack(), user.get_current_verse())
-        verse_text = biblegateway.get_passage(verse.reference, user.version)
+        verse_text = bgw.get_passage(verse.reference, user.version)
         verse_msg = tms.format_verse(verse, verse_text)
 
         debug.log("Sending verse: " + verse_msg)

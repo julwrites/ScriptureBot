@@ -14,7 +14,7 @@ from tms import tms
 
 from bible_user import *
 
-from common import bot_commands
+from common import bot_command
 from common from common import admin_commands
 from bgw import bgw_commands
 from tms import tms_commands
