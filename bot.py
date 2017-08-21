@@ -8,7 +8,7 @@ from google.appengine.api import urlfetch
 # Local modules
 import database
 import debug
-import modules.telegram
+from modules import telegramtelegram
 import admin
 import tms
 

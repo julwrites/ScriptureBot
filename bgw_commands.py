@@ -2,8 +2,8 @@
 # Local modules
 import debug
 import database
-import modules.telegram
-import modules.telegram_utils
+from modules import telegramtelegram
+from modules import telegramtelegram_utils
 import biblegateway
 
 CMD_PASSAGE = '/passage'

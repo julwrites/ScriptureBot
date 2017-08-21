@@ -3,7 +3,7 @@
 import debug
 import admin
 import database
-import modules.telegram
+from modules import telegramtelegram
 
 from bible_user import *
 
