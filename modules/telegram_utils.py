@@ -3,7 +3,7 @@
 import debug
 import admin
 import chrono
-import telegram
+import modules.telegram
 
 from bible_user import *
 

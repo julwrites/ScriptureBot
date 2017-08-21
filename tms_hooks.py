@@ -3,8 +3,8 @@
 # Local modules
 import tms
 import debug
-import telegram
-import telegram_utils
+import modules.telegram
+import modules.telegram_utils
 import biblegateway
 
 from bible_user import *
