@@ -7,7 +7,7 @@ from bs4 import BeautifulSoup
 from google.appengine.api import urlfetch, urlfetch_errors
 
 # Local modules
-import debug
+from common import debug
 
 HTML_HEADER_TAGS = ['h1', 'h2', 'h3', 'h4', 'h5', 'h6']
 HTML_TEXT_TAGS = ['p']

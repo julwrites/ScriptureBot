@@ -1,9 +1,9 @@
 
 # Local modules
-import debug
-import admin
-import database
-from modules import telegram
+from common import debug
+from common import admin
+from common import database
+from common import telegram
 
 from bible_user import *
 

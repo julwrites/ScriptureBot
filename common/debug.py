@@ -1,7 +1,7 @@
 
 # Local modules
 import logging
-import chrono
+from common import chrono
 
 DEBUG_MODE = True
 

@@ -2,7 +2,7 @@
 from google.appengine.ext import db
 
 # Local Modules
-import chrono
+from common import chrono
 
 from data import Data
 

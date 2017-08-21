@@ -3,7 +3,7 @@
 from google.appengine.ext import db
 
 # Local modules
-import database
+from common import database
 
 from user import User
 

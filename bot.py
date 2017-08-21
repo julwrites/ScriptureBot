@@ -6,20 +6,20 @@ import json
 from google.appengine.api import urlfetch
 
 # Local modules
-import database
-import debug
-from modules import telegram
-import admin
-import tms
+from common import database
+from common import debug
+from common import telegram 
+from common import admin
+from tms import tms
 
 from bible_user import *
 
-import bot_commands
-import admin_commands
-import bgw_commands
-import tms_commands
+from common import bot_commands
+from common from common import admin_commands
+from bgw import bgw_commands
+from tms import tms_commands
 
-from constants import APP_BOT_URL
+from common.constants import APP_BOT_URL
 
 CMD_START = '/start'
 

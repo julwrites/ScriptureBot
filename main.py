@@ -1,7 +1,7 @@
 # Python std modules
 import webapp2
 
-from constants import APP_MAIN_URL
+from common.constants import APP_MAIN_URL
 
 class MainPage(webapp2.RequestHandler):
     def get(self):

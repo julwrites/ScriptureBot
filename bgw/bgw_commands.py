@@ -1,9 +1,9 @@
 
 # Local modules
-from common import debug
-from common import database
-from common import telegram
-from common import telegram_utils
+import debug
+import database
+from modules import telegram
+from modules import telegram_utils
 from bgw import bgw
 
 CMD_PASSAGE = '/passage'

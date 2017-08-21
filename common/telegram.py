@@ -6,8 +6,8 @@ import string
 from google.appengine.api import urlfetch
 
 # Local modules
-import debug
-from constants import *
+from common import debug
+from common.constants import *
 
 def send_msg(msg, id):
     debug.log(str(id) + ': ' +  msg)

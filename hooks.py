@@ -3,15 +3,15 @@
 import webapp2
 
 # Local modules
-import debug
-import database
-from modules import telegram
-from modules import telegram_utils
-import biblegateway
+from common import debug
+from common import database
+from common import telegram
+from common import telegram_utils
+from bgw import bgw
 
-import tms_hooks
+from tms import tms_hooks
 
-from constants import APP_HOOKS_URL
+from common.constants import APP_HOOKS_URL
 
 app = webapp2.WSGIApplication([
     # (url being accessed, class to call)
