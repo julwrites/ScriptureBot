@@ -4,7 +4,6 @@ from common import debug
 from common import database
 from common import telegram
 from common import telegram_utils
-
 from bgw import bgw_utils
 
 CMD_PASSAGE = '/passage'

@@ -9,7 +9,7 @@ from google.appengine.ext import db
 
 # Local modules
 from common import debug
-from common import html_utils
+from common import html_util
 from common import telegram_utils
 from common import constants
 

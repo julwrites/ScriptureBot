@@ -5,7 +5,7 @@ from tms import tms
 from common import debug
 from common import telegram
 from common import telegram_utils
-from bgw import bgw
+from bgw import bgw_utils
 
 from common.bible_user import *
 
