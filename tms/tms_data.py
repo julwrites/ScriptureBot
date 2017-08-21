@@ -88,7 +88,7 @@ TMS = {
     "B" : B_PACK,
     "C" : C_PACK,
     "D" : D_PACK,
-    "E" : D_PACK
+    "E" : E_PACK
 }
 
 def get_tms():
