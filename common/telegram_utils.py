@@ -2,7 +2,7 @@
 # Local modules
 from common import debug
 from common import admin
-from common import chron
+from common import chrono
 from common import telegram
 
 from common.bible_user import *
