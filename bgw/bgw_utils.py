@@ -14,7 +14,7 @@ from common import telegram_utils
 from common import constants
 
 
-BGW_URL = 'http://www.bgw_utils.com/passage/?search={}&version={}&interface=print'
+BGW_URL = 'http://www.biblegateway.com/passage/?search={}&version={}&interface=print'
 
 BGW_PASSAGE_CLASS = 'passage-text'
 BGW_PASSAGE_START = '<div class="{}">'.format(BGW_PASSAGE_CLASS)
