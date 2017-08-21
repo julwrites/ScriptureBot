@@ -5,8 +5,8 @@ import webapp2
 # Local modules
 import debug
 import database
-from modules import telegramtelegram
-from modules import telegramtelegram_utils
+from modules import telegram
+from modules import telegram_utils
 import biblegateway
 
 import tms_hooks

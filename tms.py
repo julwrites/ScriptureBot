@@ -1,6 +1,6 @@
 
 # Local modules
-from modules import telegramtelegram_utils
+from modules import telegram_utils
 
 from tms_data import *
 
