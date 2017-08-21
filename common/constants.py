@@ -1,3 +1,4 @@
+
 from secret import BOT_ID
 
 APP_MAIN_URL = "/"

@@ -6,6 +6,7 @@ from common import telegram
 from common import telegram_utils
 from common import admin_commands
 from bgw import bgw_commands
+import hooks
 
 from common.bible_user import *
 

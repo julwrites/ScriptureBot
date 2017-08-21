@@ -7,7 +7,7 @@ from common import telegram
 from common import telegram_utils
 from bgw import bgw
 
-from bible_user import *
+from common.bible_user import *
 
 HOOK_DAILYTMS = '/dailytms'
 

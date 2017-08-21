@@ -2,10 +2,10 @@
 # Local modules
 from common import debug
 from common import admin
-from common import chrono
+from common import chron
 from common import telegram
 
-from bible_user import *
+from common.bible_user import *
 
 from common.constants import *
 

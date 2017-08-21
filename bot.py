@@ -12,9 +12,9 @@ from common import telegram
 from common import admin
 from tms import tms
 
-from bible_user import *
+from common.bible_user import *
 
-from common import bot_command
+from common import bot_commands
 from common import admin_commands
 from bgw import bgw_commands
 from tms import tms_commands

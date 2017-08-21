@@ -2,7 +2,7 @@
 # Local modules
 from common import telegram_utils
 
-from tms_data import *
+from tms.tms_data import *
 
 class Verse():
     def __init__(self, ref, title, pack, pos):
