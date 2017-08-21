@@ -9,7 +9,7 @@ class Verse():
         self.reference = ref
         self.title = title
         self.pack = pack
-        self.position = po
+        self.position = pos
     
     def get_reference(self):
         return self.reference
