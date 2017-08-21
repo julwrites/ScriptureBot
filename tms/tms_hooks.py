@@ -1,7 +1,7 @@
 
 
 # Local modules
-from tms import tms
+from tms import tms_utils
 from common import debug
 from common import telegram
 from common import telegram_utils

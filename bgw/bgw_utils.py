@@ -4,7 +4,7 @@ import urllib
 from bs4 import BeautifulSoup
 
 # Google App Engine Modules
-from google.appengine.api import urlfetch, urlfetch_errors
+from google.appengine.api import urlfetch, urlfetch_error
 from google.appengine.ext import db
 
 # Local modules

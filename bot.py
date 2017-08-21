@@ -10,7 +10,7 @@ from common import database
 from common import debug
 from common import telegram 
 from common import admin
-from tms import tms
+from tms import tms_utils
 
 from common.bible_user import *
 

@@ -5,7 +5,7 @@ from common import database
 from common import telegram
 from common import telegram_utils
 from bgw import bgw_utils
-from tms import tms
+from tms import tms_utils
 
 CMD_TMS = '/tms'
 
