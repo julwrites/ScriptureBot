@@ -11,7 +11,7 @@ from google.appengine.ext import db
 from common import debug
 from common import html_utils
 from common import telegram_utils
-from common import constants
+import constants
 
 
 BGW_URL = 'http://www.bgw_utils.com/passage/?search={}&version={}&interface=print'

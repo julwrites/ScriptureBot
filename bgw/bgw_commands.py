@@ -24,7 +24,7 @@ def cmd_passage(user, cmd, msg):
             query = msg.get('text')
             query = query.replace(cmd, '')
 
-            text = bgw.get_passage(query)
+            text = bgw_utils.get_passage(query)
             if text is not None:
                 telegram.send_msg(text, user.get_uid())
 

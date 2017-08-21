@@ -53,7 +53,7 @@ def cmd_start(cmd, msg):
             user = get_user(uid)
 
             # Initializes this user's data
-            verse = tms.get_start_verse()
+            verse = tms_utils.get_start_verse()
             user.set_current_pack(verse.get_pack())
             user.set_current_verse(verse.get_position())
 
