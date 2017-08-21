@@ -2,7 +2,7 @@
 # Local modules
 from common import telegram_utils
 
-from tms.tms_data import *
+from tms import tms_data
 
 class Verse():
     def __init__(self, ref, title, pack, pos):
@@ -24,7 +24,7 @@ class Verse():
         return self.position
 
 def get_pack(pack):
-    select_pack = TMS.get(pack)
+    select_pack = tms_data.get_tms().get(pack)
 
     if select_pack is not None:
         return select_pack
@@ -53,8 +53,8 @@ def get_verse_by_title(title, pos):
 def get_verses_by_title(title):
     verses = []
 
-    for pack_key in TMS.keys():
-        pack = TMS.get(pack_key)
+    for pack_key in tms_data.get_tms().keys():
+        pack = tms_data.get_tms().get(pack_key)
         size = len(pack)
         for i in range(0, size):
             if title == pack[i][0]:
@@ -66,7 +66,7 @@ def get_verses_by_title(title):
 
 def get_start_verse():
     start_key = 'BWC'
-    select_pack = TMS.get(start_key)
+    select_pack = tms_data.get_tms().get(start_key)
     select_verse = select_pack[0]
     return Verse(select_verse[1], select_verse[0], start_key, 1)
 
