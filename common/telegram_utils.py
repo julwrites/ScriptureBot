@@ -18,7 +18,7 @@ def foreach_user(fn):
 
     try:
         for user in query.run(batch_size=500):
-            fn(database.get_uid(user))
+            fn(get_uid(user))
     except Exception as e:
         debug.log(str(e))
  
