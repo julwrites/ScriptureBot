@@ -32,6 +32,9 @@ def get_pack(pack):
 
     return None
 
+def get_all_pack_keys():
+    return tms_data.get_tms().keys()
+
 def query_verse_by_pack_pos(query):
     for pack_key in get_all_pack_keys():
         pack = get_pack(pack_key)
@@ -40,6 +43,7 @@ def query_verse_by_pack_pos(query):
             select_verse = pack[i]
             try_packpos = pack_key + str(i + 1)
             if text_utils.fuzzy_compare(query, try_packpos):
+                debug.log('Matched ' + query + ', ' + try_packpos)
                 return Verse(select_verse[1], select_verse[0], pack_key, i + 1)
     return None
 
@@ -50,13 +54,10 @@ def query_verse_by_reference(ref):
         for i in range(0, size):
             select_verse = pack[i]
             if text_utils.fuzzy_compare(select_verse[1], ref):
+                debug.log('Matched ' + select_verse[1] + ', ' + ref)
                 return Verse(select_verse[1], select_verse[0], pack_key, i + 1)
     return None
    
-
-def get_all_pack_keys():
-    return tms_data.get_tms().keys()
-
 def get_verse_by_pack(pack, pos):
     select_pack = get_pack(pack)
 

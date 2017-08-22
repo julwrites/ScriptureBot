@@ -28,8 +28,8 @@ def cmd_tms(user, cmd, msg):
         query = query.replace(cmd, '').strip()
 
         verse = None
+        
         verse_reference = bgw_utils.get_reference(query)
-
         if verse_reference is not None:
             debug.log('Attempting to get by reference ' + verse_reference)
             verse = tms_utils.query_verse_by_reference(verse_reference)
