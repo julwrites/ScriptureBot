@@ -42,7 +42,7 @@ def cmd_version(user, cmd, msg):
     if cmd == CMD_VERSION:
         debug.log('Command: ' + cmd)
 
-        telegram.send_msg_keyboard(CMD_VERSION_PROMPT, user.get_uid(), SUPPORTED_VERSIONS)
+        telegram.send_msg_keyboard(CMD_VERSION_PROMPT, user.get_uid(), SUPPORTED_VERSIONS, True)
         user.set_state(STATE_WAIT_VERSION)
 
         return True
