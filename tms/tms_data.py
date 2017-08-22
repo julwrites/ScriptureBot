@@ -90,3 +90,6 @@ TMS = {
     "D" : D_PACK,
     "E" : D_PACK
 }
+
+def get_tms():
+    return TMS

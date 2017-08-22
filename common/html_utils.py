@@ -35,7 +35,6 @@ def sub_html(html, top_tag, bottom_tag):
     return html[start:end]
    
 def strip_md(string):
-    string = string.strip()
     return string.replace('*', '\*').replace('_', '\_').replace('`', '\`').replace('[', '\[')
 
 def to_sup(text):
