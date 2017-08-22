@@ -26,13 +26,19 @@ def cmd_tms(user, cmd, msg):
 
         query = msg.get('text')
         query = query.replace(cmd, '').strip()
-        query = query.split(' ')
 
-        debug.log('Attempting to get ' + '|'.join(query))
+        verse_reference = bgw_utils.get_reference(query)
 
-        verse = None
-        if len(query) == 2:
-            verse = tms_utils.get_verse_by_pack(query[0], int(query[1]))
+        if verse_reference is not None:
+            debug.log('Attempting to get ' + verse_reference)
+            verse = tms_utils.get_verse_by_reference(verse_reference)
+        else:
+            query = query.split(' ')
+            debug.log('Attempting to get ' + '|'.join(query))
+
+            verse = None
+            if len(query) == 2:
+                verse = tms_utils.get_verse_by_pack(query[0], int(query[1]))
 
         if verse is not None:
             verse_text = bgw_utils.get_passage(verse.reference, user.version)

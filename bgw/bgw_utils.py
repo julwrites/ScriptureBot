@@ -26,25 +26,34 @@ BGW_PASSAGE_TITLE = '.passage-display-bcv'
 def extract_passage(html):
     return html_utils.sub_html(html, BGW_PASSAGE_START, BGW_PASSAGE_END)
 
-def get_passage(ref, version='NIV'):
-    format_ref = urllib.quote(ref.lower().strip())
+def fetch_bgw(query, version='NIV'):
+    format_ref = urllib.quote(query.lower().strip())
     format_url = BGW_URL.format(format_ref, version)
 
     try:
-        debug.log('Attempting to fetch ' + ref + ' ' + version + ' from ' + format_url)
+        debug.log('Attempting to fetch ' + query + ' ' + version + ' from ' + format_url)
         result = urlfetch.fetch(format_url, deadline=constants.URL_TIMEOUT)
     except urlfetch_errors.Error as e:
         debug.log('Error fetching: ' + str(e))
         return None
-    
+
     # Format using BS4 into a form we can use for extraction
     passage_html = extract_passage(result.content)
     if passage_html is None:
         return None
 
-    passage_soup = BeautifulSoup(passage_html, 'lxml').select_one('.{}'.format(BGW_PASSAGE_CLASS))
-
+    soup = BeautifulSoup(passage_html, 'lxml').select_one('.{}'.format(BGW_PASSAGE_CLASS))
+    
     debug.log("Soup has been made")
+
+    return soup 
+
+def get_passage(ref, version='NIV'):
+    debug.log('Querying for passage ' + ref)
+
+    passage_soup = fetch_bgw(ref, version)
+    if passage_soup is None:
+        return None
 
     # Prepare the title and header
     passage_title = passage_soup.select_one(BGW_PASSAGE_TITLE).text
@@ -79,3 +88,15 @@ def get_passage(ref, version='NIV'):
     debug.log("Finished parsing soup")
 
     return passage_format
+
+def get_reference(query):
+    debug.log('Querying for reference ' + query)
+
+    passage_soup = fetch_bgw(query)
+    if passage_soup is None:
+        return None
+
+    reference = passage_soup.select_one(BGW_PASSAGE_TITLE).text
+    reference = reference.strip()
+
+    return reference

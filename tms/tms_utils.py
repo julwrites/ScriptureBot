@@ -31,6 +31,9 @@ def get_pack(pack):
 
     return None
 
+def get_all_pack_keys():
+    return tms_data.get_tms().keys()
+
 def get_verse_by_pack(pack, pos):
     select_pack = get_pack(pack)
 
@@ -50,11 +53,28 @@ def get_verse_by_title(title, pos):
 
     return None
 
+def get_verse_by_reference(ref):
+    ref = ref.strip().split()
+    ref = ''.join(ref)
+    
+    for pack_key in get_all_pack_keys():
+        pack = get_pack(pack_key)
+        size = len(pack)
+        for i in range(0, size):
+            try_ref = pack[i][1].strip().split()
+            try_ref = ''.join(try_ref)
+            if try_ref == ref:
+                select_verse = pack[i] 
+                return Verse(select_verse[1], select_verse[0], pack_key, i + 1)
+    
+    return select_verse
+
+
 def get_verses_by_title(title):
     verses = []
 
-    for pack_key in tms_data.get_tms().keys():
-        pack = tms_data.get_tms().get(pack_key)
+    for pack_key in get_all_pack_keys():
+        pack = get_pack(pack_key)
         size = len(pack)
         for i in range(0, size):
             if title == pack[i][0]:
@@ -66,7 +86,7 @@ def get_verses_by_title(title):
 
 def get_start_verse():
     start_key = 'BWC'
-    select_pack = tms_data.get_tms().get(start_key)
+    select_pack = get_pack(start_key)
     select_verse = select_pack[0]
     return Verse(select_verse[1], select_verse[0], start_key, 1)
 
