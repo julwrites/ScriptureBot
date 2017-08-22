@@ -24,14 +24,7 @@ def cmd_version(user, cmd, msg):
     if cmd == CMD_VERSION:
         debug.log('Command: ' + cmd)
 
-        query = msg.get('text')
-        query = query.replace(cmd, '')
-
-        text = bgw_utils.get_passage(query)
-        if text is not None:
-            telegram.send_msg(text, user.get_uid())
-        else:
-            telegram.send_msg(CMD_VERSION_PROMPT, user.get_uid())
+        telegram.send_msg_keyboard(CMD_VERSION_PROMPT, user.get_uid(), ['NIV', 'ESV', 'KJV', 'RSV', 'NASB'])
 
         return True
 

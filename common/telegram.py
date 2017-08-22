@@ -29,8 +29,6 @@ class TelegramPost():
         debug.log('Performing send: ' + data)
 
         try:
-            debug.log('Sending ' + chunk)
-
             result = urlfetch.fetch(
                 url=TELEGRAM_URL_SEND, 
                 payload=data,

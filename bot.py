@@ -18,6 +18,7 @@ from common import bot_commands
 from common import admin_commands
 from bgw import bgw_commands
 from tms import tms_commands
+from user import bibleuser_commands
 
 from common.constants import APP_BOT_URL
 
@@ -119,7 +120,8 @@ class BotHandler(webapp2.RequestHandler):
             debug.log('Running all commands')
 
             if( \
-            bot_commands.cmds(user, cmd, msg)    \
+            bibleuser_commands.cmds(user, cmd, msg) \
+            or bot_commands.cmds(user, cmd, msg)    \
             or bgw_commands.cmds(user, cmd, msg)    \
             or tms_commands.cmds(user, cmd, msg)    \
             ):

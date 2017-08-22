@@ -45,9 +45,8 @@ def cmd_tms(user, cmd, msg):
 
             telegram.send_msg(verse_msg, user.get_uid())
         else:
-            telegram.send_msg(CMD_TMS_PROMPT, user.get_uid())
+            telegram.send_msg_keyboard(CMD_TMS_PROMPT, user.get_uid())
 
         return True
 
     return False
-
