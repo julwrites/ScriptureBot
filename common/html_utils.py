@@ -35,7 +35,9 @@ def sub_html(html, top_tag, bottom_tag):
     return html[start:end]
    
 def strip_md(string):
+    string = text_utils.strip_whitespace(string)
     return string.replace('*', '\*').replace('_', '\_').replace('`', '\`').replace('[', '\[')
+
 
 def to_sup(text):
         sups = {u'0': u'\u2070',
@@ -74,8 +76,6 @@ def strip_soup(soup):
         for bad_string in bad_strings:
             stripped_text = strip_md(unicode(bad_string))
             bad_string.replace_with(stripped_text)
-
-        tag.replace_with(text_utils.strip_whitespace(tag.text))
 
     return soup
 
