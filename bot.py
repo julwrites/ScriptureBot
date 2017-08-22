@@ -106,8 +106,10 @@ class BotHandler(webapp2.RequestHandler):
 
         if user is None:
             debug.log('This user does not exist')
-        elif admin.access(user):
+
+        if admin.access(user):
             debug.log('Welcome, Master')
+            admin_commands.cmds(user, cmd, msg)
         
         if cmd_start(cmd, msg):
             return True
@@ -115,8 +117,7 @@ class BotHandler(webapp2.RequestHandler):
         debug.log('Running all commands')
 
         if( \
-        admin_commands.cmds(user, cmd, msg)     \
-        or bot_commands.cmds(user, cmd, msg)    \
+        bot_commands.cmds(user, cmd, msg)    \
         or bgw_commands.cmds(user, cmd, msg)    \
         or tms_commands.cmds(user, cmd, msg)    \
         ):
