@@ -8,6 +8,8 @@ from google.appengine.api import urlfetch
 # Local modules
 from common import debug
 
+from common.constants import *
+
 TELEGRAM_URL = 'https://api.telegram.org/bot' + BOT_ID
 
 TELEGRAM_URL_SEND = TELEGRAM_URL + '/sendMessage'
