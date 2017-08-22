@@ -130,9 +130,24 @@ class BotHandler(webapp2.RequestHandler):
         return False
 
     def handle_state(self, msg):
-        # States
-        if bot_commands.states(msg):
-            return True
+        debug.log('Handling state reaction')
+
+        # Read the user to echo back
+        uid = get_uid(msg.get('from').get('id'))
+        user = get_user(uid)
+
+        if admin.access(uid):
+            debug.log('Welcome, Master')
+
+        if user is None:
+            debug.log('This user does not exist')
+        else:
+            # States
+            if (    \
+            bibleuser_commands.states(user, msg)    \
+            or bot_commands.states(user, msg)       \
+            ):
+                return True
 
         return False
 

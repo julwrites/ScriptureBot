@@ -12,7 +12,7 @@ from user.bibleuser_utils import *
 CMD_STORE = '/store'
 CMD_RETRIEVE = '/retrieve'
 
-BOT_STATE_WAIT_STORE = 'Waiting For Store'
+STATE_WAIT_STORE = 'Waiting For Store'
 
 def cmds(user, cmd, msg):
     if user is None:
@@ -25,11 +25,7 @@ def cmds(user, cmd, msg):
     or cmd_retrieve(user, cmd, msg)     \
     )
 
-def states(msg):
-    # Read the user to echo back
-    uid = get_uid(msg.get('from').get('id'))
-    user = get_user(uid)
-
+def states(user, msg):
     return ( \
     state_store(user, msg)       \
     )
@@ -42,18 +38,20 @@ def cmd_store(user, cmd, msg):
             debug.log('Prompting data store for User: ' + user.get_name_string())
 
             telegram.send_msg('Please send the data to be stored', user.get_uid())
-            user.set_state(BOT_STATE_WAIT_STORE)
+            user.set_state(STATE_WAIT_STORE)
 
         return True
 
     return False
 
 def state_store(user, msg):
-    if user.get_state() == BOT_STATE_WAIT_STORE:
+    if user.get_state() == STATE_WAIT_STORE:
         debug.log('Handler: ' + user.get_state())
 
         payload = telegram_utils.parse_payload(msg)
         database.set_data(user.get_uid(), payload)
+
+        user.set_state(None)
 
         debug.log('Stored Data to User: ' + user.get_name_string())
 

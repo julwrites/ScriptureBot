@@ -46,7 +46,7 @@ class TelegramPost():
 
         self.format_data['text'] = msg
 
-    def add_keyboard(self, options=[]):
+    def add_keyboard(self, options=[], one_time=True):
         debug.log('Adding keyboard for ' + str(id) + ': ' + str(options))
 
         size = int(len(options) / TELEGRAM_KEYBOARD_GRID_SIZE)
@@ -61,7 +61,15 @@ class TelegramPost():
             keyboard_data.append(keyboard_row)
         
         self.format_data['reply_markup'] = {
-            'keyboard': keyboard_data
+            'keyboard': keyboard_data,
+            'one_time_keyboard': one_time
+        }
+    
+    def close_keyboard(self):
+        debug.log('Removing keyboard for ' + str(id))
+
+        self.format_data['reply_markup'] = {
+            'remove_keyboard': True
         }
 
 def send_msg(msg, id):
@@ -90,4 +98,9 @@ def send_msg_keyboard(msg, id, options=[]):
     post = TelegramPost(id)
     post.add_text(msg)
     post.add_keyboard(options)
+    post.send()
+
+def send_close_keyboard(id):
+    post = TelegramPost(id)
+    post.close_keyboard()
     post.send()
