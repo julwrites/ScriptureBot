@@ -42,9 +42,6 @@ def cmd_dump(uid, cmd, msg):
         except Exception as e:
             debug.log(str(e))
 
-        # Log user database
-        debug.log('User list: ' + str(query))
-
         return True 
 
     return False
