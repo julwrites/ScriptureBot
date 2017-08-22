@@ -49,7 +49,7 @@ class TelegramPost():
     def add_keyboard(self, options=[]):
         debug.log('Adding keyboard for ' + str(id) + ': ' + str(options))
 
-        size = len(options)
+        size = int(len(options) / TELEGRAM_KEYBOARD_GRID_SIZE)
         keyboard_data = []
         for i in range(0, size, TELEGRAM_KEYBOARD_GRID_SIZE):
             keyboard_row = []
