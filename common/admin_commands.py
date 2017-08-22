@@ -13,23 +13,19 @@ ADMIN_CLEAN = '/clean'
 ADMIN_RAGNAROK = '/ragnarok'
 
 # List of commands to run through
-def cmds(user, cmd, msg):
-    if user is None:
-        return False
-    
+def cmds(uid, cmd, msg):
     debug.log('Running admin commands')
 
     return ( \
-    cmd_dump(user, cmd, msg)       \
-    or cmd_doggle(user, cmd, msg)   \
-    or cmd_clean(user, cmd, msg)   \
-    or cmd_ragnarok(user, cmd, msg)   \
+    cmd_dump(uid, cmd, msg)       \
+    or cmd_doggle(uid, cmd, msg)   \
+    or cmd_clean(uid, cmd, msg)   \
+    or cmd_ragnarok(uid, cmd, msg)   \
     )
 
 # Debug Commands
-def cmd_dump(user, cmd, msg):
-    adminID = user.get_uid()
-    if admin.access(adminID) and cmd == ADMIN_DUMP:
+def cmd_dump(uid, cmd, msg):
+    if admin.access(uid) and cmd == ADMIN_DUMP:
         debug.log('Command: ' + cmd)
 
         # Read user database
@@ -41,7 +37,7 @@ def cmd_dump(user, cmd, msg):
                 dbUser = get_user(get_uid(user))
                 telegram.send_msg('User: ' 
                 + dbUser.get_description()
-                , adminID)
+                , uid)
         except Exception as e:
             debug.log(str(e))
 
@@ -52,9 +48,8 @@ def cmd_dump(user, cmd, msg):
 
     return False
 
-def cmd_doggle(user, cmd, msg):
-    adminID = user.get_uid()
-    if admin.access(adminID) and cmd == ADMIN_DEBUG:
+def cmd_doggle(uid, cmd, msg):
+    if admin.access(uid) and cmd == ADMIN_DEBUG:
         debug.log('Command: ' + cmd)
 
         debug.toggle()
@@ -63,9 +58,8 @@ def cmd_doggle(user, cmd, msg):
 
     return False
 
-def cmd_clean(user, cmd, msg):
-    adminID = user.get_uid()
-    if admin.access(adminID) and cmd == ADMIN_CLEAN:
+def cmd_clean(uid, cmd, msg):
+    if admin.access(uid) and cmd == ADMIN_CLEAN:
         debug.log('Command: ' + cmd)
 
         # Read user database
@@ -96,9 +90,8 @@ def cmd_clean(user, cmd, msg):
 
     return False
 
-def cmd_ragnarok(user, cmd, msg):
-    adminID = user.get_uid()
-    if admin.access(adminID) and cmd == ADMIN_RAGNAROK:
+def cmd_ragnarok(uid, cmd, msg):
+    if admin.access(uid) and cmd == ADMIN_RAGNAROK:
         debug.log('Command: ' + cmd)
 
         # Read user database
@@ -112,7 +105,7 @@ def cmd_ragnarok(user, cmd, msg):
         except Exception as e:
             debug.log(str(e))
 
-        telegram.send_msg("Baboomz~", adminID)
+        telegram.send_msg("Baboomz~", uid)
         
         return True
     
