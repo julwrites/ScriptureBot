@@ -48,7 +48,7 @@ def fetch_bgw(query, version='NIV'):
 
     return soup 
 
-def get_passage(ref, version='NIV'):
+def get_passage_raw(ref, version='NIV'):
     debug.log('Querying for passage ' + ref)
 
     passage_soup = fetch_bgw(ref, version)
@@ -56,9 +56,8 @@ def get_passage(ref, version='NIV'):
         return None
 
     # Prepare the title and header
-    passage_title = passage_soup.select_one(BGW_PASSAGE_TITLE).text
-    passage_header = telegram_utils.bold(passage_title.strip())
-    passage_header += ' ' + telegram_utils.bracket(version)
+    passage_reference = passage_soup.select_one(BGW_PASSAGE_TITLE).text.strip()
+    passage_version = telegram_utils.bracket(version)
 
     # Remove the unnecessary tags
     for tag in passage_soup.select(BGW_PASSAGE_IGNORE):
@@ -79,13 +78,20 @@ def get_passage(ref, version='NIV'):
         tag.string = telegram_utils.italics(html_utils.to_sup(tag.text))
 
     passage_blocks = []
-    passage_blocks.append(passage_header)
     for tag in soup(class_=BGW_PASSAGE_SELECT):
         passage_blocks.append(tag.text)
- 
-    passage_format = telegram_utils.join(passage_blocks, '\n\n')
+
+    passage_text = telegram_utils.join(passage_blocks, '\n\n')
 
     debug.log("Finished parsing soup")
+
+    return passage_reference, passage_version, passage_text
+
+def get_passage(ref, version='NIV'):
+    passage_reference, passage_version, passage_text = get_passage_raw(ref, version)
+
+    passage_format = passage_reference + ' ' + passage_version
+    passage_format = passage_format + '\n\n' + passage_text
 
     return passage_format
 
