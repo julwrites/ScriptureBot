@@ -92,9 +92,9 @@ def get_passage_raw(ref, version='NIV'):
 
     # Special formatting for chapter and verse
     for tag in soup.select('.chapternum'):
-        tag.string = telegram_utils.bold(tag.text)
+        tag.replace_with(telegram_utils.bold(tag.text))
     for tag in soup.select('.versenum'):
-        tag.string = telegram_utils.italics(html_utils.to_sup(tag.text))
+        tag.replace_with(telegram_utils.italics(html_utils.to_sup(tag.text)))
 
     passage_blocks = []
     for tag in soup(class_=BGW_PASSAGE_SELECT):
