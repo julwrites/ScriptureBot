@@ -25,9 +25,7 @@ class User(db.Model):
         def prep(string):
             return string.encode('utf-8', 'ignore').strip()
 
-        name = ''
-        if self.first_name:
-            name += prep(self.first_name)
+        name = prep(self.first_name)
         if self.last_name:
             name += ' ' + prep(self.last_name)
         if self.username:

@@ -104,24 +104,24 @@ class BotHandler(webapp2.RequestHandler):
         uid = get_uid(msg.get('from').get('id'))
         user = get_user(uid)
 
-        if user is None:
-            debug.log('This user does not exist')
-
         if admin.access(user):
             debug.log('Welcome, Master')
             admin_commands.cmds(user, cmd, msg)
-        
+
+        if user is None:
+            debug.log('This user does not exist')
+
         if cmd_start(cmd, msg):
             return True
+        else:
+            debug.log('Running all commands')
 
-        debug.log('Running all commands')
-
-        if( \
-        bot_commands.cmds(user, cmd, msg)    \
-        or bgw_commands.cmds(user, cmd, msg)    \
-        or tms_commands.cmds(user, cmd, msg)    \
-        ):
-            return True
+            if( \
+            bot_commands.cmds(user, cmd, msg)    \
+            or bgw_commands.cmds(user, cmd, msg)    \
+            or tms_commands.cmds(user, cmd, msg)    \
+            ):
+                return True
 
         return False
 

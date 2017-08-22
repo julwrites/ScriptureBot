@@ -8,6 +8,7 @@ from common import telegram_utils
 from bgw import bgw_utils
 
 CMD_PASSAGE = '/passage'
+CMD_PASSAGE_PROMPT = 'Please enter /passage followed by the Bible passage you desire'
 
 def cmds(user, cmd, msg):
     if user is not None:
@@ -29,7 +30,9 @@ def cmd_passage(user, cmd, msg):
         text = bgw_utils.get_passage(query)
         if text is not None:
             telegram.send_msg(text, user.get_uid())
+        else:
+            telegram.send_msg(CMD_PASSAGE_PROMPT, user.get_uid())
 
-            return True
+        return True
 
     return False

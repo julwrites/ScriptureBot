@@ -44,7 +44,7 @@ def cmd_store(user, cmd, msg):
             telegram.send_msg('Please send the data to be stored', user.get_uid())
             user.set_state(BOT_STATE_WAIT_STORE)
 
-            return True
+        return True
 
     return False
 
@@ -71,6 +71,6 @@ def cmd_retrieve(user, cmd, msg):
             telegram.send_msg('Retrieving Data of User: ' + user.get_name_string(), user.get_uid())
             telegram.send_msg(database.get_data(user.get_uid()), user.get_uid())
 
-            return True
+        return True
 
     return False

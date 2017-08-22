@@ -8,6 +8,7 @@ from bgw import bgw_utils
 from tms import tms_utils
 
 CMD_TMS = '/tms'
+CMD_TMS_PROMPT = 'Please enter /tms followed by the Verse reference, or Pack number and Verse number'
 
 def cmds(user, cmd, msg):
     if user is None:
@@ -40,8 +41,10 @@ def cmd_tms(user, cmd, msg):
             debug.log("Sending TMS verse: " + verse_msg)
 
             telegram.send_msg(verse_msg, user.get_uid())
+        else:
+            telegram.send_msg(CMD_TMS_PROMPT, user.get_uid())
 
-            return True
+        return True
 
     return False
 
