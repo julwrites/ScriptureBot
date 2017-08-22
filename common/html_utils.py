@@ -35,7 +35,6 @@ def sub_html(html, top_tag, bottom_tag):
     return html[start:end]
    
 def strip_md(string):
-    string = text_utils.strip_whitespace(string)
     return string.replace('*', '\*').replace('_', '\_').replace('`', '\`').replace('[', '\[')
 
 
@@ -70,6 +69,7 @@ def strip_soup(soup):
     debug.log('Stripping soup')
 
     foreach_header(soup, strip_md)
+    foreach_text(soup, text_utils.strip_whitespace)
 
     for tag in soup.select(soupify_tags(HTML_TEXT_TAGS)):
         bad_strings = tag(text=re.compile('(\*|\_|\`|\[)'))
