@@ -142,6 +142,8 @@ class BotHandler(webapp2.RequestHandler):
         if user is None:
             debug.log('This user does not exist')
         else:
+            debug.log('Running all states')
+            
             # States
             if (    \
             bibleuser_commands.states(user, msg)    \

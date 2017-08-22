@@ -25,6 +25,11 @@ def cmds(user, cmd, msg):
     )
 
 def states(user, msg):
+    if user is None:
+        return False
+
+    debug.log('Running user settings states')
+    
     return ( \
     state_version(user, msg)       \
     )

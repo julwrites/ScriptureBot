@@ -26,6 +26,11 @@ def cmds(user, cmd, msg):
     )
 
 def states(user, msg):
+    if user is None:
+        return False
+
+    debug.log('Running bot states')
+    
     return ( \
     state_store(user, msg)       \
     )
