@@ -31,24 +31,18 @@ def get_pack(pack):
 
     return None
 
-def find_verse(select_fn):
+def find_pack_pos(query):
+    query = query.strip().split()
+    query = ''.join(query)
+
     for pack_key in get_all_pack_keys():
         pack = get_pack(pack_key)
         size = len(pack)
         for i in range(0, size):
-            if select_fn(pack[i], pack_key, i + 1):
+            try_packpos = pack_key + str(i + 1)
+            if try_packpos == query:
                 return pack[i]
     return None
-
-def get_pack_pos(query):
-    query = query.strip().split()
-    query = ''.join(query)
-
-    def match_pos(verse, pack_key, pos):
-        packpos = pack_key + str(pos)
-        return query == packpos
-
-    return find_verse(match_pos)
 
 def get_all_pack_keys():
     return tms_data.get_tms().keys()
@@ -74,13 +68,17 @@ def get_verse_by_reference(ref):
     ref = ref.strip().split()
     ref = ''.join(ref)
 
-    def match_ref(verse, pack_key, pos):
-        try_ref = verse[1]
-        try_ref = ''.join(try_ref)
-        return try_ref == ref
-    
-    return find_verse(match_ref)
-
+    for pack_key in get_all_pack_keys():
+        pack = get_pack(pack_key)
+        size = len(pack)
+        for i in range(0, size):
+            select_verse = pack[i]
+            try_ref = select_verse[1]
+            try_ref = ''.join(try_ref)
+            if try_ref == ref:
+                return Verse(select_verse[1], select_verse[0], pack_key, i + 1)
+    return None
+   
 def get_verses_by_title(title):
     verses = []
 

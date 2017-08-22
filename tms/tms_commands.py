@@ -35,7 +35,7 @@ def cmd_tms(user, cmd, msg):
             verse = tms_utils.get_verse_by_reference(verse_reference)
         else:
             debug.log('Attempting to get ' + query)
-            pack_pos = tms_utils.get_pack_pos(query)
+            pack_pos = tms_utils.find_pack_pos(query)
 
             if pack_pos is not None:
                 verse = tms_utils.get_verse_by_pack(pack_pos[0], pack_pos[1])
