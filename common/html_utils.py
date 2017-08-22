@@ -54,7 +54,7 @@ def to_sup(text):
 
 def foreach_tag(soup, tags, fn):
     for tag in soup.select(tags):
-        tag.string = fn(tag.text)
+        tag.replace_with(fn(tag.text))
 
 def foreach_header(soup, fn):
     foreach_tag(soup, soupify_tags(HTML_HEADER_TAGS), fn)
