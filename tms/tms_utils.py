@@ -69,7 +69,6 @@ def get_verse_by_reference(ref):
     
     return select_verse
 
-
 def get_verses_by_title(title):
     verses = []
 

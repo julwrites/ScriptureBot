@@ -11,7 +11,7 @@ CMD_PASSAGE = '/passage'
 CMD_PASSAGE_PROMPT = 'Please enter /passage followed by the Bible passage you desire'
 
 def cmds(user, cmd, msg):
-    if user is not None:
+    if user is None:
         return False
 
     debug.log('Running BGW commands')
