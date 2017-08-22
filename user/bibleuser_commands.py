@@ -9,6 +9,9 @@ from common.constants import *
 
 from user.bibleuser_utils import *
 
+
+SUPPORTED_VERSIONS = ['NIV', 'ESV', 'KJV', 'NASB', 'NLT', 'AMP']
+
 CMD_VERSION = '/version'
 CMD_VERSION_PROMPT = 'Please select a version of your choosing \n (if unsure, always go with the one you are comfortable with!)'
 
@@ -29,7 +32,7 @@ def states(user, msg):
         return False
 
     debug.log('Running user settings states')
-    
+
     return ( \
     state_version(user, msg)       \
     )
@@ -38,7 +41,7 @@ def cmd_version(user, cmd, msg):
     if cmd == CMD_VERSION:
         debug.log('Command: ' + cmd)
 
-        telegram.send_msg_keyboard(CMD_VERSION_PROMPT, user.get_uid(), ['NIV', 'ESV', 'KJV', 'RSV', 'NASB'])
+        telegram.send_msg_keyboard(CMD_VERSION_PROMPT, user.get_uid(), SUPPORTED_VERSIONS)
         user.set_state(STATE_WAIT_VERSION)
 
         return True
@@ -48,11 +51,17 @@ def state_version(user, msg):
     if user.get_state() == STATE_WAIT_VERSION:
         debug.log('State: ' + STATE_WAIT_VERSION)
 
-        user.set_version(msg)
+        version_found = False
+        version = msg.get('text')
+        for ver in SUPPORTED_VERSIONS:
+            if text_utils.fuzzy_compare(version, ver):
+                version_found = True
+                user.set_version(msg)
+                telegram.send_close_keyboard(user.get_uid())
+                user.set_state(None)
 
-        telegram.send_close_keyboard(user.get_uid())
-
-        user.set_state(None)
+        if not version_found:
+            telegram.send_msg('That is not a version!', user.get_uid())
 
         return True
     return False
