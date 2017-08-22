@@ -36,7 +36,7 @@ def cmd_dump(uid, cmd, msg):
             user_list = []
             for user in query.run(batch_size=10):
                 dbUser = get_user(get_uid(user))
-                user_list.append(dbUser.get_name_string())
+                user_list.append(dbUser.get_description())
             user_list_msg = '\n'.join(user_list)
             telegram.send_msg(user_list_msg, uid)
         except Exception as e:
