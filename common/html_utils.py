@@ -75,8 +75,7 @@ def strip_soup(soup):
             stripped_text = strip_md(unicode(bad_string))
             bad_string.replace_with(stripped_text)
 
-    for tag in soup.select(soupify_tags(HTML_TEXT_TAGS)):
-        tag.string = text_utils.strip_whitespace(tag.text)
+        tag.replace_with(text_utils.strip_whitespace(tag.text))
 
     return soup
 
