@@ -38,7 +38,7 @@ def cmd_tms(user, cmd, msg):
             verse = tms_utils.query_verse_by_pack_pos(query)
 
         if verse is not None:
-            verse_text = bgw_utils.get_passage(verse.reference, user.version)
+            verse_text = bgw_utils.get_passage(verse.reference, user.get_version())
             verse_msg = tms_utils.format_verse(verse, verse_text)
             
             debug.log("Sending TMS verse: " + verse_msg)
