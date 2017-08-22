@@ -10,6 +10,9 @@ from bgw import bgw_utils
 CMD_PASSAGE = '/passage'
 
 def cmds(user, cmd, msg):
+    if user is not None:
+        return False
+
     debug.log('Running BGW commands')
 
     return (    \
@@ -17,17 +20,16 @@ def cmds(user, cmd, msg):
     )
 
 def cmd_passage(user, cmd, msg):
-    if user is not None:
-        if cmd == CMD_PASSAGE:
-            debug.log('Command: ' + cmd)
+    if cmd == CMD_PASSAGE:
+        debug.log('Command: ' + cmd)
 
-            query = msg.get('text')
-            query = query.replace(cmd, '')
+        query = msg.get('text')
+        query = query.replace(cmd, '')
 
-            text = bgw_utils.get_passage(query)
-            if text is not None:
-                telegram.send_msg(text, user.get_uid())
+        text = bgw_utils.get_passage(query)
+        if text is not None:
+            telegram.send_msg(text, user.get_uid())
 
-                return True
+            return True
 
     return False

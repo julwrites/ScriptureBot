@@ -4,6 +4,7 @@ from google.appengine.ext import db
 
 # Local modules
 from common import database
+from common import text_utils
 
 from user import User
 
@@ -49,6 +50,11 @@ def get_uid(user):
 
 def set_profile(uid, uname, fname, lname):
     existing_user = get_user(uid)
+    
+    uname = text_utils.stringify(uname)
+    fname = text_utils.stringify(fname)
+    lname = text_utils.stringify(fname)
+ 
     if existing_user:
         existing_user.username = uname
         existing_user.first_name = fname

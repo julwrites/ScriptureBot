@@ -5,6 +5,7 @@ from google.appengine.ext import db
 # Local Modules
 from common import chrono
 from common import database
+from common import text_utils
 
 class User(db.Model):
     username = db.StringProperty(indexed=False)
@@ -95,6 +96,11 @@ def get_uid(user):
 
 def set_profile(uid, uname, fname, lname):
     existing_user = get_user(uid)
+    
+    uname = text_utils.stringify(uname)
+    fname = text_utils.stringify(fname)
+    lname = text_utils.stringify(fname)
+
     if existing_user:
         existing_user.username = uname
         existing_user.first_name = fname

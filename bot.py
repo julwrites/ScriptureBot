@@ -37,9 +37,9 @@ def cmd_start(cmd, msg):
 
         # This runs to update the user's info, or register
         if user_json is not None:
-            debug.log(user_json.get('first_name')
-            + ' ' + user_json.get('last_name')
-            + ': ' + user_json.get('username')
+            debug.log(str(user_json.get('first_name'))
+            + ' ' + str(user_json.get('last_name'))
+            + ': ' + str(user_json.get('username'))
             + ' - ' + str(user_json.get('id')))
 
             set_profile(
