@@ -14,6 +14,9 @@ ADMIN_RAGNAROK = '/ragnarok'
 
 # List of commands to run through
 def cmds(user, cmd, msg):
+    if user is None:
+        return False
+    
     debug.log('Running admin commands')
 
     return ( \
