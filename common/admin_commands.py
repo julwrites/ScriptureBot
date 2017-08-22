@@ -5,7 +5,7 @@ from common import admin
 from common import database
 from common import telegram
 
-from common.user_utils import *
+from user.bibleuser_utils import *
 
 ADMIN_DUMP = '/dump'
 ADMIN_DEBUG = '/doggle'

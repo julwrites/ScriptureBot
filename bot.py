@@ -12,7 +12,7 @@ from common import telegram
 from common import admin
 from tms import tms_utils
 
-from common.user_utils import *
+from user.bibleuser_utils import *
 
 from common import bot_commands
 from common import admin_commands
@@ -22,6 +22,7 @@ from tms import tms_commands
 from common.constants import APP_BOT_URL
 
 CMD_START = '/start'
+CMD_START_PROMPT = 'Hello {}, I\'m Biblica! I hope I will be helpful as a tool for you to handle the Bible!'
 
 # This is a special command, specialized to this bot
 def cmd_start(cmd, msg):
@@ -57,7 +58,7 @@ def cmd_start(cmd, msg):
             user.set_current_pack(verse.get_pack())
             user.set_current_verse(verse.get_position())
 
-            telegram.send_msg('Hi {}, you have been registered!'.format(user.get_name_string()), user.get_uid())
+            telegram.send_msg(CMD_START_PROMPT.format(user.get_name_string()), user.get_uid())
             debug.log('Registering ' + user.get_name_string())
 
         return True

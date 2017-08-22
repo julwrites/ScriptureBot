@@ -78,7 +78,6 @@ class BibleUser(db.Model):
         self.current_pack = pack
         self.put()
 
-
     def update_last_received(self):
         self.last_received = chrono.now()
         self.put()
