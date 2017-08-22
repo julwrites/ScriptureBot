@@ -1,5 +1,6 @@
 
 # Local modules
+from common import debug
 from common import telegram_utils
 from common import text_utils
 
@@ -37,6 +38,7 @@ def get_all_pack_keys():
 
 def query_verse_by_pack_pos(query):
     for pack_key in get_all_pack_keys():
+        debug.log('Checking pack ' + pack_key)
         pack = get_pack(pack_key)
         size = len(pack)
         for i in range(0, size):
@@ -49,6 +51,7 @@ def query_verse_by_pack_pos(query):
 
 def query_verse_by_reference(ref):
     for pack_key in get_all_pack_keys():
+        debug.log('Checking pack ' + pack_key)
         pack = get_pack(pack_key)
         size = len(pack)
         for i in range(0, size):
