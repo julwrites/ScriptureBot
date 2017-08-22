@@ -34,7 +34,7 @@ def cmd_tms(user, cmd, msg):
             debug.log('Attempting to get by reference ' + verse_reference)
             verse = tms_utils.query_verse_by_reference(verse_reference)
         else:
-            debug.log('Attempting to get by position' + query)
+            debug.log('Attempting to get by position ' + query)
             verse = tms_utils.query_verse_by_pack_pos(query)
 
         if verse is not None:

@@ -13,6 +13,6 @@ def fuzzy_compare(lhs, rhs):
     lhs = ''.join(lhs)
 
     rhs = lhs.upper().strip().split()
-    rhs = ''.join(lhs)
+    rhs = ''.join(rhs)
 
     return lhs == rhs
