@@ -49,24 +49,8 @@ class TelegramPost():
     def add_keyboard(self, options=[], one_time=False):
         debug.log('Adding keyboard for ' + str(id) + ': ' + str(options))
 
-        num_buttons = len(options)
-        modulus = 1 if num_buttons % TELEGRAM_KEYBOARD_GRID_SIZE else 0
-        num_rows = int(num_buttons / TELEGRAM_KEYBOARD_GRID_SIZE) + modulus
-
-        keyboard_data = []
-        for i in range(0, num_rows):
-            keyboard_row = []
-
-            for j in range(0, TELEGRAM_KEYBOARD_GRID_SIZE):
-                if num_buttons == 0:
-                    break
-
-                data = options[i * TELEGRAM_KEYBOARD_GRID_SIZE + j]
-                keyboard_row.append({'text': data})
-                num_buttons -= 1
-            
-            keyboard_data.append(keyboard_row)
-        
+        keyboard_data = format_keyboard(options)
+       
         self.format_data['reply_markup'] = {
             'keyboard': keyboard_data,
             'one_time_keyboard': one_time
@@ -78,6 +62,37 @@ class TelegramPost():
         self.format_data['reply_markup'] = {
             'remove_keyboard': True
         }
+
+    def add_inline_keyboard(self, options=[]):
+        debug.log('Adding inline keyboard for ' + str(id) + ': ' + str(options))
+
+        keyboard_data = format_keyboard(options)
+       
+        self.format_data['reply_markup'] = {
+            'inline_keyboard': keyboard_data
+        }
+
+
+def format_keyboard(options=[]):
+    num_buttons = len(options)
+    modulus = 1 if num_buttons % TELEGRAM_KEYBOARD_GRID_SIZE else 0
+    num_rows = int(num_buttons / TELEGRAM_KEYBOARD_GRID_SIZE) + modulus
+
+    keyboard_data = []
+    for i in range(0, num_rows):
+        keyboard_row = []
+
+        for j in range(0, TELEGRAM_KEYBOARD_GRID_SIZE):
+            if num_buttons == 0:
+                break
+
+            data = options[i * TELEGRAM_KEYBOARD_GRID_SIZE + j]
+            keyboard_row.append({'text': data})
+            num_buttons -= 1
+        
+        keyboard_data.append(keyboard_row)
+
+    return keyboard_data
 
 def send_msg(msg, id):
     debug.log('Sending message to ' + str(id) + ': ' +  msg)
@@ -101,10 +116,13 @@ def send_msg(msg, id):
         post.add_text(chunk)
         post.send()
 
-def send_msg_keyboard(msg, id, options=[]):
+def send_msg_keyboard(msg, id, options=[], inline=False, one_time=False):
     post = TelegramPost(id)
     post.add_text(msg)
-    post.add_keyboard(options)
+    if inline:
+        post.add_inline_keyboard(options)
+    else:
+        post.add_keyboard(options, one_time)
     post.send()
 
 def send_close_keyboard(msg, id):
