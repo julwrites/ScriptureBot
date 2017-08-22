@@ -37,7 +37,7 @@ def find_verse(select_fn):
         size = len(pack)
         for i in range(0, size):
             if select_fn(pack[i], pack_key, i + 1):
-                return Verse(pack[i][1], pack[i][0], pack_key, i + 1)
+                return pack[i]
     return None
 
 def query_pack_pos(query):
@@ -46,9 +46,7 @@ def query_pack_pos(query):
 
     def match_pos(verse, pack_key, pos):
         packpos = pack_key + str(pos)
-        if query == packpos:
-            return True
-        return False
+        return query == packpos
 
     return find_verse(match_pos)
 
@@ -76,7 +74,7 @@ def get_verse_by_reference(ref):
     ref = ref.strip().split()
     ref = ''.join(ref)
 
-    def match_ref(verse, pack_key, pos, comparison):
+    def match_ref(verse, pack_key, pos):
         try_ref = verse[1]
         try_ref = ''.join(try_ref)
         return try_ref == ref
