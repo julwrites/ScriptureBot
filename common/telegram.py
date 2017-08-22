@@ -61,9 +61,7 @@ class TelegramPost():
             keyboard_data.append(keyboard_row)
         
         self.format_data['reply_markup'] = [
-            {
                 'keyboard': keyboard_data
-            }
         ]
 
 def send_msg(msg, id):
