@@ -55,7 +55,7 @@ class TelegramPost():
             keyboard_row = []
 
             for j in range(0, TELEGRAM_KEYBOARD_GRID_SIZE):
-                data = options[i+j]
+                data = options[i * TELEGRAM_KEYBOARD_GRID_SIZE + j]
                 keyboard_row.append({'text': data})
             
             keyboard_data.append(keyboard_row)
