@@ -23,6 +23,25 @@ BGW_PASSAGE_SELECT = 'bgw-passage-text'
 BGW_PASSAGE_IGNORE = '.passage-display, .footnote, .footnotes, .crossrefs, .publisher-info-bottom'
 BGW_PASSAGE_TITLE = '.passage-display-bcv'
 
+REFERENCE = 'reference'
+VERSION = 'version'
+PASSAGE = 'passage'
+
+class BGWPassage():
+    def __init__(self, ref, ver, txt):
+        self.reference = ref
+        self.version = ver
+        self.text = txt
+
+    def get_reference(self):
+        return self.reference
+
+    def get_version(self):
+        return self.version
+
+    def get_text(self):
+        return self.text
+
 def extract_passage(html):
     return html_utils.sub_html(html, BGW_PASSAGE_START, BGW_PASSAGE_END)
 
@@ -57,7 +76,7 @@ def get_passage_raw(ref, version='NIV'):
 
     # Prepare the title and header
     passage_reference = passage_soup.select_one(BGW_PASSAGE_TITLE).text.strip()
-    passage_version = telegram_utils.bracket(version)
+    passage_version = version
 
     # Remove the unnecessary tags
     for tag in passage_soup.select(BGW_PASSAGE_IGNORE):
@@ -85,13 +104,17 @@ def get_passage_raw(ref, version='NIV'):
 
     debug.log("Finished parsing soup")
 
-    return passage_reference, passage_version, passage_text
+    return BGWPassage(passage_reference, passage_version, passage_text)
 
 def get_passage(ref, version='NIV'):
-    passage_reference, passage_version, passage_text = get_passage_raw(ref, version)
+    passage = get_passage_raw(ref, version)
 
-    passage_format = passage_reference + ' ' + passage_version
-    passage_format = passage_format + '\n\n' + passage_text
+    if passage is None:
+        return None
+
+    passage_format = telegram_utils.bold(passage.get_reference())
+    passage_format += ' ' + telegram_utils.bracket(passage.get_version())
+    passage_format += '\n\n' + passage.get_text()
 
     return passage_format
 

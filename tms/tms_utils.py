@@ -92,12 +92,13 @@ def get_start_verse():
     select_verse = select_pack[0]
     return Verse(select_verse[1], select_verse[0], start_key, 1)
 
-def format_verse(verse, text):
+def format_verse(verse, passage):
     verse_prep = []
 
     verse_prep.append(verse.get_pack() + ' ' + str(verse.get_position()))
-    verse_prep.append(telegram_utils.bold(verse.reference))
-    verse_prep.append(text)
+    verse_prep.append(telegram_utils.bold(verse.reference) \
+                    + telegram_utils.bracket(passage.get_version()))
+    verse_prep.append(passage.get_text())
     verse_prep.append(telegram_utils.bold(verse.reference))
 
     return telegram_utils.join(verse_prep, '\n\n')
