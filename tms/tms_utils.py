@@ -1,6 +1,7 @@
 
 # Local modules
 from common import telegram_utils
+from common import text_utils
 
 from tms import tms_data
 
@@ -31,31 +32,24 @@ def get_pack(pack):
 
     return None
 
-def query_pack_pos(query):
-    query = query.upper().strip().split()
-    query = ''.join(query)
-
-    for pack_key in get_all_pack_keys():
-        pack = get_pack(pack_key)
-        size = len(pack)
-        for i in range(0, size):
-            try_packpos = pack_key + str(i + 1)
-            if try_packpos == query:
-                return pack[i]
-    return None
-
-def query_verse_by_reference(ref):
-    ref = ref.upper().strip().split()
-    ref = ''.join(ref)
-
+def query_verse_by_pack_pos(query):
     for pack_key in get_all_pack_keys():
         pack = get_pack(pack_key)
         size = len(pack)
         for i in range(0, size):
             select_verse = pack[i]
-            try_ref = select_verse[1].upper().strip().split()
-            try_ref = ''.join(try_ref)
-            if try_ref == ref:
+            try_packpos = pack_key + str(i + 1)
+            if text_utils.fuzzy_compare(query, try_packpos):
+                return Verse(select_verse[1], select_verse[0], pack_key, i + 1)
+    return None
+
+def query_verse_by_reference(ref):
+    for pack_key in get_all_pack_keys():
+        pack = get_pack(pack_key)
+        size = len(pack)
+        for i in range(0, size):
+            select_verse = pack[i]
+            if text_utils.fuzzy_compare(select_verse[1], ref):
                 return Verse(select_verse[1], select_verse[0], pack_key, i + 1)
     return None
    
@@ -87,7 +81,7 @@ def get_verses_by_title(title):
         size = len(pack)
         for i in range(0, size):
             select_verse = pack[i]
-            if title == select_verse[0]:
+            if text_utils.fuzzy_compare(title, select_verse[0]):
                 verses.append(Verse(select_verse[1], select_verse[0], pack_key, i + 1))
     
     return verses
