@@ -52,7 +52,7 @@ class TelegramPost():
         }
 
     def add_text(self, msg):
-        debug.log('Adding text for ' + str(id) + ': ' + str(msg))
+        debug.log('Adding text for ' + str(id) + ': ' + msg)
 
         self.format_data['text'] = msg
 
