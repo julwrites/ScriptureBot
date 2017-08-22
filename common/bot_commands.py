@@ -7,7 +7,7 @@ from common import telegram_utils
 from common import admin_commands
 from bgw import bgw_commands
 
-from common.bible_user import *
+from common.user_utils import *
 
 CMD_STORE = '/store'
 CMD_RETRIEVE = '/retrieve'

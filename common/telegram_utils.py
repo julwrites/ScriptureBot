@@ -5,7 +5,7 @@ from common import admin
 from common import chrono
 from common import telegram
 
-from common.bible_user import *
+from common.user_utils import *
 
 from common.constants import *
 
