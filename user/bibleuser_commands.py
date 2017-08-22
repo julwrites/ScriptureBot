@@ -16,6 +16,7 @@ CMD_VERSION = '/version'
 CMD_VERSION_PROMPT = 'Please select a version of your choosing \n (if unsure, always go with the one you are comfortable with!)'
 
 STATE_WAIT_VERSION = 'Waiting for version'
+STATE_VERSION_PROMPT = 'I\'ve changed your version to {}!'
 
 def cmds(user, cmd, msg):
     if user is None:
@@ -58,6 +59,7 @@ def state_version(user, msg):
                 version_found = True
                 user.set_version(ver)
                 telegram.send_close_keyboard(user.get_uid())
+                telegram.send_msg(STATE_VERSION_PROMPT.format(ver), user.get_uid())
                 user.set_state(None)
 
         if not version_found:
