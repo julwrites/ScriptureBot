@@ -56,7 +56,7 @@ def state_version(user, msg):
         for ver in SUPPORTED_VERSIONS:
             if text_utils.fuzzy_compare(version, ver):
                 version_found = True
-                user.set_version(msg)
+                user.set_version(ver)
                 telegram.send_close_keyboard(user.get_uid())
                 user.set_state(None)
 
