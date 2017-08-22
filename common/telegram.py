@@ -107,7 +107,8 @@ def send_msg_keyboard(msg, id, options=[]):
     post.add_keyboard(options)
     post.send()
 
-def send_close_keyboard(id):
+def send_close_keyboard(msg, id):
     post = TelegramPost(id)
+    post.add_text(msg)
     post.close_keyboard()
     post.send()

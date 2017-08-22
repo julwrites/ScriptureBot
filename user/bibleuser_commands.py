@@ -58,8 +58,7 @@ def state_version(user, msg):
             if text_utils.fuzzy_compare(version, ver):
                 version_found = True
                 user.set_version(ver)
-                telegram.send_close_keyboard(user.get_uid())
-                telegram.send_msg(STATE_VERSION_PROMPT.format(ver), user.get_uid())
+                telegram.send_close_keyboard(STATE_VERSION_PROMPT.format(ver), user.get_uid())
                 user.set_state(None)
 
         if not version_found:
