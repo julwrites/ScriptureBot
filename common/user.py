@@ -25,7 +25,9 @@ class User(db.Model):
         def prep(string):
             return string.encode('utf-8', 'ignore').strip()
 
-        name = prep(self.first_name)
+        name = ''
+        if self.first_name:
+            name += prep(self.first_name)
         if self.last_name:
             name += ' ' + prep(self.last_name)
         if self.username:
@@ -96,7 +98,7 @@ def get_uid(user):
 
 def set_profile(uid, uname, fname, lname):
     existing_user = get_user(uid)
-    
+
     uname = text_utils.stringify(uname)
     fname = text_utils.stringify(fname)
     lname = text_utils.stringify(fname)
