@@ -8,6 +8,7 @@ from google.appengine.api import urlfetch, urlfetch_errors
 
 # Local modules
 from common import debug
+from common import text_utils
 
 HTML_HEADER_TAGS = ['h1', 'h2', 'h3', 'h4', 'h5', 'h6']
 HTML_TEXT_TAGS = ['p']
@@ -74,6 +75,9 @@ def strip_soup(soup):
         for bad_string in bad_strings:
             stripped_text = strip_md(unicode(bad_string))
             bad_string.replace_with(stripped_text)
+
+    for tag in soup.select(soupify_tags(HTML_TEXT_TAGS)):
+        tag.string = text_utils.strip_whitespace(tag.text)
 
     return soup
 

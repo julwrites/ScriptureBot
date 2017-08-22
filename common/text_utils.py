@@ -19,3 +19,7 @@ def fuzzy_compare(lhs, rhs):
     rhs = ''.join(rhs)
 
     return lhs == rhs
+
+def strip_whitespace(string):
+    string = string.strip().split()
+    return ' '.join(string)
