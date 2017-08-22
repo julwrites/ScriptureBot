@@ -16,6 +16,7 @@ TELEGRAM_URL_SEND = TELEGRAM_URL + '/sendMessage'
 TELEGRAM_MAX_LENGTH = 4096
 
 TELEGRAM_OPTION_REPLY_KEYBOARD = 'reply_markup'
+TELEGRAM_KEYBOARD_GRID_SIZE = 3
 
 class TelegramPost():
     def __init__(self, id):
@@ -40,21 +41,30 @@ class TelegramPost():
         else:
             debug.log(data)
 
-    def add_keyboard(self, options=[]):
-        debug.log('Adding keyboard for ' + str(id) + ': ' + str(options))
-
-        keyboard_data = []
-        for data in options:
-            keyboard_data.append({'text': data})
-        
-        self.format_data['reply_markup'] = {
-            'keyboard': keyboard_data
-        }
-
     def add_text(self, msg):
         debug.log('Adding text for ' + str(id) + ': ' + msg)
 
         self.format_data['text'] = msg
+
+    def add_keyboard(self, options=[]):
+        debug.log('Adding keyboard for ' + str(id) + ': ' + str(options))
+
+        size = len(options)
+        keyboard_data = []
+        for i in range(0, size, TELEGRAM_KEYBOARD_GRID_SIZE):
+            keyboard_row = []
+
+            for j in range(0, TELEGRAM_KEYBOARD_GRID_SIZE):
+                data = options[i+j]
+                keyboard_row.append({'text': data})
+            
+            keyboard_data.append(keyboard_row)
+        
+        self.format_data['reply_markup'] = [
+            {
+                'keyboard': keyboard_data
+            }
+        ]
 
 def send_msg(msg, id):
     debug.log('Sending message to ' + str(id) + ': ' +  msg)
