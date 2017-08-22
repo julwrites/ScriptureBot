@@ -35,7 +35,7 @@ class User(db.Model):
 
     def get_description(self):
         user_type = 'Group' if self.is_group() else 'User'
-        return user_type + ' ' + self.get_name_string() + ' ' + self.last_received
+        return user_type + ' ' + self.get_name_string() + ' ' + self.last_sent
 
     def is_group(self):
         return int(self.get_uid()) < 0

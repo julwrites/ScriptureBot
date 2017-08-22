@@ -106,7 +106,8 @@ class BotHandler(webapp2.RequestHandler):
 
         if admin.access(uid):
             debug.log('Welcome, Master')
-            admin_commands.cmds(uid, cmd, msg)
+            if admin_commands.cmds(uid, cmd, msg):
+                return True
 
         if user is None:
             debug.log('This user does not exist')
