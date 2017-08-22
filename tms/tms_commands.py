@@ -31,10 +31,10 @@ def cmd_tms(user, cmd, msg):
         verse_reference = bgw_utils.get_reference(query)
 
         if verse_reference is not None:
-            debug.log('Attempting to get ' + verse_reference)
+            debug.log('Attempting to get by reference ' + verse_reference)
             verse = tms_utils.query_verse_by_reference(verse_reference)
         else:
-            debug.log('Attempting to get ' + query)
+            debug.log('Attempting to get by position' + query)
             verse = tms_utils.query_verse_by_pack_pos(query)
 
         if verse is not None:
