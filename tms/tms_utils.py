@@ -40,7 +40,7 @@ def find_verse(select_fn):
                 return pack[i]
     return None
 
-def query_pack_pos(query):
+def get_pack_pos(query):
     query = query.strip().split()
     query = ''.join(query)
 
