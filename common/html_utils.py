@@ -70,6 +70,8 @@ def strip_soup(soup):
 
     foreach_all(soup, text_utils.strip_whitespace)
 
+    return soup
+
 def stripmd_soup(soup):
     debug.log('Stripping soup markdown')
 
