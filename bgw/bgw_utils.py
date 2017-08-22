@@ -83,7 +83,7 @@ def get_passage_raw(ref, version='NIV'):
         tag.decompose()
 
     # Steps through all the html types and mark these
-    soup = html_utils.strip_soup(soup=passage_soup)
+    soup = html_utils.stripmd_soup(soup=passage_soup)
     soup = html_utils.mark_soup(soup=passage_soup, 
     html_mark=BGW_PASSAGE_SELECT,
     tags=html_utils.HTML_HEADER_TAGS + html_utils.HTML_TEXT_TAGS)
@@ -92,9 +92,12 @@ def get_passage_raw(ref, version='NIV'):
 
     # Special formatting for chapter and verse
     for tag in soup.select('.chapternum'):
-        tag.string.replace_with(telegram_utils.bold(tag.text))
+        tag.string = telegram_utils.bold(tag.text)
     for tag in soup.select('.versenum'):
-        tag.string.replace_with(telegram_utils.italics(html_utils.to_sup(tag.text)))
+        tag.string = telegram_utils.italics(html_utils.to_sup(tag.text))
+
+    # Only at the last step do we do other destructive formatting
+    soup = html_utils.strip_soup(soup=passage_soup)
 
     passage_blocks = []
     for tag in soup(class_=BGW_PASSAGE_SELECT):

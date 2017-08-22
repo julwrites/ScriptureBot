@@ -54,7 +54,7 @@ def to_sup(text):
 
 def foreach_tag(soup, tags, fn):
     for tag in soup.select(tags):
-        tag.string.replace_with(fn(tag.text))
+        tag.string = fn(tag.text)
 
 def foreach_header(soup, fn):
     foreach_tag(soup, soupify_tags(HTML_HEADER_TAGS), fn)
@@ -68,8 +68,12 @@ def foreach_all(soup, fn):
 def strip_soup(soup):
     debug.log('Stripping soup')
 
+    foreach_all(soup, text_utils.strip_whitespace)
+
+def stripmd_soup(soup):
+    debug.log('Stripping soup markdown')
+
     foreach_header(soup, strip_md)
-    foreach_text(soup, text_utils.strip_whitespace)
 
     for tag in soup.select(soupify_tags(HTML_TEXT_TAGS)):
         bad_strings = tag(text=re.compile('(\*|\_|\`|\[)'))
