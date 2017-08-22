@@ -26,6 +26,7 @@ class TelegramPost():
 
     def send(self):
         data = json.dumps(self.format_data)
+        debug.log('Performing send: ' + data)
 
         try:
             debug.log('Sending ' + chunk)
