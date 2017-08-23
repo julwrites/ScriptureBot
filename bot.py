@@ -34,6 +34,7 @@ def cmd_start(cmd, msg):
 
     # This runs to update the user's info, or register
     if user_json is not None:
+        debug.log('Updating user info')
         set_profile(
             user_json.get('id'), 
             user_json.get('username'), 
@@ -49,7 +50,6 @@ def cmd_start(cmd, msg):
         debug.log('Registering ' + user.get_name_string())
 
         return True
-
     return False
 
 class BotHandler(webapp2.RequestHandler):
