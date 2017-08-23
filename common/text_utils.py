@@ -3,7 +3,6 @@
 import string
 
 # Local modules
-from common import debug
 
 def stringify(value):
     if value is None:
@@ -20,6 +19,12 @@ def fuzzy_compare(lhs, rhs):
 
     return lhs == rhs
 
-def strip_whitespace(string):
-    string = string.strip().split()
-    return ' '.join(string)
+def strip_whitespace(s):
+    s = s.strip().split()
+    return ' '.join(s)
+
+def strip_numbers(s):
+    return ''.join([c for c in s if not c.isdigit()])
+
+def strip_alpha(s):
+    return ''.join([c for c in s if not c.isalpha()])

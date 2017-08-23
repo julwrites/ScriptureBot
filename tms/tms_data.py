@@ -91,5 +91,16 @@ TMS = {
     "E" : E_PACK
 }
 
+TMS_ALIAS = {
+    "BWC": ["LOA", "Beginning with Christ", "Lessons of Assurance"],
+    "A": ["A Pack", "TMS A"],
+    "B": ["B Pack", "TMS B"],
+    "C": ["C Pack", "TMS C"],
+    "D": ["D Pack", "TMS D"]
+}
+
 def get_tms():
     return TMS
+
+def get_aliases():
+    return TMS_ALIAS
