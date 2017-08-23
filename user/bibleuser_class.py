@@ -67,7 +67,7 @@ class BibleUser(db.Model):
         return self.subscription
 
     def add_subscription(self, subscription):
-        if self.subscription.find(subscription):
+        if self.subscription.find(subscription) is not -1:
             return
 
         self.subscription += subscription

@@ -10,6 +10,7 @@ from bgw import bgw_utils
 from user.bibleuser_utils import *
 
 HOOK_DAILYTMS = '/dailytms'
+SUBSCRIPTION_DAILYTMS = '/*dailytms*/'
 
 def hooks(data):
     debug.log('Running TMS hooks')
@@ -23,7 +24,8 @@ def hook_dailytms():
 
     def send_verse(uid):
         user = get_user(uid)
-        if user.get_daily_subscription():
+        
+        if user.get_daily_subscription().find(SUBSCRIPTION_DAILYTMS) is not -1:
             verse = tms_utils.get_random_verse()
             passage = bgw_utils.get_passage_raw(verse.reference, user.get_version())
             verse_msg = tms_utils.format_verse(verse, passage)
