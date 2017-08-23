@@ -1,5 +1,21 @@
 
+from tms.tms_class import TMSPack
+
 TMS_A_KEY = "TMS_A"
+TMS_B_KEY = "TMS_B"
+TMS_C_KEY = "TMS_C"
+TMS_D_KEY = "TMS_D"
+TMS_E_KEY = "TMS_E"
+
+def keys():
+    return [ 
+        TMS_A_KEY,
+        TMS_B_KEY,
+        TMS_C_KEY,
+        TMS_D_KEY,
+        TMS_E_KEY
+    ]
+
 A_PACK = [
     ("Christ the Center",               "2 Corinthians 5 : 17"),
     ("Christ the Center",               "Galatians 2 : 20"),
@@ -15,7 +31,6 @@ A_PACK = [
     ("Witnessing",                      "Romans 1 : 16")
 ]
 
-TMS_B_KEY = "TMS_B"
 B_PACK = [
     ("All have Sinned",                 "Romans 3 : 23"),
     ("All have Sinned",                 "Isaiah 53 : 6"),
@@ -31,7 +46,6 @@ B_PACK = [
     ("Assurance of Salvation",          "John 5 : 24")
 ]
 
-TMS_C_KEY = "TMS_C"
 C_PACK = [
     ("His Spirit",                      "1 Corinthians 3 : 16"),
     ("His Spirit",                      "1 Corinthians 2 : 12"),
@@ -47,7 +61,6 @@ C_PACK = [
     ("His Help in Temptation",          "Psalms 119 : 9, 11")
 ]
 
-TMS_D_KEY = "TMS_D"
 D_PACK = [
     ("Put Christ First",                "Matthew 6 : 33"),
     ("Put Christ First",                "Luke 9 : 23"),
@@ -63,7 +76,6 @@ D_PACK = [
     ("Develop World Vision",            "Matthew 28 : 19 - 20")
 ]
 
-TMS_E_KEY = "TMS_E"
 E_PACK = [
     ("Love",                            "John 13 : 34 - 35"),
     ("Love",                            "1 John 3 : 18"),
@@ -80,40 +92,35 @@ E_PACK = [
 ]
 
 def data():
-    return [
-        ( TMS_A_KEY ,     A_PACK ),
-        ( TMS_B_KEY ,     B_PACK ),
-        ( TMS_C_KEY ,     C_PACK ),
-        ( TMS_D_KEY ,     D_PACK ),
-        ( TMS_E_KEY ,     E_PACK )
-    ]
-
-def keys():
-    return [ 
-        TMS_A_KEY,
-        TMS_B_KEY,
-        TMS_C_KEY,
-        TMS_D_KEY,
-        TMS_E_KEY
-    ]
-
-def aliases():
-    return [
-        ( TMS_A_KEY ,     ["A", "A Pack", "TMS A", "Living the New Life", "New Life", "Wheel"] ),
-        ( TMS_B_KEY ,     ["B", "B Pack", "TMS B", "Proclaiming Christ", "Evangelism", "Bridge", "Bridge Illustration"] ),
-        ( TMS_C_KEY ,     ["C", "C Pack", "TMS C", "Reliance on God's Resources", "Reliance"] ),
-        ( TMS_D_KEY ,     ["D", "D Pack", "TMS D", "Being Christ's Disciple", "Discipleship"] ),
-        ( TMS_E_KEY ,     ["E", "E Pack", "TMS D", "Growth in Christlikeness", "Christlikeness"] )
-    ]
+    return {
+        TMS_A_KEY :     A_PACK,
+        TMS_B_KEY :     B_PACK,
+        TMS_C_KEY :     C_PACK,
+        TMS_D_KEY :     D_PACK,
+        TMS_E_KEY :     E_PACK
+    }
 
 def names():
-    return [
-        ( TMS_A_KEY ,     "A: Living the New Life" ),
-        ( TMS_B_KEY ,     "B: Proclaiming Christ" ),
-        ( TMS_C_KEY ,     "C: Reliance on God's Resources" ),
-        ( TMS_D_KEY ,     "D: Being Christ's Disciple" ),
-        ( TMS_E_KEY ,     "E: Growth in Christlikeness" )
-    ]
+    return {
+        TMS_A_KEY :     "A: Living the New Life",
+        TMS_B_KEY :     "B: Proclaiming Christ",
+        TMS_C_KEY :     "C: Reliance on God's Resources",
+        TMS_D_KEY :     "D: Being Christ's Disciple",
+        TMS_E_KEY :     "E: Growth in Christlikeness"
+    }
     
 def top():
     return TMS_A_KEY
+
+def aliases():
+    return {
+        TMS_A_KEY :     ["A", "A Pack", "TMS A", "Living the New Life", "New Life", "Wheel"],
+        TMS_B_KEY :     ["B", "B Pack", "TMS B", "Proclaiming Christ", "Evangelism", "Bridge", "Bridge Illustration"],
+        TMS_C_KEY :     ["C", "C Pack", "TMS C", "Reliance on God's Resources", "Reliance"],
+        TMS_D_KEY :     ["D", "D Pack", "TMS D", "Being Christ's Disciple", "Discipleship"],
+        TMS_E_KEY :     ["E", "E Pack", "TMS D", "Growth in Christlikeness", "Christlikeness"]
+    }
+
+TMS_PACK = TMSPack(keys(), data(), names(), aliases(), top())
+def pack():
+    return TMS_PACK

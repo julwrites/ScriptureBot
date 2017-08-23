@@ -1,18 +1,18 @@
 
 
 class TMSPack():
-    def __init__(self):
-        self.data = {}
-        self.keys = []
-        self.names = {}
-        self.aliases = {}
-        self.top = None
-
-    def get_data(self):
-        return self.data
+    def __init__(self, keys=[], data={}, names={}, aliases={}, top=None):
+        self.keys = keys
+        self.data = data
+        self.names = names
+        self.aliases = aliases
+        self.top = top
 
     def get_keys(self):
         return self.keys
+
+    def get_data(self):
+        return self.data
 
     def get_names(self):
         return self.names
@@ -23,5 +23,8 @@ class TMSPack():
     def get_top(self):
         return self.top
 
-    def join(self, pack):
-        
+    def add(self, pack):
+        self.keys.extend(pack.keys)
+        self.data.update(pack.data)
+        self.names.update(pack.data)
+        self.aliases.update(pack.data)
