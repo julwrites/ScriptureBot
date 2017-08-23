@@ -6,69 +6,58 @@ from common import telegram
 from common import telegram_utils
 from common import admin_commands
 from bgw import bgw_commands
+import hooks
 
-from user.bibleuser_utils import *
+from common.bible_user import *
 
 CMD_STORE = '/store'
 CMD_RETRIEVE = '/retrieve'
 
-STATE_WAIT_STORE = 'Waiting For Store'
+BOT_STATE_WAIT_STORE = 'Waiting For Store'
 
 def cmds(user, cmd, msg):
-    if user is None:
-        return False
-
     debug.log('Running bot commands')
 
-    try:
-        result = ( \
-        cmd_store(user, cmd, msg)           \
-        or cmd_retrieve(user, cmd, msg)     \
-        )
-    except:
-        return False
-    return result
+    return ( \
+    cmd_store(user, cmd, msg)           \
+    or cmd_retrieve(user, cmd, msg)     \
+    )
 
-def states(user, msg):
-    if user is None:
-        return False
+def states(msg):
+    # Read the user to echo back
+    uid = get_uid(msg.get('from').get('id'))
+    user = get_user(uid)
 
-    debug.log('Running bot states')
-
-    try:
-        result = ( \
-        state_store(user, msg)       \
-        )
-    except:
-        return False
-    return result
+    return ( \
+    state_store(user, msg)       \
+    )
 
 def cmd_store(user, cmd, msg):
     if user is not None:
         if cmd == CMD_STORE:
             debug.log_cmd(cmd)
-        
+       
             if database.has_data(user.get_uid()):
                 debug.log('Prompting data store for User: ' + user.get_name_string())
 
                 telegram.send_msg('Please send the data to be stored', user.get_uid())
-                user.set_state(STATE_WAIT_STORE)
+                user.set_state(BOT_STATE_WAIT_STORE)
 
-            return True
+                return True
+
     return False
 
 def state_store(user, msg):
-    if user is not None and user.get_state() == STATE_WAIT_STORE:
-        debug.log_state(STATE_WAIT_STORE)
+    if user is not None and user.get_state() == BOT_STATE_WAIT_STORE:
+        debug.log_state(BOT_STATE_WAIT_STORE
 
         payload = telegram_utils.parse_payload(msg)
         database.set_data(user.get_uid(), payload)
 
-        user.set_state(None)
-
         debug.log('Stored Data to User: ' + user.get_name_string())
 
         return True
+
     return False
 
 def cmd_retrieve(user, cmd, msg):
@@ -82,5 +71,6 @@ def cmd_retrieve(user, cmd, msg):
                 telegram.send_msg('Retrieving Data of User: ' + user.get_name_string(), user.get_uid())
                 telegram.send_msg(database.get_data(user.get_uid()), user.get_uid())
 
-            return True
+                return True
+
     return False

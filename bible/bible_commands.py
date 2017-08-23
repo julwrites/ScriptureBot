@@ -25,7 +25,7 @@ def cmds(user, cmd, msg):
 
 def cmd_verse(user, cmd, msg):
     if cmd == CMD_VERSE:
-        debug.log('Command: ' + cmd)
+        debug.log_cmd(cmd)
 
         query = msg.get('text')
         query = query.replace(cmd, '')

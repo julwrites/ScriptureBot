@@ -14,8 +14,22 @@ def toggle():
 def log(msg):
     if not debug():
         return
-
     logging.debug(msg)
+
+def log_cmd(cmd):
+    if not debug():
+        return
+    logging.debug('Command: ' + cmd)
+
+def log_state(state):
+    if not debug():
+        return
+    logging.debug('State: ' + state)
+
+def log_hook(hook):
+    if not debug():
+        return
+    logging.debug('Hook: ' + hook)
 
 def datetime():
     if not debug():

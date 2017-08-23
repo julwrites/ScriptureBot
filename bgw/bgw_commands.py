@@ -8,7 +8,8 @@ from common import telegram_utils
 from bgw import bgw_utils
 
 CMD_PASSAGE = '/passage'
-CMD_PASSAGE_PROMPT = 'Please enter /passage followed by the Bible passage you desire'
+CMD_PASSAGE_PROMPT = 'Give me a Bible reference!'
+STATE_WAIT_PASSAGE = 'Waiting for Bible reference'
 
 def cmds(user, cmd, msg):
     if user is None:
@@ -16,23 +17,45 @@ def cmds(user, cmd, msg):
 
     debug.log('Running BGW commands')
 
-    return (    \
-    cmd_passage(user, cmd, msg) \
-    )
+    try:
+        result = (    \
+        cmd_passage(user, cmd, msg) \
+        )
+    except:
+        return False
+    return result
 
-def cmd_passage(user, cmd, msg):
-    if cmd == CMD_PASSAGE:
-        debug.log('Command: ' + cmd)
-
-        query = msg.get('text')
-        query = query.replace(cmd, '')
-
+def resolve_passage_query(user, query):
+    if user is not None and query is not None:
         passage = bgw_utils.get_passage(query, user.get_version())
+
         if passage is not None:
             telegram.send_msg(passage, user.get_uid())
         else:
             telegram.send_msg(CMD_PASSAGE_PROMPT, user.get_uid())
+            user.set_state(STATE_WAIT_PASSAGE)
 
         return True
-
     return False
+
+def cmd_passage(user, cmd, msg):
+    if user is not None:
+        if cmd == CMD_PASSAGE:
+            debug.log_cmd(cmd)
+
+            query = msg.get('text')
+            query = query.replace(cmd, '')
+
+            return resolve_passage_query(user, query)
+    return False
+
+def state_passage(user, msg):
+    if user is not None and user.get_state() is STATE_WAIT_PASSAGE:
+        debug.log_state(STATE_WAIT_PASSAGE)
+        query = msg.get('text')
+
+        if resolve_passage_query(user, query):
+            user.set_state(None)
+            return True
+    return False
+

@@ -16,17 +16,21 @@ ADMIN_RAGNAROK = '/ragnarok'
 def cmds(uid, cmd, msg):
     debug.log('Running admin commands')
 
-    return ( \
-    cmd_dump(uid, cmd, msg)       \
-    or cmd_doggle(uid, cmd, msg)   \
-    or cmd_clean(uid, cmd, msg)   \
-    or cmd_ragnarok(uid, cmd, msg)   \
-    )
+    try:
+        result = ( \
+        cmd_dump(uid, cmd, msg)       \
+        or cmd_doggle(uid, cmd, msg)   \
+        or cmd_clean(uid, cmd, msg)   \
+        or cmd_ragnarok(uid, cmd, msg)   \
+        )
+    except:
+        return False
+    return result
 
 # Debug Commands
 def cmd_dump(uid, cmd, msg):
     if admin.access(uid) and cmd == ADMIN_DUMP:
-        debug.log('Command: ' + cmd)
+        debug.log_cmd(cmd)
 
         # Read user database
         query = get_user_query()
@@ -48,7 +52,7 @@ def cmd_dump(uid, cmd, msg):
 
 def cmd_doggle(uid, cmd, msg):
     if admin.access(uid) and cmd == ADMIN_DEBUG:
-        debug.log('Command: ' + cmd)
+        debug.log_cmd(cmd)
 
         debug.toggle()
 
@@ -58,7 +62,7 @@ def cmd_doggle(uid, cmd, msg):
 
 def cmd_clean(uid, cmd, msg):
     if admin.access(uid) and cmd == ADMIN_CLEAN:
-        debug.log('Command: ' + cmd)
+        debug.log_cmd(cmd)
 
         # Read user database
         query = get_user_query
@@ -90,7 +94,7 @@ def cmd_clean(uid, cmd, msg):
 
 def cmd_ragnarok(uid, cmd, msg):
     if admin.access(uid) and cmd == ADMIN_RAGNAROK:
-        debug.log('Command: ' + cmd)
+        debug.log_cmd(cmd)
 
         # Read user database
         query = get_user_query

@@ -19,7 +19,7 @@ def hooks(data):
     )
 
 def hook_dailytms():
-    debug.log('Hook: ' + HOOK_DAILYTMS)
+    debug.log_hook(HOOK_DAILYTMS)
 
     def send_verse(uid):
         user = get_user(uid)

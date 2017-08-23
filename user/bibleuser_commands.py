@@ -40,7 +40,7 @@ def states(user, msg):
 
 def cmd_version(user, cmd, msg):
     if cmd == CMD_VERSION:
-        debug.log('Command: ' + cmd)
+        debug.log_cmd(cmd)
 
         telegram.send_msg_keyboard(CMD_VERSION_PROMPT, user.get_uid(), SUPPORTED_VERSIONS)
         user.set_state(STATE_WAIT_VERSION)
@@ -50,7 +50,7 @@ def cmd_version(user, cmd, msg):
 
 def state_version(user, msg):
     if user.get_state() == STATE_WAIT_VERSION:
-        debug.log('State: ' + STATE_WAIT_VERSION)
+        debug.log_state(STATE_WAIT_VERSION)
 
         version_found = False
         version = msg.get('text')

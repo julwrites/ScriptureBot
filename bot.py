@@ -19,7 +19,6 @@ from common import admin_commands
 from bgw import bgw_commands
 from tms import tms_commands
 from user import bibleuser_commands
-from bible import bible_commands
 
 from common.constants import APP_BOT_URL
 
@@ -29,7 +28,7 @@ CMD_START_PROMPT = 'Hello {}, I\'m Biblica! I hope I will be helpful as a tool f
 # This is a special command, specialized to this bot
 def cmd_start(cmd, msg):
     if cmd == CMD_START:
-        debug.log('Command: ' + cmd)
+        debug.log_cmd(cmd)
 
         # Register User
         user_json = msg.get('from')
@@ -125,7 +124,6 @@ class BotHandler(webapp2.RequestHandler):
             or bot_commands.cmds(user, cmd, msg)    \
             or bgw_commands.cmds(user, cmd, msg)    \
             or tms_commands.cmds(user, cmd, msg)    \
-            or bible_commands.cmds(user, cmd, msg)  \
             ):
                 return True
 
