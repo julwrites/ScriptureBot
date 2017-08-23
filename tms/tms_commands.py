@@ -18,7 +18,7 @@ def cmds(user, cmd, msg):
     
     debug.log('Running TMS commands')
 
-    try {
+    try:
         result = (\
         cmd_tms(user, cmd, msg) \
         )
