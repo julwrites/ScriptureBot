@@ -25,6 +25,21 @@ def cmds(user, cmd, msg):
         return False
     return result
 
+def states(user, msg):
+    if user is None:
+        return False
+
+    debug.log('Running BGW states')
+    
+    try:
+        result = ( \
+        state_passage(user, msg)       \
+        )
+    except:
+        return False
+    return result
+
+
 def resolve_passage_query(user, query):
     if user is not None and query is not None:
         passage = bgw_utils.get_passage(query, user.get_version())

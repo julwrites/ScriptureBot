@@ -30,7 +30,7 @@ def states(user, msg):
     if user is None:
         return False
 
-    debug.log('Running bot states')
+    debug.log('Running TMS states')
     
     try:
         result = ( \
