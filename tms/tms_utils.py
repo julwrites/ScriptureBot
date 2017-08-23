@@ -87,30 +87,31 @@ def get_start_verse():
 # Querying functions: These do a lookup based on some text search
 def query_pack_by_alias(query):
     if query is not None:
-        stripped_query = text_utils.strip_numbers(query)
-
         for pack_key in get_all_pack_keys():
             aliases = get_aliases(pack_key)
 
             for alias in aliases:
 
-                if text_utils.fuzzy_compare(stripped_query, alias):
+                if text_utils.fuzzy_compare(query, alias):
                     return pack_key
     return None
 
 def query_verse_by_pack_pos(query):
     if query is not None:
-        pack_key = query_pack_by_alias(query)
+        query_text = text_utils.strip_numbers(query)
+        pack_key = query_pack_by_alias(query_text)
 
         if pack_key is not None:
             select_pack = get_pack(pack_key)
 
             if select_pack is not None:
-                size = len(select_pack)
-                pos = int(text_utils.strip_alpha(query))
+                query_num = text_utils.strip_alpha(query)
+                if query_num is not None:
+                    size = len(select_pack)
+                    pos = int(query_num)
 
-                if size >= pos:
-                    return select_pack[pos - 1]
+                    if size >= pos:
+                        return select_pack[pos - 1]
     return None
 
 def query_verse_by_reference(query):

@@ -24,7 +24,9 @@ def strip_whitespace(s):
     return ' '.join(s)
 
 def strip_numbers(s):
-    return ''.join([c for c in s if not c.isdigit()])
+    result = ''.join([c for c in s if not c.isdigit()])
+    return result if len(result) > 0 else None
 
 def strip_alpha(s):
-    return ''.join([c for c in s if not c.isalpha()])
+    result = ''.join([c for c in s if not c.isalpha()])
+    return result if len(result) > 0 else None
