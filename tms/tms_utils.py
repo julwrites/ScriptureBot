@@ -88,9 +88,12 @@ def get_start_verse():
 def query_pack_by_alias(query):
     if query is not None:
         stripped_query = text_utils.strip_numbers(query)
+
         for pack_key in get_all_pack_keys():
             aliases = get_aliases(pack_key)
+
             for alias in aliases:
+
                 if text_utils.fuzzy_compare(stripped_query, alias):
                     return pack_key
     return None

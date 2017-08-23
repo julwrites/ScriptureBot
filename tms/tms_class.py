@@ -45,7 +45,7 @@ class TMSPack():
     def add(self, pack):
         self.keys.extend(pack.keys)
         self.data.update(pack.data)
-        self.names.update(pack.data)
-        self.aliases.update(pack.data)
+        self.names.update(pack.names)
+        self.aliases.update(pack.aliases)
 
         return self
