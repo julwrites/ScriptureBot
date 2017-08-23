@@ -123,20 +123,20 @@ SUFFERING_PACK = [
 
 
 def data():
-    return {
-        LIFE_ISSUES_ANGER_KEY :             ANGER_PACK,
-        LIFE_ISSUES_SIN_KEY :               SIN_PACK,
-        LIFE_ISSUES_DEPRESSION_KEY :        DEPRESSION_PACK,
-        LIFE_ISSUES_GUILT_KEY :             GUILT_PACK,
-        LIFE_ISSUES_GODSWILL_KEY :          GODSWILL_PACK,
-        LIFE_ISSUES_LOVE_KEY :              LOVE_PACK,
-        LIFE_ISSUES_MONEY_KEY :             MONEY_PACK,
-        LIFE_ISSUES_PERFECTIONISM_KEY :     PERFECTIONISM_PACK,
-        LIFE_ISSUES_SELFIMAGE_KEY :         SELFIMAGE_PACK,
-        LIFE_ISSUES_SEX_KEY :               SEX_PACK,
-        LIFE_ISSUES_STRESS_KEY :            STRESS_PACK,
-        LIFE_ISSUES_SUFFERING_KEY :         SUFFERING_PACK
-    }
+    return [
+        ( LIFE_ISSUES_ANGER_KEY ,             ANGER_PACK ),
+        ( LIFE_ISSUES_SIN_KEY ,               SIN_PACK ),
+        ( LIFE_ISSUES_DEPRESSION_KEY ,        DEPRESSION_PACK ),
+        ( LIFE_ISSUES_GUILT_KEY ,             GUILT_PACK ),
+        ( LIFE_ISSUES_GODSWILL_KEY ,          GODSWILL_PACK ),
+        ( LIFE_ISSUES_LOVE_KEY ,              LOVE_PACK ),
+        ( LIFE_ISSUES_MONEY_KEY ,             MONEY_PACK ),
+        ( LIFE_ISSUES_PERFECTIONISM_KEY ,     PERFECTIONISM_PACK ),
+        ( LIFE_ISSUES_SELFIMAGE_KEY ,         SELFIMAGE_PACK ),
+        ( LIFE_ISSUES_SEX_KEY ,               SEX_PACK ),
+        ( LIFE_ISSUES_STRESS_KEY ,            STRESS_PACK ),
+        ( LIFE_ISSUES_SUFFERING_KEY ,         SUFFERING_PACK )
+    ]
 
 def keys():
     return [ 
@@ -155,36 +155,36 @@ def keys():
     ]
 
 def aliases():
-    return {
-        LIFE_ISSUES_ANGER_KEY :             ["Anger"],
-        LIFE_ISSUES_SIN_KEY :               ["Sin"],
-        LIFE_ISSUES_DEPRESSION_KEY :        ["Depression"],
-        LIFE_ISSUES_GUILT_KEY :             ["Guilt"],
-        LIFE_ISSUES_GODSWILL_KEY :          ["God's Will", "Will of God", "Will"],
-        LIFE_ISSUES_LOVE_KEY :              ["Love", "Storge", "Phileo", "Agape", "Eros"],
-        LIFE_ISSUES_MONEY_KEY :             ["Money"],
-        LIFE_ISSUES_PERFECTIONISM_KEY :     ["Perfectionism", "Perfect"],
-        LIFE_ISSUES_SELFIMAGE_KEY :         ["Self-Image", "Self Image"],
-        LIFE_ISSUES_SEX_KEY :               ["Sex"],
-        LIFE_ISSUES_STRESS_KEY :            ["Stress"],
-        LIFE_ISSUES_SUFFERING_KEY :         ["Suffering", "Pain", "Enduring Pain"]
-    }
+    return [
+        ( LIFE_ISSUES_ANGER_KEY ,             ["Anger"] ),
+        ( LIFE_ISSUES_SIN_KEY ,               ["Sin"] ),
+        ( LIFE_ISSUES_DEPRESSION_KEY ,        ["Depression"] ),
+        ( LIFE_ISSUES_GUILT_KEY ,             ["Guilt"] ),
+        ( LIFE_ISSUES_GODSWILL_KEY ,          ["God's Will", "Will of God", "Will"] ),
+        ( LIFE_ISSUES_LOVE_KEY ,              ["Love", "Storge", "Phileo", "Agape", "Eros"] ),
+        ( LIFE_ISSUES_MONEY_KEY ,             ["Money"] ),
+        ( LIFE_ISSUES_PERFECTIONISM_KEY ,     ["Perfectionism", "Perfect"] ),
+        ( LIFE_ISSUES_SELFIMAGE_KEY ,         ["Self-Image", "Self Image"] ),
+        ( LIFE_ISSUES_SEX_KEY ,               ["Sex"] ),
+        ( LIFE_ISSUES_STRESS_KEY ,            ["Stress"] ),
+        ( LIFE_ISSUES_SUFFERING_KEY ,         ["Suffering", "Pain", "Enduring Pain"] )
+    ]
 
 def names():
-    return {
-        LIFE_ISSUES_ANGER_KEY :             "Life Issues: Anger",
-        LIFE_ISSUES_SIN_KEY :               "Life Issues: Sin",
-        LIFE_ISSUES_DEPRESSION_KEY :        "Life Issues: Depression",
-        LIFE_ISSUES_GUILT_KEY :             "Life Issues: Guilt",
-        LIFE_ISSUES_GODSWILL_KEY :          "Life Issues: God's Will",
-        LIFE_ISSUES_LOVE_KEY :              "Life Issues: Love",
-        LIFE_ISSUES_MONEY_KEY :             "Life Issues: Money",
-        LIFE_ISSUES_PERFECTIONISM_KEY :     "Life Issues: Perfectionism",
-        LIFE_ISSUES_SELFIMAGE_KEY :         "Life Issues: Self-Image",
-        LIFE_ISSUES_SEX_KEY :               "Life Issues: Sex",
-        LIFE_ISSUES_STRESS_KEY :            "Life Issues: Stress",
-        LIFE_ISSUES_SUFFERING_KEY :         "Life Issues: Suffering"
-    }
+    return [
+        ( LIFE_ISSUES_ANGER_KEY ,             "Life Issues, Anger" ),
+        ( LIFE_ISSUES_SIN_KEY ,               "Life Issues, Sin" ),
+        ( LIFE_ISSUES_DEPRESSION_KEY ,        "Life Issues, Depression" ),
+        ( LIFE_ISSUES_GUILT_KEY ,             "Life Issues, Guilt" ),
+        ( LIFE_ISSUES_GODSWILL_KEY ,          "Life Issues, God's Will" ),
+        ( LIFE_ISSUES_LOVE_KEY ,              "Life Issues, Love" ),
+        ( LIFE_ISSUES_MONEY_KEY ,             "Life Issues, Money" ),
+        ( LIFE_ISSUES_PERFECTIONISM_KEY ,     "Life Issues, Perfectionism" ),
+        ( LIFE_ISSUES_SELFIMAGE_KEY ,         "Life Issues, Self-Image" ),
+        ( LIFE_ISSUES_SEX_KEY ,               "Life Issues, Sex" ),
+        ( LIFE_ISSUES_STRESS_KEY ,            "Life Issues, Stress" ),
+        ( LIFE_ISSUES_SUFFERING_KEY ,         "Life Issues, Suffering" )
+    ]
 
 def top():
     return LIFE_ISSUES_ANGER_KEY

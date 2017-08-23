@@ -9,9 +9,9 @@ LOA = [
 ]
 
 def data():
-    return {
-        LOA_KEY :       LOA,
-    }
+    return [
+        ( LOA_KEY ,       LOA )
+    ]
 
 def keys():
     return [ 
@@ -19,14 +19,14 @@ def keys():
     ]
 
 def aliases():
-    return {
-        LOA_KEY :       ["BWC", "LOA", "Beginning with Christ", "Lessons of Assurance"],
-    }
+    return [
+        ( LOA_KEY ,       ["BWC", "LOA", "Beginning with Christ", "Lessons of Assurance"] ),
+    ]
 
 def names():
-    return {
-        LOA_KEY :       "Beginning with Christ/Lessons of Assurance",
-    }
+    return [
+        ( LOA_KEY ,       "Beginning with Christ/Lessons of Assurance" ),
+    ]
 
 def top():
     return LOA_KEY

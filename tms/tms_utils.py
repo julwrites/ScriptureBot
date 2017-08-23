@@ -1,4 +1,7 @@
 
+# Python modules
+import random
+
 # Local modules
 from common import debug
 from common import telegram_utils
