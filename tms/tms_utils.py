@@ -137,6 +137,7 @@ def format_verse(verse, passage):
         verse_prep = []
 
         verse_prep.append(verse.get_pack() + ' ' + str(verse.get_position()))
+        verse_prep.append(telegram_utils.bold(verse.get_title()))
         verse_prep.append(telegram_utils.bold(verse.reference) + ' ' \
                         + telegram_utils.bracket(passage.get_version()))
         verse_prep.append(passage.get_text())
