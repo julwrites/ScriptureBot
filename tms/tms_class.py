@@ -47,3 +47,5 @@ class TMSPack():
         self.data.update(pack.data)
         self.names.update(pack.data)
         self.aliases.update(pack.data)
+
+        return self
