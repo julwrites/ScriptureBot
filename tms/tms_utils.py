@@ -52,7 +52,7 @@ def query_pack_by_alias(query):
         stripped_query = text_utils.strip_numbers(query)
         for pack_key in get_all_pack_alias():
             aliases = get_alias(pack_key)
-            for alias in aliases():
+            for alias in aliases:
                 if text_utils.fuzzy_compare(stripped_query, alias):
                     return pack_key
     return None
