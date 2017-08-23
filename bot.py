@@ -148,6 +148,8 @@ class BotHandler(webapp2.RequestHandler):
             if (    \
             bibleuser_commands.states(user, msg)    \
             or bot_commands.states(user, msg)       \
+            or bgw_commands.states(user, msg)       \
+            or tms_commands.states(user, msg)       \
             ):
                 return True
 
