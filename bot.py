@@ -19,6 +19,7 @@ from common import admin_commands
 from bgw import bgw_commands
 from tms import tms_commands
 from user import bibleuser_commands
+from bible import bible_commands
 
 from common.constants import APP_BOT_URL
 
@@ -124,6 +125,7 @@ class BotHandler(webapp2.RequestHandler):
             or bot_commands.cmds(user, cmd, msg)    \
             or bgw_commands.cmds(user, cmd, msg)    \
             or tms_commands.cmds(user, cmd, msg)    \
+            or bible_commands.cmds(user, cmd, msg)  \
             ):
                 return True
 
