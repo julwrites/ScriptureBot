@@ -28,7 +28,9 @@ def names():
 
 def aliases():
     return {
-        LOA_KEY :       ["BWC", "LOA", "Beginning with Christ", "Lessons of Assurance"],
+        LOA_KEY :       ["BWC", "LOA", "Beginning with Christ", "Lessons of Assurance",
+                        "New Christian", "Assurances", "Assurance", "Assure",
+                        "Beginning", "Begin"],
     }
 
 def top():

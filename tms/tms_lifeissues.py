@@ -175,18 +175,30 @@ def names():
 
 def aliases():
     return {
-        LIFE_ISSUES_ANGER_KEY :             ["Anger", "Rage", "Wrath", "Frustration"],
-        LIFE_ISSUES_SIN_KEY :               ["Sin", "Wrongdoing", "Wrong"],
-        LIFE_ISSUES_DEPRESSION_KEY :        ["Depression", "Sadness"],
-        LIFE_ISSUES_GUILT_KEY :             ["Guilt"],
-        LIFE_ISSUES_GODSWILL_KEY :          ["God's Will", "Will of God", "Will"],
-        LIFE_ISSUES_LOVE_KEY :              ["Love", "Storge", "Phileo", "Agape", "Eros"],
-        LIFE_ISSUES_MONEY_KEY :             ["Money", "Rich", "Wealth"],
-        LIFE_ISSUES_PERFECTIONISM_KEY :     ["Perfectionism", "Perfect"],
-        LIFE_ISSUES_SELFIMAGE_KEY :         ["Self-Image", "Self Image"],
-        LIFE_ISSUES_SEX_KEY :               ["Sex", "Purity"],
-        LIFE_ISSUES_STRESS_KEY :            ["Stress", "Peace"],
-        LIFE_ISSUES_SUFFERING_KEY :         ["Suffering", "Pain", "Enduring Pain"]
+        LIFE_ISSUES_ANGER_KEY :             ["Anger", "Rage", "Wrath", "Frustration",
+                                            "Angry", "Frustrated", "Mad", "Frustrations"],
+        LIFE_ISSUES_SIN_KEY :               ["Sin", "Wrongdoing", "Wrong", "Disobedience",
+                                            "Addiction", "Idol", "Idols", "Sins"],
+        LIFE_ISSUES_DEPRESSION_KEY :        ["Depression", "Sadness", "Sad", "Depressed",
+                                            "Apathy"],
+        LIFE_ISSUES_GUILT_KEY :             ["Guilt", "Guilty", "Feeling sorry", "Sorry",
+                                            "Forgiveness", "Forgive", "Forgiven"],
+        LIFE_ISSUES_GODSWILL_KEY :          ["God's Will", "Will of God", "Will", "Sovereignty",
+                                            "God's Plan"],
+        LIFE_ISSUES_LOVE_KEY :              ["Love", "Storge", "Phileo", "Agape", "Eros",
+                                            "Loves", "Loving", "Loved"],
+        LIFE_ISSUES_MONEY_KEY :             ["Money", "Rich", "Wealth", "Cash", "Riches",
+                                            "Wealthy", "Monies", "Possessions"],
+        LIFE_ISSUES_PERFECTIONISM_KEY :     ["Perfectionism", "Perfect", "Perfectionist",
+                                            "Salvation", "Blameless"],
+        LIFE_ISSUES_SELFIMAGE_KEY :         ["Self-Image", "Self Image", "Self-Worth", "Self Worth",
+                                            "Self-Esteem", "Self Esteem"],
+        LIFE_ISSUES_SEX_KEY :               ["Sex", "Purity", "Body", "Sexual", "Sexuality",
+                                            "Physical Intimacy", "Intimacy"],
+        LIFE_ISSUES_STRESS_KEY :            ["Stress", "Peace", "Stresses", "Stressed", "Worry",
+                                            "Stressful", "Burdened", "Worried", "Worrying", "Worries"],
+        LIFE_ISSUES_SUFFERING_KEY :         ["Suffering", "Pain", "Enduring Pain", "Enduring",
+                                            "Suffer", "Painful", "Agony", "Agonizing"]
     }
 
 def top():

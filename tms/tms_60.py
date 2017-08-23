@@ -111,11 +111,21 @@ def names():
 
 def aliases():
   return {
-    TMS_A_KEY :     ["A", "A Pack", "TMS A", "Living the New Life", "New Life", "Wheel"],
-    TMS_B_KEY :     ["B", "B Pack", "TMS B", "Proclaiming Christ", "Evangelism", "Bridge", "Bridge Illustration"],
-    TMS_C_KEY :     ["C", "C Pack", "TMS C", "Reliance on God's Resources", "Reliance"],
-    TMS_D_KEY :     ["D", "D Pack", "TMS D", "Being Christ's Disciple", "Discipleship"],
-    TMS_E_KEY :     ["E", "E Pack", "TMS D", "Growth in Christlikeness", "Christlikeness"]
+    TMS_A_KEY :     ["A", "A Pack", "TMS A", 
+                    "Living the New Life", "New Life in Christ", "New Life", 
+                    "Wheel", "Christian Living"],
+    TMS_B_KEY :     ["B", "B Pack", "TMS B", 
+                    "Proclaiming Christ", "Evangelism", 
+                    "Bridge", "Bridge Illustration", "Evanglise", "Sharing Gospel",
+                    "Gospel", "Gospel Presentation", "Present Gospel"],
+    TMS_C_KEY :     ["C", "C Pack", "TMS C", 
+                    "Reliance on God's Resources", "Reliance", "Empowering"],
+    TMS_D_KEY :     ["D", "D Pack", "TMS D", 
+                    "Being Christ's Disciple", "Discipleship", "Disciple",
+                    "Discipling"],
+    TMS_E_KEY :     ["E", "E Pack", "TMS E", 
+                    "Growth in Christlikeness", "Christlikeness", "Christlike",
+                    "Christ-like", "Christ Likeness"]
   }
 
 def top():
