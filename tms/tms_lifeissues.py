@@ -172,18 +172,18 @@ def aliases():
 
 def names():
     return [
-        ( LIFE_ISSUES_ANGER_KEY ,             "Life Issues, Anger" ),
-        ( LIFE_ISSUES_SIN_KEY ,               "Life Issues, Sin" ),
-        ( LIFE_ISSUES_DEPRESSION_KEY ,        "Life Issues, Depression" ),
-        ( LIFE_ISSUES_GUILT_KEY ,             "Life Issues, Guilt" ),
-        ( LIFE_ISSUES_GODSWILL_KEY ,          "Life Issues, God's Will" ),
-        ( LIFE_ISSUES_LOVE_KEY ,              "Life Issues, Love" ),
-        ( LIFE_ISSUES_MONEY_KEY ,             "Life Issues, Money" ),
-        ( LIFE_ISSUES_PERFECTIONISM_KEY ,     "Life Issues, Perfectionism" ),
-        ( LIFE_ISSUES_SELFIMAGE_KEY ,         "Life Issues, Self-Image" ),
-        ( LIFE_ISSUES_SEX_KEY ,               "Life Issues, Sex" ),
-        ( LIFE_ISSUES_STRESS_KEY ,            "Life Issues, Stress" ),
-        ( LIFE_ISSUES_SUFFERING_KEY ,         "Life Issues, Suffering" )
+        ( LIFE_ISSUES_ANGER_KEY ,             "Life Issues: Anger" ),
+        ( LIFE_ISSUES_SIN_KEY ,               "Life Issues: Sin" ),
+        ( LIFE_ISSUES_DEPRESSION_KEY ,        "Life Issues: Depression" ),
+        ( LIFE_ISSUES_GUILT_KEY ,             "Life Issues: Guilt" ),
+        ( LIFE_ISSUES_GODSWILL_KEY ,          "Life Issues: God's Will" ),
+        ( LIFE_ISSUES_LOVE_KEY ,              "Life Issues: Love" ),
+        ( LIFE_ISSUES_MONEY_KEY ,             "Life Issues: Money" ),
+        ( LIFE_ISSUES_PERFECTIONISM_KEY ,     "Life Issues: Perfectionism" ),
+        ( LIFE_ISSUES_SELFIMAGE_KEY ,         "Life Issues: Self-Image" ),
+        ( LIFE_ISSUES_SEX_KEY ,               "Life Issues: Sex" ),
+        ( LIFE_ISSUES_STRESS_KEY ,            "Life Issues: Stress" ),
+        ( LIFE_ISSUES_SUFFERING_KEY ,         "Life Issues: Suffering" )
     ]
 
 def top():

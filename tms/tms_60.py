@@ -108,11 +108,11 @@ def aliases():
 
 def names():
     return [
-        ( TMS_A_KEY ,     "A, Living the New Life" ),
-        ( TMS_B_KEY ,     "B, Proclaiming Christ" ),
-        ( TMS_C_KEY ,     "C, Reliance on God's Resources" ),
-        ( TMS_D_KEY ,     "D, Being Christ's Disciple" ),
-        ( TMS_E_KEY ,     "E, Growth in Christlikeness" )
+        ( TMS_A_KEY ,     "A: Living the New Life" ),
+        ( TMS_B_KEY ,     "B: Proclaiming Christ" ),
+        ( TMS_C_KEY ,     "C: Reliance on God's Resources" ),
+        ( TMS_D_KEY ,     "D: Being Christ's Disciple" ),
+        ( TMS_E_KEY ,     "E: Growth in Christlikeness" )
     ]
     
 def top():
