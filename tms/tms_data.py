@@ -1,4 +1,5 @@
 
+BWC_KEY = "BWC"
 BWC = [
     ("Assurance of Salvation",          "1 John 5 : 11 - 12"),
     ("Assurance of Answered Prayer",    "John 16 : 24"),
@@ -7,6 +8,7 @@ BWC = [
     ("Assurance of Guidance",           "Proverbs 3 : 5 - 6")
 ]
 
+A_KEY = "A"
 A_PACK = [
     ("Christ the Center",               "2 Corinthians 5 : 17"),
     ("Christ the Center",               "Galatians 2 : 20"),
@@ -22,6 +24,7 @@ A_PACK = [
     ("Witnessing",                      "Romans 1 : 16")
 ]
 
+B_KEY = "B"
 B_PACK = [
     ("All have Sinned",                 "Romans 3 : 23"),
     ("All have Sinned",                 "Isaiah 53 : 6"),
@@ -37,6 +40,7 @@ B_PACK = [
     ("Assurance of Salvation",          "John 5 : 24")
 ]
 
+C_KEY = "C"
 C_PACK = [
     ("His Spirit",                      "1 Corinthians 3 : 16"),
     ("His Spirit",                      "1 Corinthians 2 : 12"),
@@ -52,6 +56,7 @@ C_PACK = [
     ("His Help in Temptation",          "Psalms 119 : 9, 11")
 ]
 
+D_KEY = "D"
 D_PACK = [
     ("Put Christ First",                "Matthew 6 : 33"),
     ("Put Christ First",                "Luke 9 : 23"),
@@ -67,6 +72,7 @@ D_PACK = [
     ("Develop World Vision",            "Matthew 28 : 19 - 20")
 ]
 
+E_KEY = "E"
 E_PACK = [
     ("Love",                            "John 13 : 34 - 35"),
     ("Love",                            "1 John 3 : 18"),
@@ -82,25 +88,52 @@ E_PACK = [
     ("Good Works",                      "Matthew 5 : 16")
 ]
 
-TMS = {
-    "BWC": BWC,
-    "A" : A_PACK,
-    "B" : B_PACK,
-    "C" : C_PACK,
-    "D" : D_PACK,
-    "E" : E_PACK
+TMS_DATA = {
+    BWC_KEY :   BWC,
+    A_KEY :     A_PACK,
+    B_KEY :     B_PACK,
+    C_KEY :     C_PACK,
+    D_KEY :     D_PACK,
+    E_KEY :     E_PACK
 }
+
+TMS_KEYS = [
+    BWC_KEY,
+    A_KEY,
+    B_KEY,
+    C_KEY,
+    D_KEY,
+    E_KEY
+]
 
 TMS_ALIAS = {
-    "BWC": ["LOA", "Beginning with Christ", "Lessons of Assurance"],
-    "A": ["A Pack", "TMS A"],
-    "B": ["B Pack", "TMS B"],
-    "C": ["C Pack", "TMS C"],
-    "D": ["D Pack", "TMS D"]
+    BWC_KEY :   ["BWC", "LOA", "Beginning with Christ", "Lessons of Assurance"],
+    A_KEY :     ["A", "A Pack", "TMS A"],
+    B_KEY :     ["B", "B Pack", "TMS B"],
+    C_KEY :     ["C", "C Pack", "TMS C"],
+    D_KEY :     ["D", "D Pack", "TMS D"]
 }
 
-def get_tms():
-    return TMS
+TMS_NAME = {
+    BWC_KEY :   "Beginning with Christ/Lessons of Assurance",
+    A_KEY :     "A",
+    B_KEY :     "B",
+    C_KEY :     "C",
+    D_KEY :     "D",
+    E_KEY :     "E"
+}
+
+def get_keys():
+    return TMS_KEYS
+
+def get_data():
+    return TMS_DATA
 
 def get_aliases():
     return TMS_ALIAS
+
+def get_names():
+    return TMS_NAMES
+
+def get_top():
+    return BWC_KEY

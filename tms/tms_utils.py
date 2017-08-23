@@ -27,30 +27,35 @@ class Verse():
 
 def get_pack(pack):
     if pack is not None:
-        select_pack = tms_data.get_tms().get(pack)
+        select_pack = tms_data.get_data().get(pack)
 
-    if select_pack is not None:
-        return select_pack
+        if select_pack is not None:
+            return select_pack
     return None
 
 def get_alias(pack):
     if pack is not None:
         select_alias = tms_data.get_aliases().get(pack)
 
-    if select_alias is not None:
-        return select_alias
+        if select_alias is not None:
+            return select_alias
+    return None
+
+def get_name(pack):
+    if pack is not None:
+        select_name = tms_data.get_names().get(pack)
+
+        if select_name is not None:
+            return select_name
     return None
 
 def get_all_pack_keys():
-    return tms_data.get_tms().keys()
-
-def get_all_pack_alias():
-    return tms_data.get_aliases().keys()
+    return tms_data.get_keys()
 
 def query_pack_by_alias(query):
     if query is not None:
         stripped_query = text_utils.strip_numbers(query)
-        for pack_key in get_all_pack_alias():
+        for pack_key in get_all_pack_keys():
             aliases = get_alias(pack_key)
             for alias in aliases:
                 if text_utils.fuzzy_compare(stripped_query, alias):
@@ -61,47 +66,40 @@ def query_verse_by_pack_pos(query):
     if query is not None:
         pack_key = query_pack_by_alias(query)
         if pack_key is not None:
-            pack = get_pack(pack_key)
-            if pack is not None:
-                size = len(pack)
+            pack_name = get_name(pack_key)
+            select_pack = get_pack(pack_key)
+            if select_pack is not None:
+                size = len(select_pack)
                 pos = int(text_utils.strip_alpha(query))
                 if size >= pos:
-                    select_verse = pack[pos - 1]
-                    return Verse(select_verse[1], select_verse[0], pack_key, pos)
-
-        # for pack_key in get_all_pack_keys():
-        #     pack = get_pack(pack_key)
-        #     pack_name = query_pack_by_alias(query)
-        #     size = len(pack)
-        #     for i in range(0, size):
-        #         select_verse = pack[i]
-        #         try_packpos = pack_key + str(i + 1)
-        #         if text_utils.fuzzy_compare(query, try_packpos):
-        #             return Verse(select_verse[1], select_verse[0], pack_key, i + 1)
+                    select_verse = select_pack[pos - 1]
+                    return Verse(select_verse[1], select_verse[0], pack_name, pos)
     return None
 
 def query_verse_by_reference(ref):
     if ref is not None:
         for pack_key in get_all_pack_keys():
-            pack = get_pack(pack_key)
-            size = len(pack)
+            select_pack = get_pack(pack_key)
+            pack_name = get_name(pack_key)
+            size = len(select_pack)
             for i in range(0, size):
-                select_verse = pack[i]
+                select_verse = select_pack[i]
                 if text_utils.fuzzy_compare(select_verse[1], ref):
-                    return Verse(select_verse[1], select_verse[0], pack_key, i + 1)
+                    return Verse(select_verse[1], select_verse[0], pack_name, i + 1)
     return None
    
 def get_verse_by_pack(pack, pos):
     if pack is not None and pack is not None:
         pack_key = query_pack_by_alias(pack)
         if pack_key is not None:
-            select_pack = get_pack(pack)
+            pack_name = get_name(pack_key)
+            select_pack = get_pack(pack_key)
 
             if select_pack is not None:
                 select_verse = select_pack[pos - 1]
 
                 if select_verse is not None:
-                    return Verse(select_verse[1], select_verse[0], pack, pos)
+                    return Verse(select_verse[1], select_verse[0], pack_name, pos)
     return None
 
 def get_verse_by_title(title, pos):
@@ -115,23 +113,24 @@ def get_verse_by_title(title, pos):
 def get_verses_by_title(title):
     if title is not None:
         verses = []
-
         for pack_key in get_all_pack_keys():
-            pack = get_pack(pack_key)
-            size = len(pack)
+            pack_name = get_name(pack_key)
+            select_pack = get_pack(pack_key)
+            size = len(select_pack)
             for i in range(0, size):
-                select_verse = pack[i]
+                select_verse = select_pack[i]
                 if text_utils.fuzzy_compare(title, select_verse[0]):
-                    verses.append(Verse(select_verse[1], select_verse[0], pack_key, i + 1))
+                    verses.append(Verse(select_verse[1], select_verse[0], pack_name, i + 1))
         
         return verses
     return None
 
 def get_start_verse():
-    start_key = 'BWC'
+    start_key = tms_data.get_top()
+    pack_name = get_name(start_key)
     select_pack = get_pack(start_key)
     select_verse = select_pack[0]
-    return Verse(select_verse[1], select_verse[0], start_key, 1)
+    return Verse(select_verse[1], select_verse[0], pack_name, 1)
 
 def format_verse(verse, passage):
     if verse is not None and passage is not None:
