@@ -1,4 +1,23 @@
 
+class TMSVerse():
+    def __init__(self, pack, title, pos, ref):
+        self.pack = pack
+        self.title = title
+        self.position = pos
+        self.reference = ref
+    
+    def get_reference(self):
+        return self.reference
+
+    def get_title(self):
+        return self.title
+
+    def get_pack(self):
+        return self.pack
+
+    def get_position(self):
+        return self.position
+
 
 class TMSPack():
     def __init__(self, keys=[], data={}, names={}, aliases={}, top=None):

@@ -24,7 +24,7 @@ def hook_dailytms():
     def send_verse(uid):
         user = get_user(uid)
 
-        verse = tms_utils.get_verse_by_pack(user.get_current_pack(), user.get_current_verse())
+        verse = tms_utils.get_verse_by_pack_pos(user.get_current_pack(), user.get_current_verse())
         passage = bgw_utils.get_passage_raw(verse.reference, user.get_version())
         verse_msg = tms_utils.format_verse(verse, passage)
 

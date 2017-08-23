@@ -1,5 +1,5 @@
 
-from tms.tms_class import TMSPack
+from tms.tms_class import TMSPack, TMSVerse
 
 LIFE_ISSUES_ANGER_KEY = "Anger"
 LIFE_ISSUES_SIN_KEY = "Sin"
@@ -31,113 +31,113 @@ def keys():
     ]
 
 ANGER_PACK = [
-    ("Anger",               "Proverbs 15 : 1"),
-    ("Anger",               "Proverbs 29 : 11"),
-    ("Anger",               "Romans 12 : 19"),
-    ("Anger",               "Ephesians 4 : 26 - 27"),
-    ("Anger",               "Colossians 3 : 8 - 10"),
-    ("Anger",               "James 1 : 19 - 20")
+    TMSVerse(LIFE_ISSUES_ANGER_KEY,		"Anger",        1,     "Proverbs 15 : 1"),
+    TMSVerse(LIFE_ISSUES_ANGER_KEY,		"Anger",        2,     "Proverbs 29 : 11"),
+    TMSVerse(LIFE_ISSUES_ANGER_KEY,		"Anger",        3,     "Romans 12 : 19"),
+    TMSVerse(LIFE_ISSUES_ANGER_KEY,		"Anger",        4,     "Ephesians 4 : 26 - 27"),
+    TMSVerse(LIFE_ISSUES_ANGER_KEY,		"Anger",        5,     "Colossians 3 : 8 - 10"),
+    TMSVerse(LIFE_ISSUES_ANGER_KEY,		"Anger",        6,     "James 1 : 19 - 20")
 ]
 
 SIN_PACK = [
-    ("Sin",                 "Romans 6 : 11 - 13"),
-    ("Sin",                 "1 Corinthians 10 : 13"),
-    ("Sin",                 "Galatians 6 : 1 - 2"),
-    ("Sin",                 "Ephesians 6 : 10 - 12"),
-    ("Sin",                 "James 4 : 7 - 8"),
-    ("Sin",                 "1 John 1 : 8"),
-    ("Sin",                 "1 John 1 : 9")
+    TMSVerse(LIFE_ISSUES_SIN_KEY,		"Sin",          1,     "Romans 6 : 11 - 13"),
+    TMSVerse(LIFE_ISSUES_SIN_KEY,		"Sin",          2,     "1 Corinthians 10 : 13"),
+    TMSVerse(LIFE_ISSUES_SIN_KEY,		"Sin",          3,     "Galatians 6 : 1 - 2"),
+    TMSVerse(LIFE_ISSUES_SIN_KEY,		"Sin",          4,     "Ephesians 6 : 10 - 12"),
+    TMSVerse(LIFE_ISSUES_SIN_KEY,		"Sin",          5,     "James 4 : 7 - 8"),
+    TMSVerse(LIFE_ISSUES_SIN_KEY,		"Sin",          6,     "1 John 1 : 8"),
+    TMSVerse(LIFE_ISSUES_SIN_KEY,		"Sin",          7,     "1 John 1 : 9")
 ]
 
 DEPRESSION_PACK = [
-    ("Depression",          "Isaiah 43 : 1 - 3"),
-    ("Depression",          "2 Corinthians 4 : 7 - 10"),
-    ("Depression",          "Psalm 42 : 5"),
-    ("Depression",          "Psalm 34 : 17 - 18"),
-    ("Depression",          "Lamentations 3 : 19 - 23"),
-    ("Depression",          "2 Corinthians 1 : 8 - 9")
+    TMSVerse(LIFE_ISSUES_DEPRESSION_KEY,	"Depression",      1,   "Isaiah 43 : 1 - 3"),
+    TMSVerse(LIFE_ISSUES_DEPRESSION_KEY,	"Depression",      2,   "2 Corinthians 4 : 7 - 10"),
+    TMSVerse(LIFE_ISSUES_DEPRESSION_KEY,	"Depression",      3,   "Psalm 42 : 5"),
+    TMSVerse(LIFE_ISSUES_DEPRESSION_KEY,	"Depression",      4,   "Psalm 34 : 17 - 18"),
+    TMSVerse(LIFE_ISSUES_DEPRESSION_KEY,	"Depression",      5,   "Lamentations 3 : 19 - 23"),
+    TMSVerse(LIFE_ISSUES_DEPRESSION_KEY,	"Depression",      6,   "2 Corinthians 1 : 8 - 9")
 ]
 
 GUILT_PACK = [
-    ("Guilt",               "Psalm 32 : 1 - 2"),
-    ("Guilt",               "Psalm 51 : 9 - 10"),
-    ("Guilt",               "Proverbs 28 : 13"),
-    ("Guilt",               "Romans 8 : 1 - 2"),
-    ("Guilt",               "2 Corinthians 7 : 10"),
-    ("Guilt",               "James 5 : 16")
+    TMSVerse(LIFE_ISSUES_GUILT_KEY,		"Guilt",        1,     "Psalm 32 : 1 - 2"),
+    TMSVerse(LIFE_ISSUES_GUILT_KEY,		"Guilt",        2,     "Psalm 51 : 9 - 10"),
+    TMSVerse(LIFE_ISSUES_GUILT_KEY,		"Guilt",        3,     "Proverbs 28 : 13"),
+    TMSVerse(LIFE_ISSUES_GUILT_KEY,		"Guilt",        4,     "Romans 8 : 1 - 2"),
+    TMSVerse(LIFE_ISSUES_GUILT_KEY,		"Guilt",        5,     "2 Corinthians 7 : 10"),
+    TMSVerse(LIFE_ISSUES_GUILT_KEY,		"Guilt",        6,     "James 5 : 16")
 ]
 
 GODSWILL_PACK = [
-    ("God's Will",          "Proverbs 3 : 5 - 6"),
-    ("God's Will",          "Proverbs 3 : 7"),
-    ("God's Will",          "Proverbs 16 : 9"),
-    ("God's Will",          "Isaiah 30 : 21"),
-    ("God's Will",          "Jeremiah 29 : 11 - 13"),
-    ("God's Will",          "Romans 12 : 1 - 2"),
-    ("God's Will",          "1 John 5 : 14 - 15")
+    TMSVerse(LIFE_ISSUES_GODSWILL_KEY,		"God's Will",       1,  "Proverbs 3 : 5 - 6"),
+    TMSVerse(LIFE_ISSUES_GODSWILL_KEY,		"God's Will",       2,  "Proverbs 3 : 7"),
+    TMSVerse(LIFE_ISSUES_GODSWILL_KEY,		"God's Will",       3,  "Proverbs 16 : 9"),
+    TMSVerse(LIFE_ISSUES_GODSWILL_KEY,		"God's Will",       4,  "Isaiah 30 : 21"),
+    TMSVerse(LIFE_ISSUES_GODSWILL_KEY,		"God's Will",       5,  "Jeremiah 29 : 11 - 13"),
+    TMSVerse(LIFE_ISSUES_GODSWILL_KEY,		"God's Will",       6,  "Romans 12 : 1 - 2"),
+    TMSVerse(LIFE_ISSUES_GODSWILL_KEY,		"God's Will",       7,  "1 John 5 : 14 - 15")
 ]
 
 LOVE_PACK = [
-    ("Love",                "Matthew 22 : 37 - 40"),
-    ("Love",                "John 13 : 34 - 35"),
-    ("Love",                "Romans 8 : 38 - 39"),
-    ("Love",                "1 Corinthians 13 : 1 - 3"),
-    ("Love",                "1 Corinthians 13 : 4 - 8"),
-    ("Love",                "1 John 4 : 20")
+    TMSVerse(LIFE_ISSUES_LOVE_KEY,		"Love",         1,     "Matthew 22 : 37 - 40"),
+    TMSVerse(LIFE_ISSUES_LOVE_KEY,		"Love",         2,     "John 13 : 34 - 35"),
+    TMSVerse(LIFE_ISSUES_LOVE_KEY,		"Love",         3,     "Romans 8 : 38 - 39"),
+    TMSVerse(LIFE_ISSUES_LOVE_KEY,		"Love",         4,     "1 Corinthians 13 : 1 - 3"),
+    TMSVerse(LIFE_ISSUES_LOVE_KEY,		"Love",         5,     "1 Corinthians 13 : 4 - 8"),
+    TMSVerse(LIFE_ISSUES_LOVE_KEY,		"Love",         6,     "1 John 4 : 20")
 ]
 
 MONEY_PACK = [
-    ("Money",               "Deuteronomy 8 : 17 - 18"),
-    ("Money",               "Proverbs 3 : 9 - 10"),
-    ("Money",               "Matthew 6 : 19 - 21"),
-    ("Money",               "Matthew 6 : 24"),
-    ("Money",               "Philippians 4 : 11 - 13"),
-    ("Money",               "1 Timothy 6 : 9 - 10")
+    TMSVerse(LIFE_ISSUES_MONEY_KEY,		"Money",        1,     "Deuteronomy 8 : 17 - 18"),
+    TMSVerse(LIFE_ISSUES_MONEY_KEY,		"Money",        2,     "Proverbs 3 : 9 - 10"),
+    TMSVerse(LIFE_ISSUES_MONEY_KEY,		"Money",        3,     "Matthew 6 : 19 - 21"),
+    TMSVerse(LIFE_ISSUES_MONEY_KEY,		"Money",        4,     "Matthew 6 : 24"),
+    TMSVerse(LIFE_ISSUES_MONEY_KEY,		"Money",        5,     "Philippians 4 : 11 - 13"),
+    TMSVerse(LIFE_ISSUES_MONEY_KEY,		"Money",        6,     "1 Timothy 6 : 9 - 10")
 ]
 
 PERFECTIONISM_PACK = [
-    ("Perfectionism",       "Psalm 127 : 1 - 2"),
-    ("Perfectionism",       "Ecclesiastes 2 : 10 - 11"),
-    ("Perfectionism",       "Luke 10 : 40 - 42"),
-    ("Perfectionism",       "2 Corinthians 12 : 9"),
-    ("Perfectionism",       "Galatians 3 : 3"),
-    ("Perfectionism",       "Ephesians 2 : 8 - 9")
+    TMSVerse(LIFE_ISSUES_PERFECTIONISM_KEY,		"Perfectionism",    1,  "Psalm 127 : 1 - 2"),
+    TMSVerse(LIFE_ISSUES_PERFECTIONISM_KEY,		"Perfectionism",    2,  "Ecclesiastes 2 : 10 - 11"),
+    TMSVerse(LIFE_ISSUES_PERFECTIONISM_KEY,		"Perfectionism",    3,  "Luke 10 : 40 - 42"),
+    TMSVerse(LIFE_ISSUES_PERFECTIONISM_KEY,		"Perfectionism",    4,  "2 Corinthians 12 : 9"),
+    TMSVerse(LIFE_ISSUES_PERFECTIONISM_KEY,		"Perfectionism",    5,  "Galatians 3 : 3"),
+    TMSVerse(LIFE_ISSUES_PERFECTIONISM_KEY,		"Perfectionism",    6,  "Ephesians 2 : 8 - 9")
 ]
 
 SELFIMAGE_PACK = [
-    ("Self-Image",          "1 Samuel 16 : 7"),
-    ("Self-Image",          "Psalm 139 : 13 - 14"),
-    ("Self-Image",          "Jeremiah 9 : 23 - 24"),
-    ("Self-Image",          "Matthew 10 : 29 - 31"),
-    ("Self-Image",          "Philippians 2 : 3 - 11"),
-    ("Self-Image",          "1 Peter 3 : 3 - 4")
+    TMSVerse(LIFE_ISSUES_SELFIMAGE_KEY,		"Self-Image",       1,  "1 Samuel 16 : 7"),
+    TMSVerse(LIFE_ISSUES_SELFIMAGE_KEY,		"Self-Image",       2,  "Psalm 139 : 13 - 14"),
+    TMSVerse(LIFE_ISSUES_SELFIMAGE_KEY,		"Self-Image",       3,  "Jeremiah 9 : 23 - 24"),
+    TMSVerse(LIFE_ISSUES_SELFIMAGE_KEY,		"Self-Image",       4,  "Matthew 10 : 29 - 31"),
+    TMSVerse(LIFE_ISSUES_SELFIMAGE_KEY,		"Self-Image",       5,  "Philippians 2 : 3 - 11"),
+    TMSVerse(LIFE_ISSUES_SELFIMAGE_KEY,		"Self-Image",       6,  "1 Peter 3 : 3 - 4")
 ]
 
 SEX_PACK = [
-    ("Sex",                 "Matthew 5 : 27 - 28"),
-    ("Sex",                 "Romans 13 : 13 - 14"),
-    ("Sex",                 "1 Corinthians 6 : 18 - 20"),
-    ("Sex",                 "Ephesians 5 : 3"),
-    ("Sex",                 "1 Thessalonians 4 : 3 - 5"),
-    ("Sex",                 "Hebrews 13 : 4")
+    TMSVerse(LIFE_ISSUES_SEX_KEY,		"Sex",         1,      "Matthew 5 : 27 - 28"),
+    TMSVerse(LIFE_ISSUES_SEX_KEY,		"Sex",         2,      "Romans 13 : 13 - 14"),
+    TMSVerse(LIFE_ISSUES_SEX_KEY,		"Sex",         3,      "1 Corinthians 6 : 18 - 20"),
+    TMSVerse(LIFE_ISSUES_SEX_KEY,		"Sex",         4,      "Ephesians 5 : 3"),
+    TMSVerse(LIFE_ISSUES_SEX_KEY,		"Sex",         5,      "1 Thessalonians 4 : 3 - 5"),
+    TMSVerse(LIFE_ISSUES_SEX_KEY,		"Sex",         6,      "Hebrews 13 : 4")
 ]
 
 STRESS_PACK = [
-    ("Stress",              "Psalm 73 : 26"),
-    ("Stress",              "Psalm 118 : 5 - 6"),
-    ("Stress",              "Matthew 11 : 28 - 30"),
-    ("Stress",              "2 Corinthians 4 : 16 - 18"),
-    ("Stress",              "Philippians 4 : 6 - 7"),
-    ("Stress",              "1 Peter 5 : 5 - 7")
+    TMSVerse(LIFE_ISSUES_STRESS_KEY,		"Stress",           1,  "Psalm 73 : 26"),
+    TMSVerse(LIFE_ISSUES_STRESS_KEY,		"Stress",           2,  "Psalm 118 : 5 - 6"),
+    TMSVerse(LIFE_ISSUES_STRESS_KEY,		"Stress",           3,  "Matthew 11 : 28 - 30"),
+    TMSVerse(LIFE_ISSUES_STRESS_KEY,		"Stress",           4,  "2 Corinthians 4 : 16 - 18"),
+    TMSVerse(LIFE_ISSUES_STRESS_KEY,		"Stress",           5,  "Philippians 4 : 6 - 7"),
+    TMSVerse(LIFE_ISSUES_STRESS_KEY,		"Stress",           6,  "1 Peter 5 : 5 - 7")
 ]
 
 SUFFERING_PACK = [
-    ("Suffering",           "Romans 5 : 2 - 5"),
-    ("Suffering",           "2 Corinthians 1 : 3 - 4"),
-    ("Suffering",           "James 1 : 2 - 4"),
-    ("Suffering",           "James 1 : 12"),
-    ("Suffering",           "1 Peter 1 : 6 - 7"),
-    ("Suffering",           "1 Peter 4 : 12 - 13")
+    TMSVerse(LIFE_ISSUES_SUFFERING_KEY,		"Suffering",        1,  "Romans 5 : 2 - 5"),
+    TMSVerse(LIFE_ISSUES_SUFFERING_KEY,		"Suffering",        2,  "2 Corinthians 1 : 3 - 4"),
+    TMSVerse(LIFE_ISSUES_SUFFERING_KEY,		"Suffering",        3,  "James 1 : 2 - 4"),
+    TMSVerse(LIFE_ISSUES_SUFFERING_KEY,		"Suffering",        4,  "James 1 : 12"),
+    TMSVerse(LIFE_ISSUES_SUFFERING_KEY,		"Suffering",        5,  "1 Peter 1 : 6 - 7"),
+    TMSVerse(LIFE_ISSUES_SUFFERING_KEY,		"Suffering",        6,  "1 Peter 4 : 12 - 13")
 ]
 
 

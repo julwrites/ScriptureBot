@@ -1,5 +1,7 @@
-from tms.tms_class import TMSPack
+from tms.tms_class import TMSPack, TMSVerse
 
+
+LOA_NUM = 0
 
 LOA_KEY = "LOA"
 def keys():
@@ -8,11 +10,11 @@ def keys():
     ]
 
 LOA = [
-    ("Assurance of Salvation",          "1 John 5 : 11 - 12"),
-    ("Assurance of Answered Prayer",    "John 16 : 24"),
-    ("Assurance of Victory",            "1 Corinthians 10 : 13"),
-    ("Assurance of Forgiveness",        "1 John 1 : 9"),
-    ("Assurance of Guidance",           "Proverbs 3 : 5 - 6")
+    TMSVerse(LOA_KEY,		"Assurance of Salvation",		    1,		"1 John 5 : 11 - 12"),
+    TMSVerse(LOA_KEY,		"Assurance of Answered Prayer",		2,		"John 16 : 24"),
+    TMSVerse(LOA_KEY,		"Assurance of Victory",		        3,		"1 Corinthians 10 : 13"),
+    TMSVerse(LOA_KEY,		"Assurance of Forgiveness",		    4,		"1 John 1 : 9"),
+    TMSVerse(LOA_KEY,		"Assurance of Guidance",		    5,		"Proverbs 3 : 5 - 6")
 ]
 def data():
     return {

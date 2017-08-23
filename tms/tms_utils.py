@@ -9,25 +9,8 @@ from common import text_utils
 
 from tms import tms_data
 
-class Verse():
-    def __init__(self, ref, title, pack, pos):
-        self.reference = ref
-        self.title = title
-        self.pack = pack
-        self.position = pos
-    
-    def get_reference(self):
-        return self.reference
 
-    def get_title(self):
-        return self.title
-
-    def get_pack(self):
-        return self.pack
-
-    def get_position(self):
-        return self.position
-
+# Gettor functions: These return some kind of data with no fuzziness
 def get_pack(pack):
     if pack is not None:
         select_pack = tms_data.get_data().get(pack)
@@ -36,12 +19,12 @@ def get_pack(pack):
             return select_pack
     return None
 
-def get_alias(pack):
+def get_aliases(pack):
     if pack is not None:
-        select_alias = tms_data.get_aliases().get(pack)
+        select_aliases = tms_data.get_aliases().get(pack)
 
-        if select_alias is not None:
-            return select_alias
+        if select_aliases is not None:
+            return select_aliases
     return None
 
 def get_name(pack):
@@ -55,54 +38,18 @@ def get_name(pack):
 def get_all_pack_keys():
     return tms_data.get_keys()
 
-def query_pack_by_alias(query):
-    if query is not None:
-        stripped_query = text_utils.strip_numbers(query)
-        for pack_key in get_all_pack_keys():
-            aliases = get_alias(pack_key)
-            for alias in aliases:
-                if text_utils.fuzzy_compare(stripped_query, alias):
-                    return pack_key
-    return None
-
-def query_verse_by_pack_pos(query):
-    if query is not None:
-        pack_key = query_pack_by_alias(query)
-        if pack_key is not None:
-            pack_name = get_name(pack_key)
-            select_pack = get_pack(pack_key)
-            if select_pack is not None:
-                size = len(select_pack)
-                pos = int(text_utils.strip_alpha(query))
-                if size >= pos:
-                    select_verse = select_pack[pos - 1]
-                    return Verse(select_verse[1], select_verse[0], pack_name, pos)
-    return None
-
-def query_verse_by_reference(ref):
-    if ref is not None:
-        for pack_key in get_all_pack_keys():
-            select_pack = get_pack(pack_key)
-            pack_name = get_name(pack_key)
-            size = len(select_pack)
-            for i in range(0, size):
-                select_verse = select_pack[i]
-                if text_utils.fuzzy_compare(select_verse[1], ref):
-                    return Verse(select_verse[1], select_verse[0], pack_name, i + 1)
-    return None
-   
-def get_verse_by_pack(pack, pos):
+def get_verse_by_pack_pos(pack, pos):
     if pack is not None and pack is not None:
-        pack_key = query_pack_by_alias(pack)
+        pack_key = get_pack(pack)
+
         if pack_key is not None:
-            pack_name = get_name(pack_key)
             select_pack = get_pack(pack_key)
 
             if select_pack is not None:
                 select_verse = select_pack[pos - 1]
 
                 if select_verse is not None:
-                    return Verse(select_verse[1], select_verse[0], pack_name, pos)
+                    return select_verse
     return None
 
 def get_verse_by_title(title, pos):
@@ -116,25 +63,91 @@ def get_verse_by_title(title, pos):
 def get_verses_by_title(title):
     if title is not None:
         verses = []
+
         for pack_key in get_all_pack_keys():
-            pack_name = get_name(pack_key)
             select_pack = get_pack(pack_key)
             size = len(select_pack)
+
             for i in range(0, size):
                 select_verse = select_pack[i]
-                if text_utils.fuzzy_compare(title, select_verse[0]):
-                    verses.append(Verse(select_verse[1], select_verse[0], pack_name, i + 1))
+                if text_utils.fuzzy_compare(title, select_verse.get_title()):
+                    verses.append(select_verse)
         
         return verses
     return None
 
 def get_start_verse():
     start_key = tms_data.get_top()
-    pack_name = get_name(start_key)
     select_pack = get_pack(start_key)
     select_verse = select_pack[0]
-    return Verse(select_verse[1], select_verse[0], pack_name, 1)
+    return select_verse
 
+
+
+# Querying functions: These do a lookup based on some text search
+def query_pack_by_alias(query):
+    if query is not None:
+        stripped_query = text_utils.strip_numbers(query)
+        for pack_key in get_all_pack_keys():
+            aliases = get_aliases(pack_key)
+            for alias in aliases:
+                if text_utils.fuzzy_compare(stripped_query, alias):
+                    return pack_key
+    return None
+
+def query_verse_by_pack_pos(query):
+    if query is not None:
+        pack_key = query_pack_by_alias(query)
+
+        if pack_key is not None:
+            select_pack = get_pack(pack_key)
+
+            if select_pack is not None:
+                size = len(select_pack)
+                pos = int(text_utils.strip_alpha(query))
+
+                if size >= pos:
+                    return select_pack[pos - 1]
+    return None
+
+def query_verse_by_reference(query):
+    if query is not None:
+
+        for pack_key in get_all_pack_keys():
+            select_pack = get_pack(pack_key)
+            size = len(select_pack)
+
+            for i in range(0, size):
+                select_verse = select_pack[i]
+
+                if text_utils.fuzzy_compare(query, select_verse.get_reference()):
+                    return select_verse
+    return None
+
+def query_verse_by_topic(query):
+    if query is not None:
+        query = text_utils.strip_numbers(query)
+        shortlist = []
+
+        for pack_key in get_all_pack_keys():
+
+            for alias in get_aliases(pack_key):
+
+                if text_utils.fuzzy_compare(query, alias):
+                    shortlist.extend(get_pack(pack_key))
+
+            for verse in get_pack(pack_key):
+
+                if text_utils.fuzzy_compare(query, verse.get_title()):
+                    shortlist.append(verse)
+
+        num = len(shortlist)
+        if num > 0:
+            choose = random.randint(0, num)
+            return shortlist[choose]
+
+
+# Formatting functions: These just do text manipulation and combination
 def format_verse(verse, passage):
     if verse is not None and passage is not None:
         verse_prep = []
