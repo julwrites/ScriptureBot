@@ -155,7 +155,7 @@ def format_verse(verse, passage):
     if verse is not None and passage is not None:
         verse_prep = []
 
-        verse_prep.append(verse.get_pack() + ' ' + str(verse.get_position()))
+        verse_prep.append(get_name(verse.get_pack()) + ' ' + str(verse.get_position()))
         verse_prep.append(telegram_utils.bold(verse.get_title()))
         verse_prep.append(telegram_utils.bold(verse.reference) + ' ' \
                         + telegram_utils.bracket(passage.get_version()))
