@@ -13,7 +13,7 @@ from user.bibleuser_utils import *
 SUPPORTED_VERSIONS = ['NIV', 'ESV', 'KJV', 'NASB', 'NLT', 'AMP']
 
 CMD_VERSION = '/version'
-CMD_VERSION_PROMPT = 'Please select a version of your choosing \n (if unsure, always go with the one you are comfortable with!)'
+CMD_VERSION_PROMPT = 'Please select a version of your choosing\n(if unsure, always go with the one you are comfortable with!)'
 
 STATE_WAIT_VERSION = 'Waiting for version'
 STATE_VERSION_PROMPT = 'I\'ve changed your version to {}!'
