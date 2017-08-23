@@ -54,11 +54,6 @@ def cmd_start(cmd, msg):
         if user is None:
             user = get_user(uid)
 
-            # Initializes this user's data
-            verse = tms_utils.get_start_verse()
-            user.set_current_pack(verse.get_pack())
-            user.set_current_verse(verse.get_position())
-
             telegram.send_msg(CMD_START_PROMPT.format(user.get_name_string()), user.get_uid())
             debug.log('Registering ' + user.get_name_string())
 

@@ -82,6 +82,18 @@ def get_start_verse():
     select_verse = select_pack[0]
     return select_verse
 
+def get_random_verse():
+    pack_keys = get_all_pack_keys()
+    num_packs = len(pack_keys)
+
+    if num_packs > 0:
+        choose = random.randint(0, num_packs - 1)
+        select_pack = get_pack(pack_keys[choose])
+        num_verses = len(select_pack)
+
+        if num_verses > 0:
+            choose = random.randint(0, num_verses - 1)
+            return select_pack[choose]
 
 
 # Querying functions: These do a lookup based on some text search
@@ -147,7 +159,7 @@ def query_verse_by_topic(query):
 
         num = len(shortlist)
         if num > 0:
-            choose = random.randint(0, num)
+            choose = random.randint(0, num - 1)
             return shortlist[choose]
 
 

@@ -23,14 +23,14 @@ def hook_dailytms():
 
     def send_verse(uid):
         user = get_user(uid)
+        if user.get_daily_subscription():
+            verse = tms_utils.get_random_verse()
+            passage = bgw_utils.get_passage_raw(verse.reference, user.get_version())
+            verse_msg = tms_utils.format_verse(verse, passage)
 
-        verse = tms_utils.get_verse_by_pack_pos(user.get_current_pack(), user.get_current_verse())
-        passage = bgw_utils.get_passage_raw(verse.reference, user.get_version())
-        verse_msg = tms_utils.format_verse(verse, passage)
+            debug.log("Sending verse: " + verse_msg)
+            
+            telegram.send_msg(verse_msg, uid)
 
-        debug.log("Sending verse: " + verse_msg)
-        
-        telegram.send_msg(verse_msg, uid)
-   
     telegram_utils.foreach_user(send_verse)
  

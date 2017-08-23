@@ -18,8 +18,7 @@ class BibleUser(db.Model):
     active = db.BooleanProperty(default=True)
     state = db.StringProperty(indexed=False)
     version = db.StringProperty(indexed=False, default='NIV')
-    current_verse = db.IntegerProperty(indexed=False, default=0)
-    current_pack = db.StringProperty(indexed=False, default='')
+    subscription = db.StringProperty(indexed=False)
 
     def get_uid(self):
         return self.key().name()
@@ -64,18 +63,14 @@ class BibleUser(db.Model):
         self.version = version
         self.put()
 
-    def get_current_verse(self):
-        return self.current_verse
+    def get_subscription(self):
+        return self.subscription
 
-    def set_current_verse(self, verse):
-        self.current_verse = verse
-        self.put()
+    def add_subscription(self, subscription):
+        if self.subscription.find(subscription):
+            return
 
-    def get_current_pack(self):
-        return self.current_pack
-
-    def set_current_pack(self, pack):
-        self.current_pack = pack
+        self.subscription += subscription
         self.put()
 
     def update_last_received(self):
@@ -93,7 +88,7 @@ class BibleUser(db.Model):
     def migrate_to(self, uid):
         props = dict((prop, getattr(self, prop)) for prop in self.properties().keys())
         props.update(key_name=str(uid))
-        new_user = User(**props)
+        new_user = BibleUser(**props)
         new_user.put()
         self.delete()
         return new_user

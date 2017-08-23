@@ -6,7 +6,7 @@ from google.appengine.ext import db
 from common import chrono
 from common import database
 from common import text_utils
-from user import bibleuser_data
+from user import bibleuser_class
 
 
 # Functions for manipulation of user info
@@ -36,10 +36,10 @@ def set_profile(uid, uname, fname, lname):
         existing_user.update_last_received()
         return existing_user
     else:
-        user = bibleuser_data.BibleUser(key_name=str(uid), username=uname, first_name=fname, last_name=lname)
+        user = bibleuser_class.BibleUser(key_name=str(uid), username=uname, first_name=fname, last_name=lname)
         user.put()
         return user
 
 def get_user_query():
-    return bibleuser_data.BibleUser.all()
+    return bibleuser_class.BibleUser.all()
 
