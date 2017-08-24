@@ -12,8 +12,10 @@ def stringify(value):
     return str(value)
 
 def is_valid(s):
-    debug.log('Checking validity of ' + s)
-    return ( s is not None and not s )
+    if s is not None:
+        if s:
+            return True
+    return False
 
 def fuzzify(s):
     return s.upper().replace('-', ' ').replace(',', ' ').strip().split()
