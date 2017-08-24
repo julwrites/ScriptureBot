@@ -26,6 +26,7 @@ def cmds(user, cmd, msg):
         or cmd_retrieve(user, cmd, msg)     \
         )
     except:
+        debug.log('Exception in Bot Commands')
         return False
     return result
 
@@ -40,6 +41,7 @@ def states(user, msg):
         state_store(user, msg)       \
         )
     except:
+        debug.log('Exception in Bot States')
         return False
     return result
 

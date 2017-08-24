@@ -23,6 +23,7 @@ def cmds(user, cmd, msg):
         cmd_tms(user, cmd, msg) \
         )
     except:
+        debug.log('Exception in TMS Commands')
         return False
     return result
 
@@ -37,6 +38,7 @@ def states(user, msg):
         state_tms(user, msg)       \
         )
     except:
+        debug.log('Exception in TMS States')
         return False
     return result
 

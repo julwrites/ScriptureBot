@@ -22,6 +22,7 @@ def cmds(user, cmd, msg):
         cmd_passage(user, cmd, msg) \
         )
     except:
+        debug.log('Exception in BGW Commands')
         return False
     return result
 
@@ -36,6 +37,7 @@ def states(user, msg):
         state_passage(user, msg)       \
         )
     except:
+        debug.log('Exception in BGW States')
         return False
     return result
 

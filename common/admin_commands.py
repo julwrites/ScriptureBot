@@ -24,6 +24,7 @@ def cmds(uid, cmd, msg):
         or cmd_ragnarok(uid, cmd, msg)   \
         )
     except:
+        debug.log('Exception in Admin Commands')
         return False
     return result
 
