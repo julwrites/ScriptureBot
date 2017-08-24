@@ -12,7 +12,7 @@ def stringify(value):
     return str(value)
 
 def fuzzify(s):
-    return s.upper().strip().replace('-', ' ').replace(',', ' ').split()
+    return s.upper().replace('-', ' ').replace(',', ' ').strip().split()
 
 def overlap(lhs_sub, rhs_sub):
     for lhs in lhs_sub:
@@ -27,7 +27,7 @@ def fuzzy_compare(lhs, rhs):
     lhs = ''.join(lhs_parts)
     rhs = ''.join(rhs_parts)
 
-    return ( lhs == rhs or overlap(lhs_parts, rhs_parts) )
+    return ( lhs is rhs or overlap(lhs_parts, rhs_parts) )
 
 def strip_whitespace(s):
     s = s.strip().split()
