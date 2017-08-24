@@ -13,7 +13,7 @@ def stringify(value):
 
 def is_valid(s):
     if s is not None:
-        if s:
+        if len(s.strip()) > 0:
             return True
     return False
 
