@@ -46,7 +46,8 @@ def states(user, msg):
 def resolve_tms_query(user, query):
     if user is not None and text_utils.is_valid(query):
         verse = None
-        
+        debug.log('Resolving TMS Query')
+
         verse_reference = bgw_utils.get_reference(query)
         if text_utils.is_valid(query):
             debug.log('Attempting to get by reference ' + verse_reference)
