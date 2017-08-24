@@ -6,7 +6,7 @@ class TMSVerse():
         self.position = pos
         self.reference = ref
         self.topics = topics
-    
+
     def get_reference(self):
         return self.reference
 
