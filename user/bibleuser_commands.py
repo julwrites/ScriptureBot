@@ -62,7 +62,7 @@ def cmd_version(user, cmd, msg):
     if cmd == CMD_VERSION:
         debug.log_cmd(cmd)
         query = msg.get("text").strip()
-        query = msg.replace(cmd, '')
+        query = query.replace(cmd, '')
 
         return resolve_version(user, query)
 
