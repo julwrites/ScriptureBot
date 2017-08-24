@@ -111,7 +111,7 @@ def query_verse_by_pack_pos(query):
         query_text = text_utils.strip_numbers(query)
         pack_key = query_pack_by_alias(query_text)
 
-        if text_utils.is_valid(query):
+        if pack_key is not None:
             select_pack = get_pack(pack_key)
 
             if select_pack is not None:
