@@ -156,6 +156,10 @@ def query_verse_by_topic(query):
 
                 if text_utils.fuzzy_compare(query, verse.get_title()):
                     shortlist.append(verse)
+                else:
+                    for topic in verse.get_topics():
+                        if text_utils.fuzzy_compare(query, topic):
+                            shortlist.append(verse)
 
         num = len(shortlist)
         if num > 0:

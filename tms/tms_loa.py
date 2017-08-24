@@ -10,11 +10,16 @@ def keys():
     ]
 
 LOA = [
-    TMSVerse(LOA_KEY,		"Assurance of Salvation",		    1,		"1 John 5 : 11 - 12"),
-    TMSVerse(LOA_KEY,		"Assurance of Answered Prayer",		2,		"John 16 : 24"),
-    TMSVerse(LOA_KEY,		"Assurance of Victory",		        3,		"1 Corinthians 10 : 13"),
-    TMSVerse(LOA_KEY,		"Assurance of Forgiveness",		    4,		"1 John 1 : 9"),
-    TMSVerse(LOA_KEY,		"Assurance of Guidance",		    5,		"Proverbs 3 : 5 - 6")
+    TMSVerse(LOA_KEY,        "Assurance of Salvation",              1,        "1 John 5 : 11 - 12",
+                            ['Assurance', 'Salvation', 'Saved', 'Eternal Life']),
+    TMSVerse(LOA_KEY,        "Assurance of Answered Prayer",        2,        "John 16 : 24",
+                            ['Assurance', 'Prayer', 'Pray', 'Praying', 'Jesus']),
+    TMSVerse(LOA_KEY,        "Assurance of Victory",                3,        "1 Corinthians 10 : 13",
+                            ['Assurance', 'Victory', 'Temptation', 'Tempted']),
+    TMSVerse(LOA_KEY,        "Assurance of Forgiveness",            4,        "1 John 1 : 9",
+                            ['Assurance', 'Sin', 'Confess', 'Forgive', 'Forgiveness']),
+    TMSVerse(LOA_KEY,        "Assurance of Guidance",               5,        "Proverbs 3 : 5 - 6",
+                            ['Assurance', 'Guidance', 'Guiding', 'Path'])
 ]
 def data():
     return {
@@ -28,9 +33,7 @@ def names():
 
 def aliases():
     return {
-        LOA_KEY :       ["BWC", "LOA", "Beginning with Christ", "Lessons of Assurance",
-                        "New Christian", "Assurances", "Assurance", "Assure",
-                        "Beginning", "Begin"],
+        LOA_KEY :       ["BWC", "LOA", "Beginning with Christ", "Lessons of Assurance"]
     }
 
 def top():

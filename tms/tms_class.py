@@ -1,10 +1,11 @@
 
 class TMSVerse():
-    def __init__(self, pack, title, pos, ref):
+    def __init__(self, pack, title, pos, ref, topics):
         self.pack = pack
         self.title = title
         self.position = pos
         self.reference = ref
+        self.topics = topics
     
     def get_reference(self):
         return self.reference
@@ -17,6 +18,9 @@ class TMSVerse():
 
     def get_position(self):
         return self.position
+
+    def get_topics(self):
+        return self.topics
 
 
 class TMSPack():

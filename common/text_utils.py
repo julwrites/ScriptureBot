@@ -10,14 +10,11 @@ def stringify(value):
 
     return str(value)
 
+def fuzzify(s):
+    return ''.join(s.upper().strip().replace('-', '').replace(',', '').split())
+
 def fuzzy_compare(lhs, rhs):
-    lhs = lhs.upper().strip().split()
-    lhs = ''.join(lhs)
-
-    rhs = rhs.upper().strip().split()
-    rhs = ''.join(rhs)
-
-    return lhs == rhs
+    return fuzzify(lhs) == fuzzify(rhs)
 
 def strip_whitespace(s):
     s = s.strip().split()
