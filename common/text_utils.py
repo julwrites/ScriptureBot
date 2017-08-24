@@ -14,8 +14,12 @@ def stringify(value):
 def fuzzify(s):
     return s.upper().strip().replace('-', ' ').replace(',', ' ').split()
 
-def fuzzy_find(s, substrings):
-    return len([ss for ss in substrings if s.find(ss) is not -1]) > 0
+def overlap(lhs_sub, rhs_sub):
+    for lhs in lhs_sub:
+        for rhs in rhs_sub
+            if lhs == rhs:
+                return True
+    return False
 
 def fuzzy_compare(lhs, rhs):
     lhs_parts = fuzzify(lhs)
@@ -24,7 +28,7 @@ def fuzzy_compare(lhs, rhs):
     rhs = ''.join(rhs_parts)
     debug.log('Comparing ' + lhs + ' and ' + rhs)
 
-    return ( lhs == rhs or fuzzy_find(lhs, rhs_parts) or fuzzy_find(rhs, lhs_parts) )
+    return ( lhs == rhs or overlap(lhs_parts, rhs_parts) )
 
 def strip_whitespace(s):
     s = s.strip().split()
