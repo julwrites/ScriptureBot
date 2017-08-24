@@ -11,49 +11,46 @@ from tms import tms_data
 
 
 # Gettor functions: These return some kind of data with no fuzziness
-def get_pack(pack):
-    if pack is not None:
-        select_pack = tms_data.get_data().get(pack)
+def get_pack(pack_key):
+    if text_utils.is_valid(pack_key):
+        select_pack = tms_data.get_data().get(pack_key)
 
         if select_pack is not None:
             return select_pack
     return None
 
-def get_aliases(pack):
-    if pack is not None:
-        select_aliases = tms_data.get_aliases().get(pack)
+def get_aliases(pack_key):
+    if text_utils.is_valid(pack_key):
+        select_aliases = tms_data.get_aliases().get(pack_key)
 
         if select_aliases is not None:
             return select_aliases
     return None
 
-def get_name(pack):
-    if pack is not None:
-        select_name = tms_data.get_names().get(pack)
+def get_names(pack_key):
+    if text_utils.is_valid(pack_key):
+        select_names = tms_data.get_names().get(pack_key)
 
-        if select_name is not None:
-            return select_name
+        if select_names is not None:
+            return select_names
     return None
 
 def get_all_pack_keys():
     return tms_data.get_keys()
 
-def get_verse_by_pack_pos(pack, pos):
-    if pack is not None and pack is not None:
-        pack_key = get_pack(pack)
+def get_verse_by_pack_pos(pack_key, pos):
+    if text_utils.is_valid(pack_key) and pos is not None:
+        select_pack = get_pack(pack_key)
 
-        if pack_key is not None:
-            select_pack = get_pack(pack_key)
+        if select_pack is not None:
+            select_verse = select_pack[pos - 1]
 
-            if select_pack is not None:
-                select_verse = select_pack[pos - 1]
-
-                if select_verse is not None:
-                    return select_verse
+            if select_verse is not None:
+                return select_verse
     return None
 
 def get_verse_by_title(title, pos):
-    if title is not None and pos is not None:
+    if text_utils.is_valid(title) and pos is not None:
         verses = get_verses_by_title(title)
 
         if len(verses) > pos:
@@ -61,7 +58,7 @@ def get_verse_by_title(title, pos):
     return None
 
 def get_verses_by_title(title):
-    if title is not None:
+    if text_utils.is_valid(title):
         verses = []
 
         for pack_key in get_all_pack_keys():
@@ -98,7 +95,7 @@ def get_random_verse():
 
 # Querying functions: These do a lookup based on some text search
 def query_pack_by_alias(query):
-    if query is not None:
+    if text_utils.is_valid(query):
         for pack_key in get_all_pack_keys():
             aliases = get_aliases(pack_key)
 
@@ -109,16 +106,16 @@ def query_pack_by_alias(query):
     return None
 
 def query_verse_by_pack_pos(query):
-    if query is not None:
+    if text_utils.is_valid(query):
         query_text = text_utils.strip_numbers(query)
         pack_key = query_pack_by_alias(query_text)
 
-        if pack_key is not None:
+        if text_utils.is_valid(query):
             select_pack = get_pack(pack_key)
 
             if select_pack is not None:
                 query_num = text_utils.strip_alpha(query)
-                if query_num is not None:
+                if text_utils.is_valid(query_num):
                     size = len(select_pack)
                     pos = int(query_num)
 
@@ -127,7 +124,7 @@ def query_verse_by_pack_pos(query):
     return None
 
 def query_verse_by_reference(query):
-    if query is not None:
+    if text_utils.is_valid(query):
 
         for pack_key in get_all_pack_keys():
             select_pack = get_pack(pack_key)
@@ -141,7 +138,7 @@ def query_verse_by_reference(query):
     return None
 
 def query_verse_by_topic(query):
-    if query is not None:
+    if text_utils.is_valid(query):
         query = text_utils.strip_numbers(query)
         shortlist = []
 
@@ -180,7 +177,7 @@ def format_verse(verse, passage):
     if verse is not None and passage is not None:
         verse_prep = []
 
-        verse_prep.append(get_name(verse.get_pack()) + ' ' + str(verse.get_position()))
+        verse_prep.append(get_names(verse.get_pack()) + ' ' + str(verse.get_position()))
         verse_prep.append(telegram_utils.bold(verse.get_title()))
         verse_prep.append(telegram_utils.bold(verse.reference) + ' ' \
                         + telegram_utils.bracket(passage.get_version()))

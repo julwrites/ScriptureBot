@@ -4,6 +4,7 @@ from common import debug
 from common import database
 from common import telegram
 from common import telegram_utils
+from common import text_utils
 from bgw import bgw_utils
 from tms import tms_utils
 
@@ -43,11 +44,11 @@ def states(user, msg):
     return result
 
 def resolve_tms_query(user, query):
-    if user is not None and query is not None:
+    if user is not None and text_utils.is_valid(query):
         verse = None
         
         verse_reference = bgw_utils.get_reference(query)
-        if verse_reference is not None:
+        if text_utils.is_valid(query):
             debug.log('Attempting to get by reference ' + verse_reference)
             verse = tms_utils.query_verse_by_reference(verse_reference)
         

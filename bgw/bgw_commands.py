@@ -43,10 +43,10 @@ def states(user, msg):
 
 
 def resolve_passage_query(user, query):
-    if user is not None and query is not None:
+    if user is not None and text_utils.is_valid(query):
         passage = bgw_utils.get_passage(query, user.get_version())
 
-        if passage is not None:
+        if text_utils.is_valid(query):
             telegram.send_msg(passage, user.get_uid())
         else:
             telegram.send_msg(CMD_PASSAGE_PROMPT, user.get_uid())
