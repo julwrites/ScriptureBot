@@ -12,7 +12,7 @@ def stringify(value):
     return str(value)
 
 def is_valid(s):
-    return s is not None and len(s) > 0
+    return ( s is not None and len(s) > 0 )
 
 def fuzzify(s):
     return s.upper().replace('-', ' ').replace(',', ' ').strip().split()
