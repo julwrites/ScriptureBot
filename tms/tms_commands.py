@@ -65,6 +65,7 @@ def resolve_tms_query(user, query):
 
             telegram.send_msg(verse_msg, user.get_uid())
         else:
+            debug.log("Sending prompt" + CMD_TMS_PROMPT)
             telegram.send_msg_keyboard(CMD_TMS_PROMPT, user.get_uid())
             user.set_state(STATE_WAIT_TMS)
 
