@@ -51,6 +51,7 @@ def resolve_passage_query(user, query):
 
             if passage is not None:
                 telegram.send_msg(passage, user.get_uid())
+                user.set_state(None)
             else:
                 telegram.send_msg(CMD_PASSAGE_BADQUERY, user.get_uid())
         else:
@@ -76,8 +77,6 @@ def state_passage(user, msg):
         debug.log_state(STATE_WAIT_PASSAGE)
         query = msg.get("text").strip()
 
-        if resolve_passage_query(user, query):
-            user.set_state(None)
-            return True
+        return resolve_passage_query(user, query)
     return False
 
