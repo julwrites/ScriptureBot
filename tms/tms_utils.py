@@ -101,7 +101,7 @@ def query_pack_by_alias(query):
 
             for alias in aliases:
 
-                if text_utils.fuzzy_compare(query, alias):
+                if text_utils.text_compare(query, alias):
                     return pack_key
     return None
 
