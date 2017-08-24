@@ -44,7 +44,7 @@ def resolve_version(user, query):
     if user is not None:
         if text_utils.is_valid(query):
             for ver in SUPPORTED_VERSIONS:
-                if text_utils.fuzzy_compare(query, ver):
+                if text_utils.text_compare(query, ver):
                     user.set_version(ver)
                     user.set_state(None)
                     telegram.send_close_keyboard(STATE_VERSION_PROMPT.format(ver), user.get_uid())

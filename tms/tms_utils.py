@@ -67,7 +67,7 @@ def get_verses_by_title(title):
 
             for i in range(0, size):
                 select_verse = select_pack[i]
-                if text_utils.fuzzy_compare(title, select_verse.get_title()):
+                if text_utils.text_compare(title, select_verse.get_title()):
                     verses.append(select_verse)
         
         return verses
@@ -135,7 +135,7 @@ def query_verse_by_reference(query):
             for i in range(0, size):
                 select_verse = select_pack[i]
 
-                if text_utils.fuzzy_compare(query, select_verse.get_reference()):
+                if text_utils.text_compare(query, select_verse.get_reference()):
                     return select_verse
     return None
 
