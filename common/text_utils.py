@@ -26,7 +26,6 @@ def fuzzy_compare(lhs, rhs):
     rhs_parts = fuzzify(rhs)
     lhs = ''.join(lhs_parts)
     rhs = ''.join(rhs_parts)
-    debug.log('Comparing ' + lhs + ' and ' + rhs)
 
     return ( lhs == rhs or overlap(lhs_parts, rhs_parts) )
 
