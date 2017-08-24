@@ -146,13 +146,14 @@ def query_verse_by_topic(query):
         shortlist = []
 
         for pack_key in get_all_pack_keys():
+            pack = get_pack(pack_key)
 
             for alias in get_aliases(pack_key):
 
                 if text_utils.fuzzy_compare(query, alias):
-                    shortlist.extend(get_pack(pack_key))
+                    shortlist.extend(pack)
 
-            for verse in get_pack(pack_key):
+            for verse in pack:
 
                 if text_utils.fuzzy_compare(query, verse.get_title()):
                     shortlist.append(verse)
@@ -161,6 +162,7 @@ def query_verse_by_topic(query):
                         if text_utils.fuzzy_compare(query, topic):
                             shortlist.append(verse)
 
+        debug.log('Found these related queries: ' + shortlist)
         num = len(shortlist)
         if num > 0:
             choose = random.randint(0, num - 1)
