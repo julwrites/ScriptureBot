@@ -168,7 +168,7 @@ def query_verse_by_topic(query):
                             if text_utils.fuzzy_compare(query, topic):
                                 shortlist.append(verse)
 
-        debug.log('Found these related queries: ' + shortlist)
+        debug.log('Found these related queries: ' + str(shortlist))
         num = len(shortlist)
         if num > 0:
             choose = random.randint(0, num - 1)
