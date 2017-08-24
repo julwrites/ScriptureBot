@@ -13,7 +13,7 @@ def stringify(value):
 
 def is_valid(s):
     debug.log('Checking validity of ' + s)
-    return ( s is not None and len(s) > 0 )
+    return ( s is not None and not s )
 
 def fuzzify(s):
     return s.upper().replace('-', ' ').replace(',', ' ').strip().split()
