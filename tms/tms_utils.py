@@ -148,11 +148,13 @@ def query_verse_by_topic(query):
         for pack_key in get_all_pack_keys():
             pack = get_pack(pack_key)
 
+            debug.log('Check alias for ' + pack_key)
             for alias in get_aliases(pack_key):
 
                 if text_utils.fuzzy_compare(query, alias):
                     shortlist.extend(pack)
 
+            debug.log('Check verses for related topics')
             for verse in pack:
 
                 if text_utils.fuzzy_compare(query, verse.get_title()):
