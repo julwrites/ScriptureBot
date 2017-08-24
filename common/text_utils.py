@@ -11,10 +11,21 @@ def stringify(value):
     return str(value)
 
 def fuzzify(s):
-    return ''.join(s.upper().strip().replace('-', '').replace(',', '').split())
+    return s.upper().strip().replace('-', ' ').replace(',', ' ').split()
+
+def fuzzy_find(s, substrings):
+    return len([ss for ss in substrings if s.find(ss) is not -1]) > 0
 
 def fuzzy_compare(lhs, rhs):
-    return fuzzify(lhs) == fuzzify(rhs)
+    lhs_parts = fuzzify(lhs)
+    rhs_parts = fuzzify(rhs)
+    lhs = ''.join(lhs_parts)
+    rhs = ''.join(rhs_parts)
+
+    return ( lhs == rhs \
+        or fuzzy_find(lhs, rhs_parts) \
+        or fuzzy_find(rhs, lhs_parts) \
+    )
 
 def strip_whitespace(s):
     s = s.strip().split()

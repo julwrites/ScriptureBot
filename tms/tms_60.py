@@ -126,29 +126,29 @@ D_PACK = [
 
 E_PACK = [
   TMSVerse(TMS_E_KEY,    "Love",                     1,     "John 13 : 34 - 35",
-                        []),
+                        ['Jesus', 'Love', 'Disciples', 'One Another']),
   TMSVerse(TMS_E_KEY,    "Love",                     2,     "1 John 3 : 18",
-                        []),
+                        ['Love', 'Words', 'Actions', 'Truth']),
   TMSVerse(TMS_E_KEY,    "Humility",                 3,     "Philippians 2 : 3 - 4",
-                        []),
+                        ['Selfish', 'Conceit', 'Humility', 'Interests']),
   TMSVerse(TMS_E_KEY,    "Humility",                 4,     "1 Peter 5 : 5 - 6",
-                        []),
+                        ['Submission', 'Humility', 'Proud', 'Humble']),
   TMSVerse(TMS_E_KEY,    "Purity",                   5,     "Ephesians 5 : 3",
-                        []),
+                        ['Sexual Immorality', 'Impurity', 'Greed', 'Improper', 'Holy']),
   TMSVerse(TMS_E_KEY,    "Purity",                   6,     "1 Peter 2 : 11",
-                        []),
+                        ['Aliens', 'Strangers', 'Abstain', 'Sin']),
   TMSVerse(TMS_E_KEY,    "Honesty",                  7,     "Leviticus 19 : 11",
-                        []),
+                        ['Lie', 'Cheat', 'Steal', 'Deception']),
   TMSVerse(TMS_E_KEY,    "Honesty",                  8,     "Acts 24 : 16",
-                        []),
+                        ['Conscience', 'Honesty', 'Integrity', 'God']),
   TMSVerse(TMS_E_KEY,    "Faith",                    9,     "Hebrews 11 : 6",
-                        []),
+                        ['God', 'Believe', 'Seek', 'Faith']),
   TMSVerse(TMS_E_KEY,    "Faith",                    10,    "Romans 4 : 20 - 21",
-                        []),
+                        ['Unbelief', 'Faith', 'God', 'Promise']),
   TMSVerse(TMS_E_KEY,    "Good Works",               11,    "Galatians 6 : 9 - 10",
-                        []),
+                        ['Good', 'Give Up', 'Believers', 'Do Good']),
   TMSVerse(TMS_E_KEY,    "Good Works",               12,    "Matthew 5 : 16",
-                        [])
+                        ['Light', 'Shine', 'Good', 'Praise'])
 ]
 
 def data():
