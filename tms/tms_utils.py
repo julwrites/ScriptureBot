@@ -106,8 +106,8 @@ def query_pack_by_alias(query):
     return None
 
 def query_verse_by_pack_pos(query):
-    debug.log("Attempting to get by position " + query)
     if text_utils.is_valid(query):
+        debug.log("Attempting to get by position " + query)
         query_text = text_utils.strip_numbers(query)
         pack_key = query_pack_by_alias(query_text)
 
@@ -125,8 +125,8 @@ def query_verse_by_pack_pos(query):
     return None
 
 def query_verse_by_reference(query):
-    debug.log("Attempting to get by reference " + query)
     if text_utils.is_valid(query):
+        debug.log("Attempting to get by reference " + query)
 
         for pack_key in get_all_pack_keys():
             select_pack = get_pack(pack_key)
@@ -140,8 +140,8 @@ def query_verse_by_reference(query):
     return None
 
 def query_verse_by_topic(query):
-    debug.log("Attempting to get by topic " + query)
     if text_utils.is_valid(query):
+        debug.log("Attempting to get by topic " + query)
         query = text_utils.strip_numbers(query)
         shortlist = []
 
