@@ -155,6 +155,7 @@ def query_verse_by_topic(query):
                 if text_utils.fuzzy_compare(query, alias):
                     shortlist.extend(pack)
                     add_pack = True
+                    break
 
             if not add_pack:
                 debug.log('Check verses for related topics')

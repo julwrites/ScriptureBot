@@ -27,7 +27,7 @@ def fuzzy_compare(lhs, rhs):
     lhs = ''.join(lhs_parts)
     rhs = ''.join(rhs_parts)
 
-    return ( lhs is rhs or overlap(lhs_parts, rhs_parts) )
+    return ( lhs == rhs or overlap(lhs_parts, rhs_parts) )
 
 def strip_whitespace(s):
     s = s.strip().split()
