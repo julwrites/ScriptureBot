@@ -73,7 +73,7 @@ def cmd_passage(user, cmd, msg):
     return False
 
 def state_passage(user, msg):
-    if user is not None and user.get_state() is STATE_WAIT_PASSAGE:
+    if user is not None and user.get_state() == STATE_WAIT_PASSAGE:
         debug.log_state(STATE_WAIT_PASSAGE)
         query = msg.get("text").strip()
 

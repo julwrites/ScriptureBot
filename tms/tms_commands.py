@@ -88,7 +88,7 @@ def cmd_tms(user, cmd, msg):
     return False
 
 def state_tms(user, msg):
-    if user is not None and user.get_state() is STATE_WAIT_TMS:
+    if user is not None and user.get_state() == STATE_WAIT_TMS:
         query = msg.get("text").strip()
 
         return resolve_tms_query(user, query)
