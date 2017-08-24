@@ -44,22 +44,24 @@ def states(user, msg):
     return result
 
 def resolve_tms_query(user, query):
-    if user is not None and text_utils.is_valid(query):
+    if user is not None:
         verse = None
-        debug.log('Resolving TMS Query')
 
-        verse_reference = bgw_utils.get_reference(query)
-        if text_utils.is_valid(query):
-            debug.log('Attempting to get by reference ' + verse_reference)
-            verse = tms_utils.query_verse_by_reference(verse_reference)
-        
-        if verse is None:
-            debug.log('Attempting to get by position ' + query)
-            verse = tms_utils.query_verse_by_pack_pos(query)
+        if text_utils.is_valid(query): 
+            debug.log('Resolving TMS Query')
 
-        if verse is None:
-            debug.log('Attempting to get by topic ' + query)
-            verse = tms_utils.query_verse_by_topic(query)
+            verse_reference = bgw_utils.get_reference(query)
+            if text_utils.is_valid(query):
+                debug.log('Attempting to get by reference ' + verse_reference)
+                verse = tms_utils.query_verse_by_reference(verse_reference)
+            
+            if verse is None:
+                debug.log('Attempting to get by position ' + query)
+                verse = tms_utils.query_verse_by_pack_pos(query)
+
+            if verse is None:
+                debug.log('Attempting to get by topic ' + query)
+                verse = tms_utils.query_verse_by_topic(query)
 
         if verse is not None:
             passage = bgw_utils.get_passage_raw(verse.reference, user.get_version())
