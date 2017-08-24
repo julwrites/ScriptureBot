@@ -112,14 +112,12 @@ def query_verse_by_pack_pos(query):
         query_text = text_utils.strip_numbers(query)
 
         if text_utils.is_valid(query_text) and text_utils.is_valid(query_num):
-            debug.log("Checking against aliases")
             pack_key = query_pack_by_alias(query_text)
 
             if pack_key is not None:
                 select_pack = get_pack(pack_key)
 
                 if select_pack is not None:
-                    debug.log("Checking if there is a valid position")
                     size = len(select_pack)
                     pos = int(query_num)
 
