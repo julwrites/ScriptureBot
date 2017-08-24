@@ -108,20 +108,21 @@ def query_pack_by_alias(query):
 def query_verse_by_pack_pos(query):
     if text_utils.is_valid(query):
         debug.log("Attempting to get by position " + query)
+        query_num = text_utils.strip_alpha(query)
         query_text = text_utils.strip_numbers(query)
-        pack_key = query_pack_by_alias(query_text)
 
-        if pack_key is not None:
-            select_pack = get_pack(pack_key)
+        if text_utils.is_valid(query_text) and text_utils.is_valid(query_num):
+            pack_key = query_pack_by_alias(query_text)
 
-            if select_pack is not None:
-                query_num = text_utils.strip_alpha(query)
-                if text_utils.is_valid(query_num):
-                    size = len(select_pack)
-                    pos = int(query_num)
+            if pack_key is not None:
+                select_pack = get_pack(pack_key)
 
-                    if size >= pos:
-                        return select_pack[pos - 1]
+                if select_pack is not None:
+                        size = len(select_pack)
+                        pos = int(query_num)
+
+                        if size >= pos:
+                            return select_pack[pos - 1]
     return None
 
 def query_verse_by_reference(query):
