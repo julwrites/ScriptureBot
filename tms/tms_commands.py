@@ -52,7 +52,7 @@ def resolve_tms_query(user, query):
             debug.log("Resolving TMS Query")
 
             verse_reference = bgw_utils.get_reference(query)
-            if text_utils.is_valid(query):
+            if text_utils.is_valid(verse_reference):
                 verse = tms_utils.query_verse_by_reference(verse_reference)
             
             if verse is None:
