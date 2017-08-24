@@ -16,7 +16,7 @@ def fuzzify(s):
 
 def overlap(lhs_sub, rhs_sub):
     for lhs in lhs_sub:
-        for rhs in rhs_sub
+        for rhs in rhs_sub:
             if lhs == rhs:
                 return True
     return False
