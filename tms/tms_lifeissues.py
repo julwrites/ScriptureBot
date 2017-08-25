@@ -37,7 +37,7 @@ ANGER_PACK = [
     TMSVerse(LIFE_ISSUES_ANGER_KEY,        "Anger",        2,     "Proverbs 29 : 11", 
                                     ["Fool", "Vent", "Wise", "Withhold"]),
     TMSVerse(LIFE_ISSUES_ANGER_KEY,        "Anger",        3,     "Romans 12 : 19", 
-                                    ["Vengeance", "Revenge", "Wrath", "God"]),
+                                    ["Vengeance", "Revenge", "Wrath", "Lord God"]),
     TMSVerse(LIFE_ISSUES_ANGER_KEY,        "Anger",        4,     "Ephesians 4 : 26 - 27", 
                                     ["Day", "Sin", "Opportunity", "Devil"]),
     TMSVerse(LIFE_ISSUES_ANGER_KEY,        "Anger",        5,     "Colossians 3 : 8 - 10", 
@@ -74,11 +74,11 @@ DEPRESSION_PACK = [
     TMSVerse(LIFE_ISSUES_DEPRESSION_KEY,    "Depression",      3,   "Psalm 42 : 5", 
                                     ["Turmoil", "Soul", "Hope", "Salvation"]),
     TMSVerse(LIFE_ISSUES_DEPRESSION_KEY,    "Depression",      4,   "Psalm 34 : 17 - 18", 
-                                    ["Righteous", "God", "Delivers", "Brokenhearted", "Save"]),
+                                    ["Righteous", "Lord God", "Delivers", "Brokenhearted", "Save"]),
     TMSVerse(LIFE_ISSUES_DEPRESSION_KEY,    "Depression",      5,   "Lamentations 3 : 19 - 23", 
-                                    ["Affliction", "Soul", "Steadfast", "Love", "God"]),
+                                    ["Affliction", "Soul", "Steadfast", "Love", "Lord God"]),
     TMSVerse(LIFE_ISSUES_DEPRESSION_KEY,    "Depression",      6,   "2 Corinthians 1 : 8 - 9", 
-                                    ["Affliction", "Burden", "Rely", "God"])
+                                    ["Affliction", "Burden", "Rely", "Lord God"])
 ]
 
 GUILT_ALIASES = ["Guilt", "Guilty", "Conscience", "Forgive", "Forgiveness", "Forgiven"]
@@ -90,14 +90,14 @@ GUILT_PACK = [
     TMSVerse(LIFE_ISSUES_GUILT_KEY,        "Guilt",        3,     "Proverbs 28 : 13", 
                                     ["Conceal", "Transgression", "Confess", "Forsake"]),
     TMSVerse(LIFE_ISSUES_GUILT_KEY,        "Guilt",        4,     "Romans 8 : 1 - 2", 
-                                    ["Condem", "Christ", "Jesus", "Free"]),
+                                    ["Condemn", "Christ Jesus", "Law", "Free"]),
     TMSVerse(LIFE_ISSUES_GUILT_KEY,        "Guilt",        5,     "2 Corinthians 7 : 10", 
                                     ["Grief", "Repentance", "Salvation", "Death"]),
     TMSVerse(LIFE_ISSUES_GUILT_KEY,        "Guilt",        6,     "James 5 : 16", 
                                     ["Confess", "Sin", "Prayer", "Righteous"])
 ]
 
-GODSWILL_ALIASES = ["God's Will", "Will of God", "Will", "Sovereignty", "God's Plan", "God"]
+GODSWILL_ALIASES = ["God's Will", "Will of God", "Will", "Sovereignty", "God's Plan", "Lord God"]
 GODSWILL_PACK = [
     TMSVerse(LIFE_ISSUES_GODSWILL_KEY,        "God's Will",       1,  "Proverbs 3 : 5 - 6",
                                     ["Trust", "Heart", "Understanding", "Path"]),
@@ -117,22 +117,35 @@ GODSWILL_PACK = [
 
 LOVE_ALIASES = ["Love", "Loving", "Agape", "Storge", "Eros", "Phileo"]
 LOVE_PACK = [
-    TMSVerse(LIFE_ISSUES_LOVE_KEY,        "Love",         1,     "Matthew 22 : 37 - 40",        LOVE_ALIASES),
-    TMSVerse(LIFE_ISSUES_LOVE_KEY,        "Love",         2,     "John 13 : 34 - 35",           LOVE_ALIASES),
-    TMSVerse(LIFE_ISSUES_LOVE_KEY,        "Love",         3,     "Romans 8 : 38 - 39",          LOVE_ALIASES),
-    TMSVerse(LIFE_ISSUES_LOVE_KEY,        "Love",         4,     "1 Corinthians 13 : 1 - 3",    LOVE_ALIASES),
-    TMSVerse(LIFE_ISSUES_LOVE_KEY,        "Love",         5,     "1 Corinthians 13 : 4 - 8",    LOVE_ALIASES),
-    TMSVerse(LIFE_ISSUES_LOVE_KEY,        "Love",         6,     "1 John 4 : 20",               LOVE_ALIASES)
+    TMSVerse(LIFE_ISSUES_LOVE_KEY,        "Love",         1,     "Matthew 22 : 37 - 40",
+                                    ["Lord God", "Heart", "Soul", "Mind", "Yourself"]),
+    TMSVerse(LIFE_ISSUES_LOVE_KEY,        "Love",         2,     "John 13 : 34 - 35",
+                                    ["Command", "One Another", "Disciples", "Jesus Christ]),
+    TMSVerse(LIFE_ISSUES_LOVE_KEY,        "Love",         3,     "Romans 8 : 38 - 39",
+                                    ["Death", "Life", "Separate", "Jesus Christ"]),
+    TMSVerse(LIFE_ISSUES_LOVE_KEY,        "Love",         4,     "1 Corinthians 13 : 1 - 3",
+                                    ["Tongues", "Prophecy", "Knowledge", "Faith"]),
+    TMSVerse(LIFE_ISSUES_LOVE_KEY,        "Love",         5,     "1 Corinthians 13 : 4 - 8",
+                                    ["Patient", "Kind", "Envy", "Boasting", "Arrogance", "Rude",
+                                    "Truth", "Irritation", "Resentment", "Hope", "Endures"]),
+    TMSVerse(LIFE_ISSUES_LOVE_KEY,        "Love",         6,     "1 John 4 : 20",
+                                    ["Hate", "Brother", "Liar", "God"])
 ]
 
-MONEY_ALIASES = ["Money", "Wealth", "Riches", "Rich", "Wealthy", "Prosperous"]
+MONEY_ALIASES = ["Money", "Wealth", "Riches", "Rich", "Wealthy", "Prosperous", "Treasure"]
 MONEY_PACK = [
-    TMSVerse(LIFE_ISSUES_MONEY_KEY,        "Money",        1,     "Deuteronomy 8 : 17 - 18",    MONEY_ALIASES),
-    TMSVerse(LIFE_ISSUES_MONEY_KEY,        "Money",        2,     "Proverbs 3 : 9 - 10",        MONEY_ALIASES),
-    TMSVerse(LIFE_ISSUES_MONEY_KEY,        "Money",        3,     "Matthew 6 : 19 - 21",        MONEY_ALIASES),
-    TMSVerse(LIFE_ISSUES_MONEY_KEY,        "Money",        4,     "Matthew 6 : 24",             MONEY_ALIASES),
-    TMSVerse(LIFE_ISSUES_MONEY_KEY,        "Money",        5,     "Philippians 4 : 11 - 13",    MONEY_ALIASES),
-    TMSVerse(LIFE_ISSUES_MONEY_KEY,        "Money",        6,     "1 Timothy 6 : 9 - 10",       MONEY_ALIASES)
+    TMSVerse(LIFE_ISSUES_MONEY_KEY,        "Money",        1,     "Deuteronomy 8 : 17 - 18",
+                                    ["Heart", "Power", "Lord God", "Give"]),
+    TMSVerse(LIFE_ISSUES_MONEY_KEY,        "Money",        2,     "Proverbs 3 : 9 - 10", 
+                                    ["Lord God", "First", "Produce", "Plenty"]),
+    TMSVerse(LIFE_ISSUES_MONEY_KEY,        "Money",        3,     "Matthew 6 : 19 - 21", 
+                                    ["Hoard", "Earth", "Heaven", "Heart"]),
+    TMSVerse(LIFE_ISSUES_MONEY_KEY,        "Money",        4,     "Matthew 6 : 24", 
+                                    ["Master", "Hate", "Love", "Lord God"]),
+    TMSVerse(LIFE_ISSUES_MONEY_KEY,        "Money",        5,     "Philippians 4 : 11 - 13", 
+                                    ["Need", "Content", "Plenty", "Jesus Christ"]),
+    TMSVerse(LIFE_ISSUES_MONEY_KEY,        "Money",        6,     "1 Timothy 6 : 9 - 10", 
+                                    ["Desire", "Temptation", "Destruction", "Evil"])
 ]
 
 PERFECTIONISM_ALIASES = ["Perfectionism", "Perfect", "Perfection", "Salvation", "Achievements", "Grace"]

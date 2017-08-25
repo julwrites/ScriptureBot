@@ -11,15 +11,15 @@ def keys():
 
 LOA = [
     TMSVerse(LOA_KEY,        "Assurance of Salvation",              1,        "1 John 5 : 11 - 12",
-                            ["Testimony", "Eternal Life", "Son", "God"]),
+                            ["Testimony", "Eternal Life", "Son", "Lord God"]),
     TMSVerse(LOA_KEY,        "Assurance of Answered Prayer",        2,        "John 16 : 24",
                             ["Jesus's Name", "Ask", "Joy", "Receive"]),
     TMSVerse(LOA_KEY,        "Assurance of Victory",                3,        "1 Corinthians 10 : 13",
-                            ["Temptation", "Common", "God", "Tempted"]),
+                            ["Temptation", "Common", "Lord God", "Tempted"]),
     TMSVerse(LOA_KEY,        "Assurance of Forgiveness",            4,        "1 John 1 : 9",
                             ["Sin", "Confess", "Faithful", "Forgive"]),
     TMSVerse(LOA_KEY,        "Assurance of Guidance",               5,        "Proverbs 3 : 5 - 6",
-                            ["Trust", "God", "Way", "Path"])
+                            ["Trust", "Lord God", "Way", "Path"])
 ]
 def data():
     return {
