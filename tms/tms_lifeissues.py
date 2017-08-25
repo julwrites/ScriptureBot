@@ -64,41 +64,55 @@ SIN_PACK = [
                                     ["Confess", "Faithful", "Just", "Forgive", "Cleanse"])
 ]
 
-DEPRESSION_ALIASES = ["Depression", "Depressed", "Depressing", "Sadness", "Sad", "Sorrow"]
+DEPRESSION_ALIASES = ["Depression", "Depressed", "Depressing", "Sadness", "Sad", 
+                        "Sorrow", "Fear", "Despair"]
 DEPRESSION_PACK = [
     TMSVerse(LIFE_ISSUES_DEPRESSION_KEY,    "Depression",      1,   "Isaiah 43 : 1 - 3", 
-                                    []),
+                                    ["Fear", "With", "Overwhelm", "Consume"]),
     TMSVerse(LIFE_ISSUES_DEPRESSION_KEY,    "Depression",      2,   "2 Corinthians 4 : 7 - 10", 
-                                    []),
+                                    ["Treasure", "Power", "Affliction", "Crushed", "Life"]),
     TMSVerse(LIFE_ISSUES_DEPRESSION_KEY,    "Depression",      3,   "Psalm 42 : 5", 
-                                    []),
+                                    ["Turmoil", "Soul", "Hope", "Salvation"]),
     TMSVerse(LIFE_ISSUES_DEPRESSION_KEY,    "Depression",      4,   "Psalm 34 : 17 - 18", 
-                                    []),
+                                    ["Righteous", "God", "Delivers", "Brokenhearted", "Save"]),
     TMSVerse(LIFE_ISSUES_DEPRESSION_KEY,    "Depression",      5,   "Lamentations 3 : 19 - 23", 
-                                    []),
+                                    ["Affliction", "Soul", "Steadfast", "Love", "God"]),
     TMSVerse(LIFE_ISSUES_DEPRESSION_KEY,    "Depression",      6,   "2 Corinthians 1 : 8 - 9", 
-                                    [])
+                                    ["Affliction", "Burden", "Rely", "God"])
 ]
 
 GUILT_ALIASES = ["Guilt", "Guilty", "Conscience", "Forgive", "Forgiveness", "Forgiven"]
 GUILT_PACK = [
-    TMSVerse(LIFE_ISSUES_GUILT_KEY,        "Guilt",        1,     "Psalm 32 : 1 - 2",           GUILT_ALIASES),
-    TMSVerse(LIFE_ISSUES_GUILT_KEY,        "Guilt",        2,     "Psalm 51 : 9 - 10",          GUILT_ALIASES),
-    TMSVerse(LIFE_ISSUES_GUILT_KEY,        "Guilt",        3,     "Proverbs 28 : 13",           GUILT_ALIASES),
-    TMSVerse(LIFE_ISSUES_GUILT_KEY,        "Guilt",        4,     "Romans 8 : 1 - 2",           GUILT_ALIASES),
-    TMSVerse(LIFE_ISSUES_GUILT_KEY,        "Guilt",        5,     "2 Corinthians 7 : 10",       GUILT_ALIASES),
-    TMSVerse(LIFE_ISSUES_GUILT_KEY,        "Guilt",        6,     "James 5 : 16",               GUILT_ALIASES)
+    TMSVerse(LIFE_ISSUES_GUILT_KEY,        "Guilt",        1,     "Psalm 32 : 1 - 2", 
+                                    ["Blessing", "Sin", "Cover", "Spirit"]),
+    TMSVerse(LIFE_ISSUES_GUILT_KEY,        "Guilt",        2,     "Psalm 51 : 9 - 10", 
+                                    ["Hide", "Sin", "Clean", "Heart", "Spirit"]),
+    TMSVerse(LIFE_ISSUES_GUILT_KEY,        "Guilt",        3,     "Proverbs 28 : 13", 
+                                    ["Conceal", "Transgression", "Confess", "Forsake"]),
+    TMSVerse(LIFE_ISSUES_GUILT_KEY,        "Guilt",        4,     "Romans 8 : 1 - 2", 
+                                    ["Condem", "Christ", "Jesus", "Free"]),
+    TMSVerse(LIFE_ISSUES_GUILT_KEY,        "Guilt",        5,     "2 Corinthians 7 : 10", 
+                                    ["Grief", "Repentance", "Salvation", "Death"]),
+    TMSVerse(LIFE_ISSUES_GUILT_KEY,        "Guilt",        6,     "James 5 : 16", 
+                                    ["Confess", "Sin", "Prayer", "Righteous"])
 ]
 
 GODSWILL_ALIASES = ["God's Will", "Will of God", "Will", "Sovereignty", "God's Plan", "God"]
 GODSWILL_PACK = [
-    TMSVerse(LIFE_ISSUES_GODSWILL_KEY,        "God's Will",       1,  "Proverbs 3 : 5 - 6",     GODSWILL_ALIASES),
-    TMSVerse(LIFE_ISSUES_GODSWILL_KEY,        "God's Will",       2,  "Proverbs 3 : 7",         GODSWILL_ALIASES),
-    TMSVerse(LIFE_ISSUES_GODSWILL_KEY,        "God's Will",       3,  "Proverbs 16 : 9",        GODSWILL_ALIASES),
-    TMSVerse(LIFE_ISSUES_GODSWILL_KEY,        "God's Will",       4,  "Isaiah 30 : 21",         GODSWILL_ALIASES),
-    TMSVerse(LIFE_ISSUES_GODSWILL_KEY,        "God's Will",       5,  "Jeremiah 29 : 11 - 13",  GODSWILL_ALIASES),
-    TMSVerse(LIFE_ISSUES_GODSWILL_KEY,        "God's Will",       6,  "Romans 12 : 1 - 2",      GODSWILL_ALIASES),
-    TMSVerse(LIFE_ISSUES_GODSWILL_KEY,        "God's Will",       7,  "1 John 5 : 14 - 15",     GODSWILL_ALIASES)
+    TMSVerse(LIFE_ISSUES_GODSWILL_KEY,        "God's Will",       1,  "Proverbs 3 : 5 - 6",
+                                    ["Trust", "Heart", "Understanding", "Path"]),
+    TMSVerse(LIFE_ISSUES_GODSWILL_KEY,        "God's Will",       2,  "Proverbs 3 : 7",
+                                    ["Wisdom", "Own", "Fear", "Turn", "Evil"]),
+    TMSVerse(LIFE_ISSUES_GODSWILL_KEY,        "God's Will",       3,  "Proverbs 16 : 9",
+                                    ["Heart", "Man", "Plans", "Step"]),
+    TMSVerse(LIFE_ISSUES_GODSWILL_KEY,        "God's Will",       4,  "Isaiah 30 : 21",
+                                    ["Hear", "Word", "Walk", "Turn"]),
+    TMSVerse(LIFE_ISSUES_GODSWILL_KEY,        "God's Will",       5,  "Jeremiah 29 : 11 - 13",
+                                    ["Plans", "Prosper", "Harm", "Call", "Hear"]),
+    TMSVerse(LIFE_ISSUES_GODSWILL_KEY,        "God's Will",       6,  "Romans 12 : 1 - 2",
+                                    ["Mercy", "Offer", "Sacrifice", "Transform"]),
+    TMSVerse(LIFE_ISSUES_GODSWILL_KEY,        "God's Will",       7,  "1 John 5 : 14 - 15",
+                                    ["Confidence", "Ask", "Hear", "Know"])
 ]
 
 LOVE_ALIASES = ["Love", "Loving", "Agape", "Storge", "Eros", "Phileo"]
