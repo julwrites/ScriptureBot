@@ -67,14 +67,16 @@ class BibleUser(db.Model):
         return self.subscription
 
     def add_subscription(self, subscription):
-        if self.subscription.find(subscription) != -1:
+        if self.has_subscription(subscription):
             return
 
         self.subscription += subscription
         self.put()
 
     def has_subscription(self, subscription):
-        return self.subscription.find(subscription) != -1
+        if text_utils.is_valid(self.subscription):
+            return self.subscription.find(subscription) != -1
+        return False
 
     def update_last_received(self):
         self.last_received = chrono.now()

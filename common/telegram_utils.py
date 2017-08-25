@@ -25,10 +25,10 @@ def foreach_user(fn):
 def blast_msg(msg):
     debug.log('Blasting message: ' + msg)
 
-    def send(uid):
-        if not debug.debug() or admin.access(uid):
-            telegram.send_msg(msg, uid)
-    
+    def send(user):
+        if not debug.debug() or admin.access(get_uid()):
+            telegram.send_msg(msg, user.get_uid())
+
     foreach_user(send)
 
 
