@@ -120,7 +120,7 @@ LOVE_PACK = [
     TMSVerse(LIFE_ISSUES_LOVE_KEY,        "Love",         1,     "Matthew 22 : 37 - 40",
                                     ["Lord God", "Heart", "Soul", "Mind", "Yourself"]),
     TMSVerse(LIFE_ISSUES_LOVE_KEY,        "Love",         2,     "John 13 : 34 - 35",
-                                    ["Command", "One Another", "Disciples", "Jesus Christ]"),
+                                    ["Command", "One Another", "Disciples", "Jesus Christ"]),
     TMSVerse(LIFE_ISSUES_LOVE_KEY,        "Love",         3,     "Romans 8 : 38 - 39",
                                     ["Death", "Life", "Separate", "Jesus Christ"]),
     TMSVerse(LIFE_ISSUES_LOVE_KEY,        "Love",         4,     "1 Corinthians 13 : 1 - 3",
