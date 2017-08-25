@@ -129,7 +129,7 @@ LOVE_PACK = [
                                     ["Patient", "Kind", "Envy", "Boasting", "Arrogance", "Rude",
                                     "Truth", "Irritation", "Resentment", "Hope", "Endures"]),
     TMSVerse(LIFE_ISSUES_LOVE_KEY,        "Love",         6,     "1 John 4 : 20",
-                                    ["Hate", "Brother", "Liar", "God"])
+                                    ["Hate", "Brother", "Liar", "Lord God"])
 ]
 
 MONEY_ALIASES = ["Money", "Wealth", "Riches", "Rich", "Wealthy", "Prosperous", "Treasure"]
