@@ -33,38 +33,51 @@ def keys():
 ANGER_ALIASES = ["Anger", "Rage", "Wrath", "Angry", "Angered", "Furious"]
 ANGER_PACK = [
     TMSVerse(LIFE_ISSUES_ANGER_KEY,        "Anger",        1,     "Proverbs 15 : 1", 
-                                    ['Gentle', 'Wrath', 'Harsh', 'Word']),
+                                    ["Gentle", "Wrath", "Harsh", "Word"]),
     TMSVerse(LIFE_ISSUES_ANGER_KEY,        "Anger",        2,     "Proverbs 29 : 11", 
-                                    []),
+                                    ["Fool", "Vent", "Wise", "Withhold"]),
     TMSVerse(LIFE_ISSUES_ANGER_KEY,        "Anger",        3,     "Romans 12 : 19", 
-                                    []),
+                                    ["Vengeance", "Revenge", "Wrath", "God"]),
     TMSVerse(LIFE_ISSUES_ANGER_KEY,        "Anger",        4,     "Ephesians 4 : 26 - 27", 
-                                    []),
+                                    ["Day", "Sin", "Opportunity", "Devil"]),
     TMSVerse(LIFE_ISSUES_ANGER_KEY,        "Anger",        5,     "Colossians 3 : 8 - 10", 
-                                    []),
+                                    ["Wrath", "Malice", "Old", "New", "Self"]),
     TMSVerse(LIFE_ISSUES_ANGER_KEY,        "Anger",        6,     "James 1 : 19 - 20", 
-                                    [])
+                                    ["Listen", "Speak", "Angry", "Quick"])
 ]
 
 SIN_ALIASES = ["Sin", "Wrong", "Wrongdoing", "Disobedience", "Sinful", "Wickedness"]
 SIN_PACK = [
-    TMSVerse(LIFE_ISSUES_SIN_KEY,        "Sin",          1,     "Romans 6 : 11 - 13",       SIN_ALIASES),
-    TMSVerse(LIFE_ISSUES_SIN_KEY,        "Sin",          2,     "1 Corinthians 10 : 13",    SIN_ALIASES),
-    TMSVerse(LIFE_ISSUES_SIN_KEY,        "Sin",          3,     "Galatians 6 : 1 - 2",      SIN_ALIASES),
-    TMSVerse(LIFE_ISSUES_SIN_KEY,        "Sin",          4,     "Ephesians 6 : 10 - 12",    SIN_ALIASES),
-    TMSVerse(LIFE_ISSUES_SIN_KEY,        "Sin",          5,     "James 4 : 7 - 8",          SIN_ALIASES),
-    TMSVerse(LIFE_ISSUES_SIN_KEY,        "Sin",          6,     "1 John 1 : 8",             SIN_ALIASES),
-    TMSVerse(LIFE_ISSUES_SIN_KEY,        "Sin",          7,     "1 John 1 : 9",             SIN_ALIASES)
+    TMSVerse(LIFE_ISSUES_SIN_KEY,        "Sin",          1,     "Romans 6 : 11 - 13", 
+                                    ["Dead", "Alive", "Reign", "Obey", "Righteousness"]),
+    TMSVerse(LIFE_ISSUES_SIN_KEY,        "Sin",          2,     "1 Corinthians 10 : 13", 
+                                    ["Temptation", "Faithful", "Tempted", "Victory"]),
+    TMSVerse(LIFE_ISSUES_SIN_KEY,        "Sin",          3,     "Galatians 6 : 1 - 2", 
+                                    ["Transgression", "Gentleness", "Tempted", "Burdens"]),
+    TMSVerse(LIFE_ISSUES_SIN_KEY,        "Sin",          4,     "Ephesians 6 : 10 - 12", 
+                                    ["Strong", "Armor", "Evil", "Spiritual"]),
+    TMSVerse(LIFE_ISSUES_SIN_KEY,        "Sin",          5,     "James 4 : 7 - 8", 
+                                    ["Submit", "Resist", "Devil", "Flee", "Cleanse"]),
+    TMSVerse(LIFE_ISSUES_SIN_KEY,        "Sin",          6,     "1 John 1 : 8", 
+                                    ["Deceive", "Truth", "Blameless", "Say"]),
+    TMSVerse(LIFE_ISSUES_SIN_KEY,        "Sin",          7,     "1 John 1 : 9", 
+                                    ["Confess", "Faithful", "Just", "Forgive", "Cleanse"])
 ]
 
 DEPRESSION_ALIASES = ["Depression", "Depressed", "Depressing", "Sadness", "Sad", "Sorrow"]
 DEPRESSION_PACK = [
-    TMSVerse(LIFE_ISSUES_DEPRESSION_KEY,    "Depression",      1,   "Isaiah 43 : 1 - 3",        DEPRESSION_ALIASES),
-    TMSVerse(LIFE_ISSUES_DEPRESSION_KEY,    "Depression",      2,   "2 Corinthians 4 : 7 - 10", DEPRESSION_ALIASES),
-    TMSVerse(LIFE_ISSUES_DEPRESSION_KEY,    "Depression",      3,   "Psalm 42 : 5",             DEPRESSION_ALIASES),
-    TMSVerse(LIFE_ISSUES_DEPRESSION_KEY,    "Depression",      4,   "Psalm 34 : 17 - 18",       DEPRESSION_ALIASES),
-    TMSVerse(LIFE_ISSUES_DEPRESSION_KEY,    "Depression",      5,   "Lamentations 3 : 19 - 23", DEPRESSION_ALIASES),
-    TMSVerse(LIFE_ISSUES_DEPRESSION_KEY,    "Depression",      6,   "2 Corinthians 1 : 8 - 9",  DEPRESSION_ALIASES)
+    TMSVerse(LIFE_ISSUES_DEPRESSION_KEY,    "Depression",      1,   "Isaiah 43 : 1 - 3", 
+                                    []),
+    TMSVerse(LIFE_ISSUES_DEPRESSION_KEY,    "Depression",      2,   "2 Corinthians 4 : 7 - 10", 
+                                    []),
+    TMSVerse(LIFE_ISSUES_DEPRESSION_KEY,    "Depression",      3,   "Psalm 42 : 5", 
+                                    []),
+    TMSVerse(LIFE_ISSUES_DEPRESSION_KEY,    "Depression",      4,   "Psalm 34 : 17 - 18", 
+                                    []),
+    TMSVerse(LIFE_ISSUES_DEPRESSION_KEY,    "Depression",      5,   "Lamentations 3 : 19 - 23", 
+                                    []),
+    TMSVerse(LIFE_ISSUES_DEPRESSION_KEY,    "Depression",      6,   "2 Corinthians 1 : 8 - 9", 
+                                    [])
 ]
 
 GUILT_ALIASES = ["Guilt", "Guilty", "Conscience", "Forgive", "Forgiveness", "Forgiven"]
@@ -77,7 +90,7 @@ GUILT_PACK = [
     TMSVerse(LIFE_ISSUES_GUILT_KEY,        "Guilt",        6,     "James 5 : 16",               GUILT_ALIASES)
 ]
 
-GODSWILL_ALIASES = ["God's Will'", "Will of God", "Will", "Sovereignty", "God's Plan", "God"]
+GODSWILL_ALIASES = ["God's Will", "Will of God", "Will", "Sovereignty", "God's Plan", "God"]
 GODSWILL_PACK = [
     TMSVerse(LIFE_ISSUES_GODSWILL_KEY,        "God's Will",       1,  "Proverbs 3 : 5 - 6",     GODSWILL_ALIASES),
     TMSVerse(LIFE_ISSUES_GODSWILL_KEY,        "God's Will",       2,  "Proverbs 3 : 7",         GODSWILL_ALIASES),
@@ -193,18 +206,18 @@ def names():
 
 def aliases():
     return {
-        LIFE_ISSUES_ANGER_KEY :             ["Anger"],
-        LIFE_ISSUES_SIN_KEY :               ["Sin"],
-        LIFE_ISSUES_DEPRESSION_KEY :        ["Depression"],
-        LIFE_ISSUES_GUILT_KEY :             ["Guilt"],
-        LIFE_ISSUES_GODSWILL_KEY :          ["God's Will"],
-        LIFE_ISSUES_LOVE_KEY :              ["Love"],
-        LIFE_ISSUES_MONEY_KEY :             ["Money"],
-        LIFE_ISSUES_PERFECTIONISM_KEY :     ["Perfectionism"],
-        LIFE_ISSUES_SELFIMAGE_KEY :         ["Self-Image"],
-        LIFE_ISSUES_SEX_KEY :               ["Sex"],
-        LIFE_ISSUES_STRESS_KEY :            ["Stress"],
-        LIFE_ISSUES_SUFFERING_KEY :         ["Suffering"]
+        LIFE_ISSUES_ANGER_KEY :             ANGER_ALIASES,
+        LIFE_ISSUES_SIN_KEY :               SIN_ALIASES,
+        LIFE_ISSUES_DEPRESSION_KEY :        DEPRESSION_ALIASES,
+        LIFE_ISSUES_GUILT_KEY :             GUILT_ALIASES,
+        LIFE_ISSUES_GODSWILL_KEY :          GODSWILL_ALIASES,
+        LIFE_ISSUES_LOVE_KEY :              LOVE_ALIASES,
+        LIFE_ISSUES_MONEY_KEY :             MONEY_ALIASES,
+        LIFE_ISSUES_PERFECTIONISM_KEY :     PERFECTIONISM_ALIASES,
+        LIFE_ISSUES_SELFIMAGE_KEY :         SELFIMAGE_ALIASES,
+        LIFE_ISSUES_SEX_KEY :               SEX_ALIASES,
+        LIFE_ISSUES_STRESS_KEY :            STRESS_ALIASES,
+        LIFE_ISSUES_SUFFERING_KEY :         SUFFERING_ALIASES
     }
 
 def top():
