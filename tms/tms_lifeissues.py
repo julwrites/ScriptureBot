@@ -32,12 +32,18 @@ def keys():
 
 ANGER_ALIASES = ["Anger", "Rage", "Wrath", "Angry", "Angered", "Furious"]
 ANGER_PACK = [
-    TMSVerse(LIFE_ISSUES_ANGER_KEY,        "Anger",        1,     "Proverbs 15 : 1",        ANGER_ALIASES),
-    TMSVerse(LIFE_ISSUES_ANGER_KEY,        "Anger",        2,     "Proverbs 29 : 11",       ANGER_ALIASES),
-    TMSVerse(LIFE_ISSUES_ANGER_KEY,        "Anger",        3,     "Romans 12 : 19",         ANGER_ALIASES),
-    TMSVerse(LIFE_ISSUES_ANGER_KEY,        "Anger",        4,     "Ephesians 4 : 26 - 27",  ANGER_ALIASES),
-    TMSVerse(LIFE_ISSUES_ANGER_KEY,        "Anger",        5,     "Colossians 3 : 8 - 10",  ANGER_ALIASES),
-    TMSVerse(LIFE_ISSUES_ANGER_KEY,        "Anger",        6,     "James 1 : 19 - 20",      ANGER_ALIASES)
+    TMSVerse(LIFE_ISSUES_ANGER_KEY,        "Anger",        1,     "Proverbs 15 : 1", 
+                                    ['Gentle', 'Wrath', 'Harsh', 'Word']),
+    TMSVerse(LIFE_ISSUES_ANGER_KEY,        "Anger",        2,     "Proverbs 29 : 11", 
+                                    []),
+    TMSVerse(LIFE_ISSUES_ANGER_KEY,        "Anger",        3,     "Romans 12 : 19", 
+                                    []),
+    TMSVerse(LIFE_ISSUES_ANGER_KEY,        "Anger",        4,     "Ephesians 4 : 26 - 27", 
+                                    []),
+    TMSVerse(LIFE_ISSUES_ANGER_KEY,        "Anger",        5,     "Colossians 3 : 8 - 10", 
+                                    []),
+    TMSVerse(LIFE_ISSUES_ANGER_KEY,        "Anger",        6,     "James 1 : 19 - 20", 
+                                    [])
 ]
 
 SIN_ALIASES = ["Sin", "Wrong", "Wrongdoing", "Disobedience", "Sinful", "Wickedness"]

@@ -14,7 +14,7 @@ from common import telegram_utils
 from common import constants
 
 
-BGW_URL = 'http://www.biblegateway.com/passage/?search={}&version={}&interface=print'
+CAC_URL = 'https://cac.org/category/daily-meditations/'
 
 BGW_PASSAGE_CLASS = 'passage-text'
 BGW_PASSAGE_START = '<div class="{}">'.format(BGW_PASSAGE_CLASS)
