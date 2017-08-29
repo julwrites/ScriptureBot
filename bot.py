@@ -127,7 +127,7 @@ class BotHandler(webapp2.RequestHandler):
         uid = get_uid(msg.get('from').get('id'))
         user = get_user(uid)
 
-        if admin.access(uid):
+        if admin_utils.access(uid):
             debug.log('Welcome, Master')
 
         if user is None:
