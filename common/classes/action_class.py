@@ -15,10 +15,11 @@ class Action():
     # Do not overwrite if possible, this performs basic checks and resolves the action
     def execute(self, user, msg):
         try:
-        if user is not None:
-            if self.match(msg.get('text').strip()) or self.waiting(user):
-                return self.resolve(user, msg)
-        return False
+            if user is not None:
+                if self.match(msg.get('text').strip()) or self.waiting(user):
+                    return self.resolve(user, msg)
+        except:
+            return False
 
 
     # To be inherited and overwritten with the name of this action
