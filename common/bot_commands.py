@@ -7,7 +7,7 @@ from common import admin_commands
 from bible import bible_commands
 import hooks
 
-from common.bible_user import *
+from common.user.user_utils import *
 
 CMD_STORE = '/store'
 CMD_RETRIEVE = '/retrieve'
