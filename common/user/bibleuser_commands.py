@@ -52,7 +52,7 @@ class BibleUserAction(action_class.Action):
 
         return True
 
-ACTION = BibleUserAction
+ACTION = BibleUserAction()
 def get_action():
     return ACTION
 
