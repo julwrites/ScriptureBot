@@ -68,7 +68,8 @@ class BotHandler(webapp2.RequestHandler):
             uid = get_uid(msg.get('from').get('id'))
             user = get_user(uid)
 
-            bibleuser_commands.get_action().execute(user, msg)
+            if bibleuser_commands.get_action().execute(user, msg):
+                return
 
             cmd = self.read_cmd(msg.get('text'))
             if cmd is not None:

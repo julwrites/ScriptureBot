@@ -2,6 +2,9 @@
 # Python modules
 import json
 
+# Local modules
+from common import debug
+
 # Defines an interface for all functionality that can be executed by the bot
 class Action():
     # Do not overwrite if possible, this checks the message text against the command name
@@ -19,6 +22,7 @@ class Action():
                 if self.match(msg.get('text').strip()) or self.waiting(user):
                     return self.resolve(user, msg)
         except:
+            debug.log('Execute failed! ' + self.identifier())
             return False
 
 

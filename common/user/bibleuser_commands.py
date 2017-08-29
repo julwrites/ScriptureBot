@@ -16,7 +16,7 @@ SUPPORTED_VERSIONS = ["NIV", "ESV", "KJV", "NASB", "NLT", "AMP"]
 
 CMD_VERSION = "/version"
 CMD_VERSION_PROMPT = "Please select a version of your choosing\n\
-                     (if unsure, always go with the one you are comfortable with!)"
+(if unsure, always go with the one you are comfortable with!)"
 CMD_VERSION_BADQUERY = "I don't have this version!"
 
 STATE_WAIT_VERSION = "Waiting for version"
@@ -27,6 +27,7 @@ class BibleUserAction(action_class.Action):
         return '/version'
 
     def resolve(self, user, msg):
+        debug.log('Action being executed: ' + self.identifier())
         text = msg.get('text').strip()
         query = text.replace(self.identifier(), '')
 
