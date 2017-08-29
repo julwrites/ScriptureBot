@@ -1,15 +1,8 @@
 
 # Local modules
-from common import debug
-from common import database
-
+from common import debug, text_utils
 from common.telegram import telegram_utils
-
-from common.constants import *
-
-from common.user.bibleuser_utils import *
-
-from common.classes import action_class
+from common.action import action_class
 
 
 SUPPORTED_VERSIONS = ["NIV", "ESV", "KJV", "NASB", "NLT", "AMP"]

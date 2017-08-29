@@ -1,11 +1,9 @@
 
 # Local modules
 from common import debug
-from common import admin_utils
-from common import database
+from common.admin import admin_utils
 from common.telegram import telegram_utils
 
-from common.user.bibleuser_utils import *
 
 ADMIN_DUMP = '/dump'
 ADMIN_DEBUG = '/doggle'

@@ -1,9 +1,7 @@
-# Google App Engine Modules
-from google.appengine.ext import db
 
 # Local Modules
-from common import chrono
-from common import data
+from common.data.data_class import Data
+
 
 # Database util functions
 def get_key(path, uid):

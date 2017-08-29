@@ -6,19 +6,15 @@ import json
 from google.appengine.api import urlfetch
 
 # Local modules
-from common import database
 from common import debug
 from common.telegram import telegram_utils
-from common import admin_utils
-from tms import tms_utils
+from common.admin import admin_utils, admin_commands
+from common.user import bibleuser_commands, user_utils
 
-from common.user.bibleuser_utils import *
-
-from common import bot_commands
-from common import admin_commands
 from bible import bible_commands
+
 from tms import tms_commands
-from common.user import bibleuser_commands
+
 
 from secret import BOT_ID
 APP_BOT_URL = "/" + BOT_ID
@@ -30,13 +26,13 @@ CMD_START_PROMPT = 'Hello {}, I\'m Biblica! I hope I will be helpful as a tool f
 def cmd_start(cmd, msg):
     # Register User
     user_json = msg.get('from')
-    uid = get_uid(user_json.get('id'))
-    user = get_user(uid)
+    uid = user_utils.get_uid(user_json.get('id'))
+    user = user_utils.get_user(uid)
 
     # This runs to update the user's info, or register
     if user_json is not None:
         debug.log('Updating user info')
-        set_profile(
+        user_utils.set_profile(
             user_json.get('id'), 
             user_json.get('username'), 
             user_json.get('first_name'), 
@@ -45,7 +41,7 @@ def cmd_start(cmd, msg):
     # If this is the user's first time registering
     if user is None:
         debug.log_cmd(cmd)
-        user = get_user(uid)
+        user = user_utils.get_user(uid)
 
         telegram_utils.send_msg(CMD_START_PROMPT.format(user.get_name_string()), user.get_uid())
         debug.log('Registering ' + user.get_name_string())
@@ -65,8 +61,8 @@ class BotHandler(webapp2.RequestHandler):
             msg = data.get('message')
 
             # Read the user to echo back
-            uid = get_uid(msg.get('from').get('id'))
-            user = get_user(uid)
+            uid = user_utils.get_uid(msg.get('from').get('id'))
+            user = user_utils.get_user(uid)
 
             if bibleuser_commands.get_action().execute(user, msg):
                 return
@@ -90,15 +86,14 @@ class BotHandler(webapp2.RequestHandler):
                 return text
 
             return text[:cmd_end]
-
         return None
 
     def handle_command(self, cmd, msg):
         debug.log('Possible command detected: ' + cmd)
 
         # Read the user to echo back
-        uid = get_uid(msg.get('from').get('id'))
-        user = get_user(uid)
+        uid = user_utils.get_uid(msg.get('from').get('id'))
+        user = user_utils.get_user(uid)
 
         if admin_commands.cmds(uid, cmd, msg):
             return True
@@ -112,9 +107,7 @@ class BotHandler(webapp2.RequestHandler):
             debug.log('Running all commands')
 
             if( \
-            bibleuser_commands.cmds(user, cmd, msg) \
-            or bot_commands.cmds(user, cmd, msg)    \
-            or bible_commands.cmds(user, cmd, msg)    \
+            bible_commands.cmds(user, cmd, msg)    \
             or tms_commands.cmds(user, cmd, msg)    \
             ):
                 return True
@@ -125,8 +118,8 @@ class BotHandler(webapp2.RequestHandler):
         debug.log('Handling state reaction')
 
         # Read the user to echo back
-        uid = get_uid(msg.get('from').get('id'))
-        user = get_user(uid)
+        uid = user_utils.get_uid(msg.get('from').get('id'))
+        user = user_utils.get_user(uid)
 
         if admin_utils.access(uid):
             debug.log('Welcome, Master')
@@ -138,9 +131,7 @@ class BotHandler(webapp2.RequestHandler):
             
             # States
             if (    \
-            bibleuser_commands.states(user, msg)    \
-            or bot_commands.states(user, msg)       \
-            or bible_commands.states(user, msg)       \
+            bible_commands.states(user, msg)       \
             or tms_commands.states(user, msg)       \
             ):
                 return True

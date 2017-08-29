@@ -4,7 +4,6 @@ from google.appengine.ext import db
 
 # Local Modules
 from common import chrono
-from common import database
 from common import text_utils
 
 class BibleUser(db.Model):

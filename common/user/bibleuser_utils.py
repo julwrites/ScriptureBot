@@ -4,15 +4,17 @@ from google.appengine.ext import db
 
 # Local Modules
 from common import debug
-from common import chrono
-from common import database
 from common import text_utils
 from common.user import bibleuser_class
 
 
+# Database util functions
+def get_key(path, uid):
+    return db.Key.from_path(path, str(uid))
+
 # Functions for manipulation of user info
 def get_user(uid):
-    user = db.get(database.get_key('BibleUser', uid))
+    user = db.get(get_key('BibleUser', uid))
     return user
 
 def get_uid(user):
