@@ -6,7 +6,7 @@ from tms import tms_hooks
 from bible import bible_hooks
 from devo import devo_hooks
 
-from common.constants import APP_HOOKS_URL
+APP_HOOKS_URL = "/hooks"
 
 app = webapp2.WSGIApplication([
     # (url being accessed, class to call)

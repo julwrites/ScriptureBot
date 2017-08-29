@@ -2,8 +2,8 @@
 # Local modules
 from common import debug
 from common import database
-from common import telegram
-from common import telegram_utils
+from common.telegram import telegram
+from common.telegram import telegram_utils
 from common import text_utils
 
 from bible import bible_utils
@@ -50,12 +50,12 @@ def resolve_passage_query(user, query):
             passage = bible_utils.get_passage(query, user.get_version())
 
             if passage is not None:
-                telegram.send_msg(passage, user.get_uid())
+                telegram_utils.send_msg(passage, user.get_uid())
                 user.set_state(None)
             else:
-                telegram.send_msg(CMD_PASSAGE_BADQUERY, user.get_uid())
+                telegram_utils.send_msg(CMD_PASSAGE_BADQUERY, user.get_uid())
         else:
-            telegram.send_msg(CMD_PASSAGE_PROMPT, user.get_uid())
+            telegram_utils.send_msg(CMD_PASSAGE_PROMPT, user.get_uid())
             user.set_state(STATE_WAIT_PASSAGE)
 
         return True

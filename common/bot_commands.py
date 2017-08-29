@@ -2,8 +2,8 @@
 # Local modules
 from common import debug
 from common import database
-from common import telegram
-from common import telegram_utils
+from common.telegram import telegram
+from common.telegram import telegram_utils
 from common import admin_commands
 from bible import bible_commands
 import hooks
@@ -40,7 +40,7 @@ def cmd_store(user, cmd, msg):
             if database.has_data(user.get_uid()):
                 debug.log('Prompting data store for User: ' + user.get_name_string())
 
-                telegram.send_msg('Please send the data to be stored', user.get_uid())
+                telegram_utils.send_msg('Please send the data to be stored', user.get_uid())
                 user.set_state(BOT_STATE_WAIT_STORE)
 
                 return True
@@ -66,8 +66,8 @@ def cmd_retrieve(user, cmd, msg):
             if database.has_data(user.get_uid()):
                 debug.log(user.get('username'))
         
-                telegram.send_msg('Retrieving Data of User: ' + user.get_name_string(), user.get_uid())
-                telegram.send_msg(database.get_data(user.get_uid()), user.get_uid())
+                telegram_utils.send_msg('Retrieving Data of User: ' + user.get_name_string(), user.get_uid())
+                telegram_utils.send_msg(database.get_data(user.get_uid()), user.get_uid())
 
                 return True
     return False

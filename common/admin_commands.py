@@ -1,11 +1,11 @@
 
 # Local modules
 from common import debug
-from common import admin
+from common import admin_utils
 from common import database
-from common import telegram
+from common.telegram import telegram
 
-from user.bibleuser_utils import *
+from common.user.bibleuser_utils import *
 
 ADMIN_DUMP = '/dump'
 ADMIN_DEBUG = '/doggle'
@@ -16,21 +16,22 @@ ADMIN_RAGNAROK = '/ragnarok'
 def cmds(uid, cmd, msg):
     debug.log('Running admin commands')
 
-    try:
-        result = ( \
-        cmd_dump(uid, cmd, msg)       \
-        or cmd_doggle(uid, cmd, msg)   \
-        or cmd_clean(uid, cmd, msg)   \
-        or cmd_ragnarok(uid, cmd, msg)   \
-        )
-    except:
-        debug.log('Exception in Admin Commands')
-        return False
-    return result
+    if admin_utils.access(uid):
+        debug.log('Welcome, Master')
+        try:
+            return ( \
+            cmd_dump(uid, cmd, msg)       \
+            or cmd_doggle(uid, cmd, msg)   \
+            or cmd_clean(uid, cmd, msg)   \
+            or cmd_ragnarok(uid, cmd, msg)   \
+            )
+        except:
+            debug.log('Exception in Admin Commands')
+            return False
 
 # Debug Commands
 def cmd_dump(uid, cmd, msg):
-    if admin.access(uid) and cmd == ADMIN_DUMP:
+    if admin_utils.access(uid) and cmd == ADMIN_DUMP:
         debug.log_cmd(cmd)
 
         # Read user database
@@ -43,7 +44,7 @@ def cmd_dump(uid, cmd, msg):
                 dbUser = get_user(get_uid(user))
                 user_list.append(dbUser.get_description())
             user_list_msg = '\n'.join(user_list)
-            telegram.send_msg(user_list_msg, uid)
+            telegram_utils.send_msg(user_list_msg, uid)
         except Exception as e:
             debug.log(str(e))
 
@@ -52,7 +53,7 @@ def cmd_dump(uid, cmd, msg):
     return False
 
 def cmd_doggle(uid, cmd, msg):
-    if admin.access(uid) and cmd == ADMIN_DEBUG:
+    if admin_utils.access(uid) and cmd == ADMIN_DEBUG:
         debug.log_cmd(cmd)
 
         debug.toggle()
@@ -62,7 +63,7 @@ def cmd_doggle(uid, cmd, msg):
     return False
 
 def cmd_clean(uid, cmd, msg):
-    if admin.access(uid) and cmd == ADMIN_CLEAN:
+    if admin_utils.access(uid) and cmd == ADMIN_CLEAN:
         debug.log_cmd(cmd)
 
         # Read user database
@@ -94,7 +95,7 @@ def cmd_clean(uid, cmd, msg):
     return False
 
 def cmd_ragnarok(uid, cmd, msg):
-    if admin.access(uid) and cmd == ADMIN_RAGNAROK:
+    if admin_utils.access(uid) and cmd == ADMIN_RAGNAROK:
         debug.log_cmd(cmd)
 
         # Read user database
@@ -108,7 +109,7 @@ def cmd_ragnarok(uid, cmd, msg):
         except Exception as e:
             debug.log(str(e))
 
-        telegram.send_msg("Baboomz~", uid)
+        telegram_utils.send_msg("Baboomz~", uid)
         
         return True
     

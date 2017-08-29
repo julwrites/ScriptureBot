@@ -2,8 +2,8 @@
 # Local modules
 from common import debug
 from common import database
-from common import telegram
-from common import telegram_utils
+from common.telegram import telegram
+from common.telegram import telegram_utils
 from common import text_utils
 from bible import bible_utils
 from tms import tms_utils
@@ -65,12 +65,12 @@ def resolve_tms_query(user, query):
                 passage = bible_utils.get_passage_raw(verse.reference, user.get_version())
                 verse_msg = tms_utils.format_verse(verse, passage)
 
-                telegram.send_msg(verse_msg, user.get_uid())
+                telegram_utils.send_msg(verse_msg, user.get_uid())
                 user.set_state(None)
             else:
-                telegram.send_msg(CMD_TMS_BADQUERY, user.get_uid())
+                telegram_utils.send_msg(CMD_TMS_BADQUERY, user.get_uid())
         else:
-            telegram.send_msg_keyboard(CMD_TMS_PROMPT, user.get_uid())
+            telegram_utils.send_msg_keyboard(CMD_TMS_PROMPT, user.get_uid())
             user.set_state(STATE_WAIT_TMS)
 
         return True

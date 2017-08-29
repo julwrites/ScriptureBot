@@ -3,10 +3,11 @@
 from google.appengine.ext import db
 
 # Local Modules
+from common import debug
 from common import chrono
 from common import database
 from common import text_utils
-from user import bibleuser_class
+from common.user import bibleuser_class
 
 
 # Functions for manipulation of user info
@@ -42,4 +43,17 @@ def set_profile(uid, uname, fname, lname):
 
 def get_user_query():
     return bibleuser_class.BibleUser.all()
+
+def for_each_user(fn):
+    debug.log('Running ' + str(fn) + ' for each user')
+    
+    # Read user database
+    query = get_user_query()
+    query.filter('active =', True)
+
+    try:
+        for user in query.run(batch_size=500):
+            fn(get_user(get_uid(user)))
+    except Exception as e:
+        debug.log(str(e))
 

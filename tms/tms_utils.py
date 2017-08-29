@@ -4,7 +4,7 @@ import random
 
 # Local modules
 from common import debug
-from common import telegram_utils
+from common.telegram import telegram_utils
 from common import text_utils
 
 from tms import tms_data

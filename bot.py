@@ -8,19 +8,20 @@ from google.appengine.api import urlfetch
 # Local modules
 from common import database
 from common import debug
-from common import telegram 
-from common import admin
+from common.telegram import telegram_utils
+from common import admin_utils
 from tms import tms_utils
 
-from user.bibleuser_utils import *
+from common.user.bibleuser_utils import *
 
 from common import bot_commands
 from common import admin_commands
 from bible import bible_commands
 from tms import tms_commands
-from user import bibleuser_commands
+from common.user import bibleuser_commands
 
-from common.constants import APP_BOT_URL
+from secret import BOT_ID
+APP_BOT_URL = "/" + BOT_ID
 
 CMD_START = '/start'
 CMD_START_PROMPT = 'Hello {}, I\'m Biblica! I hope I will be helpful as a tool for you to handle the Bible!'
@@ -46,7 +47,7 @@ def cmd_start(cmd, msg):
         debug.log_cmd(cmd)
         user = get_user(uid)
 
-        telegram.send_msg(CMD_START_PROMPT.format(user.get_name_string()), user.get_uid())
+        telegram_utils.send_msg(CMD_START_PROMPT.format(user.get_name_string()), user.get_uid())
         debug.log('Registering ' + user.get_name_string())
 
         return True
@@ -71,7 +72,7 @@ class BotHandler(webapp2.RequestHandler):
             if self.handle_state(msg):
                 return
 
-            telegram.send_msg('Hello I am bot', msg.get('from').get('id'))
+            telegram_utils.send_msg('Hello I am bot', msg.get('from').get('id'))
             
     def read_cmd(self, text):
         debug.log('Message Text: ' + text)
@@ -92,10 +93,8 @@ class BotHandler(webapp2.RequestHandler):
         uid = get_uid(msg.get('from').get('id'))
         user = get_user(uid)
 
-        if admin.access(uid):
-            debug.log('Welcome, Master')
-            if admin_commands.cmds(uid, cmd, msg):
-                return True
+        if admin_commands.cmds(uid, cmd, msg):
+            return True
 
         if user is None:
             debug.log('This user does not exist')

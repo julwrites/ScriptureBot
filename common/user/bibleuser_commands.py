@@ -2,12 +2,15 @@
 # Local modules
 from common import debug
 from common import database
-from common import telegram
-from common import telegram_utils
+
+from common.telegram import telegram
+from common.telegram import telegram_utils
 
 from common.constants import *
 
-from user.bibleuser_utils import *
+from common.user.bibleuser_utils import *
+
+from common.classes import action_class
 
 
 SUPPORTED_VERSIONS = ["NIV", "ESV", "KJV", "NASB", "NLT", "AMP"]
@@ -19,6 +22,33 @@ CMD_VERSION_BADQUERY = "I don't have this version!"
 
 STATE_WAIT_VERSION = "Waiting for version"
 STATE_VERSION_PROMPT = "I\"ve changed your version to {}!"
+
+class BibleUserAction(action_class.Action):
+    def identifier(self):
+        return '/version'
+
+    def resolve(self, user, msg):
+        text = msg.get('text').strip()
+        query = text.replace(self.identifier(), '')
+
+        if text_utils.is_valid(query):
+
+            for ver in SUPPORTED_VERSIONS:
+
+                if text_utils.text_compare(query, ver):
+                    user.set_version(ver)
+                    user.set_state(None)
+                    telegram_utils.send_close_keyboard(STATE_VERSION_PROMPT.format(ver), user.get_uid())
+                    break
+            else:
+                telegram_utils.send_msg(CMD_VERSION_BADQUERY, user.get_uid())
+
+        else:
+            telegram_utils.send_msg_keyboard(CMD_VERSION_PROMPT, user.get_uid(), SUPPORTED_VERSIONS)
+            user.set_state(self.identifier())
+
+        return True
+
 
 def cmds(user, cmd, msg):
     if user is None:
@@ -47,12 +77,12 @@ def resolve_version(user, query):
                 if text_utils.text_compare(query, ver):
                     user.set_version(ver)
                     user.set_state(None)
-                    telegram.send_close_keyboard(STATE_VERSION_PROMPT.format(ver), user.get_uid())
+                    telegram_utils.send_close_keyboard(STATE_VERSION_PROMPT.format(ver), user.get_uid())
                     break
             else:
-                telegram.send_msg(CMD_VERSION_BADQUERY, user.get_uid())
+                telegram_utils.send_msg(CMD_VERSION_BADQUERY, user.get_uid())
         else:
-            telegram.send_msg_keyboard(CMD_VERSION_PROMPT, user.get_uid(), SUPPORTED_VERSIONS)
+            telegram_utils.send_msg_keyboard(CMD_VERSION_PROMPT, user.get_uid(), SUPPORTED_VERSIONS)
             user.set_state(STATE_WAIT_VERSION)
         return True
     return False
