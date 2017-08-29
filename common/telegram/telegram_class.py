@@ -10,8 +10,8 @@ from common import debug
 
 from secret import BOT_ID
 
-JSON_HEADER = {'Content-Type': 'application/json;charset=utf-8'}
 TELEGRAM_URL = 'https://api.telegram_utils.org/bot' + BOT_ID
+JSON_HEADER = {'Content-Type': 'application/json;charset=utf-8'}
 
 TELEGRAM_URL_SEND = TELEGRAM_URL + '/sendMessage'
 
