@@ -3,7 +3,7 @@
 import string
 
 # Local modules
-import debug
+from common import debug
 
 def stringify(value):
     if value is None:

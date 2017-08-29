@@ -1,6 +1,6 @@
 
 # Local modules
-import debug
+from common import debug
 
 from secret import BOT_ADMIN
 
