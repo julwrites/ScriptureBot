@@ -9,7 +9,7 @@ from common import debug
 
 from secret import BOT_ID
 
-TELEGRAM_URL = 'https://api.telegram_utils.org/bot' + BOT_ID
+TELEGRAM_URL = 'https://api.telegram.org/bot' + BOT_ID
 TELEGRAM_URL_SEND = TELEGRAM_URL + '/sendMessage'
 
 JSON_HEADER = {'Content-Type': 'application/json;charset=utf-8'}
@@ -26,7 +26,7 @@ class TelegramPost():
         debug.log('Performing send: ' + data)
 
         try:
-            result = urlfetch.fetch(
+            urlfetch.fetch(
                 url=TELEGRAM_URL_SEND, 
                 payload=data,
                 method=urlfetch.POST, 
