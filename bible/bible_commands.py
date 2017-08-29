@@ -2,7 +2,6 @@
 # Local modules
 from common import debug
 from common import database
-from common.telegram import telegram
 from common.telegram import telegram_utils
 from common import text_utils
 

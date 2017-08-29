@@ -3,7 +3,7 @@
 from common import debug
 from common import admin_utils
 from common import database
-from common.telegram import telegram
+from common.telegram import telegram_utils
 
 from common.user.bibleuser_utils import *
 

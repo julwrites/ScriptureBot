@@ -3,7 +3,6 @@
 from common import debug
 from common import database
 
-from common.telegram import telegram
 from common.telegram import telegram_utils
 
 from common.constants import *
@@ -38,16 +37,24 @@ class BibleUserAction(action_class.Action):
                 if text_utils.text_compare(query, ver):
                     user.set_version(ver)
                     user.set_state(None)
-                    telegram_utils.send_close_keyboard(STATE_VERSION_PROMPT.format(ver), user.get_uid())
+
+                    telegram_utils.send_close_keyboard(\
+                    STATE_VERSION_PROMPT.format(ver), user.get_uid())
                     break
             else:
                 telegram_utils.send_msg(CMD_VERSION_BADQUERY, user.get_uid())
 
         else:
-            telegram_utils.send_msg_keyboard(CMD_VERSION_PROMPT, user.get_uid(), SUPPORTED_VERSIONS)
+            telegram_utils.send_msg_keyboard(\
+            CMD_VERSION_PROMPT, user.get_uid(), SUPPORTED_VERSIONS)
+
             user.set_state(self.identifier())
 
         return True
+
+ACTION = BibleUserAction
+def action():
+    return ACTION
 
 
 def cmds(user, cmd, msg):
