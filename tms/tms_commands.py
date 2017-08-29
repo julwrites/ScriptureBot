@@ -5,7 +5,7 @@ from common import database
 from common import telegram
 from common import telegram_utils
 from common import text_utils
-from bgw import bgw_utils
+from bible import bible_utils
 from tms import tms_utils
 
 CMD_TMS = "/tms"
@@ -51,7 +51,7 @@ def resolve_tms_query(user, query):
         if text_utils.is_valid(query): 
             debug.log("Resolving TMS Query")
 
-            verse_reference = bgw_utils.get_reference(query)
+            verse_reference = bible_utils.get_reference(query)
             if text_utils.is_valid(verse_reference):
                 verse = tms_utils.query_verse_by_reference(verse_reference)
             
@@ -62,7 +62,7 @@ def resolve_tms_query(user, query):
                 verse = tms_utils.query_verse_by_topic(query)
 
             if verse is not None:
-                passage = bgw_utils.get_passage_raw(verse.reference, user.get_version())
+                passage = bible_utils.get_passage_raw(verse.reference, user.get_version())
                 verse_msg = tms_utils.format_verse(verse, passage)
 
                 telegram.send_msg(verse_msg, user.get_uid())

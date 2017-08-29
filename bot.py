@@ -16,7 +16,7 @@ from user.bibleuser_utils import *
 
 from common import bot_commands
 from common import admin_commands
-from bgw import bgw_commands
+from bible import bible_commands
 from tms import tms_commands
 from user import bibleuser_commands
 
@@ -108,7 +108,7 @@ class BotHandler(webapp2.RequestHandler):
             if( \
             bibleuser_commands.cmds(user, cmd, msg) \
             or bot_commands.cmds(user, cmd, msg)    \
-            or bgw_commands.cmds(user, cmd, msg)    \
+            or bible_commands.cmds(user, cmd, msg)    \
             or tms_commands.cmds(user, cmd, msg)    \
             ):
                 return True
@@ -134,7 +134,7 @@ class BotHandler(webapp2.RequestHandler):
             if (    \
             bibleuser_commands.states(user, msg)    \
             or bot_commands.states(user, msg)       \
-            or bgw_commands.states(user, msg)       \
+            or bible_commands.states(user, msg)       \
             or tms_commands.states(user, msg)       \
             ):
                 return True

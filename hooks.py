@@ -2,19 +2,16 @@
 # Python std modules
 import webapp2
 
-# Local modules
-from common import debug
-from common import database
-from common import telegram
-from common import telegram_utils
-from bgw import bgw_utils
-
 from tms import tms_hooks
+from bible import bible_hooks
+from devo import devo_hooks
 
 from common.constants import APP_HOOKS_URL
 
 app = webapp2.WSGIApplication([
     # (url being accessed, class to call)
-    (APP_HOOKS_URL + tms_hooks.HOOK_DAILYTMS, tms_hooks.hooks)
+    (APP_HOOKS_URL + tms_hooks.HOOK_DAILYTMS, tms_hooks.hooks),
+    (APP_HOOKS_URL + bible_hooks.HOOK_DAILYVERSE, bible_hooks.hooks),
+    (APP_HOOKS_URL + devo_hooks.HOOK_DAILYDEVO, devo_hooks.hooks)
 ], debug=True)
  

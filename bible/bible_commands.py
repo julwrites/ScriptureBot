@@ -1,46 +1,82 @@
 
-# Python modules
-
 # Local modules
 from common import debug
 from common import database
 from common import telegram
 from common import telegram_utils
+from common import text_utils
 
-from tms import tms_utils
-from bgw import bgw_utils
+from bible import bible_utils
 
-CMD_VERSE = '/verse'
-CMD_VERSE_PROMPT = 'Please enter /verse followed by a bible reference or topic\n(I hope I know something about it)'
+CMD_PASSAGE = "/passage"
+CMD_PASSAGE_PROMPT = "Give me a Bible reference"
+CMD_PASSAGE_BADQUERY = "Sorry, I can't find this reference"
+STATE_WAIT_PASSAGE = "Waiting for Bible reference"
 
 def cmds(user, cmd, msg):
     if user is None:
         return False
 
-    debug.log('Running Bible commands')
+    debug.log("Running Bible Query commands")
 
-    return (    \
-    cmd_verse(user, cmd, msg) \
-    )
+    try:
+        result = (    \
+        cmd_passage(user, cmd, msg) \
+        )
+    except:
+        debug.log("Exception in Bible Query Commands")
+        return False
+    return result
 
-def cmd_verse(user, cmd, msg):
-    if cmd == CMD_VERSE:
-        debug.log_cmd(cmd)
+def states(user, msg):
+    if user is None:
+        return False
 
-        query = msg.get('text')
-        query = query.replace(cmd, '')
+    debug.log("Running Bible Query states")
+    
+    try:
+        result = ( \
+        state_passage(user, msg)       \
+        )
+    except:
+        debug.log("Exception in Bible Query States")
+        return False
+    return result
 
-        verse = tms_utils.query_verse_by_topic(query)
-        if verse is not None:
-            passage = bgw_utils.get_passage_raw(verse.get_reference(), user.get_version())
-            verse_msg = tms_utils.format_verse(verse, passage)
 
-            debug.log("Sending TMS verse: " + verse_msg)
+def resolve_passage_query(user, query):
+    if user is not None:
+        if text_utils.is_valid(query):
+            passage = bible_utils.get_passage(query, user.get_version())
 
-            telegram.send_msg(verse_msg, user.get_uid())
+            if passage is not None:
+                telegram.send_msg(passage, user.get_uid())
+                user.set_state(None)
+            else:
+                telegram.send_msg(CMD_PASSAGE_BADQUERY, user.get_uid())
         else:
             telegram.send_msg(CMD_PASSAGE_PROMPT, user.get_uid())
+            user.set_state(STATE_WAIT_PASSAGE)
 
         return True
-
     return False
+
+def cmd_passage(user, cmd, msg):
+    if user is not None:
+        if cmd == CMD_PASSAGE:
+            debug.log_cmd(cmd)
+
+            query = msg.get("text").strip()
+            query = query.replace(cmd, "")
+
+            return resolve_passage_query(user, query)
+    return False
+
+def state_passage(user, msg):
+    if user is not None and user.get_state() == STATE_WAIT_PASSAGE:
+        debug.log_state(STATE_WAIT_PASSAGE)
+        query = msg.get("text").strip()
+
+        return resolve_passage_query(user, query)
+    return False
+

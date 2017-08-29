@@ -5,7 +5,7 @@ from tms import tms_utils
 from common import debug
 from common import telegram
 from common import telegram_utils
-from bgw import bgw_utils
+from bible import bible_utils
 
 from user.bibleuser_utils import *
 
@@ -23,7 +23,7 @@ def resolve_dailytms(user):
     if user is not None:
         if user.has_subscription(SUBSCRIPTION_DAILYTMS):
             verse = tms_utils.get_random_verse()
-            passage = bgw_utils.get_passage_raw(verse.reference, user.get_version())
+            passage = bible_utils.get_passage_raw(verse.reference, user.get_version())
             verse_msg = tms_utils.format_verse(verse, passage)
 
             debug.log("Sending verse: " + verse_msg)

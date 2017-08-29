@@ -50,7 +50,7 @@ def fetch_bgw(query, version='NIV'):
     format_url = BGW_URL.format(format_ref, version)
 
     try:
-        debug.log('Attempting to fetch ' + query + ' ' + version + ' from ' + format_url)
+        debug.log('Attempting to fetch: ' + query + ' ' + version + ' from ' + format_url)
         result = urlfetch.fetch(format_url, deadline=constants.URL_TIMEOUT)
     except urlfetch_errors.Error as e:
         debug.log('Error fetching: ' + str(e))

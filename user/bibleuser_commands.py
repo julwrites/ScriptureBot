@@ -57,7 +57,6 @@ def resolve_version(user, query):
         return True
     return False
 
-
 def cmd_version(user, cmd, msg):
     if cmd == CMD_VERSION:
         debug.log_cmd(cmd)

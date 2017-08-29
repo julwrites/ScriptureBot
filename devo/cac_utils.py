@@ -27,37 +27,22 @@ REFERENCE = 'reference'
 VERSION = 'version'
 PASSAGE = 'passage'
 
-class BGWPassage():
-    def __init__(self, ref, ver, txt):
-        self.reference = ref
-        self.version = ver
-        self.text = txt
-
-    def get_reference(self):
-        return self.reference
-
-    def get_version(self):
-        return self.version
-
-    def get_text(self):
-        return self.text
-
-def extract_passage(html):
+def extract_devo(html):
     return html_utils.sub_html(html, BGW_PASSAGE_START, BGW_PASSAGE_END)
 
-def fetch_bgw(query, version='NIV'):
+def fetch_cac(query, version='NIV'):
     format_ref = urllib.quote(query.lower().strip())
-    format_url = BGW_URL.format(format_ref, version)
+    format_url = CAC_URL
 
     try:
-        debug.log('Attempting to fetch ' + query + ' ' + version + ' from ' + format_url)
+        debug.log('Attempting to fetch: ' + format_url)
         result = urlfetch.fetch(format_url, deadline=constants.URL_TIMEOUT)
     except urlfetch_errors.Error as e:
         debug.log('Error fetching: ' + str(e))
         return None
 
     # Format using BS4 into a form we can use for extraction
-    passage_html = extract_passage(result.content)
+    passage_html = extract_devo(result.content)
     if passage_html is None:
         return None
 
