@@ -2,7 +2,7 @@
 # Local modules
 from common import debug
 from common import chrono
-from common.telegram_utils.telegram_class import TelegramPost
+from common.telegram.telegram_class import TelegramPost
 
 from common.user.bibleuser_utils import *
 
