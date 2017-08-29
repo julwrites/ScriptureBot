@@ -41,13 +41,11 @@ class TelegramPost():
 
         self.format_data['text'] = msg
 
-    def add_keyboard(self, options=[], one_time=False):
-        debug.log('Adding keyboard for ' + str(id) + ': ' + str(options))
+    def add_keyboard(self, keyboard=[], one_time=False):
+        debug.log('Adding keyboard for ' + str(id) + ': ' + str(keyboard))
 
-        keyboard_data = format_keyboard(options)
-       
         self.format_data['reply_markup'] = {
-            'keyboard': keyboard_data,
+            'keyboard': keyboard,
             'one_time_keyboard': one_time
         }
     
@@ -58,12 +56,10 @@ class TelegramPost():
             'remove_keyboard': True
         }
 
-    def add_inline_keyboard(self, options=[]):
-        debug.log('Adding inline keyboard for ' + str(id) + ': ' + str(options))
-
-        keyboard_data = format_keyboard(options)
+    def add_inline_keyboard(self, keyboard=[]):
+        debug.log('Adding inline keyboard for ' + str(id) + ': ' + str(keyboard))
        
         self.format_data['reply_markup'] = {
-            'inline_keyboard': keyboard_data
+            'inline_keyboard': keyboard
         }
 
