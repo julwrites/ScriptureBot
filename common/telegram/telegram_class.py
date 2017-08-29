@@ -1,6 +1,5 @@
 # Python std modules
 import json
-import string
 
 # Google App Engine API
 from google.appengine.api import urlfetch
@@ -11,9 +10,9 @@ from common import debug
 from secret import BOT_ID
 
 TELEGRAM_URL = 'https://api.telegram_utils.org/bot' + BOT_ID
-JSON_HEADER = {'Content-Type': 'application/json;charset=utf-8'}
-
 TELEGRAM_URL_SEND = TELEGRAM_URL + '/sendMessage'
+
+JSON_HEADER = {'Content-Type': 'application/json;charset=utf-8'}
 
 class TelegramPost():
     def __init__(self, id):

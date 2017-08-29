@@ -1,12 +1,7 @@
 
 # Local modules
 from common import debug
-from common import chrono
 from common.telegram.telegram_class import TelegramPost
-
-from common.user.bibleuser_utils import *
-
-from common.constants import *
 
 TELEGRAM_MAX_LENGTH = 4096
 
