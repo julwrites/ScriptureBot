@@ -47,7 +47,7 @@ def cmd_store(user, cmd, msg):
 
 def state_store(user, msg):
     if user is not None and user.get_state() == BOT_STATE_WAIT_STORE:
-        debug.log_state(BOT_STATE_WAIT_STORE
+        debug.log_state(BOT_STATE_WAIT_STORE)
 
         payload = telegram_utils.parse_payload(msg)
         database.set_data(user.get_uid(), payload)
