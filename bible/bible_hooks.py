@@ -1,11 +1,13 @@
 
 # Local modules
-from tms import tms_utils
 from common import debug
 from common.telegram import telegram_utils
+from common.user import user_utils
+
+from tms import tms_utils
+
 from bible import bible_utils
 
-from common.user.bibleuser_utils import *
 
 HOOK_DAILYVERSE = "/dailyverse"
 SUBSCRIPTION_DAILYVERSE = "/*dailyverse*/"
@@ -33,5 +35,5 @@ def resolve_dailyverse(user):
 def hook_dailyverse():
     debug.log_hook(HOOK_DAILYVERSE)
 
-    for_each_user(resolve_dailyverse)
+    user_utils.for_each_user(resolve_dailyverse)
  

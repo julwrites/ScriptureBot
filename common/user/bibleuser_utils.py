@@ -3,8 +3,7 @@
 from google.appengine.ext import db
 
 # Local Modules
-from common import debug
-from common import text_utils
+from common import debug, text_utils
 from common.user import bibleuser_class
 
 

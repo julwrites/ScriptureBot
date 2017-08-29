@@ -3,8 +3,7 @@
 from google.appengine.ext import db
 
 # Local Modules
-from common import chrono
-from common import text_utils
+from common import chrono, text_utils
 
 class BibleUser(db.Model):
     username = db.StringProperty(indexed=False)

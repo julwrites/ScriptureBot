@@ -8,10 +8,8 @@ from google.appengine.api import urlfetch, urlfetch_errors
 from google.appengine.ext import db
 
 # Local modules
-from common import debug
-from common import html_utils
+from common import debug, html_utils, constants
 from common.telegram import telegram_utils
-from common import constants
 
 
 CAC_URL = 'https://cac.org/category/daily-meditations/'

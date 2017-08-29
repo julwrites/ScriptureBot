@@ -5,6 +5,7 @@ import string
 # Local modules
 from common import debug
 
+
 def stringify(value):
     if value is None:
         return ''
