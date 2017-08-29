@@ -15,22 +15,36 @@ CMD_RETRIEVE = '/retrieve'
 BOT_STATE_WAIT_STORE = 'Waiting For Store'
 
 def cmds(user, cmd, msg):
+    if user is None:
+        return False
+
     debug.log('Running bot commands')
 
-    return ( \
-    cmd_store(user, cmd, msg)           \
-    or cmd_retrieve(user, cmd, msg)     \
-    )
+    try:
+        result = (\
+        cmd_store(user, cmd, msg)           \
+        or cmd_retrieve(user, cmd, msg)     \
+        )
+    except:
+        debug.log("Exception in bot Commands")
+        return False
+    return result
 
-def states(msg):
-    # Read the user to echo back
-    uid = get_uid(msg.get('from').get('id'))
-    user = get_user(uid)
+def states(user, msg):
+    if user is None:
+        return False
 
-    return ( \
-    state_store(user, msg)       \
-    )
-
+    debug.log("Running Bot states")
+    
+    try:
+        result = ( \
+        state_store(user, msg)       \
+        )
+    except:
+        debug.log("Exception in Bot States")
+        return False
+    return result
+   
 def cmd_store(user, cmd, msg):
     if user is not None:
         if cmd == CMD_STORE:
