@@ -1,10 +1,10 @@
 
 # Local modules
 from common import debug, telegram
-from common import user
+from common.user import user_utils
 
-import tms
-import bible
+from tms import tms_utils
+from bible import bible_utils
 
 
 HOOK_DAILYVERSE = "/dailyverse"
@@ -21,17 +21,17 @@ def resolve_dailyverse(user_obj):
     if user_obj is not None:
         
         if user_obj.has_subscription(SUBSCRIPTION_DAILYVERSE):
-            verse = tms.utils.get_random_verse()
-            passage = bible.utils.get_passage_raw(verse.reference, user_obj.get_version())
-            verse_msg = tms.utils.format_verse(verse, passage)
+            verse = tms_utils.get_random_verse()
+            passage = bible_utils.get_passage_raw(verse.reference, user_obj.get_version())
+            verse_msg = tms_utils.format_verse(verse, passage)
 
             debug.log("Sending verse: " + verse_msg)
             
-            telegram.utils.send_msg(verse_msg, user_obj.get_uid())
+            telegram_utils.send_msg(verse_msg, user_obj.get_uid())
 
 
 def hook_dailyverse():
     debug.log_hook(HOOK_DAILYVERSE)
 
-    user.utils.for_each_user(resolve_dailyverse)
+    user_utils.for_each_user(resolve_dailyverse)
  

@@ -1,7 +1,7 @@
 
 # Local modules
 from common import debug, text_utils
-from common import telegram
+from common.telegram import telegram_utils
 from common.classes import action
 
 
@@ -19,7 +19,7 @@ class BibleUserAction(action.Action):
         return '/version'
 
     def resolve(self, user_obj, msg):
-        query = telegram.utils.strip_command(msg, self.identifier())
+        query = telegram_utils.strip_command(msg, self.identifier())
 
         if text_utils.is_valid(query):
 
@@ -29,14 +29,14 @@ class BibleUserAction(action.Action):
                     user_obj.set_version(ver)
                     user_obj.set_state(None)
 
-                    telegram.utils.send_close_keyboard(\
+                    telegram_utils.send_close_keyboard(\
                     STATE_VERSION_PROMPT.format(ver), user_obj.get_uid())
                     break
             else:
-                telegram.utils.send_msg(CMD_VERSION_BADQUERY, user_obj.get_uid())
+                telegram_utils.send_msg(CMD_VERSION_BADQUERY, user_obj.get_uid())
 
         else:
-            telegram.utils.send_msg_keyboard(\
+            telegram_utils.send_msg_keyboard(\
             CMD_VERSION_PROMPT, user_obj.get_uid(), SUPPORTED_VERSIONS)
 
             user_obj.set_state(self.identifier())

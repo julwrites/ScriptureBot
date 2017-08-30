@@ -1,4 +1,4 @@
-from tms.tms_class import TMSPack, TMSVerse
+from tms.tms_classes import TMSPack, TMSVerse
 
 
 LOA_NUM = 0

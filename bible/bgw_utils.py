@@ -85,13 +85,13 @@ def get_passage_raw(ref, version='NIV'):
     html_mark=BGW_PASSAGE_SELECT,
     tags=html_utils.HTML_HEADER_TAGS + html_utils.HTML_TEXT_TAGS)
 
-    html_utils.foreach_header(passage_soup, telegram.utils.bold)
+    html_utils.foreach_header(passage_soup, telegram_utils.bold)
 
     # Special formatting for chapter and verse
     for tag in soup.select('.chapternum'):
-        tag.string = telegram.utils.bold(tag.text)
+        tag.string = telegram_utils.bold(tag.text)
     for tag in soup.select('.versenum'):
-        tag.string = telegram.utils.italics(html_utils.to_sup(tag.text))
+        tag.string = telegram_utils.italics(html_utils.to_sup(tag.text))
 
     # Only at the last step do we do other destructive formatting
     soup = html_utils.strip_soup(soup=passage_soup)
@@ -100,7 +100,7 @@ def get_passage_raw(ref, version='NIV'):
     for tag in soup(class_=BGW_PASSAGE_SELECT):
         passage_blocks.append(tag.text)
 
-    passage_text = telegram.utils.join(passage_blocks, '\n\n')
+    passage_text = telegram_utils.join(passage_blocks, '\n\n')
 
     debug.log("Finished parsing soup")
 
@@ -112,8 +112,8 @@ def get_passage(ref, version='NIV'):
     if passage is None:
         return None
 
-    passage_format = telegram.utils.bold(passage.get_reference())
-    passage_format += ' ' + telegram.utils.bracket(passage.get_version())
+    passage_format = telegram_utils.bold(passage.get_reference())
+    passage_format += ' ' + telegram_utils.bracket(passage.get_version())
     passage_format += '\n\n' + passage.get_text()
 
     return passage_format

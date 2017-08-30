@@ -1,5 +1,5 @@
 
-from tms.tms_class import TMSPack, TMSVerse
+from tms.tms_classes import TMSPack, TMSVerse
 
 TMS_A_KEY = "TMS_A"
 TMS_B_KEY = "TMS_B"

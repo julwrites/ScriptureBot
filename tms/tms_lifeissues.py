@@ -1,5 +1,5 @@
 
-from tms.tms_class import TMSPack, TMSVerse
+from tms.tms_classes import TMSPack, TMSVerse
 
 LIFE_ISSUES_ANGER_KEY = "Anger"
 LIFE_ISSUES_SIN_KEY = "Sin"

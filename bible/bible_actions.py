@@ -3,7 +3,7 @@
 from common import debug, text_utils, telegram
 from common.classes import action
 
-import bible
+from bible import bible_utils
 
 CMD_PASSAGE = "/passage"
 CMD_PASSAGE_PROMPT = "Give me a Bible reference"
@@ -15,18 +15,18 @@ class BiblePassageAction(action.Action):
         return '/passage'
 
     def resolve(self, user_obj, msg):
-        query = telegram.utils.strip_command(msg, self.identifier())
+        query = telegram_utils.strip_command(msg, self.identifier())
 
         if text_utils.is_valid(query):
-            passage = bible.utils.get_passage(query, user_obj.get_version())
+            passage = bible_utils.get_passage(query, user_obj.get_version())
 
             if passage is not None:
-                telegram.utils.send_msg(passage, user_obj.get_uid())
+                telegram_utils.send_msg(passage, user_obj.get_uid())
                 user_obj.set_state(None)
             else:
-                telegram.utils.send_msg(CMD_PASSAGE_BADQUERY, user_obj.get_uid())
+                telegram_utils.send_msg(CMD_PASSAGE_BADQUERY, user_obj.get_uid())
         else:
-            telegram.utils.send_msg(CMD_PASSAGE_PROMPT, user_obj.get_uid())
+            telegram_utils.send_msg(CMD_PASSAGE_PROMPT, user_obj.get_uid())
 
             user_obj.set_state(self.identifier())
 

@@ -1,5 +1,5 @@
 
-from tms.tms_class import TMSPack
+from tms.tms_classes import TMSPack
 
 from tms import tms_loa
 from tms import tms_60

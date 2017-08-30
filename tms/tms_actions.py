@@ -1,12 +1,12 @@
 
 # Local modules
 from common import debug, text_utils
-from common import telegram
+from common.telegram import telegram_utils
 from common.classes import action
 
-import bible
+from bible import bible_utils
 
-import tms
+from tms import tms_utils
 
 
 CMD_TMS = "/tms"
@@ -18,31 +18,31 @@ class TMSAction(action.Action):
         return '/tms'
 
     def resolve(self, user_obj, msg):
-        query = telegram.utils.strip_command(msg, self.identifier())
+        query = telegram_utils.strip_command(msg, self.identifier())
 
         if text_utils.is_valid(query): 
             verse = None
 
-            verse_reference = bible.utils.get_reference(query)
+            verse_reference = bible_utils.get_reference(query)
             if text_utils.is_valid(verse_reference):
-                verse = tms.utils.query_verse_by_reference(verse_reference)
+                verse = tms_utils.query_verse_by_reference(verse_reference)
             
             if verse is None:
-                verse = tms.utils.query_verse_by_pack_pos(query)
+                verse = tms_utils.query_verse_by_pack_pos(query)
 
             if verse is None:
-                verse = tms.utils.query_verse_by_topic(query)
+                verse = tms_utils.query_verse_by_topic(query)
 
             if verse is not None:
-                passage = bible.utils.get_passage_raw(verse.reference, user_obj.get_version())
-                verse_msg = tms.utils.format_verse(verse, passage)
+                passage = bible_utils.get_passage_raw(verse.reference, user_obj.get_version())
+                verse_msg = tms_utils.format_verse(verse, passage)
 
-                telegram.utils.send_msg(verse_msg, user_obj.get_uid())
+                telegram_utils.send_msg(verse_msg, user_obj.get_uid())
                 user_obj.set_state(None)
             else:
-                telegram.utils.send_msg(CMD_TMS_BADQUERY, user_obj.get_uid())
+                telegram_utils.send_msg(CMD_TMS_BADQUERY, user_obj.get_uid())
         else:
-            telegram.utils.send_msg_keyboard(CMD_TMS_PROMPT, user_obj.get_uid())
+            telegram_utils.send_msg_keyboard(CMD_TMS_PROMPT, user_obj.get_uid())
 
             user_obj.set_state(self.identifier())
 
