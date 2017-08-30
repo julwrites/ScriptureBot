@@ -15,11 +15,14 @@ TELEGRAM_URL_SEND = TELEGRAM_URL + '/sendMessage'
 JSON_HEADER = {'Content-Type': 'application/json;charset=utf-8'}
 
 class TelegramPost():
-    def __init__(self, id):
+    def __init__(self, user_id):
         self.format_data = {
-            'chat_id': str(id), 
+            'chat_id': str(user_id), 
             'parse_mode': 'Markdown'
         }
+
+    def uid(self):
+        return self.format_data.get('chat_id')
 
     def send(self):
         data = json.dumps(self.format_data)
@@ -36,12 +39,12 @@ class TelegramPost():
             debug.log('Send failed! ' + TELEGRAM_URL_SEND + ', ' + data)
 
     def add_text(self, msg):
-        debug.log('Adding text for ' + str(id) + ': ' + msg)
+        debug.log('Adding text for ' + self.uid() + ': ' + msg)
 
         self.format_data['text'] = msg
 
     def add_keyboard(self, keyboard=[], one_time=False):
-        debug.log('Adding keyboard for ' + str(id) + ': ' + str(keyboard))
+        debug.log('Adding keyboard for ' + self.uid() + ': ' + str(keyboard))
 
         self.format_data['reply_markup'] = {
             'keyboard': keyboard,
@@ -49,14 +52,14 @@ class TelegramPost():
         }
     
     def close_keyboard(self):
-        debug.log('Removing keyboard for ' + str(id))
+        debug.log('Removing keyboard for ' + self.uid())
 
         self.format_data['reply_markup'] = {
             'remove_keyboard': True
         }
 
     def add_inline_keyboard(self, keyboard=[]):
-        debug.log('Adding inline keyboard for ' + str(id) + ': ' + str(keyboard))
+        debug.log('Adding inline keyboard for ' + self.uid() + ': ' + str(keyboard))
        
         self.format_data['reply_markup'] = {
             'inline_keyboard': keyboard
