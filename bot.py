@@ -9,7 +9,7 @@ from google.appengine.api import urlfetch
 from common import debug
 from common import telegram
 from common import user
-from common.admin import admin_utils, admin_commands
+from common import admin
 
 import bible
 import tms
@@ -65,7 +65,7 @@ class BotHandler(webapp2.RequestHandler):
 
             actions = tms.actions.get() + bible.actions.get() + user.actions.get()
 
-            if action.execute() for action in actions:
+            if len([action.execute(user, msg) for action in actions]) > 0:
                 return
 
             telegram.utils.send_msg('Hello I am bot', msg.get('from').get('id'))

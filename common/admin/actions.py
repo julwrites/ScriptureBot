@@ -1,8 +1,9 @@
 
 # Local modules
-from common import debug, user
+from common import debug
+from common import user
 from common import telegram
-from common.admin import admin_utils
+from common import admin
 
 
 ADMIN_DUMP = '/dump'
@@ -14,7 +15,7 @@ ADMIN_RAGNAROK = '/ragnarok'
 def cmds(uid, cmd, msg):
     debug.log('Running admin commands')
 
-    if admin_utils.access(uid):
+    if admin.utils.access(uid):
         debug.log('Welcome, Master')
         try:
             return ( \
@@ -29,7 +30,7 @@ def cmds(uid, cmd, msg):
 
 # Debug Commands
 def cmd_dump(uid, cmd, msg):
-    if admin_utils.access(uid) and cmd == ADMIN_DUMP:
+    if admin.utils.access(uid) and cmd == ADMIN_DUMP:
         debug.log_cmd(cmd)
 
         # Read user database
@@ -51,7 +52,7 @@ def cmd_dump(uid, cmd, msg):
     return False
 
 def cmd_doggle(uid, cmd, msg):
-    if admin_utils.access(uid) and cmd == ADMIN_DEBUG:
+    if admin.utils.access(uid) and cmd == ADMIN_DEBUG:
         debug.log_cmd(cmd)
 
         debug.toggle()
@@ -61,7 +62,7 @@ def cmd_doggle(uid, cmd, msg):
     return False
 
 def cmd_clean(uid, cmd, msg):
-    if admin_utils.access(uid) and cmd == ADMIN_CLEAN:
+    if admin.utils.access(uid) and cmd == ADMIN_CLEAN:
         debug.log_cmd(cmd)
 
         # Read user database
@@ -93,7 +94,7 @@ def cmd_clean(uid, cmd, msg):
     return False
 
 def cmd_ragnarok(uid, cmd, msg):
-    if admin_utils.access(uid) and cmd == ADMIN_RAGNAROK:
+    if admin.utils.access(uid) and cmd == ADMIN_RAGNAROK:
         debug.log_cmd(cmd)
 
         # Read user database
