@@ -4,8 +4,7 @@ from common import debug
 from common.telegram import telegram_utils
 from common.user import user_utils
 
-from tms import tms_utils
-
+import tms
 import bible
 
 
@@ -23,9 +22,9 @@ def resolve_dailyverse(user):
     if user is not None:
         
         if user.has_subscription(SUBSCRIPTION_DAILYVERSE):
-            verse = tms_utils.get_random_verse()
+            verse = tms.utils.get_random_verse()
             passage = bible.utils.get_passage_raw(verse.reference, user.get_version())
-            verse_msg = tms_utils.format_verse(verse, passage)
+            verse_msg = tms.utils.format_verse(verse, passage)
 
             debug.log("Sending verse: " + verse_msg)
             

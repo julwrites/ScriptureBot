@@ -13,7 +13,7 @@ from common.user import bibleuser_commands, user_utils
 
 import bible
 
-from tms import tms_commands
+import tms
 
 
 from secret import BOT_ID
@@ -64,11 +64,9 @@ class BotHandler(webapp2.RequestHandler):
             uid = user_utils.get_uid(msg.get('from').get('id'))
             user = user_utils.get_user(uid)
 
-            if (\
-               bibleuser_commands.get_action().execute(user, msg)   \
-            or tms_commands.get_action().execute(user, msg)         \
-            or bible.actions.get().execute(user, msg)       \
-            ):
+            actions = tms.actions.get() + bible.actions.get() + user.actions.get()
+
+            if action.execute() for action in actions:
                 return
 
             telegram_utils.send_msg('Hello I am bot', msg.get('from').get('id'))

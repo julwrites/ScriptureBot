@@ -6,7 +6,7 @@ from common.action import action_class
 
 import bible
 
-from tms import tms_utils
+import tms
 
 
 CMD_TMS = "/tms"
@@ -25,17 +25,17 @@ class TMSAction(action_class.Action):
 
             verse_reference = bible.utils.get_reference(query)
             if text_utils.is_valid(verse_reference):
-                verse = tms_utils.query_verse_by_reference(verse_reference)
+                verse = tms.utils.query_verse_by_reference(verse_reference)
             
             if verse is None:
-                verse = tms_utils.query_verse_by_pack_pos(query)
+                verse = tms.utils.query_verse_by_pack_pos(query)
 
             if verse is None:
-                verse = tms_utils.query_verse_by_topic(query)
+                verse = tms.utils.query_verse_by_topic(query)
 
             if verse is not None:
                 passage = bible.utils.get_passage_raw(verse.reference, user.get_version())
-                verse_msg = tms_utils.format_verse(verse, passage)
+                verse_msg = tms.utils.format_verse(verse, passage)
 
                 telegram_utils.send_msg(verse_msg, user.get_uid())
                 user.set_state(None)
@@ -49,6 +49,7 @@ class TMSAction(action_class.Action):
         return True
 
 
-ACTION = TMSAction()
-def get_action():
-    return ACTION
+def get():
+    return [
+        TMSAction()
+    ]
