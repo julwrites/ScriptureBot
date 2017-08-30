@@ -65,8 +65,9 @@ class BotHandler(webapp2.RequestHandler):
 
             actions = tms.actions.get() + bible.actions.get() + user.actions.get()
 
-            if len([action.execute(user, msg) for action in actions]) > 0:
-                return
+            for action in actions:
+                if action.execute(user, msg):
+                    return
 
             telegram.utils.send_msg('Hello I am bot', msg.get('from').get('id'))
 
