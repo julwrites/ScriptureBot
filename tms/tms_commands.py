@@ -51,7 +51,7 @@ class TMSAction():
 
 
 ACTION = TMSAction()
-def action():
+def get_action():
     return ACTION
 
 def cmds(user, cmd, msg):
