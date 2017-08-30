@@ -13,8 +13,6 @@ CMD_TMS = "/tms"
 CMD_TMS_PROMPT = "Give me a Verse reference, or Pack and Verse number\n(P.S. you can even try giving me a topic)"
 CMD_TMS_BADQUERY = "I can't find anything related to this, try another one?"
 
-STATE_WAIT_TMS = "Waiting for TMS query"
-
 class TMSAction(action_class.Action):
     def identifier(self):
         return '/tms'
@@ -45,7 +43,8 @@ class TMSAction(action_class.Action):
                 telegram_utils.send_msg(CMD_TMS_BADQUERY, user.get_uid())
         else:
             telegram_utils.send_msg_keyboard(CMD_TMS_PROMPT, user.get_uid())
-            user.set_state(STATE_WAIT_TMS)
+
+            user.set_state(self.identifier())
 
         return True
 

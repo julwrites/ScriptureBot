@@ -9,7 +9,6 @@ from bible import bible_utils
 CMD_PASSAGE = "/passage"
 CMD_PASSAGE_PROMPT = "Give me a Bible reference"
 CMD_PASSAGE_BADQUERY = "Sorry, I can't find this reference"
-STATE_WAIT_PASSAGE = "Waiting for Bible reference"
 
 
 class BibleAction(action_class.Action):
@@ -29,7 +28,8 @@ class BibleAction(action_class.Action):
                 telegram_utils.send_msg(CMD_PASSAGE_BADQUERY, user.get_uid())
         else:
             telegram_utils.send_msg(CMD_PASSAGE_PROMPT, user.get_uid())
-            user.set_state(STATE_WAIT_PASSAGE)
+
+            user.set_state(self.identifier())
 
         return True
 
