@@ -13,7 +13,7 @@ CMD_VERSION_PROMPT = "Please select a version of your choosing\n\
 CMD_VERSION_BADQUERY = "I don't have this version!"
 
 STATE_WAIT_VERSION = "Waiting for version"
-STATE_VERSION_PROMPT = "I\"ve changed your version to {}!"
+STATE_VERSION_PROMPT = "I\'ve changed your version to {}!"
 
 class BibleUserAction(action_class.Action):
     def identifier(self):
