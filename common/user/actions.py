@@ -43,6 +43,7 @@ class BibleUserAction(action.Action):
 
         return True
 
-ACTION = BibleUserAction()
-def get_action():
-    return ACTION
+def get():
+    return [
+        BibleUserAction()
+    ]
