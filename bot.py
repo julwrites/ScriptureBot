@@ -22,7 +22,7 @@ CMD_START = '/start'
 CMD_START_PROMPT = 'Hello {}, I\'m Biblica! I hope I will be helpful as a tool for you to handle the Bible!'
 
 # This is a special command, specialized to this bot
-def cmd_start(cmd, msg):
+def start(msg):
     # Register User
     user_json = msg.get('from')
     user_id = user.utils.get_uid(user_json.get('id'))
@@ -39,7 +39,7 @@ def cmd_start(cmd, msg):
 
     # If this is the user's first time registering
     if user_obj is None:
-        debug.log_cmd(cmd)
+        debug.log_cmd('New user!')
         user_obj = user.utils.get_user(user_id)
 
         telegram.utils.send_msg(CMD_START_PROMPT.format(user_obj.get_name_string()), user_obj.get_uid())
@@ -58,6 +58,10 @@ class BotHandler(webapp2.RequestHandler):
 
         if data.get('message'):
             msg = data.get('message')
+
+            # TODO: Replace?
+            # Runs to register new users
+            start(msg)
 
             # Read the user to echo back
             user_id = user.utils.get_uid(msg.get('from').get('id'))

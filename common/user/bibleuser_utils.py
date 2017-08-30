@@ -16,11 +16,11 @@ def get_user(user_id):
     user_obj = db.get(get_key('BibleUser', user_id))
     return user_obj
 
-def get_uid(user_obj):
+def get_uid(user_id_obj):
     try:
-        user_id = user_obj.get_uid()
+        user_id = user_id_obj.get_uid()
     except AttributeError:
-        user_id = user_obj
+        user_id = user_id_obj
 
     return user_id
 
