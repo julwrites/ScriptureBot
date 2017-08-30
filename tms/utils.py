@@ -4,7 +4,7 @@ import random
 
 # Local modules
 from common import debug, text_utils
-from common.telegram import telegram_utils
+from common import telegram
 
 from tms import tms_data
 
@@ -181,11 +181,11 @@ def format_verse(verse, passage):
         verse_prep = []
 
         verse_prep.append(get_names(verse.get_pack()) + ' ' + str(verse.get_position()))
-        verse_prep.append(telegram_utils.bold(verse.get_title()))
-        verse_prep.append(telegram_utils.bold(verse.reference) + ' ' \
-                        + telegram_utils.bracket(passage.get_version()))
+        verse_prep.append(telegram.utils.bold(verse.get_title()))
+        verse_prep.append(telegram.utils.bold(verse.reference) + ' ' \
+                        + telegram.utils.bracket(passage.get_version()))
         verse_prep.append(passage.get_text())
-        verse_prep.append(telegram_utils.bold(verse.reference))
+        verse_prep.append(telegram.utils.bold(verse.reference))
 
-        return telegram_utils.join(verse_prep, '\n\n')
+        return telegram.utils.join(verse_prep, '\n\n')
     return None

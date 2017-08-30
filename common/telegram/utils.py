@@ -1,7 +1,7 @@
 
 # Local modules
 from common import debug
-from common.telegram.telegram_class import TelegramPost
+from common.telegram.classes import TelegramPost
 
 TELEGRAM_MAX_LENGTH = 4096
 

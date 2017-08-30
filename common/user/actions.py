@@ -1,8 +1,8 @@
 
 # Local modules
 from common import debug, text_utils
-from common.telegram import telegram_utils
-from common.action import action_class
+from common import telegram
+from common.classes import action
 
 
 SUPPORTED_VERSIONS = ["NIV", "ESV", "KJV", "NASB", "NLT", "AMP"]
@@ -14,12 +14,12 @@ CMD_VERSION_BADQUERY = "I don't have this version!"
 
 STATE_VERSION_PROMPT = "I\'ve changed your version to {}!"
 
-class BibleUserAction(action_class.Action):
+class BibleUserAction(action.Action):
     def identifier(self):
         return '/version'
 
     def resolve(self, user, msg):
-        query = telegram_utils.strip_command(msg, self.identifier())
+        query = telegram.utils.strip_command(msg, self.identifier())
 
         if text_utils.is_valid(query):
 
@@ -29,14 +29,14 @@ class BibleUserAction(action_class.Action):
                     user.set_version(ver)
                     user.set_state(None)
 
-                    telegram_utils.send_close_keyboard(\
+                    telegram.utils.send_close_keyboard(\
                     STATE_VERSION_PROMPT.format(ver), user.get_uid())
                     break
             else:
-                telegram_utils.send_msg(CMD_VERSION_BADQUERY, user.get_uid())
+                telegram.utils.send_msg(CMD_VERSION_BADQUERY, user.get_uid())
 
         else:
-            telegram_utils.send_msg_keyboard(\
+            telegram.utils.send_msg_keyboard(\
             CMD_VERSION_PROMPT, user.get_uid(), SUPPORTED_VERSIONS)
 
             user.set_state(self.identifier())

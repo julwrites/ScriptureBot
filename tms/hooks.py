@@ -2,8 +2,8 @@
 
 # Local modules
 from common import debug
-from common.telegram import telegram_utils
-from common.user import user_utils
+from common import telegram
+from common import user
 
 import tms
 import bible
@@ -28,10 +28,10 @@ def resolve_dailytms(user):
 
             debug.log("Sending verse: " + verse_msg)
             
-            telegram_utils.send_msg(verse_msg, user.get_uid())
+            telegram.utils.send_msg(verse_msg, user.get_uid())
 
 def hook_dailytms():
     debug.log_hook(HOOK_DAILYTMS)
 
-    user_utils.for_each_user(resolve_dailytms)
+    user.utils.for_each_user(resolve_dailytms)
  

@@ -1,8 +1,8 @@
 
 # Local modules
-from common import debug
+from common import debug, user
+from common import telegram
 from common.admin import admin_utils
-from common.telegram import telegram_utils
 
 
 ADMIN_DUMP = '/dump'
@@ -33,16 +33,16 @@ def cmd_dump(uid, cmd, msg):
         debug.log_cmd(cmd)
 
         # Read user database
-        query = get_user_query()
+        query = user.utils.get_user_query()
         query.filter('active =', True)
 
         try:
             user_list = []
             for user in query.run(batch_size=10):
-                dbUser = get_user(get_uid(user))
+                dbUser = user.utils.get_user(user.utils.get_uid(user))
                 user_list.append(dbUser.get_description())
             user_list_msg = '\n'.join(user_list)
-            telegram_utils.send_msg(user_list_msg, uid)
+            telegram.utils.send_msg(user_list_msg, uid)
         except Exception as e:
             debug.log(str(e))
 
@@ -65,21 +65,21 @@ def cmd_clean(uid, cmd, msg):
         debug.log_cmd(cmd)
 
         # Read user database
-        query = get_user_query
+        query = user.utils.get_user_query()
 
         try:
             for user in query.run():
-                dbUser = get_user(get_uid(user))
+                dbUser = user.utils.get_user(user.utils.get_uid(user))
                 if dbUser.get_name_string() == '-':
                     debug.log('Deleting: ' + dbUser.get_uid())
                     dbUser.delete()
 
             for user in query.run():
-                dbUser = get_user(get_uid(user))
+                dbUser = user.utils.get_user(user.utils.get_uid(user))
                 count = 0
 
                 for dup in query.run():
-                    dbDup = get_user(get_uid(dup))
+                    dbDup = user.utils.get_user(user.utils.get_uid(dup))
                     if dbDup.get_uid() == user.get_uid():
                         count += 1
                         if count > 1:
@@ -97,17 +97,17 @@ def cmd_ragnarok(uid, cmd, msg):
         debug.log_cmd(cmd)
 
         # Read user database
-        query = get_user_query
+        query = user.utils.get_user_query()
 
         try:
             for user in query.run(batch_size=500):
-                dbUser = get_user(get_uid(user))
+                dbUser = user.utils.get_user(user.utils.get_uid(user))
                 debug.log('Deleting: ' + dbUser.get_uid())
                 dbUser.delete()
         except Exception as e:
             debug.log(str(e))
 
-        telegram_utils.send_msg("Baboomz~", uid)
+        telegram.utils.send_msg("Baboomz~", uid)
         
         return True
     
