@@ -8,7 +8,8 @@ from google.appengine.api import urlfetch, urlfetch_errors
 from google.appengine.ext import db
 
 # Local modules
-from common import debug, html_utils, constants, telegram
+from common import debug, html_utils, constants
+from common.telegram import telegram_utils
 
 
 BGW_URL = 'http://www.biblegateway.com/passage/?search={}&version={}&interface=print'

@@ -1,7 +1,8 @@
 
 # Local modules
-from common import debug, text_utils, telegram
+from common import debug, text_utils
 from common.classes import action
+from common.telegram import telegram_utils
 
 from bible import bible_utils
 
