@@ -30,8 +30,8 @@ def format_keyboard(options=[]):
 
     return keyboard_data
 
-def send_msg(msg, id):
-    debug.log('Sending message to ' + str(id) + ': ' +  msg)
+def send_msg(msg, user_id):
+    debug.log('Sending message to ' + str(user_id) + ': ' +  msg)
 
     last = None
     chunks = []
@@ -48,12 +48,12 @@ def send_msg(msg, id):
     chunks.append(msg[last:])
 
     for chunk in chunks:
-        post = TelegramPost(id)
+        post = TelegramPost(user_id)
         post.add_text(chunk)
         post.send()
 
-def send_msg_keyboard(msg, id, options=[], inline=False, one_time=False):
-    post = TelegramPost(id)
+def send_msg_keyboard(msg, user_id, options=[], inline=False, one_time=False):
+    post = TelegramPost(user_id)
     post.add_text(msg)
     if inline:
         post.add_inline_keyboard(format_keyboard(options))
@@ -61,8 +61,8 @@ def send_msg_keyboard(msg, id, options=[], inline=False, one_time=False):
         post.add_keyboard(format_keyboard(options), one_time)
     post.send()
 
-def send_close_keyboard(msg, id):
-    post = TelegramPost(id)
+def send_close_keyboard(msg, user_id):
+    post = TelegramPost(user_id)
     post.add_text(msg)
     post.close_keyboard()
     post.send()
