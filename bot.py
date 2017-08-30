@@ -70,67 +70,9 @@ class BotHandler(webapp2.RequestHandler):
             or bible_commands.get_action().execute(user, msg)       \
             ):
                 return
-            
+
             telegram_utils.send_msg('Hello I am bot', msg.get('from').get('id'))
-            
-    def read_cmd(self, text):
-        debug.log('Message Text: ' + text)
 
-        if text.startswith("/"):
-            cmd_end = text.find(' ')
-            if cmd_end == -1:
-                return text
-
-            return text[:cmd_end]
-        return None
-
-    def handle_command(self, cmd, msg):
-        debug.log('Possible command detected: ' + cmd)
-
-        # Read the user to echo back
-        uid = user_utils.get_uid(msg.get('from').get('id'))
-        user = user_utils.get_user(uid)
-
-        if admin_commands.cmds(uid, cmd, msg):
-            return True
-
-        if user is None:
-            debug.log('This user does not exist')
-
-        if cmd_start(cmd, msg):
-            return True
-        else:
-            debug.log('Running all commands')
-
-            if( \
-            bible_commands.cmds(user, cmd, msg)    \
-            ):
-                return True
-
-        return False
-
-    def handle_state(self, msg):
-        debug.log('Handling state reaction')
-
-        # Read the user to echo back
-        uid = user_utils.get_uid(msg.get('from').get('id'))
-        user = user_utils.get_user(uid)
-
-        if admin_utils.access(uid):
-            debug.log('Welcome, Master')
-
-        if user is None:
-            debug.log('This user does not exist')
-        else:
-            debug.log('Running all states')
-            
-            # States
-            if (    \
-            bible_commands.states(user, msg)       \
-            ):
-                return True
-
-        return False
 
 app = webapp2.WSGIApplication([
     (APP_BOT_URL, BotHandler),
