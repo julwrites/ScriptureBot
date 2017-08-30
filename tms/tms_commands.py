@@ -2,6 +2,7 @@
 # Local modules
 from common import debug, text_utils
 from common.telegram import telegram_utils
+from common.action import action_class
 
 from bible import bible_utils
 
@@ -14,7 +15,7 @@ CMD_TMS_BADQUERY = "I can't find anything related to this, try another one?"
 
 STATE_WAIT_TMS = "Waiting for TMS query"
 
-class TMSAction():
+class TMSAction(action_class.Action):
     def identifier(self):
         return '/tms'
 
