@@ -7,7 +7,7 @@ from common.user import user_utils
 
 from tms import tms_utils
 
-from bible import bible_utils
+import bible
 
 
 HOOK_DAILYTMS = '/dailytms'
@@ -24,7 +24,7 @@ def resolve_dailytms(user):
     if user is not None:
         if user.has_subscription(SUBSCRIPTION_DAILYTMS):
             verse = tms_utils.get_random_verse()
-            passage = bible_utils.get_passage_raw(verse.reference, user.get_version())
+            passage = bible.utils.get_passage_raw(verse.reference, user.get_version())
             verse_msg = tms_utils.format_verse(verse, passage)
 
             debug.log("Sending verse: " + verse_msg)

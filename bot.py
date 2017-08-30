@@ -11,7 +11,7 @@ from common.telegram import telegram_utils
 from common.admin import admin_utils, admin_commands
 from common.user import bibleuser_commands, user_utils
 
-from bible import bible_commands
+import bible
 
 from tms import tms_commands
 
@@ -67,7 +67,7 @@ class BotHandler(webapp2.RequestHandler):
             if (\
                bibleuser_commands.get_action().execute(user, msg)   \
             or tms_commands.get_action().execute(user, msg)         \
-            or bible_commands.get_action().execute(user, msg)       \
+            or bible.actions.get().execute(user, msg)       \
             ):
                 return
 
