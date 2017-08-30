@@ -23,7 +23,6 @@ class TMSAction(action_class.Action):
         query = telegram_utils.strip_command(msg, self.identifier())
 
         if text_utils.is_valid(query): 
-            debug.log("Resolving TMS Query")
             verse = None
 
             verse_reference = bible_utils.get_reference(query)
