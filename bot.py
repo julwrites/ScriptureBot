@@ -64,20 +64,13 @@ class BotHandler(webapp2.RequestHandler):
             uid = user_utils.get_uid(msg.get('from').get('id'))
             user = user_utils.get_user(uid)
 
-            if (
+            if (\
                bibleuser_commands.get_action().execute(user, msg)   \
-            or tms_commands.get_action().execute(user, msg)
+            or tms_commands.get_action().execute(user, msg)         \
+            or bible_commands.get_action().execute(user, msg)       \
             ):
                 return
-
-            cmd = self.read_cmd(msg.get('text'))
-            if cmd is not None:
-                if self.handle_command(cmd, msg):
-                    return
-
-            if self.handle_state(msg):
-                return
-
+            
             telegram_utils.send_msg('Hello I am bot', msg.get('from').get('id'))
             
     def read_cmd(self, text):

@@ -2,6 +2,7 @@
 # Local modules
 from common import debug, text_utils
 from common.telegram import telegram_utils
+from common.action import action_class
 
 from bible import bible_utils
 
@@ -10,39 +11,14 @@ CMD_PASSAGE_PROMPT = "Give me a Bible reference"
 CMD_PASSAGE_BADQUERY = "Sorry, I can't find this reference"
 STATE_WAIT_PASSAGE = "Waiting for Bible reference"
 
-def cmds(user, cmd, msg):
-    if user is None:
-        return False
 
-    debug.log("Running Bible Query commands")
+class BibleAction(action_class.Action):
+    def identifier(self):
+        return '/passage'
 
-    try:
-        result = (    \
-        cmd_passage(user, cmd, msg) \
-        )
-    except:
-        debug.log("Exception in Bible Query Commands")
-        return False
-    return result
+    def resolve(self, user, msg):
+        query = telegram_utils.strip_command(msg, self.identifier())
 
-def states(user, msg):
-    if user is None:
-        return False
-
-    debug.log("Running Bible Query states")
-    
-    try:
-        result = ( \
-        state_passage(user, msg)       \
-        )
-    except:
-        debug.log("Exception in Bible Query States")
-        return False
-    return result
-
-
-def resolve_passage_query(user, query):
-    if user is not None:
         if text_utils.is_valid(query):
             passage = bible_utils.get_passage(query, user.get_version())
 
@@ -56,24 +32,7 @@ def resolve_passage_query(user, query):
             user.set_state(STATE_WAIT_PASSAGE)
 
         return True
-    return False
 
-def cmd_passage(user, cmd, msg):
-    if user is not None:
-        if cmd == CMD_PASSAGE:
-            debug.log_cmd(cmd)
-
-            query = msg.get("text").strip()
-            query = query.replace(cmd, "")
-
-            return resolve_passage_query(user, query)
-    return False
-
-def state_passage(user, msg):
-    if user is not None and user.get_state() == STATE_WAIT_PASSAGE:
-        debug.log_state(STATE_WAIT_PASSAGE)
-        query = msg.get("text").strip()
-
-        return resolve_passage_query(user, query)
-    return False
-
+ACTION = BibleAction()
+def get_action():
+    return ACTION
