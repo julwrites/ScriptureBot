@@ -64,7 +64,10 @@ class BotHandler(webapp2.RequestHandler):
             uid = user_utils.get_uid(msg.get('from').get('id'))
             user = user_utils.get_user(uid)
 
-            if bibleuser_commands.get_action().execute(user, msg):
+            if (
+               bibleuser_commands.get_action().execute(user, msg)   \
+            or tms_commands.get_action().execute(user, msg)
+            ):
                 return
 
             cmd = self.read_cmd(msg.get('text'))
@@ -108,7 +111,6 @@ class BotHandler(webapp2.RequestHandler):
 
             if( \
             bible_commands.cmds(user, cmd, msg)    \
-            or tms_commands.cmds(user, cmd, msg)    \
             ):
                 return True
 
@@ -132,7 +134,6 @@ class BotHandler(webapp2.RequestHandler):
             # States
             if (    \
             bible_commands.states(user, msg)       \
-            or tms_commands.states(user, msg)       \
             ):
                 return True
 

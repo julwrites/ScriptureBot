@@ -20,9 +20,7 @@ class BibleUserAction(action_class.Action):
         return '/version'
 
     def resolve(self, user, msg):
-        debug.log('Action being executed: ' + self.identifier())
-        text = msg.get('text').strip()
-        query = text.replace(self.identifier(), '')
+        query = telegram_utils.strip_command(msg, self.identifier())
 
         if text_utils.is_valid(query):
 

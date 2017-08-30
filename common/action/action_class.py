@@ -19,6 +19,7 @@ class Action():
         try:
             if user is not None:
                 if self.match(msg) or self.waiting(user):
+                    debug.log('Action being executed: ' + self.identifier())
                     return self.resolve(user, msg)
         except:
             debug.log('Execute failed! ' + self.identifier())

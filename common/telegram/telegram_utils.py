@@ -103,6 +103,9 @@ def parse_payload(msg):
 
     return None
 
+def strip_command(msg, cmd):
+    return msg.get('text').strip().replace(cmd, '')
+
 
 # Telegram message prettifying
 def surround(text, front, back = None):
