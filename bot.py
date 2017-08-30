@@ -9,7 +9,6 @@ from google.appengine.api import urlfetch
 from common import debug
 from common import telegram
 from common import user
-from common import admin
 
 import bible
 import tms
