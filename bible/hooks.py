@@ -17,17 +17,17 @@ def hooks(data):
     hook_dailyverse()   \
     )
 
-def resolve_dailyverse(user):
-    if user is not None:
+def resolve_dailyverse(user_obj):
+    if user_obj is not None:
         
-        if user.has_subscription(SUBSCRIPTION_DAILYVERSE):
+        if user_obj.has_subscription(SUBSCRIPTION_DAILYVERSE):
             verse = tms.utils.get_random_verse()
-            passage = bible.utils.get_passage_raw(verse.reference, user.get_version())
+            passage = bible.utils.get_passage_raw(verse.reference, user_obj.get_version())
             verse_msg = tms.utils.format_verse(verse, passage)
 
             debug.log("Sending verse: " + verse_msg)
             
-            telegram.utils.send_msg(verse_msg, user.get_uid())
+            telegram.utils.send_msg(verse_msg, user_obj.get_uid())
 
 
 def hook_dailyverse():

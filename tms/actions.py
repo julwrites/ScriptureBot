@@ -17,7 +17,7 @@ class TMSAction(action.Action):
     def identifier(self):
         return '/tms'
 
-    def resolve(self, user, msg):
+    def resolve(self, user_obj, msg):
         query = telegram.utils.strip_command(msg, self.identifier())
 
         if text_utils.is_valid(query): 
@@ -34,17 +34,17 @@ class TMSAction(action.Action):
                 verse = tms.utils.query_verse_by_topic(query)
 
             if verse is not None:
-                passage = bible.utils.get_passage_raw(verse.reference, user.get_version())
+                passage = bible.utils.get_passage_raw(verse.reference, user_obj.get_version())
                 verse_msg = tms.utils.format_verse(verse, passage)
 
-                telegram.utils.send_msg(verse_msg, user.get_uid())
-                user.set_state(None)
+                telegram.utils.send_msg(verse_msg, user_obj.get_uid())
+                user_obj.set_state(None)
             else:
-                telegram.utils.send_msg(CMD_TMS_BADQUERY, user.get_uid())
+                telegram.utils.send_msg(CMD_TMS_BADQUERY, user_obj.get_uid())
         else:
-            telegram.utils.send_msg_keyboard(CMD_TMS_PROMPT, user.get_uid())
+            telegram.utils.send_msg_keyboard(CMD_TMS_PROMPT, user_obj.get_uid())
 
-            user.set_state(self.identifier())
+            user_obj.set_state(self.identifier())
 
         return True
 

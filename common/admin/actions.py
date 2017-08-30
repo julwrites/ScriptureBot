@@ -12,25 +12,25 @@ ADMIN_CLEAN = '/clean'
 ADMIN_RAGNAROK = '/ragnarok'
 
 # List of commands to run through
-def cmds(uid, cmd, msg):
+def cmds(user_id, cmd, msg):
     debug.log('Running admin commands')
 
-    if admin.utils.access(uid):
+    if admin.utils.access(user_id):
         debug.log('Welcome, Master')
         try:
             return ( \
-            cmd_dump(uid, cmd, msg)       \
-            or cmd_doggle(uid, cmd, msg)   \
-            or cmd_clean(uid, cmd, msg)   \
-            or cmd_ragnarok(uid, cmd, msg)   \
+            cmd_dump(user_id, cmd, msg)       \
+            or cmd_doggle(user_id, cmd, msg)   \
+            or cmd_clean(user_id, cmd, msg)   \
+            or cmd_ragnarok(user_id, cmd, msg)   \
             )
         except:
             debug.log('Exception in Admin Commands')
             return False
 
 # Debug Commands
-def cmd_dump(uid, cmd, msg):
-    if admin.utils.access(uid) and cmd == ADMIN_DUMP:
+def cmd_dump(user_id, cmd, msg):
+    if admin.utils.access(user_id) and cmd == ADMIN_DUMP:
         debug.log_cmd(cmd)
 
         # Read user database
@@ -39,11 +39,11 @@ def cmd_dump(uid, cmd, msg):
 
         try:
             user_list = []
-            for user in query.run(batch_size=10):
-                dbUser = user.utils.get_user(user.utils.get_uid(user))
-                user_list.append(dbUser.get_description())
+            for db_user in query.run(batch_size=10):
+                user_obj = user.utils.get_user(user.utils.get_uid(db_user))
+                user_list.append(user_obj.get_description())
             user_list_msg = '\n'.join(user_list)
-            telegram.utils.send_msg(user_list_msg, uid)
+            telegram.utils.send_msg(user_list_msg, user_id)
         except Exception as e:
             debug.log(str(e))
 
@@ -51,8 +51,8 @@ def cmd_dump(uid, cmd, msg):
 
     return False
 
-def cmd_doggle(uid, cmd, msg):
-    if admin.utils.access(uid) and cmd == ADMIN_DEBUG:
+def cmd_doggle(user_id, cmd, msg):
+    if admin.utils.access(user_id) and cmd == ADMIN_DEBUG:
         debug.log_cmd(cmd)
 
         debug.toggle()
@@ -61,30 +61,30 @@ def cmd_doggle(uid, cmd, msg):
 
     return False
 
-def cmd_clean(uid, cmd, msg):
-    if admin.utils.access(uid) and cmd == ADMIN_CLEAN:
+def cmd_clean(user_id, cmd, msg):
+    if admin.utils.access(user_id) and cmd == ADMIN_CLEAN:
         debug.log_cmd(cmd)
 
         # Read user database
         query = user.utils.get_user_query()
 
         try:
-            for user in query.run():
-                dbUser = user.utils.get_user(user.utils.get_uid(user))
-                if dbUser.get_name_string() == '-':
-                    debug.log('Deleting: ' + dbUser.get_uid())
-                    dbUser.delete()
+            for db_user in query.run():
+                user_obj = user.utils.get_user(user.utils.get_uid(db_user))
+                if user_obj.get_name_string() == '-':
+                    debug.log('Deleting: ' + user_obj.get_uid())
+                    user_obj.delete()
 
-            for user in query.run():
-                dbUser = user.utils.get_user(user.utils.get_uid(user))
+            for db_user in query.run():
+                user_obj = user.utils.get_user(user.utils.get_uid(db_user))
                 count = 0
 
-                for dup in query.run():
-                    dbDup = user.utils.get_user(user.utils.get_uid(dup))
-                    if dbDup.get_uid() == user.get_uid():
+                for db_user_dup in query.run():
+                    user_obj_dup = user.utils.get_user(user.utils.get_uid(db_user_dup))
+                    if user_obj.get_uid() == user_obj_dup.get_uid():
                         count += 1
                         if count > 1:
-                            dbDup.delete()
+                            user_obj_dup.delete()
 
         except Exception as e:
             debug.log(str(e))
@@ -93,22 +93,22 @@ def cmd_clean(uid, cmd, msg):
 
     return False
 
-def cmd_ragnarok(uid, cmd, msg):
-    if admin.utils.access(uid) and cmd == ADMIN_RAGNAROK:
+def cmd_ragnarok(user_id, cmd, msg):
+    if admin.utils.access(user_id) and cmd == ADMIN_RAGNAROK:
         debug.log_cmd(cmd)
 
         # Read user database
         query = user.utils.get_user_query()
 
         try:
-            for user in query.run(batch_size=500):
-                dbUser = user.utils.get_user(user.utils.get_uid(user))
-                debug.log('Deleting: ' + dbUser.get_uid())
-                dbUser.delete()
+            for db_user in query.run(batch_size=500):
+                user_obj = user.utils.get_user(user.utils.get_uid(db_user))
+                debug.log('Deleting: ' + user_obj.get_uid())
+                user_obj.delete()
         except Exception as e:
             debug.log(str(e))
 
-        telegram.utils.send_msg("Baboomz~", uid)
+        telegram.utils.send_msg("Baboomz~", user_id)
         
         return True
     

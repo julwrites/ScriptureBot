@@ -8,24 +8,24 @@ from common.user import bibleuser_class
 
 
 # Database util functions
-def get_key(path, uid):
-    return db.Key.from_path(path, str(uid))
+def get_key(path, user_id):
+    return db.Key.from_path(path, str(user_id))
 
 # Functions for manipulation of user info
-def get_user(uid):
-    user = db.get(get_key('BibleUser', uid))
-    return user
+def get_user(user_id):
+    user_obj = db.get(get_key('BibleUser', user_id))
+    return user_obj
 
-def get_uid(user):
+def get_uid(user_obj):
     try:
-        uid = user.get_uid()
+        user_id = user_obj.get_uid()
     except AttributeError:
-        uid = user
+        user_id = user_obj
 
-    return uid
+    return user_id
 
-def set_profile(uid, uname, fname, lname):
-    existing_user = get_user(uid)
+def set_profile(user_id, uname, fname, lname):
+    existing_user = get_user(user_id)
 
     uname = text_utils.stringify(uname)
     fname = text_utils.stringify(fname)
@@ -38,9 +38,9 @@ def set_profile(uid, uname, fname, lname):
         existing_user.update_last_received()
         return existing_user
     else:
-        user = bibleuser_class.BibleUser(key_name=str(uid), username=uname, first_name=fname, last_name=lname)
-        user.put()
-        return user
+        user_obj = bibleuser_class.BibleUser(key_name=str(user_id), username=uname, first_name=fname, last_name=lname)
+        user_obj.put()
+        return user_obj
 
 def get_user_query():
     return bibleuser_class.BibleUser.all()
@@ -53,8 +53,8 @@ def for_each_user(fn):
     query.filter('active =', True)
 
     try:
-        for user in query.run(batch_size=500):
-            fn(get_user(get_uid(user)))
+        for db_user in query.run(batch_size=500):
+            fn(get_user(get_uid(db_user)))
     except Exception as e:
         debug.log(str(e))
 
