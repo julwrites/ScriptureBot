@@ -1,6 +1,6 @@
 cron:
-- description: Daily TMS
-  url: /hooks/dailytms
+- description: Daily Verse
+  url: /hooks/dailyverse
   schedule: every day 18:00
   timezone: Asia/Singapore
   retry_parameters:
