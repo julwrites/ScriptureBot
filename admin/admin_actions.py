@@ -29,7 +29,8 @@ class AdminDumpAction(action_classes.Action):
                     userObj = user_utils.get_user(user_utils.get_uid(dbUser))
                     userList.append(userObj.get_description())
                 userListMsg = '\n'.join(userList)
-                telegram_utils.send_msg(userListMsg, userId)
+                telegram_utils.send_msg(userListMsg, userObj.get_uid())
+
             except Exception as e:
                 debug.log(str(e))
 
