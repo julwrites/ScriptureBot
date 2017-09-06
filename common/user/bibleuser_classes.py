@@ -111,13 +111,5 @@ class BibleUser(db.Model):
         self.lastAuto = chrono.now()
         self.put()
 
-    def migrate_to(self, userId):
-        props = dict((prop, getattr(self, prop)) for prop in self.properties().keys())
-        props.update(key_name=str(userId))
-        newUser = BibleUser(**props)
-        newUser.put()
-        self.delete()
-        return newUser
-
     def refresh(self):
         self.put()

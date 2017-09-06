@@ -70,7 +70,7 @@ class AdminCleanAction(action_classes.Action):
             return True
         return False
 
-class AdminRefreshAction(action_classes.Action):
+class AdminMigrateAction(action_classes.Action):
     def identifier(self):
         return '/refresh'
 
@@ -117,6 +117,6 @@ def get():
     return [
         AdminDumpAction(),
         AdminCleanAction(),
-        AdminRefreshAction(),
+        AdminMigrateAction(),
         AdminRagnarokAction(),
     ]

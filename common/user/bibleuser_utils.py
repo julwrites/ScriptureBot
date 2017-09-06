@@ -59,7 +59,7 @@ def for_each_user(fn):
         debug.log(str(e))
 
 def migrate(userObj):
-    newUserObj = bibleuser_classes.BibleUser()
+    newUserObj = bibleuser_classes.BibleUser(key_name=str(userObj.get_uid()))
 
     newUserObj.clone(userObj)
 
