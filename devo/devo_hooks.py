@@ -1,10 +1,7 @@
 
 # Local modules
-from devo import cac_utils
+from devo import cac_hooks
 
-
-HOOK_DAILYDEVO = '/dailydevo'
 
 def get():
-    return [
-    ]
+    return cac_hooks.get()

@@ -6,7 +6,6 @@ from common.telegram import telegram_utils
 
 from bible import bible_utils
 
-CMD_PASSAGE = "/passage"
 CMD_PASSAGE_PROMPT = "Give me a Bible reference"
 CMD_PASSAGE_BADQUERY = "Sorry, I can't find this reference"
 

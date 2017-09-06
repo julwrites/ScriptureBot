@@ -14,22 +14,21 @@ from common.telegram import telegram_utils
 
 CAC_URL = 'https://cac.org/category/daily-meditations/'
 
-BGW_PASSAGE_CLASS = 'passage-text'
-BGW_PASSAGE_START = '<div class="{}">'.format(BGW_PASSAGE_CLASS)
-BGW_PASSAGE_END = '<!--END .{}-->'.format(BGW_PASSAGE_CLASS)
-BGW_PASSAGE_SELECT = 'bgw-passage-text'
-BGW_PASSAGE_IGNORE = '.passage-display, .footnote, .footnotes, .crossrefs, .publisher-info-bottom'
-BGW_PASSAGE_TITLE = '.passage-display-bcv'
+CAC_DEVO_CLASS = 'devo-text'
+CAC_DEVO_START = '<div class="{}">'.format(CAC_DEVO_CLASS)
+CAC_DEVO_END = '<!--END .{}-->'.format(CAC_DEVO_CLASS)
+CAC_DEVO_SELECT = 'bgw-devo-text'
+CAC_DEVO_IGNORE = '.devo-display, .footnote, .footnotes, .crossrefs, .publisher-info-bottom'
+CAC_DEVO_TITLE = '.devo-display-bcv'
 
 REFERENCE = 'reference'
 VERSION = 'version'
-PASSAGE = 'passage'
+DEVO = 'devo'
 
 def extract_devo(html):
-    return html_utils.sub_html(html, BGW_PASSAGE_START, BGW_PASSAGE_END)
+    return html_utils.sub_html(html, CAC_DEVO_START, CAC_DEVO_END)
 
-def fetch_cac(query, version='NIV'):
-    formatRef = urllib.quote(query.lower().strip())
+def fetch_cac(version='NIV'):
     formatUrl = CAC_URL
 
     try:
@@ -40,38 +39,32 @@ def fetch_cac(query, version='NIV'):
         return None
 
     # Format using BS4 into a form we can use for extraction
-    passageHtml = extract_devo(result.content)
-    if passageHtml is None:
+    devoHtml = extract_devo(result.content)
+    if devoHtml is None:
         return None
 
-    soup = BeautifulSoup(passageHtml, 'lxml').select_one('.{}'.format(BGW_PASSAGE_CLASS))
+    soup = BeautifulSoup(devoHtml, 'lxml').select_one('.{}'.format(CAC_DEVO_CLASS))
     
     debug.log("Soup has been made")
 
     return soup 
 
-def get_passage_raw(ref, version='NIV'):
-    debug.log('Querying for passage ' + ref)
-
-    passageSoup = fetch_bgw(ref, version)
-    if passageSoup is None:
+def get_devo_raw(version='NIV'):
+    devoSoup = fetch_cac(version)
+    if devoSoup is None:
         return None
 
-    # Prepare the title and header
-    passageReference = passage_soup.select_one(BGW_PASSAGE_TITLE).text.strip()
-    passageVersion = version
-
     # Remove the unnecessary tags
-    for tag in passageSoup.select(BGW_PASSAGE_IGNORE):
+    for tag in devoSoup.select(CAC_DEVO_IGNORE):
         tag.decompose()
 
     # Steps through all the html types and mark these
-    soup = html_utils.stripmd_soup(passageSoup)
-    soup = html_utils.mark_soup(passageSoup, 
-    BGW_PASSAGE_SELECT,
+    soup = html_utils.stripmd_soup(devoSoup)
+    soup = html_utils.mark_soup(devoSoup, 
+    CAC_DEVO_SELECT,
     html_utils.HTML_HEADER_TAGS + html_utils.HTML_TEXT_TAGS)
 
-    html_utils.foreach_header(passageSoup, telegram_utils.bold)
+    html_utils.foreach_header(devoSoup, telegram_utils.bold)
 
     # Special formatting for chapter and verse
     for tag in soup.select('.chapternum'):
@@ -80,38 +73,23 @@ def get_passage_raw(ref, version='NIV'):
         tag.string = telegram_utils.italics(html_utils.to_sup(tag.text))
 
     # Only at the last step do we do other destructive formatting
-    soup = html_utils.strip_soup(passageSoup)
+    soup = html_utils.strip_soup(soup=devoSoup)
 
-    passageBlocks = []
-    for tag in soup(class_=BGW_PASSAGE_SELECT):
-        passageBlocks.append(tag.text)
+    devoBlocks = []
+    for tag in soup(class_=CAC_DEVO_SELECT):
+        devoBlocks.append(tag.text)
 
-    passageText = telegram_utils.join(passageBlocks, '\n\n')
+    devoText = telegram_utils.join(devoBlocks, '\n\n')
 
     debug.log("Finished parsing soup")
 
-    return BGWPassage(passageReference, passageVersion, passageText)
+    return devoText
 
-def get_passage(ref, version='NIV'):
-    passage = get_passage_raw(ref, version)
+def get_devo(version='NIV'):
+    devo = get_devo_raw(version)
 
-    if passage is None:
+    if devo is None:
         return None
 
-    passageFormat = telegram_utils.bold(passage.get_reference())
-    passageFormat += ' ' + telegram_utils.bracket(passage.get_version())
-    passageFormat += '\n\n' + passage.get_text()
+    return devo
 
-    return passageFormat
-
-def get_reference(query):
-    debug.log('Querying for reference ' + query)
-
-    passageSoup = fetch_bgw(query)
-    if passageSoup is None:
-        return None
-
-    reference = passageSoup.select_one(BGW_PASSAGE_TITLE).text
-    reference = reference.strip()
-
-    return reference
