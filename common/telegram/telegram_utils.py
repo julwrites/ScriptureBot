@@ -30,7 +30,7 @@ def format_keyboard(options=[]):
 
     return keyboardData
 
-def sendMsg(msg, userId):
+def send_msg(msg, userId):
     debug.log('Sending message to ' + str(userId) + ': ' +  msg)
 
     last = None
@@ -52,7 +52,7 @@ def sendMsg(msg, userId):
         post.add_text(chunk)
         post.send()
 
-def sendMsg_keyboard(msg, userId, options=[], inline=False, oneTime=False):
+def send_msg_keyboard(msg, userId, options=[], inline=False, oneTime=False):
     post = TelegramPost(userId)
     post.add_text(msg)
     if inline:
