@@ -42,5 +42,3 @@ class Action():
     # To be inherited and overwritten with functionality
     def resolve(self, userObj, msg):
         return False
-
- 
