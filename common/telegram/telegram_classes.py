@@ -15,17 +15,17 @@ TELEGRAM_URL_SEND = TELEGRAM_URL + '/sendMessage'
 JSON_HEADER = {'Content-Type': 'application/json;charset=utf-8'}
 
 class TelegramPost():
-    def __init__(self, user_id):
-        self.format_data = {
-            'chat_id': str(user_id), 
+    def __init__(self, userId):
+        self.formatData = {
+            'chat_id': str(userId), 
             'parse_mode': 'Markdown'
         }
 
     def uid(self):
-        return self.format_data.get('chat_id')
+        return self.formatData.get('chat_id')
 
     def send(self):
-        data = json.dumps(self.format_data)
+        data = json.dumps(self.formatData)
         debug.log('Performing send: ' + data)
 
         try:
@@ -38,30 +38,30 @@ class TelegramPost():
         except:
             debug.log('Send failed! ' + TELEGRAM_URL_SEND + ', ' + data)
 
-    def addText(self, msg):
+    def add_text(self, msg):
         debug.log('Adding text for ' + self.uid() + ': ' + msg)
 
-        self.format_data['text'] = msg
+        self.formatData['text'] = msg
 
-    def addKeyboard(self, keyboard=[], one_time=False):
+    def add_keyboard(self, keyboard=[], oneTime=False):
         debug.log('Adding keyboard for ' + self.uid() + ': ' + str(keyboard))
 
-        self.format_data['reply_markup'] = {
+        self.formatData['reply_markup'] = {
             'keyboard': keyboard,
-            'one_time_keyboard': one_time
+            'one_time_keyboard': oneTime
         }
     
-    def closeKeyboard(self):
+    def close_keyboard(self):
         debug.log('Removing keyboard for ' + self.uid())
 
-        self.format_data['reply_markup'] = {
+        self.formatData['reply_markup'] = {
             'remove_keyboard': True
         }
 
-    def addInlineKeyboard(self, keyboard=[]):
+    def add_inline_keyboard(self, keyboard=[]):
         debug.log('Adding inline keyboard for ' + self.uid() + ': ' + str(keyboard))
        
-        self.format_data['reply_markup'] = {
+        self.formatData['reply_markup'] = {
             'inline_keyboard': keyboard
         }
 

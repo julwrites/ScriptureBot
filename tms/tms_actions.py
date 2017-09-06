@@ -17,15 +17,15 @@ class TMSAction(action_classes.Action):
     def identifier(self):
         return '/tms'
 
-    def resolve(self, user_obj, msg):
+    def resolve(self, userObj, msg):
         query = telegram_utils.strip_command(msg, self.identifier())
 
         if text_utils.is_valid(query): 
             verse = None
 
-            verse_reference = bible_utils.get_reference(query)
-            if text_utils.is_valid(verse_reference):
-                verse = tms_utils.query_verse_by_reference(verse_reference)
+            verseReference = bible_utils.get_reference(query)
+            if text_utils.is_valid(verseReference):
+                verse = tms_utils.query_verse_by_reference(verseReference)
             
             if verse is None:
                 verse = tms_utils.query_verse_by_pack_pos(query)
@@ -34,17 +34,17 @@ class TMSAction(action_classes.Action):
                 verse = tms_utils.query_verse_by_topic(query)
 
             if verse is not None:
-                passage = bible_utils.get_passage_raw(verse.reference, user_obj.get_version())
-                verse_msg = tms_utils.format_verse(verse, passage)
+                passage = bible_utils.get_passage_raw(verse.reference, userObj.get_version())
+                verseMsg = tms_utils.format_verse(verse, passage)
 
-                telegram_utils.send_msg(verse_msg, user_obj.get_uid())
-                user_obj.set_state(None)
+                telegram_utils.send_msg(verseMsg, userObj.get_uid())
+                userObj.set_state(None)
             else:
-                telegram_utils.send_msg(CMD_TMS_BADQUERY, user_obj.get_uid())
+                telegram_utils.send_msg(CMD_TMS_BADQUERY, userObj.get_uid())
         else:
-            telegram_utils.send_msg_keyboard(CMD_TMS_PROMPT, user_obj.get_uid())
+            telegram_utils.send_msg_keyboard(CMD_TMS_PROMPT, userObj.get_uid())
 
-            user_obj.set_state(self.identifier())
+            userObj.set_state(self.identifier())
 
         return True
 

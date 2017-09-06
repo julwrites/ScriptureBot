@@ -15,21 +15,21 @@ class BiblePassageAction(action_classes.Action):
     def identifier(self):
         return '/passage'
 
-    def resolve(self, user_obj, msg):
+    def resolve(self, userObj, msg):
         query = telegram_utils.strip_command(msg, self.identifier())
 
         if text_utils.is_valid(query):
-            passage = bible_utils.get_passage(query, user_obj.get_version())
+            passage = bible_utils.get_passage(query, userObj.get_version())
 
             if passage is not None:
-                telegram_utils.send_msg(passage, user_obj.get_uid())
-                user_obj.set_state(None)
+                telegram_utils.send_msg(passage, userObj.get_uid())
+                userObj.set_state(None)
             else:
-                telegram_utils.send_msg(CMD_PASSAGE_BADQUERY, user_obj.get_uid())
+                telegram_utils.send_msg(CMD_PASSAGE_BADQUERY, userObj.get_uid())
         else:
-            telegram_utils.send_msg(CMD_PASSAGE_PROMPT, user_obj.get_uid())
+            telegram_utils.send_msg(CMD_PASSAGE_PROMPT, userObj.get_uid())
 
-            user_obj.set_state(self.identifier())
+            userObj.set_state(self.identifier())
 
         return True
 

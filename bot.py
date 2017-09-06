@@ -23,26 +23,26 @@ CMD_START_PROMPT = 'Hello {}, I\'m Biblica! I hope I will be helpful as a tool f
 # This is a special command, specialized to this bot
 def start(msg):
     # Register User
-    user_json = msg.get('from')
-    user_id = user_utils.get_uid(user_json.get('id'))
-    user_obj = user_utils.get_user(user_id)
+    userJson = msg.get('from')
+    userId = user_utils.get_uid(userJson.get('id'))
+    userObj = user_utils.get_user(userId)
 
     # This runs to update the user's info, or register
-    if user_json is not None:
+    if userJson is not None:
         debug.log('Updating user info')
         user_utils.set_profile(
-            user_json.get('id'), 
-            user_json.get('username'), 
-            user_json.get('first_name'), 
-            user_json.get('last_name'))
+            userJson.get('id'), 
+            userJson.get('username'), 
+            userJson.get('first_name'), 
+            userJson.get('last_name'))
 
     # If this is the user's first time registering
-    if user_obj is None:
+    if userObj is None:
         debug.log_cmd('New user!')
-        user_obj = user_utils.get_user(user_id)
+        userObj = user_utils.get_user(userId)
 
-        telegram_utils.send_msg(CMD_START_PROMPT.format(user_obj.get_name_string()), user_obj.get_uid())
-        debug.log('Registering ' + user_obj.get_name_string())
+        telegram_utils.send_msg(CMD_START_PROMPT.format(userObj.get_name_string()), userObj.get_uid())
+        debug.log('Registering ' + userObj.get_name_string())
 
         return True
     return False
@@ -63,8 +63,8 @@ class BotHandler(webapp2.RequestHandler):
             start(msg)
 
             # Read the user to echo back
-            user_id = user_utils.get_uid(msg.get('from').get('id'))
-            user_obj = user_utils.get_user(user_id)
+            userId = user_utils.get_uid(msg.get('from').get('id'))
+            userObj = user_utils.get_user(user_id)
 
             actions = tms_actions.get() + bible_actions.get() + user_actions.get()
 

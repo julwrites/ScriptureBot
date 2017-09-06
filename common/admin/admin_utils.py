@@ -4,10 +4,10 @@ from common import debug
 
 from secret import BOT_ADMIN
 
-def access(user_id):
-    debug.log('Admin Check for ' + str(user_id))
+def access(userId):
+    debug.log('Admin Check for ' + str(userId))
 
-    if str(user_id) == str(BOT_ADMIN):
+    if str(userId) == str(BOT_ADMIN):
         return True
     return False
 

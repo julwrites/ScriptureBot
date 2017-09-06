@@ -18,7 +18,7 @@ class BibleUserAction(action_classes.Action):
     def identifier(self):
         return '/version'
 
-    def resolve(self, user_obj, msg):
+    def resolve(self, userObj, msg):
         query = telegram_utils.strip_command(msg, self.identifier())
 
         if text_utils.is_valid(query):
@@ -26,20 +26,20 @@ class BibleUserAction(action_classes.Action):
             for ver in SUPPORTED_VERSIONS:
 
                 if text_utils.text_compare(query, ver):
-                    user_obj.set_version(ver)
-                    user_obj.set_state(None)
+                    userObj.set_version(ver)
+                    userObj.set_state(None)
 
-                    telegram_utils.send_closeKeyboard(\
-                    STATE_VERSION_PROMPT.format(ver), user_obj.get_uid())
+                    telegram_utils.send_close_keyboard(\
+                    STATE_VERSION_PROMPT.format(ver), userObj.get_uid())
                     break
             else:
-                telegram_utils.send_msg(CMD_VERSION_BADQUERY, user_obj.get_uid())
+                telegram_utils.sendMsg(CMD_VERSION_BADQUERY, userObj.get_uid())
 
         else:
-            telegram_utils.send_msg_keyboard(\
-            CMD_VERSION_PROMPT, user_obj.get_uid(), SUPPORTED_VERSIONS)
+            telegram_utils.sendMsg_keyboard(\
+            CMD_VERSION_PROMPT, userObj.get_uid(), SUPPORTED_VERSIONS)
 
-            user_obj.set_state(self.identifier())
+            userObj.set_state(self.identifier())
 
         return True
 

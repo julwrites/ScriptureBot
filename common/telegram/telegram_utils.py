@@ -10,28 +10,28 @@ TELEGRAM_KEYBOARD_GRID_SIZE = 3
 
 # Telegram message sending functionality
 def format_keyboard(options=[]):
-    num_buttons = len(options)
-    modulus = 1 if num_buttons % TELEGRAM_KEYBOARD_GRID_SIZE else 0
-    num_rows = int(num_buttons / TELEGRAM_KEYBOARD_GRID_SIZE) + modulus
+    numButtons = len(options)
+    modulus = 1 if numButtons % TELEGRAM_KEYBOARD_GRID_SIZE else 0
+    numRows = int(numButtons / TELEGRAM_KEYBOARD_GRID_SIZE) + modulus
 
-    keyboard_data = []
-    for i in range(0, num_rows):
-        keyboard_row = []
+    keyboardData = []
+    for i in range(0, numRows):
+        keyboardRow = []
 
         for j in range(0, TELEGRAM_KEYBOARD_GRID_SIZE):
-            if num_buttons == 0:
+            if numButtons == 0:
                 break
 
             data = options[i * TELEGRAM_KEYBOARD_GRID_SIZE + j]
-            keyboard_row.append({'text': data})
-            num_buttons -= 1
+            keyboardRow.append({'text': data})
+            numButtons -= 1
         
-        keyboard_data.append(keyboard_row)
+        keyboardData.append(keyboardRow)
 
-    return keyboard_data
+    return keyboardData
 
-def send_msg(msg, user_id):
-    debug.log('Sending message to ' + str(user_id) + ': ' +  msg)
+def sendMsg(msg, userId):
+    debug.log('Sending message to ' + str(userId) + ': ' +  msg)
 
     last = None
     chunks = []
@@ -48,23 +48,23 @@ def send_msg(msg, user_id):
     chunks.append(msg[last:])
 
     for chunk in chunks:
-        post = TelegramPost(user_id)
-        post.addText(chunk)
+        post = TelegramPost(userId)
+        post.add_text(chunk)
         post.send()
 
-def send_msg_keyboard(msg, user_id, options=[], inline=False, one_time=False):
-    post = TelegramPost(user_id)
-    post.addText(msg)
+def sendMsg_keyboard(msg, userId, options=[], inline=False, oneTime=False):
+    post = TelegramPost(userId)
+    post.add_text(msg)
     if inline:
-        post.addInlineKeyboard(format_keyboard(options))
+        post.add_inline_keyboard(format_keyboard(options))
     else:
-        post.addKeyboard(format_keyboard(options), one_time)
+        post.add_keyboard(format_keyboard(options), oneTime)
     post.send()
 
-def send_closeKeyboard(msg, user_id):
-    post = TelegramPost(user_id)
-    post.addText(msg)
-    post.closeKeyboard()
+def send_close_keyboard(msg, userId):
+    post = TelegramPost(userId)
+    post.add_text(msg)
+    post.close_keyboard()
     post.send()
 
 

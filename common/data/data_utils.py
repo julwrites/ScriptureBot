@@ -4,29 +4,29 @@ from common.data.data_classes import Data
 
 
 # Database util functions
-def get_key(path, user_id):
-    return db.Key.from_path(path, str(user_id))
+def get_key(path, userId):
+    return db.Key.from_path(path, str(userId))
 
 
 # Functions for manipulation of data
-def get_data(user_id):
-    val = db.get(get_key('Data', user_id))
+def get_data(userId):
+    val = db.get(get_key('Data', userId))
     return val
 
-def has_data(user_id):
+def has_data(userId):
     try:
-        val = db.get(get_key('Data', user_id))
+        val = db.get(get_key('Data', userId))
     except db.KindError:
         val = None
     
     return val
 
-def set_data(user_id, data):
-    if has_data(user_id):
-        val = get_data(user_id)
+def set_data(userId, data):
+    if has_data(userId):
+        val = get_data(userId)
         val.data = str(data)
     else:
-        val = Data(key_name=str(user_id), data=str(data))
+        val = Data(key_name=str(userId), data=str(data))
         val.put()
     
     return val

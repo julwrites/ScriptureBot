@@ -19,16 +19,16 @@ def hooks(data):
     hook_dailytms()   \
     )
 
-def resolve_dailytms(user_obj):
-    if user_obj is not None:
-        if user_obj.has_subscription(SUBSCRIPTION_DAILYTMS):
+def resolve_dailytms(userObj):
+    if userObj is not None:
+        if userObj.has_subscription(SUBSCRIPTION_DAILYTMS):
             verse = tms_utils.get_random_verse()
-            passage = bible_utils.get_passage_raw(verse.reference, user_obj.get_version())
-            verse_msg = tms_utils.format_verse(verse, passage)
+            passage = bible_utils.get_passage_raw(verse.reference, userObj.get_version())
+            verseMsg = tms_utils.format_verse(verse, passage)
 
-            debug.log("Sending verse: " + verse_msg)
+            debug.log("Sending verse: " + verseMsg)
             
-            telegram_utils.send_msg(verse_msg, user_obj.get_uid())
+            telegram_utils.send_msg(verseMsg, userObj.get_uid())
 
 def hook_dailytms():
     debug.log_hook(HOOK_DAILYTMS)

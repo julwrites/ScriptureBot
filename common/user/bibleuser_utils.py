@@ -8,39 +8,39 @@ from common.user import bibleuser_classes
 
 
 # Database util functions
-def get_key(path, user_id):
-    return db.Key.from_path(path, str(user_id))
+def get_key(path, userId):
+    return db.Key.from_path(path, str(userId))
 
 # Functions for manipulation of user info
-def get_user(user_id):
-    user_obj = db.get(get_key('BibleUser', user_id))
-    return user_obj
+def get_user(userId):
+    userObj = db.get(get_key('BibleUser', userId))
+    return userObj
 
-def get_uid(user_id_obj):
+def get_uid(userIdObj):
     try:
-        user_id = user_id_obj.get_uid()
+        userId = userIdObj.get_uid()
     except AttributeError:
-        user_id = user_id_obj
+        userId = userIdObj
 
-    return user_id
+    return userId
 
-def set_profile(user_id, uname, fname, lname):
-    existing_user = get_user(user_id)
+def set_profile(userId, uname, fname, lname):
+    existingUser = get_user(userId)
 
     uname = text_utils.stringify(uname)
     fname = text_utils.stringify(fname)
     lname = text_utils.stringify(fname)
 
-    if existing_user:
-        existing_user.username = uname
-        existing_user.first_name = fname
-        existing_user.last_name = lname
-        existing_user.update_last_received()
-        return existing_user
+    if existingUser:
+        existingUser.username = uname
+        existingUser.firstName = fname
+        existingUser.lastName = lname
+        existingUser.updateLastReceived()
+        return existingUser
     else:
-        user_obj = bibleuser_classes.BibleUser(key_name=str(user_id), username=uname, first_name=fname, last_name=lname)
-        user_obj.put()
-        return user_obj
+        userObj = bibleuserclasses.BibleUser(key_name=str(userId), username=uname, firstName=fname, lastName=lname)
+        userObj.put()
+        return userObj
 
 def get_user_query():
     return bibleuser_classes.BibleUser.all()
@@ -53,8 +53,8 @@ def for_each_user(fn):
     query.filter('active =', True)
 
     try:
-        for db_user in query.run(batch_size=500):
-            fn(get_user(get_uid(db_user)))
+        for dbUser in query.run(batch_size=500):
+            fn(get_user(get_uid(dbUser)))
     except Exception as e:
         debug.log(str(e))
 

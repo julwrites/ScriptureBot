@@ -37,10 +37,11 @@ A module can contain specialized functionality and classes, but the 4 files that
 We are using Python27 for this version of the framework.
 
 Naming Convention:
-* Variables should be named using underscore_case.
-* Methods should be named using camelCase.
+* Variables should be named using camelCase.
+* Methods should be named using underscore_case.
 * Classes should be named using PascalCase.
 * Modules should be named using underscore_case, in keeping with Python STL.
+* Constants should be named using CAPITALCASE
 
 This keeps the entities visually separate, and syntax clean.
 

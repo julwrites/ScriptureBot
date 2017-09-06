@@ -27,11 +27,11 @@ def soupify_tags(tags):
     return ','.join(tags)
 
 # HTML Parsing
-def sub_html(html, top_tag, bottom_tag):
-    start = html.find(top_tag)
+def sub_html(html, topTag, bottomTag):
+    start = html.find(topTag)
     if start == -1:
         return None
-    end = html.find(bottom_tag, start)
+    end = html.find(bottomTag, start)
     return html[start:end]
    
 def strip_md(string):
@@ -78,19 +78,19 @@ def stripmd_soup(soup):
     foreach_header(soup, strip_md)
 
     for tag in soup.select(soupify_tags(HTML_TEXT_TAGS)):
-        bad_strings = tag(text=re.compile('(\*|\_|\`|\[)'))
-        for bad_string in bad_strings:
-            stripped_text = strip_md(unicode(bad_string))
-            bad_string.replace_with(stripped_text)
+        badStrings = tag(text=re.compile('(\*|\_|\`|\[)'))
+        for badString in badStrings:
+            strippedText = strip_md(unicode(badString))
+            badString.replace_with(strippedText)
 
     return soup
 
-def mark_soup(soup, html_mark, tags=[]):
+def mark_soup(soup, htmlMark, tags=[]):
     tags = soupify_tags(tags)
     debug.log('Marking tags: ' + tags)
 
     for tag in soup.select(tags):
-        tag['class'] = html_mark
+        tag['class'] = htmlMark
 
     return soup
  

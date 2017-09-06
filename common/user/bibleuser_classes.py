@@ -7,16 +7,24 @@ from common import chrono, text_utils
 
 class BibleUser(db.Model):
     username = db.StringProperty(indexed=False)
-    first_name = db.StringProperty(multiline=True, indexed=False)
-    last_name = db.StringProperty(multiline=True, indexed=False)
+    firstName = db.StringProperty(multiline=True, indexed=False)
+    lastName = db.StringProperty(multiline=True, indexed=False)
     created = db.DateTimeProperty(auto_now_add=True)
-    last_received = db.DateTimeProperty(auto_now_add=True, indexed=False)
-    last_sent = db.DateTimeProperty(indexed=False)
-    last_auto = db.DateTimeProperty(auto_now_add=True)
+    lastReceived = db.DateTimeProperty(auto_now_add=True, indexed=False)
+    lastSent = db.DateTimeProperty(indexed=False)
+    lastAuto = db.DateTimeProperty(auto_now_add=True)
     active = db.BooleanProperty(default=True)
     state = db.StringProperty(indexed=False)
     version = db.StringProperty(indexed=False, default='NIV')
     subscription = db.StringProperty(indexed=False)
+
+    # To delete
+    first_name = db.StringProperty(multiline=True, indexed=False)
+    last_name = db.StringProperty(multiline=True, indexed=False)
+    last_received = db.DateTimeProperty(auto_now_add=True, indexed=False)
+    last_sent = db.DateTimeProperty(indexed=False)
+    last_auto = db.DateTimeProperty(auto_now_add=True)
+
 
     def get_uid(self):
         return self.key().name()
@@ -25,17 +33,17 @@ class BibleUser(db.Model):
         def prep(string):
             return string.encode('utf-8', 'ignore').strip()
 
-        name = prep(self.first_name)
-        if self.last_name:
-            name += ' ' + prep(self.last_name)
+        name = prep(self.firstName)
+        if self.lastName:
+            name += ' ' + prep(self.lastName)
         if self.username:
             name += ' @' + prep(self.username)
 
         return name
 
     def get_description(self):
-        user_type = 'Group' if self.is_group() else 'User'
-        return user_type + ' ' + self.get_name_string()
+        userType = 'Group' if self.is_group() else 'User'
+        return userType + ' ' + self.get_name_string()
 
     def is_group(self):
         return int(self.get_uid()) < 0
@@ -77,21 +85,29 @@ class BibleUser(db.Model):
         return False
 
     def update_last_received(self):
-        self.last_received = chrono.now()
+        self.lastReceived = chrono.now()
         self.put()
 
     def update_last_sent(self):
-        self.last_sent = chrono.now()
+        self.lastSent = chrono.now()
         self.put()
 
     def update_last_auto(self):
-        self.last_auto = chrono.now()
+        self.lastAuto = chrono.now()
         self.put()
 
-    def migrate_to(self, user_id):
+    def migrate_to(self, userId):
         props = dict((prop, getattr(self, prop)) for prop in self.properties().keys())
-        props.update(key_name=str(user_id))
-        new_user = BibleUser(**props)
-        new_user.put()
+        props.update(key_name=str(userId))
+        newUser = BibleUser(**props)
+        newUser.put()
         self.delete()
-        return new_user
+        return newUser
+
+    def update_hack(self):
+        self.firstName = self.first_name
+        self.lastName = self.last_name
+        self.lastReceived = self.last_received
+        self.lastSent = self.last_sent
+        self.lastAuto = self.last_auto
+        self.put()

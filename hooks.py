@@ -2,8 +2,8 @@
 # Python std modules
 import webapp2
 
-from tms import tms_utils
-from bible import bible_utils
+from tms import tms_hooks
+from bible import bible_hooks
 from devo import devo_hooks
 
 APP_HOOKS_URL = "/hooks"
