@@ -7,7 +7,7 @@ from common.action import hook_classes
 from bible import bible_utils
 
 
-class BibleActionHook(hook_classes.Hook):
+class DailyVerseHook(hook_classes.Hook):
     def identifier(self):
         return '/dailyverse'
 
@@ -19,5 +19,5 @@ class BibleActionHook(hook_classes.Hook):
 
 def get():
     return [
-        BibleActionHook()
+        DailyVerseHook()
     ]

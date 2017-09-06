@@ -112,7 +112,7 @@ class BibleUser(db.Model):
         self.delete()
         return newUser
 
-    def update_hack(self):
+    def refresh(self):
         self.firstName = self.first_name
         self.lastName = self.last_name
         self.lastReceived = self.last_received
