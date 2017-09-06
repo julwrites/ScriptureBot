@@ -29,8 +29,6 @@ class BibleUserAction(action_classes.Action):
                     userObj.set_version(ver)
                     userObj.set_state(None)
 
-                    debug.log("Found a version! Closing keyboard")
-
                     telegram_utils.send_close_keyboard(\
                     STATE_VERSION_PROMPT.format(ver), userObj.get_uid())
                     break
@@ -38,8 +36,6 @@ class BibleUserAction(action_classes.Action):
                 telegram_utils.send_msg(CMD_VERSION_BADQUERY, userObj.get_uid())
 
         else:
-            debug.log("Sending version keyboard")
-
             telegram_utils.send_msg_keyboard(\
             CMD_VERSION_PROMPT, userObj.get_uid(), SUPPORTED_VERSIONS)
 
