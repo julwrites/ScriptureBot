@@ -35,10 +35,10 @@ def set_profile(userId, uname, fname, lname):
         existingUser.username = uname
         existingUser.firstName = fname
         existingUser.lastName = lname
-        existingUser.updateLastReceived()
+        existingUser.update_last_received()
         return existingUser
     else:
-        userObj = bibleuserclasses.BibleUser(key_name=str(userId), username=uname, firstName=fname, lastName=lname)
+        userObj = bibleuser_classes.BibleUser(key_name=str(userId), username=uname, firstName=fname, lastName=lname)
         userObj.put()
         return userObj
 
