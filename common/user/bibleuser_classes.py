@@ -6,18 +6,18 @@ from google.appengine.ext import db
 from common import chrono, text_utils
 
 class BibleUser(db.Model):
-    username = db.StringProperty(indexed=False)
-    firstName = db.StringProperty(multiline=True, indexed=False)
-    lastName = db.StringProperty(multiline=True, indexed=False)
+    username = db.StringProperty(indexed=True)
+    firstName = db.StringProperty(multiline=True, indexed=True)
+    lastName = db.StringProperty(multiline=True, indexed=True)
     created = db.DateTimeProperty(auto_now_add=True)
     lastReceived = db.DateTimeProperty(auto_now_add=True, indexed=False)
     lastSent = db.DateTimeProperty(indexed=False)
     lastAuto = db.DateTimeProperty(auto_now_add=True)
     active = db.BooleanProperty(default=True)
-    state = db.StringProperty(indexed=False)
-    version = db.StringProperty(indexed=False, default='NIV')
-    subscription = db.StringProperty(indexed=False)
-    subscriptionTime = db.IntegerProperty(indexed=False)
+    state = db.StringProperty(indexed=True)
+    version = db.StringProperty(indexed=True, default='NIV')
+    subscription = db.StringProperty(indexed=True)
+    subscriptionTime = db.IntegerProperty(indexed=True)
 
     def get_uid(self):
         return self.key().name()
