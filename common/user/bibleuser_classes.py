@@ -19,6 +19,21 @@ class BibleUser(db.Model):
     subscription = db.StringProperty(indexed=True)
     subscriptionTime = db.IntegerProperty(indexed=True)
 
+    def clone(self, obj):
+        self.username = obj.username
+        self.firstName = obj.firstName
+        self.lastName = obj.lastName
+        self.created = obj.created
+        self.lastReceived = obj.lastReceived
+        self.lastSent = obj.lastSent
+        self.lastAuto = obj.lastAuto
+        self.active = obj.active
+        self.state = obj.state
+        self.version = obj.version
+        self.subscription = obj.subscription
+        self.subscriptionTime = obj.subscriptionTime
+        return self
+
     def get_uid(self):
         return self.key().name()
 

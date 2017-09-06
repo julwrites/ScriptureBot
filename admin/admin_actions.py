@@ -82,7 +82,7 @@ class AdminRefreshAction(action_classes.Action):
             try:
                 for dbUser in query.run():
                     userObj = user_utils.get_user(user_utils.get_uid(dbUser))
-                    userObj.refresh()
+                    user_utils.migrate(userObj)
             except Exception as e:
                 debug.log(str(e))
 

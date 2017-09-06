@@ -58,3 +58,12 @@ def for_each_user(fn):
     except Exception as e:
         debug.log(str(e))
 
+def migrate(userObj):
+    newUserObj = bibleuser_classes.BibleUser()
+
+    newUserObj.clone(userObj)
+
+    userObj.delete()
+    newUserObj.put()
+
+    return newUserObj
