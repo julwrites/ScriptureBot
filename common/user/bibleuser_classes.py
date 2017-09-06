@@ -19,14 +19,6 @@ class BibleUser(db.Model):
     subscription = db.StringProperty(indexed=False)
     subscriptionTime = db.IntegerProperty(indexed=False)
 
-    # To delete
-    first_name = db.StringProperty(multiline=True, indexed=False)
-    last_name = db.StringProperty(multiline=True, indexed=False)
-    last_received = db.DateTimeProperty(auto_now_add=True, indexed=False)
-    last_sent = db.DateTimeProperty(indexed=False)
-    last_auto = db.DateTimeProperty(auto_now_add=True)
-
-
     def get_uid(self):
         return self.key().name()
 
@@ -113,9 +105,4 @@ class BibleUser(db.Model):
         return newUser
 
     def refresh(self):
-        self.firstName = self.first_name
-        self.lastName = self.last_name
-        self.lastReceived = self.last_received
-        self.lastSent = self.last_sent
-        self.lastAuto = self.last_auto
         self.put()
