@@ -184,7 +184,7 @@ def format_verse(verse, passage):
         versePrep.append(telegram_utils.bold(verse.get_title()))
         versePrep.append(telegram_utils.bold(verse.reference) + ' ' \
                         + telegram_utils.bracket(passage.get_version()))
-        verseprep.append(passage.get_text())
+        versePrep.append(passage.get_text())
         versePrep.append(telegram_utils.bold(verse.reference))
 
         return telegram_utils.join(versePrep, '\n\n')
