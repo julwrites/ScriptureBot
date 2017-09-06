@@ -67,11 +67,11 @@ class BotHandler(webapp2.RequestHandler):
             userId = user_utils.get_uid(msg.get('from').get('id'))
             userObj = user_utils.get_user(userId)
 
-            actions = 
-            tms_actions.get()
-            + bible_actions.get()
-            + user_actions.get()
-            + admin_actions.get()
+            actions = \
+            tms_actions.get() +
+            bible_actions.get() +
+            user_actions.get() +
+            admin_actions.get()
 
             for action in actions:
                 if action.execute(userObj, msg):
