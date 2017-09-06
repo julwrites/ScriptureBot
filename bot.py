@@ -64,12 +64,12 @@ class BotHandler(webapp2.RequestHandler):
 
             # Read the user to echo back
             userId = user_utils.get_uid(msg.get('from').get('id'))
-            userObj = user_utils.get_user(user_id)
+            userObj = user_utils.get_user(userId)
 
             actions = tms_actions.get() + bible_actions.get() + user_actions.get()
 
             for action in actions:
-                if action.execute(user_obj, msg):
+                if action.execute(userObj, msg):
                     return
 
             telegram_utils.send_msg('Hello I am bot', msg.get('from').get('id'))
