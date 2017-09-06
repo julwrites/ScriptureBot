@@ -49,22 +49,22 @@ def send_msg(msg, user_id):
 
     for chunk in chunks:
         post = TelegramPost(user_id)
-        post.add_text(chunk)
+        post.addText(chunk)
         post.send()
 
 def send_msg_keyboard(msg, user_id, options=[], inline=False, one_time=False):
     post = TelegramPost(user_id)
-    post.add_text(msg)
+    post.addText(msg)
     if inline:
-        post.add_inline_keyboard(format_keyboard(options))
+        post.addInlineKeyboard(format_keyboard(options))
     else:
-        post.add_keyboard(format_keyboard(options), one_time)
+        post.addKeyboard(format_keyboard(options), one_time)
     post.send()
 
-def send_close_keyboard(msg, user_id):
+def send_closeKeyboard(msg, user_id):
     post = TelegramPost(user_id)
-    post.add_text(msg)
-    post.close_keyboard()
+    post.addText(msg)
+    post.closeKeyboard()
     post.send()
 
 

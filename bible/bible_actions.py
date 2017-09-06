@@ -1,7 +1,7 @@
 
 # Local modules
 from common import debug, text_utils
-from common.classes import action
+from common.action import action_classes
 from common.telegram import telegram_utils
 
 from bible import bible_utils
@@ -11,7 +11,7 @@ CMD_PASSAGE_PROMPT = "Give me a Bible reference"
 CMD_PASSAGE_BADQUERY = "Sorry, I can't find this reference"
 
 
-class BiblePassageAction(action.Action):
+class BiblePassageAction(action_classes.Action):
     def identifier(self):
         return '/passage'
 

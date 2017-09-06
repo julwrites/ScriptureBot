@@ -24,9 +24,14 @@ This framework aims to implement a lightweight and reusable set of modules.
 
 Nested modules are allowed, although not preferred, and the depth of nesting should be kept minimal. 
 
-Module names fall into 3 core blocks, each prefixed by the module name.
-e.g. module admin contains admin_utils, admin_actions, admin_hooks. 
-This facilitates a simple naming scheme, and even code generation. 
+Module names fall into 4 core blocks, each prefixed by the module name.
+* Classes
+* Utilities
+* Actions
+* Hooks
+e.g. module admin contains admin_classes, admin_utils, admin_actions, admin_hooks. 
+
+A module can contain specialized functionality and classes, but the 4 files that may be assumed to exist are only the 4 core blocks, with that naming scheme. 
 
 ### Code
 We are using Python27 for this version of the framework.

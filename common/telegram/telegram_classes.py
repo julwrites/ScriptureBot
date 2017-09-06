@@ -38,12 +38,12 @@ class TelegramPost():
         except:
             debug.log('Send failed! ' + TELEGRAM_URL_SEND + ', ' + data)
 
-    def add_text(self, msg):
+    def addText(self, msg):
         debug.log('Adding text for ' + self.uid() + ': ' + msg)
 
         self.format_data['text'] = msg
 
-    def add_keyboard(self, keyboard=[], one_time=False):
+    def addKeyboard(self, keyboard=[], one_time=False):
         debug.log('Adding keyboard for ' + self.uid() + ': ' + str(keyboard))
 
         self.format_data['reply_markup'] = {
@@ -51,14 +51,14 @@ class TelegramPost():
             'one_time_keyboard': one_time
         }
     
-    def close_keyboard(self):
+    def closeKeyboard(self):
         debug.log('Removing keyboard for ' + self.uid())
 
         self.format_data['reply_markup'] = {
             'remove_keyboard': True
         }
 
-    def add_inline_keyboard(self, keyboard=[]):
+    def addInlineKeyboard(self, keyboard=[]):
         debug.log('Adding inline keyboard for ' + self.uid() + ': ' + str(keyboard))
        
         self.format_data['reply_markup'] = {

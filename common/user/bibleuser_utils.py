@@ -4,7 +4,7 @@ from google.appengine.ext import db
 
 # Local Modules
 from common import debug, text_utils
-from common.user import bibleuser_class
+from common.user import bibleuser_classes
 
 
 # Database util functions
@@ -38,12 +38,12 @@ def set_profile(user_id, uname, fname, lname):
         existing_user.update_last_received()
         return existing_user
     else:
-        user_obj = bibleuser_class.BibleUser(key_name=str(user_id), username=uname, first_name=fname, last_name=lname)
+        user_obj = bibleuser_classes.BibleUser(key_name=str(user_id), username=uname, first_name=fname, last_name=lname)
         user_obj.put()
         return user_obj
 
 def get_user_query():
-    return bibleuser_class.BibleUser.all()
+    return bibleuser_classes.BibleUser.all()
 
 def for_each_user(fn):
     debug.log('Running ' + str(fn) + ' for each user')

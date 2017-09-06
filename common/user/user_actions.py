@@ -2,7 +2,7 @@
 # Local modules
 from common import debug, text_utils
 from common.telegram import telegram_utils
-from common.classes import action
+from common.action import action_classes
 
 
 SUPPORTED_VERSIONS = ["NIV", "ESV", "KJV", "NASB", "NLT", "AMP"]
@@ -14,7 +14,7 @@ CMD_VERSION_BADQUERY = "I don't have this version!"
 
 STATE_VERSION_PROMPT = "I\'ve changed your version to {}!"
 
-class BibleUserAction(action.Action):
+class BibleUserAction(action_classes.Action):
     def identifier(self):
         return '/version'
 
@@ -29,7 +29,7 @@ class BibleUserAction(action.Action):
                     user_obj.set_version(ver)
                     user_obj.set_state(None)
 
-                    telegram_utils.send_close_keyboard(\
+                    telegram_utils.send_closeKeyboard(\
                     STATE_VERSION_PROMPT.format(ver), user_obj.get_uid())
                     break
             else:

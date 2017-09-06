@@ -2,7 +2,7 @@
 # Local modules
 from common import debug, text_utils
 from common.telegram import telegram_utils
-from common.classes import action
+from common.action import action_classes
 
 from bible import bible_utils
 
@@ -13,7 +13,7 @@ CMD_TMS = "/tms"
 CMD_TMS_PROMPT = "Give me a Verse reference, or Pack and Verse number\n(P.S. you can even try giving me a topic)"
 CMD_TMS_BADQUERY = "I can't find anything related to this, try another one?"
 
-class TMSAction(action.Action):
+class TMSAction(action_classes.Action):
     def identifier(self):
         return '/tms'
 

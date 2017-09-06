@@ -11,6 +11,8 @@ from google.appengine.ext import db
 from common import debug, html_utils, constants
 from common.telegram import telegram_utils
 
+from bible import bgw_classes
+
 
 BGW_URL = 'http://www.biblegateway.com/passage/?search={}&version={}&interface=print'
 
@@ -24,21 +26,6 @@ BGW_PASSAGE_TITLE = '.passage-display-bcv'
 REFERENCE = 'reference'
 VERSION = 'version'
 PASSAGE = 'passage'
-
-class BGWPassage():
-    def __init__(self, ref, ver, txt):
-        self.reference = ref
-        self.version = ver
-        self.text = txt
-
-    def get_reference(self):
-        return self.reference
-
-    def get_version(self):
-        return self.version
-
-    def get_text(self):
-        return self.text
 
 def extract_passage(html):
     return html_utils.sub_html(html, BGW_PASSAGE_START, BGW_PASSAGE_END)
@@ -105,7 +92,7 @@ def get_passage_raw(ref, version='NIV'):
 
     debug.log("Finished parsing soup")
 
-    return BGWPassage(passage_reference, passage_version, passage_text)
+    return bgw_classes.BGWPassage(passage_reference, passage_version, passage_text)
 
 def get_passage(ref, version='NIV'):
     passage = get_passage_raw(ref, version)

@@ -1,6 +1,6 @@
 
 # Local Modules
-from common.data.data_class import Data
+from common.data.data_classes import Data
 
 
 # Database util functions
