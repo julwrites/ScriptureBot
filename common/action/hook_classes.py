@@ -1,7 +1,7 @@
 
 # Local modules
 from common import debug
-from common.actions import action_classes
+from common.action import action_classes
 
 from common.user import user_utils
 

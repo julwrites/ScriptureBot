@@ -16,3 +16,7 @@ class BibleActionHook(hook_classes.Hook):
             debug.log("Sending verse: " + '')
 
             # telegram_utils.send_msg(verseMsg, userObj.get_uid())
+
+HOOK = BibleActionHook()
+def get():
+    return HOOK
