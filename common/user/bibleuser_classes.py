@@ -17,6 +17,7 @@ class BibleUser(db.Model):
     state = db.StringProperty(indexed=False)
     version = db.StringProperty(indexed=False, default='NIV')
     subscription = db.StringProperty(indexed=False)
+    subscriptionTime = db.IntegerProperty(indexed=False)
 
     # To delete
     first_name = db.StringProperty(multiline=True, indexed=False)
@@ -83,6 +84,13 @@ class BibleUser(db.Model):
         if text_utils.is_valid(self.subscription):
             return self.subscription.find(subscription) != -1
         return False
+
+    def get_subscription_time(self):
+        return self.subscriptionTime
+
+    def set_subscription_time(self, time):
+        self.subscriptionTime = time
+        self.put()
 
     def update_last_received(self):
         self.lastReceived = chrono.now()

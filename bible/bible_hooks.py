@@ -17,6 +17,7 @@ class BibleActionHook(hook_classes.Hook):
 
             # telegram_utils.send_msg(verseMsg, userObj.get_uid())
 
-HOOK = BibleActionHook()
 def get():
-    return HOOK
+    return [
+        BibleActionHook()
+    ]

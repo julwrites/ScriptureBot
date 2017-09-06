@@ -14,7 +14,7 @@ CMD_VERSION_BADQUERY = "I don't have this version!"
 
 STATE_VERSION_PROMPT = "I\'ve changed your version to {}!"
 
-class BibleUserAction(action_classes.Action):
+class BibleUserVersionAction(action_classes.Action):
     def identifier(self):
         return '/version'
 
@@ -43,7 +43,37 @@ class BibleUserAction(action_classes.Action):
 
         return True
 
+class BibleUserSubscriptionAction(action_classes.Action):
+    def identifier(self):
+        return '/subscribe'
+
+    def resolve(self, userObj, msg):
+        query = telegram_utils.strip_command(msg, self.identifier())
+
+        if text_utils.is_valid(query):
+
+            for ver in SUPPORTED_VERSIONS:
+
+                if text_utils.text_compare(query, ver):
+                    userObj.set_version(ver)
+                    userObj.set_state(None)
+
+                    telegram_utils.send_close_keyboard(\
+                    STATE_VERSION_PROMPT.format(ver), userObj.get_uid())
+                    break
+            else:
+                telegram_utils.send_msg(CMD_VERSION_BADQUERY, userObj.get_uid())
+
+        else:
+            telegram_utils.send_msg_keyboard(\
+            CMD_VERSION_PROMPT, userObj.get_uid(), SUPPORTED_VERSIONS)
+
+            userObj.set_state(self.identifier())
+
+        return True
+
+
 def get():
     return [
-        BibleUserAction()
+        BibleUserVersionAction()
     ]
