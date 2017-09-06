@@ -15,6 +15,9 @@ class BiblePassageAction(action_classes.Action):
     def identifier(self):
         return '/passage'
 
+    def name(self):
+        return 'Bible Passage'
+
     def resolve(self, userObj, msg):
         query = telegram_utils.strip_command(msg, self.identifier())
 

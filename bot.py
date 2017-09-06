@@ -8,12 +8,9 @@ from google.appengine.api import urlfetch
 # Local modules
 from common import debug
 from common.telegram import telegram_utils
-from common.user import user_utils, user_actions
+from user import user_utils
 
-from bible import bible_actions
-from tms import tms_actions
-from admin import admin_actions
-
+import components
 
 from secret import BOT_ID
 APP_BOT_URL = "/" + BOT_ID
@@ -67,11 +64,7 @@ class BotHandler(webapp2.RequestHandler):
             userId = user_utils.get_uid(msg.get('from').get('id'))
             userObj = user_utils.get_user(userId)
 
-            actions = \
-            tms_actions.get() + \
-            bible_actions.get() + \
-            user_actions.get() + \
-            admin_actions.get()
+            actions = components.actions()
 
             for action in actions:
                 if action.execute(userObj, msg):

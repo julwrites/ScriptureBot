@@ -18,6 +18,9 @@ class BibleUserVersionAction(action_classes.Action):
     def identifier(self):
         return '/version'
 
+    def name(self):
+        return 'Bible Version'
+
     def resolve(self, userObj, msg):
         query = telegram_utils.strip_command(msg, self.identifier())
 

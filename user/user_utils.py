@@ -1,6 +1,6 @@
 
 # Local Modules
-from common.user import bibleuser_utils
+from user import bibleuser_utils
 
 
 # Functions for manipulation of user info

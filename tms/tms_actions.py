@@ -17,6 +17,9 @@ class TMSAction(action_classes.Action):
     def identifier(self):
         return '/tms'
 
+    def name(self):
+        return 'Topical Memory System'
+
     def resolve(self, userObj, msg):
         query = telegram_utils.strip_command(msg, self.identifier())
 

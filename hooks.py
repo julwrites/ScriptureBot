@@ -5,7 +5,8 @@ import json
 
 # Local modules
 from common import debug
-from bible import bible_hooks
+
+import components
 
 APP_HOOKS_URL = "/hooks"
 
@@ -17,7 +18,7 @@ class HookHandler(webapp2.RequestHandler):
         data = json.loads(self.request.body)
         debug.log(data)
 
-        actions = bible_hooks.get()
+        actions = components.hooks()
 
         for action in actions:
             if action.execute(data):

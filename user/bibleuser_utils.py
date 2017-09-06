@@ -4,7 +4,7 @@ from google.appengine.ext import db
 
 # Local Modules
 from common import debug, text_utils
-from common.user import bibleuser_classes
+from user import bibleuser_classes
 
 
 # Database util functions

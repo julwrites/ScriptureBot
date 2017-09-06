@@ -35,8 +35,12 @@ class Action():
 
 
 
-    # To be inherited and overwritten with the name of this action
+    # To be inherited and overwritten with the command name of this action
     def identifier(self):
+        return ''
+
+    # To be inherited and overwritten with the display name of this action
+    def name(self):
         return ''
 
     # To be inherited and overwritten with functionality

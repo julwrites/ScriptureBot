@@ -3,7 +3,7 @@
 from common import debug
 from common.action import action_classes
 
-from common.user import user_utils
+from user import user_utils
 
 class Hook(action_classes.Action):
     def execute(self, data):

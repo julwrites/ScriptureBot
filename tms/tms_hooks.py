@@ -3,7 +3,7 @@
 # Local modules
 from common import debug
 from common.telegram import telegram_utils
-from common.user import user_utils
+from user import user_utils
 
 from tms import tms_utils
 from bible import bible_utils
@@ -11,6 +11,10 @@ from bible import bible_utils
 
 HOOK_DAILYTMS = '/dailytms'
 SUBSCRIPTION_DAILYTMS = '/*dailytms*/'
+
+def get():
+    return [
+    ]
 
 def hooks(data):
     debug.log('Running TMS hooks')

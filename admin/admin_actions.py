@@ -1,7 +1,7 @@
 
 # Local modules
 from common import debug
-from common.user import user_utils
+from user import user_utils
 from common.telegram import telegram_utils
 from common.action import action_classes
 
@@ -16,6 +16,9 @@ ADMIN_RAGNAROK = '/ragnarok'
 class AdminDumpAction(action_classes.Action):
     def identifier(self):
         return '/dump'
+
+    def name(self):
+        return 'Dump User Database'
 
     def resolve(self, userObj, msg):
         if admin_utils.access(userObj.get_uid()):
@@ -40,6 +43,9 @@ class AdminDumpAction(action_classes.Action):
 class AdminCleanAction(action_classes.Action):
     def identifier(self):
         return '/clean'
+
+    def name(self):
+        return 'Clean User Database'
 
     def resolve(self, userObj, msg):
         if admin_utils.access(userObj.get_uid()):
@@ -74,6 +80,9 @@ class AdminMigrateAction(action_classes.Action):
     def identifier(self):
         return '/refresh'
 
+    def name(self):
+        return 'Migrate User Database'
+
     def resolve(self, userObj, msg):
         if admin_utils.access(userObj.get_uid()):
             # Read user database
@@ -92,6 +101,9 @@ class AdminMigrateAction(action_classes.Action):
 class AdminRagnarokAction(action_classes.Action):
     def identifier(self):
         return '/ragnarok'
+
+    def name(self):
+        return 'Kill User Database'
 
     def resolve(self, userObj, msg):
         if admin_utils.access(userObj.get_uid()):
