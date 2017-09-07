@@ -67,6 +67,7 @@ class BotHandler(webapp2.RequestHandler):
             actions = modules.get_actions()
 
             for action in actions:
+                debug.log("Running action: " + action.identifier())
                 if action.execute(userObj, msg):
                     return
 
