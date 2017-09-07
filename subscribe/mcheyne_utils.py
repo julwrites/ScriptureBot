@@ -28,25 +28,25 @@ def get_mcheyne_raw():
         return None
 
     # Steps through all the html types and mark these
-    devoBlocks = []
+    subscribeBlocks = []
     for tag in soup.findAll(MCHEYNE_SELECT):
-        devoBlocks.append(tag.text)
+        subscribeBlocks.append(tag.text)
 
-    debug.log("Finished parsing soup" + '*'.join(devoBlocks))
+    debug.log("Finished parsing soup" + '*'.join(subscribeBlocks))
 
-    return devoBlocks
+    return subscribeBlocks
 
 def get_mcheyne(version="NIV"):
-    devoRefs = get_mcheyne_raw()
-    devoBlocks = []
+    subscribeRefs = get_mcheyne_raw()
+    subscribeBlocks = []
 
-    if devoRefs is None:
+    if subscribeRefs is None:
         return None
 
-    for ref in devoRefs:
+    for ref in subscribeRefs:
         passage = bible_utils.get_passage(ref, version)
 
         if passage is not None:
-            devoBlocks.append(passage)
+            subscribeBlocks.append(passage)
 
-    return devoBlocks
+    return subscribeBlocks

@@ -4,43 +4,43 @@ from common import debug, text_utils
 from common.telegram import telegram_utils
 from common.action import action_classes
 
-from devo import devo_modules
+from subscribe import subscribe_modules
 
-PROMPT = "Please select a devotional of your choosing\n\
+PROMPT = "Please select a subscribetional of your choosing\n\
 (if unsure, always go with the one you are comfortable with!)"
 BADQUERY = "I don't have this subscription!"
 CONFIRM_SUBSCRIBE = "I\'ve set up your subscription to {}!"
 CONFIRM_UNSUBSCRIBE = "I\'ve unsubscribed you from {}!"
 
 
-class DevoSubscriptionAction(action_classes.Action):
+class SubscriptionAction(action_classes.Action):
     def identifier(self):
-        return '/devo'
+        return '/subscribe'
 
     def name(self):
-        return 'Devotionals'
+        return 'Subscriptions'
 
     def resolve(self, userObj, msg):
         query = telegram_utils.strip_command(msg, self.identifier())
-        devos = devo_modules.get_hooks()
+        subs = subscribe_modules.get_hooks()
 
         if text_utils.is_valid(query):
 
-            for devo in devos:
+            for sub in subs:
 
-                if text_utils.fuzzy_compare(query, devo.name()):
+                if text_utils.fuzzy_compare(query, sub.name()):
 
-                    if userObj.has_subscription(devo.identifier()):
-                        userObj.remove_subscription(devo.identifier())
+                    if userObj.has_subscription(sub.identifier()):
+                        userObj.remove_subscription(sub.identifier())
 
                         telegram_utils.send_close_keyboard(\
-                        CONFIRM_UNSUBSCRIBE.format(devo.name()), userObj.get_uid())
+                        CONFIRM_UNSUBSCRIBE.format(sub.name()), userObj.get_uid())
 
                     else:
-                        userObj.add_subscription(devo.identifier())
+                        userObj.add_subscription(sub.identifier())
 
                         telegram_utils.send_close_keyboard(\
-                        CONFIRM_SUBSCRIBE.format(devo.name()), userObj.get_uid())
+                        CONFIRM_SUBSCRIBE.format(sub.name()), userObj.get_uid())
 
                     userObj.set_state(None)
                     break
@@ -48,15 +48,15 @@ class DevoSubscriptionAction(action_classes.Action):
                 telegram_utils.send_msg(BADQUERY, userObj.get_uid())
 
         else:
-            devoList = [devo.name() for devo in devos]
+            subList = [sub.name() for sub in subs]
 
-            for i in range(len(devoList)):
+            for i in range(len(subList)):
 
-                if userObj.has_subscription(devos[i].identifier()):
-                    devoList[i] = devoList[i] + ' ' + telegram_utils.tick()
+                if userObj.has_subscription(subs[i].identifier()):
+                    subList[i] = subList[i] + ' ' + telegram_utils.tick()
 
             telegram_utils.send_msg_keyboard(\
-            PROMPT, userObj.get_uid(), devoList, 1)
+            PROMPT, userObj.get_uid(), subList, 1)
 
             userObj.set_state(self.identifier())
 
@@ -64,5 +64,5 @@ class DevoSubscriptionAction(action_classes.Action):
 
 def get():
     return [
-        DevoSubscriptionAction()
+        SubscriptionAction()
     ]

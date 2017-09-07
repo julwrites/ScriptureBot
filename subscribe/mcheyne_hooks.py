@@ -4,9 +4,9 @@ from common import debug
 from common.telegram import telegram_utils
 from common.action import hook_classes
 
-from devo import mcheyne_utils
+from subscribe import mcheyne_utils
 
-class McheyneDevoHook(hook_classes.Hook):
+class McheynesubscribeHook(hook_classes.Hook):
     def identifier(self):
         return '/mcheyne'
 
@@ -25,5 +25,5 @@ class McheyneDevoHook(hook_classes.Hook):
 
 def get():
     return [
-        McheyneDevoHook()
+        McheynesubscribeHook()
     ]

@@ -4,11 +4,11 @@ from common import debug, text_utils
 from common.action import action_classes
 from common.telegram import telegram_utils
 
-from devo import mcheyne_utils
+from subscribe import mcheyne_utils
 
-class McheyneDevoAction(action_classes.Action):
+class McheyneDailyAction(action_classes.Action):
     def identifier(self):
-        return '/mcheynedevo'
+        return '/mcheynedaily'
     
     def name(self):
         return 'Mcheyne Bible Reading Plan'
@@ -23,6 +23,6 @@ class McheyneDevoAction(action_classes.Action):
 
 def get():
     return [
-        McheyneDevoAction()
+        McheyneDailyAction()
     ]
 
