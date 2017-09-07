@@ -49,13 +49,11 @@ class DevoSubscriptionAction(action_classes.Action):
 
         else:
             devoList = [devo.name() for devo in devos]
-            debug.log(','.join(devoList))
 
             for i in range(len(devoList)):
 
                 if userObj.has_subscription(devos[i].identifier()):
-                    debug.log('Found, adding tick')
-                    devoList[i].append(' ' + telegram_utils.tick())
+                    devoList[i] = devoList[i] + ' ' + telegram_utils.tick()
 
             telegram_utils.send_msg_keyboard(\
             PROMPT, userObj.get_uid(), devoList, 1)
