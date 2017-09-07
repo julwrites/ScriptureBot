@@ -6,8 +6,7 @@ from common.action import action_classes
 
 from subscribe import subscribe_modules
 
-PROMPT = "Please select a subscribetional of your choosing\n\
-(if unsure, always go with the one you are comfortable with!)"
+PROMPT = "Choose any of these subscriptions to subscribe or unsubscribe!"
 BADQUERY = "I don't have this subscription!"
 CONFIRM_SUBSCRIBE = "I\'ve set up your subscription to {}!"
 CONFIRM_UNSUBSCRIBE = "I\'ve unsubscribed you from {}!"
