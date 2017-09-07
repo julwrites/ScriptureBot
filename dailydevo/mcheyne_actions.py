@@ -4,7 +4,7 @@ from common import debug, text_utils
 from common.action import action_classes
 from common.telegram import telegram_utils
 
-from devo import mcheyne_utils
+from dailydevo import mcheyne_utils
 
 class McheyneDevoAction(action_classes.Action):
     def identifier(self):

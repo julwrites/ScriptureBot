@@ -4,7 +4,7 @@ from common import debug
 from common.telegram import telegram_utils
 from common.action import hook_classes
 
-from devo import mcheyne_utils
+from dailydevo import mcheyne_utils
 
 class McheyneDevoHook(hook_classes.Hook):
     def identifier(self):

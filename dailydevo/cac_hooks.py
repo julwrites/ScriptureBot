@@ -4,7 +4,7 @@ from common import debug, text_utils
 from common.action import hook_classes
 from common.telegram import telegram_utils
 
-from devo import cac_utils
+from dailydevo import cac_utils
 from bible import bible_utils
 
 class CACDevoHook(hook_classes.Hook):
