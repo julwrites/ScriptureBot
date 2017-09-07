@@ -16,7 +16,6 @@ class BibleUser(db.Model):
     active = db.BooleanProperty(default=True)
     state = db.StringProperty(indexed=True)
     version = db.StringProperty(indexed=True, default='NIV')
-    subscription = db.StringProperty(indexed=True)
     subscriptions = db.StringListProperty(indexed=True)
     subscriptionTime = db.IntegerProperty(indexed=True)
 
