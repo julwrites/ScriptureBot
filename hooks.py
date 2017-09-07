@@ -16,13 +16,10 @@ class HookHandler(webapp2.RequestHandler):
         self.post()
 
     def post(self):
-        data = json.loads(self.request.body)
-        debug.log(data)
-
         hooks = modules.get_hooks()
 
         for hook in hooks:
-            hook.dispatch(data)
+            hook.dispatch()
 
 
 

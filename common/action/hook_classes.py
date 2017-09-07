@@ -18,7 +18,7 @@ class Hook():
         except:
             debug.log('Hook failed! ' + self.identifier())
 
-    def dispatch(self, data):
+    def dispatch(self):
         user_utils.for_each_user(self.execute)
 
     # Do not overwrite if possible, this checks the message text against the command name
