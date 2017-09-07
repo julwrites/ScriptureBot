@@ -76,25 +76,25 @@ class BibleUser(db.Model):
         self.put()
 
     def get_subscription(self):
-        return ','.join(self.subscription)
+        return ','.join(self.subscriptions)
 
     def add_subscription(self, subId):
         if self.has_subscription(subId):
             return
 
-        self.subscription.append(subId)
+        self.subscriptions.append(subId)
         self.put()
 
     def remove_subscription(self, subId):
         try:
-            self.subscription.remove(subId)
+            self.subscriptions.remove(subId)
             self.put()
         except:
             return
 
     def has_subscription(self, subId):
         try:
-            self.subscription.index(subId)
+            self.subscriptions.index(subId)
         except:
             return False
         return True
