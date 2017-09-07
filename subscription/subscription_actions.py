@@ -4,7 +4,7 @@ from common import debug, text_utils
 from common.telegram import telegram_utils
 from common.action import action_classes
 
-from subscribe import subscribe_modules
+from devo import devo_modules
 
 PROMPT = "Choose any of these subscriptions to subscribe or unsubscribe!"
 BADQUERY = "I don't have this subscription!"
@@ -12,7 +12,7 @@ CONFIRM_SUBSCRIBE = "I\'ve set up your subscription to {}!"
 CONFIRM_UNSUBSCRIBE = "I\'ve unsubscribed you from {}!"
 
 
-class SubscriptionAction(action_classes.Action):
+class DevoSubscriptionAction(action_classes.Action):
     def identifier(self):
         return '/subscribe'
 
@@ -21,7 +21,7 @@ class SubscriptionAction(action_classes.Action):
 
     def resolve(self, userObj, msg):
         query = telegram_utils.strip_command(msg, self.identifier())
-        subs = subscribe_modules.get_hooks()
+        subs = devo_modules.get_hooks()
 
         if text_utils.is_valid(query):
 
@@ -63,5 +63,5 @@ class SubscriptionAction(action_classes.Action):
 
 def get():
     return [
-        SubscriptionAction()
+        DevoSubscriptionAction()
     ]
