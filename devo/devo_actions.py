@@ -31,13 +31,14 @@ class DevoSubscriptionAction(action_classes.Action):
                 if text_utils.text_compare(query, devo.name()):
 
                     if userObj.has_subscription(devo.identifier()):
-                        debug.log("Removing subscription: " + devo.identifier())
                         userObj.remove_subscription(devo.identifier())
+
                         telegram_utils.send_close_keyboard(\
                         CONFIRM_UNSUBSCRIBE.format(devo.name()), userObj.get_uid())
+
                     else:
-                        debug.log("Adding subscription: " + devo.identifier())
-                        userObj.add_subscription(devo)
+                        userObj.add_subscription(devo.identifier())
+
                         telegram_utils.send_close_keyboard(\
                         CONFIRM_SUBSCRIBE.format(devo.name()), userObj.get_uid())
 
