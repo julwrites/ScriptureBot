@@ -24,12 +24,17 @@ class Action():
         if userObj.get_state() == self.identifier():
             debug.log('Waiting for ' + self.identifier())
             return True
+        for state in self.states():
+            if userObj.get_state() == state:
+                debug.log('Waiting for ' + self.identifier() + state)
+                return True
         return False
 
     # Do not overwrite if possible, this checks the message text against the command name
     def match(self, msg):
         msgText = msg.get('text').strip() 
-        if (msgText.find(self.identifier()) != -1) or (msgText.find(self.name()) != -1):
+        if (msgText.find(self.identifier()) != -1) or \
+           (msgText.find(self.name()) != -1):
             debug.log('Matched with ' + self.identifier())
             return True
         return False
@@ -39,6 +44,9 @@ class Action():
     # To be inherited and overwritten with the command name of this action
     def identifier(self):
         return ''
+
+    def states(self):
+        return []
 
     # To be inherited and overwritten with the display name of this action
     def name(self):
