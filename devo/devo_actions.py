@@ -28,7 +28,7 @@ class DevoSubscriptionAction(action_classes.Action):
 
             for devo in devos:
 
-                if text_utils.text_compare(query, devo.name()):
+                if text_utils.fuzzy_compare(query, devo.name()):
 
                     if userObj.has_subscription(devo.identifier()):
                         userObj.remove_subscription(devo.identifier())
