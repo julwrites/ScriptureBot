@@ -84,8 +84,8 @@ class BibleUser(db.Model):
         if self.has_subscription(subId):
             return
 
-        debug.log("Adding subscription : " + subId)
         self.subscription = self.subscription + subId 
+        debug.log("Subscription added, new subscription: " + self.subscription)
         self.put()
 
     def remove_subscribtion(self, subId):
@@ -93,7 +93,6 @@ class BibleUser(db.Model):
         self.put()
 
     def has_subscription(self, subId):
-        debug.log("Checking subscription : " + subId)
         if text_utils.is_valid(self.subscription):
             return (self.subscription.find(subId) != -1)
         return False

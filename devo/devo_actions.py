@@ -42,6 +42,8 @@ class DevoSubscriptionAction(action_classes.Action):
                         telegram_utils.send_close_keyboard(\
                         CONFIRM_SUBSCRIBE.format(devo.name()), userObj.get_uid())
 
+                        debug.log("Done add")
+
                     userObj.set_state(None)
                     break
             else:
