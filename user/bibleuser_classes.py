@@ -31,7 +31,7 @@ class BibleUser(db.Model):
         self.active = obj.active
         self.state = obj.state
         self.version = obj.version
-        self.subscription = obj.subscription
+        self.subscriptions = obj.subscriptions
         self.subscriptionTime = obj.subscriptionTime
         return self
 
