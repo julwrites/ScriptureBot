@@ -33,6 +33,7 @@ def extract_passage(html):
 def fetch_bgw(query, version='NIV'):
     formatRef = urllib.quote(query.lower().strip())
     formatUrl = BGW_URL.format(formatRef, version)
+    debug.log("URL: " + formatUrl)
 
     soup = html_utils.fetch_html(formatRef, BGW_PASSAGE_START, BGW_PASSAGE_END, BGW_PASSAGE_CLASS)
  
