@@ -22,7 +22,7 @@ class HookHandler(webapp2.RequestHandler):
         hooks = modules.get_hooks()
 
         for hook in hooks:
-            hook.dispatch(data):
+            hook.dispatch(data)
 
 
 
