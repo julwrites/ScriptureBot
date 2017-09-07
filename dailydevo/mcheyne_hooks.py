@@ -6,9 +6,9 @@ from common.action import hook_classes
 
 from dailydevo import mcheyne_utils
 
-class McheyneDevoHook(hook_classes.Hook):
+class McheyneDailyHook(hook_classes.Hook):
     def identifier(self):
-        return '/mcheynedevo'
+        return '/mcheynedaily'
 
     def name(self):
         return 'Mcheyne Bible Reading Plan'
@@ -25,5 +25,5 @@ class McheyneDevoHook(hook_classes.Hook):
 
 def get():
     return [
-        McheyneDevoHook()
+        McheyneDailyHook()
     ]

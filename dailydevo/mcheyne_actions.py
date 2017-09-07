@@ -8,7 +8,7 @@ from dailydevo import mcheyne_utils
 
 class McheyneDevoAction(action_classes.Action):
     def identifier(self):
-        return '/mcheynedevo'
+        return '/mcheynedaily'
     
     def name(self):
         return 'Mcheyne Bible Reading Plan'
@@ -23,6 +23,6 @@ class McheyneDevoAction(action_classes.Action):
 
 def get():
     return [
-        McheyneDevoAction()
+        McheyneDailyAction()
     ]
 
