@@ -9,7 +9,9 @@ from devo import devo_modules
 PROMPT = "Please select a devotional of your choosing\n\
 (if unsure, always go with the one you are comfortable with!)"
 BADQUERY = "I don't have this subscription!"
-CONFIRM = "I\'ve set up your subscription to {}!"
+CONFIRM_SUBSCRIBE = "I\'ve set up your subscription to {}!"
+CONFIRM_UNSUBSCRIBE = "I\'ve unsubscribed you from {}!"
+
 
 class DevoSubscriptionAction(action_classes.Action):
     def identifier(self):
@@ -27,18 +29,26 @@ class DevoSubscriptionAction(action_classes.Action):
             for devo in devos:
 
                 if text_utils.text_compare(query, devo.name()):
-                    userObj.add_subscription(devo)
-                    userObj.set_state(None)
 
-                    telegram_utils.send_close_keyboard(\
-                    CONFIRM.format(devo.name()), userObj.get_uid())
+                    if userObj.has_subscription(devo.identifier()):
+                        userObj.remove_subscription(devo.identifier())
+                        telegram_utils.send_close_keyboard(\
+                        CONFIRM_UNSUBSCRIBE.format(devo.name()), userObj.get_uid())
+                    else:
+                        userObj.add_subscription(devo)
+                        telegram_utils.send_close_keyboard(\
+                        CONFIRM_SUBSCRIBE.format(devo.name()), userObj.get_uid())
+
+                    userObj.set_state(None)
                     break
             else:
                 telegram_utils.send_msg(BADQUERY, userObj.get_uid())
 
         else:
             devoList = [devo.name() for devo in devos]
+
             for i in range(len(devoList)):
+
                 if userObj.has_subscription(devos[i].identifier()):
                     devoList[i].append(' ' + telegram_utils.tick())
 
