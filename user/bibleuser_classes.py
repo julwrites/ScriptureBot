@@ -78,6 +78,13 @@ class BibleUser(db.Model):
     def get_subscription(self):
         return ','.join(self.subscriptions)
 
+    def has_subscription(self, subId):
+        try:
+            self.subscriptions.index(subId)
+        except:
+            return False
+        return True
+
     def add_subscription(self, subId):
         if self.has_subscription(subId):
             return
@@ -91,13 +98,6 @@ class BibleUser(db.Model):
             self.put()
         except:
             return
-
-    def has_subscription(self, subId):
-        try:
-            self.subscriptions.index(subId)
-        except:
-            return False
-        return True
 
     def update_last_received(self):
         self.lastReceived = chrono.now()
