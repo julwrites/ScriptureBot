@@ -4,7 +4,7 @@ from common import debug, text_utils
 from common.telegram import telegram_utils
 from common.action import action_classes
 
-from devo import cac_hooks, mcheyne_hooks
+from devo import devo_modules
 
 PROMPT = "Please select a devotional of your choosing\n\
 (if unsure, always go with the one you are comfortable with!)"
@@ -20,9 +20,7 @@ class DevoSubscriptionAction(action_classes.Action):
 
     def resolve(self, userObj, msg):
         query = telegram_utils.strip_command(msg, self.identifier())
-        devos = \
-        cac_hooks.get() + \
-        mcheyne_hooks.get()
+        devos = devo_modules.get_hooks()
 
         if text_utils.is_valid(query):
 

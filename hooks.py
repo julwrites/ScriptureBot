@@ -6,7 +6,7 @@ import json
 # Local modules
 from common import debug
 
-import components
+import modules
 
 APP_HOOKS_URL = "/hooks"
 APP_DAILY_HOOKS_URL = APP_HOOKS_URL + "/daily"
@@ -19,7 +19,7 @@ class HookHandler(webapp2.RequestHandler):
         data = json.loads(self.request.body)
         debug.log(data)
 
-        hooks = components.hooks()
+        hooks = modules.get_hooks()
 
         for hook in hooks:
             hook.dispatch(data):

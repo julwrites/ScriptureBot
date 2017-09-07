@@ -10,7 +10,7 @@ from common import debug
 from common.telegram import telegram_utils
 from user import user_utils
 
-import components
+import modules
 
 from secret import BOT_ID
 APP_BOT_URL = "/" + BOT_ID
@@ -64,7 +64,7 @@ class BotHandler(webapp2.RequestHandler):
             userId = user_utils.get_uid(msg.get('from').get('id'))
             userObj = user_utils.get_user(userId)
 
-            actions = components.actions()
+            actions = modules.get_actions()
 
             for action in actions:
                 if action.execute(userObj, msg):
