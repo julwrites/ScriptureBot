@@ -16,7 +16,7 @@ class CACDevoHook(hook_classes.Hook):
 
     def resolve(self, userObj):
         devo = cac_utils.get_devo(userObj.get_version())
-        debug.log('Devo fetched: ' + devo)
+        debug.log('devo fetched: ' + devo)
 
         return True
 
