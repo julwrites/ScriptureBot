@@ -23,13 +23,15 @@ MCHEYNE_SELECT = "title"
 def get_mcheyne_raw():
     formatUrl = MCHEYNE_URL
 
-    devoSoup = html_utils.fetch_html(formatUrl, MCHEYNE_DEVO_START, MCHEYNE_DEVO_END)
-    if devoSoup is None:
+    rss = html_utils.fetch_html(formatUrl, MCHEYNE_DEVO_START, MCHEYNE_DEVO_END)
+    soup = html_utils.rss_to_soup(rss)
+
+    if soup is None:
         return None
 
     # Steps through all the html types and mark these
     devoBlocks = []
-    for tag in devoSoup(class_=MCHEYNE_SELECT):
+    for tag in soup(class_=MCHEYNE_SELECT):
         devoBlocks.append(tag.text)
 
     debug.log("Finished parsing soup" + '*'.join(devoBlocks))

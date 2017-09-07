@@ -34,7 +34,8 @@ def fetch_bgw(query, version='NIV'):
     formatRef = urllib.quote(query.lower().strip())
     formatUrl = BGW_URL.format(formatRef, version)
 
-    soup = html_utils.fetch_html(formatUrl, BGW_PASSAGE_START, BGW_PASSAGE_END, BGW_PASSAGE_CLASS)
+    html = html_utils.fetch_html(formatUrl, BGW_PASSAGE_START, BGW_PASSAGE_END)
+    soup = html_utils.html_to_soup(html, BGW_PASSAGE_CLASS)
  
     return soup 
 

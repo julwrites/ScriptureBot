@@ -1,7 +1,7 @@
 
 # Python modules
 import re
-from bs4 import BeautifulSoup
+from bs4 import BeautifulSoup, BeautifulStoneSoup
 
 # Google App Engine Modules
 from google.appengine.api import urlfetch, urlfetch_errors
@@ -37,7 +37,7 @@ def sub_html(html, topTag, bottomTag):
 def extract_html(html, start, end):
     return sub_html(html, start, end)
 
-def fetch_html(url, start, end, select=None):
+def fetch_html(url, start, end):
     try:
         debug.log('Attempting to fetch: ' + url)
         result = urlfetch.fetch(url, deadline=constants.URL_TIMEOUT)
@@ -47,17 +47,27 @@ def fetch_html(url, start, end, select=None):
         return None
 
     # Format using BS4 into a form we can use for extraction
-    html = extract_html(result.content, start, end)
-    if html is None:
-        return None
+    return extract_html(result.content, start, end)
 
+def html_to_soup(html, select=None):
     soup = BeautifulSoup(html, 'lxml')
+
     if text_utils.is_valid(select):
         soup = soup.select_one('.{}'.format(select))
 
     debug.log("Soup has been made")
 
     return soup 
+
+def rss_to_soup(rss, select=None):
+    soup = BeautifulStoneSoup(rss)
+
+    if text_utils.is_valid(select):
+        soup = soup.select_one('.{}'.format(select))
+
+    debug.log("Soup has been made")
+
+    return soup
 
 def strip_md(string):
     return string.replace('*', '\*').replace('_', '\_').replace('`', '\`').replace('[', '\[')

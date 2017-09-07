@@ -30,7 +30,8 @@ def extract_devo(html):
 def fetch_cac(version='NIV'):
     formatUrl = CAC_URL
 
-    soup = html_utils.fetch_html(formatUrl, CAC_DEVO_START, CAC_DEVO_END, CAC_DEVO_CLASS)
+    html = html_utils.fetch_html(formatUrl, CAC_DEVO_START, CAC_DEVO_END)
+    soup = html_utils.html_to_soup(html, CAC_DEVO_CLASS)
 
     return soup 
 
