@@ -41,6 +41,7 @@ def fetch_html(url, start, end, select=None):
     try:
         debug.log('Attempting to fetch: ' + url)
         result = urlfetch.fetch(url, deadline=constants.URL_TIMEOUT)
+        debug.log('Fetched: ' + result.content)
     except urlfetch_errors.Error as e:
         debug.log('Error fetching: ' + str(e))
         return None

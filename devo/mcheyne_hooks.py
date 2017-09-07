@@ -14,7 +14,6 @@ class McheyneDevoHook(hook_classes.Hook):
         return 'Mcheyne Bible Reading Plan'
 
     def resolve(self, userObj):
-        debug.log("Getting Mcheyne")
         passages = mcheyne_utils.get_mcheyne(userObj.get_version())
 
         if passages is not None:
