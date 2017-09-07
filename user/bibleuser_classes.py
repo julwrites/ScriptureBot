@@ -16,7 +16,7 @@ class BibleUser(db.Model):
     active = db.BooleanProperty(default=True)
     state = db.StringProperty(indexed=True)
     version = db.StringProperty(indexed=True, default='NIV')
-    subscription = db.StringProperty(indexed=True)
+    subscription = db.StringListProperty(indexed=True)
     subscriptionTime = db.IntegerProperty(indexed=True)
 
     def clone(self, obj):
@@ -78,24 +78,28 @@ class BibleUser(db.Model):
         self.put()
 
     def get_subscription(self):
-        return self.subscription
+        return ','.join(self.subscription)
 
     def add_subscription(self, subId):
         if self.has_subscription(subId):
             return
 
-        self.subscription = self.subscription + subId 
-        debug.log("Subscription added, new subscription: " + self.subscription)
+        self.subscription.append(subId)
         self.put()
 
-    def remove_subscribtion(self, subId):
-        self.subscription.replace(subId, '')
-        self.put()
+    def remove_subscription(self, subId):
+        try:
+            self.subscription.remove(subId)
+            self.put()
+        except:
+            return
 
     def has_subscription(self, subId):
-        if text_utils.is_valid(self.subscription):
-            return (self.subscription.find(subId) != -1)
-        return False
+        try:
+            self.subscription.index(subId)
+        except:
+            return False
+        return True
 
     def get_subscription_time(self):
         return self.subscriptionTime
