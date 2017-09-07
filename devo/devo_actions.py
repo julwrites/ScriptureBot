@@ -27,7 +27,7 @@ class DevoSubscriptionAction(action_classes.Action):
             for devo in devos:
 
                 if text_utils.text_compare(query, devo.name()):
-                    userObj.set_subscription(devo)
+                    userObj.add_subscription(devo)
                     userObj.set_state(None)
 
                     telegram_utils.send_close_keyboard(\
@@ -38,7 +38,7 @@ class DevoSubscriptionAction(action_classes.Action):
 
         else:
             telegram_utils.send_msg_keyboard(\
-            PROMPT, userObj.get_uid(), [devo.name() for devo in devos])
+            PROMPT, userObj.get_uid(), [devo.name() for devo in devos], 1)
 
             userObj.set_state(self.identifier())
 

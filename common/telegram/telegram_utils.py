@@ -3,26 +3,26 @@
 from common import debug
 from common.telegram.telegram_classes import TelegramPost
 
-TELEGRAM_MAX_LENGTH = 4096
+MAX_LENGTH = 4096
 
-TELEGRAM_OPTION_REPLY_KEYBOARD = 'reply_markup'
-TELEGRAM_KEYBOARD_GRID_SIZE = 3
+OPTION_REPLY_KEYBOARD = 'reply_markup'
+KEYBOARD_WIDTH = 3
 
 # Telegram message sending functionality
-def format_keyboard(options=[]):
+def format_keyboard(options=[], width=KEYBOARD_WIDTH):
     numButtons = len(options)
-    modulus = 1 if numButtons % TELEGRAM_KEYBOARD_GRID_SIZE else 0
-    numRows = int(numButtons / TELEGRAM_KEYBOARD_GRID_SIZE) + modulus
+    modulus = 1 if numButtons % width else 0
+    numRows = int(numButtons / width) + modulus
 
     keyboardData = []
     for i in range(0, numRows):
         keyboardRow = []
 
-        for j in range(0, TELEGRAM_KEYBOARD_GRID_SIZE):
+        for j in range(0, width):
             if numButtons == 0:
                 break
 
-            data = options[i * TELEGRAM_KEYBOARD_GRID_SIZE + j]
+            data = options[i * width + j]
             keyboardRow.append({'text': data})
             numButtons -= 1
         
@@ -35,10 +35,10 @@ def send_msg(msg, userId):
 
     last = None
     chunks = []
-    while len(msg) > TELEGRAM_MAX_LENGTH:
-        last = msg.rfind(' ', 0, TELEGRAM_MAX_LENGTH)
+    while len(msg) > MAX_LENGTH:
+        last = msg.rfind(' ', 0, MAX_LENGTH)
         if last == -1:
-            last = TELEGRAM_MAX_LENGTH
+            last = MAX_LENGTH
 
         debug.log('Chunk: ' + msg[:last])
         chunks.append(msg[:last])
@@ -52,13 +52,13 @@ def send_msg(msg, userId):
         post.add_text(chunk)
         post.send()
 
-def send_msg_keyboard(msg, userId, options=[], inline=False, oneTime=False):
+def send_msg_keyboard(msg, userId, options=[], width=KEYBOARD_WIDTH, inline=False, oneTime=False):
     post = TelegramPost(userId)
     post.add_text(msg)
     if inline:
-        post.add_inline_keyboard(format_keyboard(options))
+        post.add_inline_keyboard(format_keyboard(options, width))
     else:
-        post.add_keyboard(format_keyboard(options), oneTime)
+        post.add_keyboard(format_keyboard(options, width), oneTime)
     post.send()
 
 def send_close_keyboard(msg, userId):
