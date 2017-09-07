@@ -8,7 +8,7 @@ from devo import mcheyne_utils
 
 class McheyneDevoHook(hook_classes.Hook):
     def identifier(self):
-        return '/mcheyne'
+        return '/mcheynedevo'
 
     def name(self):
         return 'Mcheyne Bible Reading Plan'
