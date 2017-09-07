@@ -15,15 +15,13 @@ from bible import bible_utils
 
 MCHEYNE_URL = "http://www.edginet.org/mcheyne/rss_feed.php?type=rss_2.0&tz=8&cal=classic&bible=esv&conf=no"
 
-MCHEYNE_DEVO_START = '<rss version="2.0">'
-MCHEYNE_DEVO_END = '</rss>'
 MCHEYNE_IGNORE = ""
 MCHEYNE_SELECT = "title"
 
 def get_mcheyne_raw():
     formatUrl = MCHEYNE_URL
 
-    rss = html_utils.fetch_html(formatUrl, MCHEYNE_DEVO_START, MCHEYNE_DEVO_END)
+    rss = html_utils.fetch_rss(formatUrl)
     soup = html_utils.rss_to_soup(rss)
 
     if soup is None:

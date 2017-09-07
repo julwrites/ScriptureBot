@@ -27,9 +27,6 @@ REFERENCE = 'reference'
 VERSION = 'version'
 PASSAGE = 'passage'
 
-def extract_passage(html):
-    return html_utils.sub_html(html, BGW_PASSAGE_START, BGW_PASSAGE_END)
-
 def fetch_bgw(query, version='NIV'):
     formatRef = urllib.quote(query.lower().strip())
     formatUrl = BGW_URL.format(formatRef, version)

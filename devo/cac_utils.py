@@ -24,9 +24,6 @@ REFERENCE = 'reference'
 VERSION = 'version'
 DEVO = 'devo'
 
-def extract_devo(html):
-    return html_utils.sub_html(html, CAC_DEVO_START, CAC_DEVO_END)
-
 def fetch_cac(version='NIV'):
     formatUrl = CAC_URL
 

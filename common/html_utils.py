@@ -27,17 +27,7 @@ def soupify_tags(tags):
     return ','.join(tags)
 
 # HTML Parsing
-def sub_html(html, topTag, bottomTag):
-    start = html.find(topTag)
-    if start == -1:
-        return None
-    end = html.find(bottomTag, start)
-    return html[start:end]
-
-def extract_html(html, start, end):
-    return sub_html(html, start, end)
-
-def fetch_html(url, start, end):
+def fetch_url(url):
     try:
         debug.log('Attempting to fetch: ' + url)
         result = urlfetch.fetch(url, deadline=constants.URL_TIMEOUT)
@@ -45,6 +35,18 @@ def fetch_html(url, start, end):
     except urlfetch_errors.Error as e:
         debug.log('Error fetching: ' + str(e))
         return None
+
+    return result
+
+def extract_html(html, start, end):
+    start = html.find(topTag)
+    if start == -1:
+        return None
+    end = html.find(bottomTag, start)
+    return html[start:end]
+
+def fetch_html(url, start, end):
+    result = fetch_url(url)
 
     # Format using BS4 into a form we can use for extraction
     return extract_html(result.content, start, end)
@@ -58,6 +60,11 @@ def html_to_soup(html, select=None):
     debug.log("Soup has been made")
 
     return soup 
+
+def fetch_rss(url):
+    result = fetch_url(url)
+
+    return result.content
 
 def rss_to_soup(rss, select=None):
     soup = BeautifulSoup(rss, 'xml')
