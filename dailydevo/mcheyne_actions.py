@@ -6,7 +6,7 @@ from common.telegram import telegram_utils
 
 from dailydevo import mcheyne_utils
 
-class McheyneDevoAction(action_classes.Action):
+class McheyneDailyAction(action_classes.Action):
     def identifier(self):
         return '/mcheynedaily'
     
