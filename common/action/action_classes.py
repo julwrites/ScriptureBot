@@ -14,9 +14,10 @@ class Action():
                 if self.match(msg) or self.waiting(userObj):
                     debug.log_action(self.identifier())
                     self.resolve(userObj, msg)
+                    return True
         except:
             debug.log('Execute failed! ' + self.identifier())
-        return True
+        return False
 
     # To be inherited and overwritten with a check for whether this is waiting for a response
     def waiting(self, userObj):
