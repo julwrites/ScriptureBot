@@ -37,11 +37,11 @@ def fetch_url(url):
 
     return result
 
-def extract_html(html, start, end):
-    start = html.find(topTag)
+def extract_html(html, top, bottom):
+    start = html.find(top)
     if start == -1:
         return None
-    end = html.find(bottomTag, start)
+    end = html.find(bottom, start)
     return html[start:end]
 
 def fetch_html(url, start, end):
