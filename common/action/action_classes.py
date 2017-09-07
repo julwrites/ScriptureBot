@@ -28,7 +28,7 @@ class Action():
     # Do not overwrite if possible, this checks the message text against the command name
     def match(self, msg):
         msgText = msg.get('text').strip() 
-        if msgText.find(self.identifier()) != -1 or msgText.find(self.name()) != -1:
+        if (msgText.find(self.identifier()) != -1) or (msgText.find(self.name()) != -1):
             debug.log('Matched with ' + self.identifier())
             return True
         return False
