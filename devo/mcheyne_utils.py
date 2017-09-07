@@ -31,7 +31,7 @@ def get_mcheyne_raw():
 
     # Steps through all the html types and mark these
     devoBlocks = []
-    for tag in soup(class_=MCHEYNE_SELECT):
+    for tag in soup.findAll(MCHEYNE_SELECT):
         devoBlocks.append(tag.text)
 
     debug.log("Finished parsing soup" + '*'.join(devoBlocks))

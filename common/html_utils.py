@@ -1,7 +1,7 @@
 
 # Python modules
 import re
-from bs4 import BeautifulSoup, BeautifulStoneSoup
+from bs4 import BeautifulSoup
 
 # Google App Engine Modules
 from google.appengine.api import urlfetch, urlfetch_errors
@@ -60,7 +60,7 @@ def html_to_soup(html, select=None):
     return soup 
 
 def rss_to_soup(rss, select=None):
-    soup = BeautifulStoneSoup(rss)
+    soup = BeautifulSoup(rss, 'xml')
 
     if text_utils.is_valid(select):
         soup = soup.select_one('.{}'.format(select))
