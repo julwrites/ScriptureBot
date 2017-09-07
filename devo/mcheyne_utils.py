@@ -40,12 +40,13 @@ def get_mcheyne(version="NIV"):
     devoRefs = get_mcheyne_raw()
     devoBlocks = []
 
-    if devoRefs is not None:
-        for ref in devoRefs:
-            passage = bible_utils.get_passage(ref, version)
+    if devoRefs is None:
+        return None
 
-            if passage is not None:
-                devoBlocks.append(passage)
+    for ref in devoRefs:
+        passage = bible_utils.get_passage(ref, version)
 
-        return devoBlocks
-    return None
+        if passage is not None:
+            devoBlocks.append(passage)
+
+    return devoBlocks
