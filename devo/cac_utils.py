@@ -5,7 +5,6 @@ from bs4 import BeautifulSoup
 
 # Google App Engine Modules
 from google.appengine.api import urlfetch, urlfetch_errors
-from google.appengine.ext import db
 
 # Local modules
 from common import debug, html_utils, constants
@@ -31,21 +30,7 @@ def extract_devo(html):
 def fetch_cac(version='NIV'):
     formatUrl = CAC_URL
 
-    try:
-        debug.log('Attempting to fetch: ' + formatUrl)
-        result = urlfetch.fetch(formatUrl, deadline=constants.URL_TIMEOUT)
-    except urlfetch_errors.Error as e:
-        debug.log('Error fetching: ' + str(e))
-        return None
-
-    # Format using BS4 into a form we can use for extraction
-    devoHtml = extract_devo(result.content)
-    if devoHtml is None:
-        return None
-
-    soup = BeautifulSoup(devoHtml, 'lxml').select_one('.{}'.format(CAC_DEVO_CLASS))
-    
-    debug.log("Soup has been made")
+    soup = html_utils.fetch_html(formatUrl, CAC_DEVO_START, CAC_DEVO_END, CAC_DEVO_CLASS)
 
     return soup 
 

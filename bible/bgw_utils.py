@@ -34,22 +34,8 @@ def fetch_bgw(query, version='NIV'):
     formatRef = urllib.quote(query.lower().strip())
     formatUrl = BGW_URL.format(formatRef, version)
 
-    try:
-        debug.log('Attempting to fetch: ' + query + ' ' + version + ' from ' + formatUrl)
-        result = urlfetch.fetch(formatUrl, deadline=constants.URL_TIMEOUT)
-    except urlfetch_errors.Error as e:
-        debug.log('Error fetching: ' + str(e))
-        return None
-
-    # Format using BS4 into a form we can use for extraction
-    passageHtml = extract_passage(result.content)
-    if passageHtml is None:
-        return None
-
-    soup = BeautifulSoup(passageHtml, 'lxml').select_one('.{}'.format(BGW_PASSAGE_CLASS))
-    
-    debug.log("Soup has been made")
-
+    soup = html_utils.fetch_html(formatRef, BGW_PASSAGE_START, BGW_PASSAGE_END, BGW_PASSAGE_CLASS)
+ 
     return soup 
 
 def get_passage_raw(ref, version='NIV'):

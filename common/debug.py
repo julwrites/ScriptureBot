@@ -26,6 +26,11 @@ def log_state(state):
         return
     logging.debug('State: ' + state)
 
+def log_action(action):
+    if not debug():
+        return
+    logging.debug('Action: ' + action)
+
 def log_hook(hook):
     if not debug():
         return

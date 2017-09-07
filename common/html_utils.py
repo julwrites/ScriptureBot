@@ -7,7 +7,7 @@ from bs4 import BeautifulSoup
 from google.appengine.api import urlfetch, urlfetch_errors
 
 # Local modules
-from common import debug, text_utils
+from common import debug, text_utils, constants
 
 
 HTML_HEADER_TAGS = ['h1', 'h2', 'h3', 'h4', 'h5', 'h6']
@@ -33,7 +33,31 @@ def sub_html(html, topTag, bottomTag):
         return None
     end = html.find(bottomTag, start)
     return html[start:end]
-   
+
+def extract_html(html, start, end):
+    return sub_html(html, start, end)
+
+def fetch_html(url, start, end, select=None):
+    try:
+        debug.log('Attempting to fetch: ' + url)
+        result = urlfetch.fetch(url, deadline=constants.URL_TIMEOUT)
+    except urlfetch_errors.Error as e:
+        debug.log('Error fetching: ' + str(e))
+        return None
+
+    # Format using BS4 into a form we can use for extraction
+    html = extract_html(result.content, start, end)
+    if html is None:
+        return None
+
+    soup = BeautifulSoup(html, 'lxml')
+    if text_utils.is_valid(select):
+        soup = soup.select_one('.{}'.format(select))
+
+    debug.log("Soup has been made")
+
+    return soup 
+
 def strip_md(string):
     return string.replace('*', '\*').replace('_', '\_').replace('`', '\`').replace('[', '\[')
 

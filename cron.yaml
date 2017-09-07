@@ -1,7 +1,16 @@
 cron:
-- description: Hourly Hooks
-  url: /hooks
-  schedule: every 1 hours
+# - description: Hourly Hooks
+#   url: /hooks
+#   schedule: every 1 hours
+#   retry_parameters:
+#     job_retry_limit: 3
+#     job_age_limit: 15m
+#     min_backoff_seconds: 60
+#     max_doublings: 3
+- description: Daily Hook
+  url: /hooks/daily
+  schedule: every day 12:00
+  timezone: Singapore
   retry_parameters:
     job_retry_limit: 3
     job_age_limit: 15m

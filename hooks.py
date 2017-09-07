@@ -9,6 +9,7 @@ from common import debug
 import components
 
 APP_HOOKS_URL = "/hooks"
+APP_DAILY_HOOKS_URL = APP_HOOKS_URL + "/daily"
 
 class HookHandler(webapp2.RequestHandler):
     def get(self):
@@ -18,16 +19,15 @@ class HookHandler(webapp2.RequestHandler):
         data = json.loads(self.request.body)
         debug.log(data)
 
-        actions = components.hooks()
+        hooks = components.hooks()
 
-        for action in actions:
-            if action.execute(data):
-                return
+        for hook in hooks:
+            hook.dispatch(data):
 
 
 
 app = webapp2.WSGIApplication([
     # (url being accessed, class to call)
-    (APP_HOOKS_URL, HookHandler),
+    (APP_DAILY_HOOKS_URL, HookHandler),
 ], debug=True)
  
