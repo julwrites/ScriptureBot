@@ -20,18 +20,15 @@ Hi, I'm [Julwrites](http://www.tehj.org)
 ## Code Guidelines
 
 ### Modules
-This framework aims to implement a lightweight and reusable set of modules. 
+This framework aims to implement a lightweight and reusable set of packages. 
 
-Nested modules are allowed, although not preferred, and the depth of nesting should be kept minimal. 
+The framework may be treated as a tree of packages, each of which contains at least one of the following core blocks:
+* Utilities - Utility functions, which are the main logic
+* Actions   - User-triggered functionalities, including states and interactions
+* Hooks     - System-triggered functionalities which occur by cron job
+e.g. package admin can contain admin_classes, admin_utils, admin_actions, admin_hooks
 
-Module names fall into 4 core blocks, each prefixed by the module name.
-* Classes
-* Utilities
-* Actions
-* Hooks
-e.g. module admin contains admin_classes, admin_utils, admin_actions, admin_hooks. 
-
-A module can contain specialized functionality and classes, but the 4 files that may be assumed to exist are only the 4 core blocks, with that naming scheme. 
+Specialized functionality can be implemented within each package however the implementer likes, but external access to the package should be limited to the core files only. This means, for example, that although the admin package may contain other modules, external users should not assume these modules exist. 
 
 ### Code
 We are using Python27 for this version of the framework.
@@ -40,7 +37,7 @@ Naming Convention:
 * Variables should be named using camelCase.
 * Methods should be named using underscore_case.
 * Classes should be named using PascalCase.
-* Modules should be named using underscore_case, in keeping with Python STL.
+* Packages should be named using underscore_case, in keeping with Python STL.
 * Constants should be named using CAPITALCASE
 
 This keeps the entities visually separate, and syntax clean.

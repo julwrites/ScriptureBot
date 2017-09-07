@@ -7,10 +7,9 @@ from common.action import action_classes
 
 SUPPORTED_VERSIONS = ["NIV", "ESV", "KJV", "NASB", "NLT", "AMP"]
 
-CMD_VERSION = "/version"
-CMD_VERSION_PROMPT = "Please select a version of your choosing\n\
+PROMPT = "Please select a version of your choosing\n\
 (if unsure, always go with the one you are comfortable with!)"
-CMD_VERSION_BADQUERY = "I don't have this version!"
+BADQUERY = "I don't have this version!"
 
 STATE_VERSION_PROMPT = "I\'ve changed your version to {}!"
 
@@ -36,11 +35,11 @@ class BibleUserVersionAction(action_classes.Action):
                     STATE_VERSION_PROMPT.format(ver), userObj.get_uid())
                     break
             else:
-                telegram_utils.send_msg(CMD_VERSION_BADQUERY, userObj.get_uid())
+                telegram_utils.send_msg(BADQUERY, userObj.get_uid())
 
         else:
             telegram_utils.send_msg_keyboard(\
-            CMD_VERSION_PROMPT, userObj.get_uid(), SUPPORTED_VERSIONS)
+            PROMPT, userObj.get_uid(), SUPPORTED_VERSIONS)
 
             userObj.set_state(self.identifier())
 

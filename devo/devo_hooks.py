@@ -1,7 +1,7 @@
 
 # Local modules
-from devo import cac_hooks, mcheyne_hooks
+from devo import devo_modules
 
 
 def get():
-    return cac_hooks.get() + mcheyne_hooks.get()
+    return devo_modules.get_hooks()

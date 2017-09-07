@@ -9,9 +9,8 @@ from bible import bible_utils
 from tms import tms_utils
 
 
-CMD_TMS = "/tms"
-CMD_TMS_PROMPT = "Give me a Verse reference, or Pack and Verse number\n(P.S. you can even try giving me a topic)"
-CMD_TMS_BADQUERY = "I can't find anything related to this, try another one?"
+PROMPT = "Give me a Verse reference, or Pack and Verse number\n(P.S. you can even try giving me a topic)"
+BADQUERY = "I can't find anything related to this, try another one?"
 
 class TMSAction(action_classes.Action):
     def identifier(self):
@@ -43,9 +42,9 @@ class TMSAction(action_classes.Action):
                 telegram_utils.send_msg(verseMsg, userObj.get_uid())
                 userObj.set_state(None)
             else:
-                telegram_utils.send_msg(CMD_TMS_BADQUERY, userObj.get_uid())
+                telegram_utils.send_msg(BADQUERY, userObj.get_uid())
         else:
-            telegram_utils.send_msg_keyboard(CMD_TMS_PROMPT, userObj.get_uid())
+            telegram_utils.send_msg_keyboard(PROMPT, userObj.get_uid())
 
             userObj.set_state(self.identifier())
 

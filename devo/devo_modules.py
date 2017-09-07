@@ -1,6 +1,7 @@
 
 # Local modules
 from devo import mcheyne_actions, mcheyne_hooks
+from devo import cac_hooks
 
 def get_actions():
     return mcheyne_actions.get()

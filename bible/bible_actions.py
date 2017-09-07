@@ -6,8 +6,8 @@ from common.telegram import telegram_utils
 
 from bible import bible_utils
 
-CMD_PASSAGE_PROMPT = "Give me a Bible reference"
-CMD_PASSAGE_BADQUERY = "Sorry, I can't find this reference"
+PROMPT = "Give me a Bible reference"
+BADQUERY = "Sorry, I can't find this reference"
 
 
 class BiblePassageAction(action_classes.Action):
@@ -27,9 +27,9 @@ class BiblePassageAction(action_classes.Action):
                 telegram_utils.send_msg(passage, userObj.get_uid())
                 userObj.set_state(None)
             else:
-                telegram_utils.send_msg(CMD_PASSAGE_BADQUERY, userObj.get_uid())
+                telegram_utils.send_msg(BADQUERY, userObj.get_uid())
         else:
-            telegram_utils.send_msg(CMD_PASSAGE_PROMPT, userObj.get_uid())
+            telegram_utils.send_msg(PROMPT, userObj.get_uid())
 
             userObj.set_state(self.identifier())
 
