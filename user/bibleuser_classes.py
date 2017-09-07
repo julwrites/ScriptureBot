@@ -17,7 +17,6 @@ class BibleUser(db.Model):
     state = db.StringProperty(indexed=True)
     version = db.StringProperty(indexed=True, default='NIV')
     subscriptions = db.StringListProperty(indexed=True)
-    subscriptionTime = db.IntegerProperty(indexed=True)
 
     def clone(self, obj):
         self.username = obj.username
@@ -31,7 +30,6 @@ class BibleUser(db.Model):
         self.state = obj.state
         self.version = obj.version
         self.subscriptions = obj.subscriptions
-        self.subscriptionTime = obj.subscriptionTime
         return self
 
     def get_uid(self):
@@ -100,13 +98,6 @@ class BibleUser(db.Model):
         except:
             return False
         return True
-
-    def get_subscription_time(self):
-        return self.subscriptionTime
-
-    def set_subscription_time(self, time):
-        self.subscriptionTime = time
-        self.put()
 
     def update_last_received(self):
         self.lastReceived = chrono.now()
