@@ -56,3 +56,10 @@ def strip_numbers(s):
 def strip_alpha(s):
     result = ''.join([c for c in s if not c.isalpha()])
     return result if len(result) > 0 else None
+
+def strip_block(s, start, end):
+    start = s.find(start)
+    end = s.find(end)
+    start_block = s[:start].strip()
+    end_block = s[end + 1:].strip()
+    return start_block + end_block

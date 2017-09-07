@@ -7,7 +7,7 @@ from bs4 import BeautifulSoup
 from google.appengine.api import urlfetch, urlfetch_errors
 
 # Local modules
-from common import debug, html_utils, constants
+from common import debug, html_utils, text_utils, constants
 from common.telegram import telegram_utils
 
 from bible import bible_utils
@@ -28,25 +28,24 @@ def get_mcheyne_raw():
         return None
 
     # Steps through all the html types and mark these
-    devoBlocks = []
+    blocks = []
     for tag in soup.findAll(MCHEYNE_SELECT):
-        devoBlocks.append(tag.text)
+        ref = text_utils.strip_block(tag.text, '(', ')')
+        blocks.append(ref)
 
-    debug.log("Finished parsing soup" + '*'.join(devoBlocks))
-
-    return devoBlocks
+    return blocks 
 
 def get_mcheyne(version="NIV"):
-    devoRefs = get_mcheyne_raw()
-    devoBlocks = []
+    refs = get_mcheyne_raw()
+    blocks = []
 
-    if devoRefs is None:
+    if refs is None:
         return None
 
-    for ref in devoRefs:
+    for ref in refs:
         passage = bible_utils.get_passage(ref, version)
 
         if passage is not None:
-            devoBlocks.append(passage)
+            blocks.append(passage)
 
-    return devoBlocks
+    return blocks
