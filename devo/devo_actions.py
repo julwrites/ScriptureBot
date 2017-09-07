@@ -13,10 +13,10 @@ CONFIRM = "I\'ve set up your subscription to {}!"
 
 class DevoSubscriptionAction(action_classes.Action):
     def identifier(self):
-        return '/version'
+        return '/devo'
 
     def name(self):
-        return 'Bible Version'
+        return 'Devotionals'
 
     def resolve(self, userObj, msg):
         query = telegram_utils.strip_command(msg, self.identifier())
