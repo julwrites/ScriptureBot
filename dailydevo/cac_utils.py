@@ -28,6 +28,9 @@ def fetch_cac(version='NIV'):
     formatUrl = CAC_URL
 
     html = html_utils.fetch_html(formatUrl, CAC_DEVO_START, CAC_DEVO_END)
+    if html is None:
+        return None
+
     soup = html_utils.html_to_soup(html, CAC_DEVO_CLASS)
 
     return soup 

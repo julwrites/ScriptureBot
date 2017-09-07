@@ -32,6 +32,10 @@ def fetch_bgw(query, version='NIV'):
     formatUrl = BGW_URL.format(formatRef, version)
 
     html = html_utils.fetch_html(formatUrl, BGW_PASSAGE_START, BGW_PASSAGE_END)
+
+    if html is None:
+        return None
+
     soup = html_utils.html_to_soup(html, BGW_PASSAGE_CLASS)
  
     return soup 
