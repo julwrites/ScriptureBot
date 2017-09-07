@@ -18,3 +18,6 @@ def get_user_query():
 
 def for_each_user(fn):
     return bibleuser_utils.for_each_user(fn)
+
+def migrate(userObj):
+    return bibleuser_utils.migrate(userObj)
