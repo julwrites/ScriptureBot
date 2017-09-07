@@ -3,7 +3,7 @@
 from google.appengine.ext import db
 
 # Local Modules
-from common import chrono, text_utils
+from common import chrono, text_utils, debug
 
 class BibleUser(db.Model):
     username = db.StringProperty(indexed=True)
@@ -84,7 +84,8 @@ class BibleUser(db.Model):
         if self.has_subscription(subId):
             return
 
-        self.subscription +=subId 
+        debug.log("Adding subscription : " + subId)
+        self.subscription = self.subscription + subId 
         self.put()
 
     def remove_subscribtion(self, subId):
@@ -92,8 +93,9 @@ class BibleUser(db.Model):
         self.put()
 
     def has_subscription(self, subId):
+        debug.log("Checking subscription : " + subId)
         if text_utils.is_valid(self.subscription):
-            return self.subscription.find(subId) != -1
+            return (self.subscription.find(subId) != -1)
         return False
 
     def get_subscription_time(self):
