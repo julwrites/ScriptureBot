@@ -91,9 +91,9 @@ class BibleUser(db.Model):
         self.subscription.replace(subId, '')
         self.put()
 
-    def has_subscription(self, subscription):
+    def has_subscription(self, subId):
         if text_utils.is_valid(self.subscription):
-            return self.subscription.find(subscription) != -1
+            return self.subscription.find(subId) != -1
         return False
 
     def get_subscription_time(self):
