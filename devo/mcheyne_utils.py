@@ -32,7 +32,7 @@ def get_mcheyne_raw():
     for tag in devoSoup(class_=MCHEYNE_SELECT):
         devoBlocks.append(tag.text)
 
-    debug.log("Finished parsing soup")
+    debug.log("Finished parsing soup" + '*'.join(devoBlocks))
 
     return devoBlocks
 
