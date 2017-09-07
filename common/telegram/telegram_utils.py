@@ -131,3 +131,23 @@ def link(text, link):
 
 def join(blocks, separator):
     return separator.join(blocks)
+
+
+# Telegram special symbols
+def tick():
+    return u'\u2714'
+
+def to_sup(text):
+        sups = {u'0': u'\u2070',
+                u'1': u'\xb9',
+                u'2': u'\xb2',
+                u'3': u'\xb3',
+                u'4': u'\u2074',
+                u'5': u'\u2075',
+                u'6': u'\u2076',
+                u'7': u'\u2077',
+                u'8': u'\u2078',
+                u'9': u'\u2079',
+                u'-': u'\u207b'}
+        return ''.join(sups.get(char, char) for char in text)
+

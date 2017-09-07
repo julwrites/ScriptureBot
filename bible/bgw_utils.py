@@ -65,7 +65,7 @@ def get_passage_raw(ref, version='NIV'):
     for tag in soup.select('.chapternum'):
         tag.string = telegram_utils.bold(tag.text)
     for tag in soup.select('.versenum'):
-        tag.string = telegram_utils.italics(html_utils.to_sup(tag.text))
+        tag.string = telegram_utils.italics(telegram_utils.to_sup(tag.text))
 
     # Only at the last step do we do other destructive formatting
     soup = html_utils.strip_soup(soup=passageSoup)

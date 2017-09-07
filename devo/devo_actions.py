@@ -37,8 +37,13 @@ class DevoSubscriptionAction(action_classes.Action):
                 telegram_utils.send_msg(BADQUERY, userObj.get_uid())
 
         else:
+            devoList = [devo.name() for devo in devos]
+            for i in range(len(devoList)):
+                if userObj.has_subscription(devos[i].identifier()):
+                    devoList[i].append(' ' + telegram_utils.tick())
+
             telegram_utils.send_msg_keyboard(\
-            PROMPT, userObj.get_uid(), [devo.name() for devo in devos], 1)
+            PROMPT, userObj.get_uid(), devoList, 1)
 
             userObj.set_state(self.identifier())
 
