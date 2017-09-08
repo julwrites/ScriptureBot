@@ -14,7 +14,8 @@ HTML_HEADER_TAGS = ['h1', 'h2', 'h3', 'h4', 'h5', 'h6']
 HTML_TEXT_TAGS = ['p']
 
 HTML_ITEM_TAG = 'a'
-HTML_BREAK_TAG = 'br'
+HTML_BR_TAG = '<br />'
+HTML_P_TAG = '<p></p>'
 
 
 # Tags
@@ -51,7 +52,11 @@ def fetch_html(url, start, end):
     result = fetch_url(url)
 
     # Format using BS4 into a form we can use for extraction
-    return extract_html(result.content, start, end)
+    html = extract_html(result.content, start, end)
+
+    html = html.replace(HTML_BR_TAG, HTML_P_TAG)
+
+    return html
 
 def html_to_soup(html, select=None):
     soup = BeautifulSoup(html, 'lxml')
@@ -130,10 +135,4 @@ def link_soup(soup_, fn):
         debug.log('Converting link: ' + tag.text)
         tag.string = fn(tag.text, tag['href'])
     
-    return soup_
-
-def break_soup(soup_):
-    for tag in soup_.find_all(HTML_BREAK_TAG):
-        tag.replace_with('<p></p>')
-
     return soup_
