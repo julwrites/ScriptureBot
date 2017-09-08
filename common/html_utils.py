@@ -139,7 +139,7 @@ def link_soup(soup, fn):
     
     return soup
 
-def break_soup(soup, fn):
+def break_soup(soup):
     for tag in soup.find_all(HTML_BREAK_TAG):
         tag.replace_with('\n')
 
