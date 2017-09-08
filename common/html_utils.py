@@ -128,7 +128,9 @@ def mark_soup(soup, htmlMark, tags=[], markbr_=True):
         tag['class'] = htmlMark
     
     if markbr_:
+        debug.log('Marking br')
         for tag in soup.find_all(HTML_BREAK_TAG):
+            tag.string = '<br></br>'
             tag['class'] = htmlMark
 
     return soup
