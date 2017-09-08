@@ -34,12 +34,8 @@ def fetch_cac(version='NIV'):
     formatUrl = CAC_URL
 
     html = html_utils.fetch_html(formatUrl, CAC_DEVO_START, CAC_DEVO_END)
-    debug.log(html)
-    html = html_utils.replace_html(html, BR, BR_TAG)
-    debug.log(html)
     if html is None:
         return None
-
 
     soup = html_utils.html_to_soup(html)
 
@@ -54,6 +50,7 @@ def get_cacdevo_raw(version='NIV'):
         tag.decompose()
 
     # Steps through all the html types and mark these
+    soup = html_utils.break_soup(soup)
     soup = html_utils.stripmd_soup(soup)
     soup = html_utils.link_soup(soup, telegram_utils.link)
     soup = html_utils.mark_soup(soup, 
