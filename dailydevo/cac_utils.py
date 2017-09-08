@@ -23,8 +23,8 @@ CAC_DEVO_IGNORE = 'h2'
 CAC_DEVO_LINKS = 'href'
 CAC_DEVO_TITLE = 'h3'
 
-BR_TAG = '<br />'
-P_TAG = '<br></br>'
+BR = '<br />'
+BR_TAG = '<br></br>'
 
 REFERENCE = 'reference'
 VERSION = 'version'
@@ -35,7 +35,7 @@ def fetch_cac(version='NIV'):
 
     html = html_utils.fetch_html(formatUrl, CAC_DEVO_START, CAC_DEVO_END)
     debug.log(html)
-    html = html_utils.replace_html(html, BR_TAG, P_TAG)
+    html = html_utils.replace_html(html, BR, BR_TAG)
     debug.log(html)
     if html is None:
         return None
