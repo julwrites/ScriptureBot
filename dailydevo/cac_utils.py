@@ -24,7 +24,7 @@ CAC_DEVO_LINKS = 'href'
 CAC_DEVO_TITLE = 'h3'
 
 BR_TAG = '<br />'
-P_TAG = '<p></p>'
+P_TAG = '</p><p>'
 
 REFERENCE = 'reference'
 VERSION = 'version'
