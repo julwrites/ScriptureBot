@@ -16,10 +16,10 @@ from common.telegram import telegram_utils
 CAC_URL = 'https://cac.org/category/daily-meditations/'
 
 CAC_DEVO_START = '<hr>'
-#'<p><!--{}--></p>'.format('[Most recent post will go here, with week title, day title, and date headings—body of post itself, no banner image or title field.]')
 CAC_DEVO_END = '</div>'
+
 CAC_DEVO_SELECT = 'cac-devo-text'
-CAC_DEVO_BREAK = '<div class="break"></div>'
+CAC_DEVO_BREAK = '<br>\n</br>'
 CAC_DEVO_IGNORE = 'h2'
 CAC_DEVO_LINKS = 'href'
 CAC_DEVO_TITLE = 'h3'
