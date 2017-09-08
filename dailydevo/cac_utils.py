@@ -46,7 +46,7 @@ def get_cacdevo_raw(version='NIV'):
     debug.log('Soup exists!')
 
     # Steps through all the html types and mark these
-    soup = html_utils.stripmd_soup(soup)
+    # soup = html_utils.stripmd_soup(soup)
     soup = html_utils.mark_soup(soup, 
     CAC_DEVO_SELECT,
     html_utils.HTML_HEADER_TAGS + html_utils.HTML_TEXT_TAGS)
