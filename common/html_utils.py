@@ -14,7 +14,7 @@ HTML_HEADER_TAGS = ['h1', 'h2', 'h3', 'h4', 'h5', 'h6']
 HTML_TEXT_TAGS = ['p']
 
 HTML_ITEM_TAG = 'a'
-
+HTML_BREAK_TAG = 'br'
 
 # Tags
 def html_common_tags():
