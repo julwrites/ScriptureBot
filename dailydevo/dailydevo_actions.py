@@ -6,7 +6,7 @@ from common import text_utils
 from common.action import action_classes
 from common.telegram import telegram_utils
 
-PROMPT = "Choose a Daily-Devo to read now!"
+PROMPT = "Choose a Daily-Devo to read!"
 BADQUERY = "I don\'t have this devotional!"
 CONFIRM = "Give me a moment to get it~!"
 
@@ -30,7 +30,7 @@ class DailyDevoAction(action_classes.Action):
                     telegram_utils.send_close_keyboard(CONFIRM, userObj.get_uid())
                     userObj.set_state(None)
 
-                    hook.dispatch(userObj)
+                    hook.resolve(userObj)
 
                     break
             else:
