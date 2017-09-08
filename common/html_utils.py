@@ -136,3 +136,10 @@ def link_soup(soup_, fn):
         tag.string = fn(tag.text, tag['href'])
     
     return soup_
+
+def break_soup(soup_, fn):
+    for tag in soup_.find_all(HTML_BREAK_TAG):
+        debug.log('Break to newline' + tag.text)
+        tag.string = '\n'
+
+    return soup_

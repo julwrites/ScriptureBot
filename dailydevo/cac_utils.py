@@ -24,7 +24,7 @@ CAC_DEVO_LINKS = 'href'
 CAC_DEVO_TITLE = 'h3'
 
 BR_TAG = '<br />'
-P_TAG = '</p><p>'
+P_TAG = '<br></br>'
 
 REFERENCE = 'reference'
 VERSION = 'version'
@@ -63,6 +63,7 @@ def get_cacdevo_raw(version='NIV'):
 
     # Only at the last step do we do other destructive formatting
     soup = html_utils.strip_soup(soup)
+    soup = html_utils.break_soup(soup)
 
     blocks = []
     for tag in soup(class_=CAC_DEVO_SELECT):
