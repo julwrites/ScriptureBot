@@ -47,6 +47,7 @@ def get_cacdevo_raw(version='NIV'):
 
     debug.log('Decomposed soup')
     # Steps through all the html types and mark these
+    soup = html_utils.stripmd_soup(soup)
     soup = html_utils.link_soup(soup, telegram_utils.link)
     soup = html_utils.mark_soup(soup, 
     CAC_DEVO_SELECT, html_utils.html_all_tags())
