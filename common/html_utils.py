@@ -82,6 +82,8 @@ def convert_links(soup, fn):
     for tag in soup.find_all('a', href=True):
         debug.log('Converting ' + tag.text)
         tag.string = fn(tag.text, tag['href'])
+    
+    return soup
 
 def foreach_tag(soup, tags, fn):
     for tag in soup.select(tags):
