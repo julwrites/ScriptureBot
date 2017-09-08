@@ -13,9 +13,11 @@ def stringify(value):
         return ''
 
     if isinstance(value, basestring):
-        value = value.decode("utf-8")
+        value = value.encode("utf-8")
+    else:
+        value = str(value).encode("utf-8")
 
-    return text_utils.stringify(value).encode("utf-8")
+    return value
 
 def is_valid(s):
     if s is not None:
