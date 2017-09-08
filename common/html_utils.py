@@ -101,9 +101,6 @@ def strip_soup(soup):
 
     foreach_all(soup, text_utils.strip_whitespace)
 
-    for tag in soup.find_all(HTML_BREAK_TAG):
-        tag.replace_with("\n")
-
     return soup
 
 def stripmd_soup(soup):
@@ -133,4 +130,10 @@ def link_soup(soup, fn):
         debug.log('Converting link: ' + tag.text)
         tag.string = fn(tag.text, tag['href'])
     
+    return soup
+
+def break_soup(soup):
+    for tag in soup.find_all(HTML_BREAK_TAG):
+        tag.replace_with("\n")
+
     return soup
