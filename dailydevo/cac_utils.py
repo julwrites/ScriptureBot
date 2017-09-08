@@ -23,9 +23,6 @@ CAC_DEVO_IGNORE = 'h2'
 CAC_DEVO_LINKS = 'href'
 CAC_DEVO_TITLE = 'h3'
 
-BR = '<br />'
-BR_TAG = '<br></br>'
-
 REFERENCE = 'reference'
 VERSION = 'version'
 DEVO = 'devo'
@@ -50,17 +47,16 @@ def get_cacdevo_raw(version='NIV'):
         tag.decompose()
 
     # Steps through all the html types and mark these
-    soup = html_utils.break_soup(soup)
+    soup = html_utils.replace_soup(soup, html_utils.html_break_tag(), CAC_DEVO_SELECT)
     soup = html_utils.stripmd_soup(soup)
     soup = html_utils.link_soup(soup, telegram_utils.link)
-    soup = html_utils.mark_soup(soup, 
-    CAC_DEVO_SELECT, html_utils.html_common_tags())
+    soup = html_utils.mark_soup(soup, CAC_DEVO_SELECT, html_utils.html_common_tags())
 
     html_utils.foreach_header(soup, telegram_utils.bold)
 
     # Only at the last step do we do other destructive formatting
     soup = html_utils.strip_soup(soup)
-    soup = html_utils.break_soup(soup)
+    soup = html_utils.replace_soup(soup, CAC_DEVO_SELECT, '\n')
 
     blocks = []
     for tag in soup(class_=CAC_DEVO_SELECT):

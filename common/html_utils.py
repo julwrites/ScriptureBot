@@ -15,8 +15,9 @@ from common import debug, text_utils, constants
 HTML_HEADER_TAGS = ['h1', 'h2', 'h3', 'h4', 'h5', 'h6']
 HTML_TEXT_TAGS = ['p']
 
+HTML_BREAK_TAG = '<br />'
+
 HTML_ITEM_TAG = 'a'
-HTML_BREAK_TAG = 'br'
 
 # Tags
 def html_common_tags():
@@ -25,6 +26,9 @@ def html_common_tags():
     tags.extend(HTML_TEXT_TAGS)
 
     return tags
+
+def html_break_tag():
+    return HTML_BREAK_TAG
 
 def soupify_tags(tags):
     return ','.join(tags)
@@ -139,9 +143,8 @@ def link_soup(soup, fn):
     
     return soup
 
-def break_soup(soup):
-    for tag in soup.find_all(HTML_BREAK_TAG):
-        debug.log('Replacing br with newline')
-        tag.replace_with('\n')
+def replace_soup(soup, find='', replace=''):
+    for tag in soup.find_all(find):
+        tag.replace_with(replace)
 
     return soup
