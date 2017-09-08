@@ -104,7 +104,8 @@ def format_soup(soup):
     foreach_all(soup, text_utils.strip_whitespace)
 
     for tag in soup.select(soupify_tags(HTML_BREAK_TAGS)):
-        tag.string = '\n'
+        debug.log('Replacing a br')
+        tag.string = '\n\n\n'
 
     return soup
 
