@@ -105,6 +105,9 @@ def strip_soup(soup):
 
     foreach_all(soup, text_utils.strip_whitespace)
 
+    for br in soup.find_all(HTML_BREAK_TAG):
+        br.replace_with('\n')
+
     return soup
 
 def stripmd_soup(soup):
@@ -126,11 +129,6 @@ def mark_soup(soup, htmlMark, tags=[], markbr_=True):
 
     for tag in soup.select(tags):
         tag['class'] = htmlMark
-    
-    if markbr_:
-        for tag in soup.find_all(HTML_BREAK_TAG):
-            debug.log('Marking br')
-            tag['class'] = htmlMark
 
     return soup
 
