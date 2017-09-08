@@ -78,6 +78,10 @@ def rss_to_soup(rss, select=None):
 def strip_md(string):
     return string.replace('*', '\*').replace('_', '\_').replace('`', '\`').replace('[', '\[')
 
+def convert_links(soup, fn):
+    for tag in soup.find_all('a', href=True):
+        tag.string = fn(tag.text, tag['href'])
+
 def foreach_tag(soup, tags, fn):
     for tag in soup.select(tags):
         tag.string = fn(tag.text)
@@ -117,7 +121,6 @@ def mark_soup(soup, htmlMark, tags=[]):
 
     for tag in soup.select(tags):
         tag['class'] = htmlMark
-        debug.log('Marking ' + tag.text)
 
     return soup
  

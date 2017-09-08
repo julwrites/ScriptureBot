@@ -126,8 +126,8 @@ def bracket(text):
 def bracket_square(text):
     return surround(text, '[', ']')
 
-def link(text, link):
-    return bracket_square(text) + bracket(link)
+def link(text, hyperlink):
+    return bracket_square(text) + bracket(hyperlink)
 
 def join(blocks, separator):
     return separator.join(blocks)

@@ -18,7 +18,8 @@ CAC_URL = 'https://cac.org/category/daily-meditations/'
 CAC_DEVO_START = '<p><!--{}--></p>'.format('[Most recent post will go here, with week title, day title, and date headings—body of post itself, no banner image or title field.]')
 CAC_DEVO_END = '</div>'
 CAC_DEVO_SELECT = 'cac-devo-text'
-CAC_DEVO_IGNORE = ''
+CAC_DEVO_IGNORE = 'h2'
+CAC_DEVO_LINKS = 'href'
 CAC_DEVO_TITLE = 'h3'
 
 REFERENCE = 'reference'
@@ -41,31 +42,25 @@ def get_cacdevo_raw(version='NIV'):
     if soup is None:
         return None
 
-    debug.log('Soup exists!')
+    for tag in soup.select(CAC_DEVO_IGNORE):
+        tag.decompose()
 
     # Steps through all the html types and mark these
-    # soup = html_utils.stripmd_soup(soup)
+    soup = html_utils.convert_links(soup, telegram_utils.link)
     soup = html_utils.mark_soup(soup, 
     CAC_DEVO_SELECT,
     html_utils.HTML_HEADER_TAGS + html_utils.HTML_TEXT_TAGS)
-
-    debug.log('Soup marked!')
 
     html_utils.foreach_header(soup, telegram_utils.bold)
 
     # Only at the last step do we do other destructive formatting
     soup = html_utils.strip_soup(soup=soup)
 
-    debug.log('Soup stripped!')
-
     blocks = []
     for tag in soup(class_=CAC_DEVO_SELECT):
-        debug.log('Soup thigy ' + tag.text)
         blocks.append(tag.text)
 
     passage = telegram_utils.join(blocks, '\n\n')
-
-    debug.log("Finished parsing soup")
 
     return passage
 
