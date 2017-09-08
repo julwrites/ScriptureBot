@@ -11,7 +11,7 @@ from common import debug, text_utils, constants
 
 
 HTML_HEADER_TAGS = ['h1', 'h2', 'h3', 'h4', 'h5', 'h6']
-HTML_TEXT_TAGS = ['p']
+HTML_TEXT_TAGS = ['p', 'em']
 
 HTML_ITEM_TAG = 'a'
 HTML_BREAK_TAG = 'br'
@@ -104,10 +104,6 @@ def strip_soup(soup):
     debug.log('Stripping soup')
 
     foreach_all(soup, text_utils.strip_whitespace)
-
-    for tag in soup.find_all(HTML_BREAK_TAG):
-        debug.log('Replacing br with newline')
-        tag.replace_with('\n')
 
     return soup
 
