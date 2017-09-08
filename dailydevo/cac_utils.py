@@ -14,11 +14,11 @@ from common.telegram import telegram_utils
 CAC_URL = 'https://cac.org/category/daily-meditations/'
 
 CAC_DEVO_CLASS = 'devo-text'
-CAC_DEVO_START = '<div class="{}">'.format(CAC_DEVO_CLASS)
-CAC_DEVO_END = '<!--END .{}-->'.format(CAC_DEVO_CLASS)
+CAC_DEVO_START = '<!--[Most recent post will go here, with week title, day title, and date headings—body of post itself, no banner image or title field.]-->'
+CAC_DEVO_END = '</div>'
 CAC_DEVO_SELECT = 'bgw-devo-text'
-CAC_DEVO_IGNORE = '.devo-display, .footnote, .footnotes, .crossrefs, .publisher-info-bottom'
-CAC_DEVO_TITLE = '.devo-display-bcv'
+CAC_DEVO_IGNORE = ''
+CAC_DEVO_TITLE = 'h3'
 
 REFERENCE = 'reference'
 VERSION = 'version'
@@ -35,47 +35,40 @@ def fetch_cac(version='NIV'):
 
     return soup 
 
-def get_devo_raw(version='NIV'):
-    devoSoup = fetch_cac(version)
-    if devoSoup is None:
+def get_cacdevo_raw(version='NIV'):
+    soup = fetch_cac(version)
+    if soup is None:
         return None
 
     # Remove the unnecessary tags
-    for tag in devoSoup.select(CAC_DEVO_IGNORE):
+    for tag in soup.select(CAC_DEVO_IGNORE):
         tag.decompose()
 
     # Steps through all the html types and mark these
-    soup = html_utils.stripmd_soup(devoSoup)
-    soup = html_utils.mark_soup(devoSoup, 
+    soup = html_utils.stripmd_soup(soup)
+    soup = html_utils.mark_soup(soup, 
     CAC_DEVO_SELECT,
     html_utils.HTML_HEADER_TAGS + html_utils.HTML_TEXT_TAGS)
 
-    html_utils.foreach_header(devoSoup, telegram_utils.bold)
-
-    # Special formatting for chapter and verse
-    for tag in soup.select('.chapternum'):
-        tag.string = telegram_utils.bold(tag.text)
-    for tag in soup.select('.versenum'):
-        tag.string = telegram_utils.italics(telegram_utils.to_sup(tag.text))
+    html_utils.foreach_header(soup, telegram_utils.bold)
 
     # Only at the last step do we do other destructive formatting
-    soup = html_utils.strip_soup(soup=devoSoup)
+    soup = html_utils.strip_soup(soup=soup)
 
-    devoBlocks = []
+    blocks = []
     for tag in soup(class_=CAC_DEVO_SELECT):
-        devoBlocks.append(tag.text)
+        blocks.append(tag.text)
 
-    devoText = telegram_utils.join(devoBlocks, '\n\n')
+    passage = telegram_utils.join(blocks, '\n\n')
 
     debug.log("Finished parsing soup")
 
-    return devoText
+    return passage
 
-def get_devo(version='NIV'):
-    devo = get_devo_raw(version)
+def get_cacdevo(version='NIV'):
+    devo = get_cacdevo_raw(version)
 
     if devo is None:
         return None
 
     return devo
-

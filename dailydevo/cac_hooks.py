@@ -15,10 +15,11 @@ class CACDevoHook(hook_classes.Hook):
         return 'Center for Action and Contemplation Devotional'
 
     def resolve(self, userObj):
-        devo = cac_utils.get_devo(userObj.get_version())
-        debug.log('Devo fetched: ' + devo)
+        passage = cac_utils.get_cacdevo(userObj.get_version())
 
-        return True
+        if passage is not None:
+            telegram_utils.send_msg(passage, userObj.get_uid())
+
 
 def get():
     return [
