@@ -97,7 +97,7 @@ def foreach_all(soup_, fn):
     foreach_tag(soup_, soupify_tags(html_common_tags()), fn)
 
 def strip_soup(soup_):
-    debug.log('Stripping soup')
+    debug.log('Stripping soup: ' + soup_.get_text())
 
     foreach_all(soup_, text_utils.strip_whitespace)
 
@@ -134,7 +134,6 @@ def link_soup(soup_, fn):
 
 def break_soup(soup_):
     for tag in soup_.find_all(HTML_BREAK_TAG):
-        debug.log('Replacing br with \n' + tag.text)
         tag.replace_with("\n")
 
     return soup_
