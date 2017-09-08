@@ -12,12 +12,10 @@ def stringify(value):
     if value is None:
         return ''
 
-    if isinstance(value, basestring):
-        value = unicode(value)
-    else:
-        value = str(value).encode("utf-8")
+    if not isinstance(value, basestring):
+        value = str(value)
 
-    return value
+    return unicode(value)
 
 def is_valid(s):
     if s is not None:
