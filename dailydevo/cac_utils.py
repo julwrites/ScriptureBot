@@ -14,7 +14,7 @@ from common.telegram import telegram_utils
 CAC_URL = 'https://cac.org/category/daily-meditations/'
 
 CAC_DEVO_CLASS = 'devo-text'
-CAC_DEVO_START = "<!--[Most recent post"
+CAC_DEVO_START = "<!--{}-->".format("[Most recent post will go here, with week title, day title, and date headings—body of post itself, no banner image or title field.]")
 CAC_DEVO_END = '</div>'
 CAC_DEVO_SELECT = 'bgw-devo-text'
 CAC_DEVO_IGNORE = ''
