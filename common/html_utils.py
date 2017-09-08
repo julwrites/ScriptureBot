@@ -134,6 +134,7 @@ def link_soup(soup_, fn):
 
 def break_soup(soup_):
     for tag in soup_.find_all(HTML_BREAK_TAG):
+        debug.log('Replacing br with \n')
         tag.replace_with("\n")
 
     return soup_
