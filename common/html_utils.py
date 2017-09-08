@@ -145,6 +145,7 @@ def link_soup(soup, fn):
 
 def replace_soup(soup, find='', replace=''):
     for tag in soup.find_all(find):
+        debug.log('Replacing ' + find + ' with ' + replace)
         tag.replace_with(replace)
 
     return soup
