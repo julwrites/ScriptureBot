@@ -1,4 +1,6 @@
 
+# coding=utf-8
+
 from tms.tms_classes import TMSPack, TMSVerse
 
 LIFE_ISSUES_ANGER_KEY = "Anger"

@@ -1,4 +1,5 @@
 
+# coding=utf-8
 
 # Local modules
 from common import debug

@@ -1,4 +1,6 @@
 
+# coding=utf-8
+
 # Local modules
 from common import debug, text_utils
 from common.telegram import telegram_utils

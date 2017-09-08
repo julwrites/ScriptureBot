@@ -1,4 +1,6 @@
 
+# coding=utf-8
+
 # Local Modules
 from common.data.data_classes import Data
 

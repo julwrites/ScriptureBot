@@ -1,4 +1,6 @@
 
+# coding=utf-8
+
 # Local Modules
 from user import bibleuser_utils
 

@@ -1,4 +1,6 @@
 
+# coding=utf-8
+
 from tms.tms_classes import TMSPack, TMSVerse
 
 TMS_A_KEY = "TMS_A"

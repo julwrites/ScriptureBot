@@ -1,4 +1,6 @@
 
+# coding=utf-8
+
 # Local modules
 from bible import bible_actions, bible_hooks
 from tms import tms_actions, tms_hooks

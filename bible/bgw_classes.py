@@ -1,4 +1,6 @@
 
+# coding=utf-8
+
 class BGWPassage():
     def __init__(self, ref, ver, txt):
         self.reference = ref

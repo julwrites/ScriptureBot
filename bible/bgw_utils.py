@@ -1,4 +1,6 @@
 
+# coding=utf-8
+
 # Python modules
 import urllib
 from bs4 import BeautifulSoup

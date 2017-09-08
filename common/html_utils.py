@@ -1,4 +1,6 @@
 
+# coding=utf-8
+
 # Python modules
 import re
 from bs4 import BeautifulSoup

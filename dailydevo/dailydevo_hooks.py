@@ -1,4 +1,6 @@
 
+# coding=utf-8
+
 # Local modules
 from dailydevo import dailydevo_modules
 

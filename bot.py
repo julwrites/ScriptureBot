@@ -1,3 +1,6 @@
+
+# coding=utf-8
+
 # Python std modules
 import webapp2
 import json

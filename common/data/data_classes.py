@@ -1,4 +1,6 @@
 
+# coding=utf-8
+
 # Google App Engine Modules
 from google.appengine.ext import db
 

@@ -1,4 +1,6 @@
 
+# coding=utf-8
+
 from tms.tms_classes import TMSPack
 
 from tms import tms_data_loa
