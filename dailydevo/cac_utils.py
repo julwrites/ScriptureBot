@@ -56,7 +56,7 @@ def get_cacdevo_raw(version='NIV'):
     html_utils.foreach_header(soup, telegram_utils.bold)
 
     # Only at the last step do we do other destructive formatting
-    soup = html_utils.strip_soup(soup=soup)
+    # soup = html_utils.strip_soup(soup=soup)
 
     debug.log('Soup stripped!')
 
