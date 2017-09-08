@@ -13,7 +13,7 @@ def stringify(value):
         return ''
 
     if isinstance(value, basestring):
-        value = value.encode("utf-8")
+        value = unicode(value)
     else:
         value = str(value).encode("utf-8")
 
