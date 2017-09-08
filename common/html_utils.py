@@ -12,21 +12,23 @@ from common import debug, text_utils, constants
 
 HTML_HEADER_TAGS = ['h1', 'h2', 'h3', 'h4', 'h5', 'h6']
 HTML_TEXT_TAGS = ['p']
-HTML_DIV_TAGS = ['br']
+HTML_BREAK_TAGS = ['br']
+
 
 # Tags
 def html_all_tags():
     tags = []
     tags.extend(HTML_HEADER_TAGS)
     tags.extend(HTML_TEXT_TAGS)
-    tags.extend(HTML_DIV_TAGS)
+    tags.extend(HTML_BREAK_TAGS)
 
     return tags
 
 def soupify_tags(tags):
     return ','.join(tags)
 
-# HTML Parsing
+
+# HTML to BeautifulSoup
 def fetch_url(url):
     try:
         debug.log('Attempting to fetch: ' + url)
@@ -75,6 +77,8 @@ def rss_to_soup(rss, select=None):
 
     return soup
 
+
+# BeautifulSoup Functionalities
 def strip_md(string):
     return string.replace('*', '\*').replace('_', '\_').replace('`', '\`').replace('[', '\[')
 
@@ -88,13 +92,19 @@ def foreach_header(soup, fn):
 def foreach_text(soup, fn):
     foreach_tag(soup, soupify_tags(HTML_TEXT_TAGS), fn)
 
+def foreach_break(soup, fn):
+    foreach_tag(soup, soupify_tags(HTML_BREAK_TAGS), fn)
+
 def foreach_all(soup, fn):
     foreach_tag(soup, soupify_tags(html_all_tags()), fn)
 
-def strip_soup(soup):
+def format_soup(soup):
     debug.log('Stripping soup')
 
     foreach_all(soup, text_utils.strip_whitespace)
+
+    for tag in soup.select(soupify_tags(HTML_BREAK_TAGS)):
+        tag.string = '\n'
 
     return soup
 
@@ -122,7 +132,7 @@ def mark_soup(soup, htmlMark, tags=[]):
 
 def link_soup(soup, fn):
     for tag in soup.find_all('a', href=True):
-        debug.log('Converting ' + tag.text)
+        debug.log('Converting link: ' + tag.text)
         tag.string = fn(tag.text, tag['href'])
     
     return soup

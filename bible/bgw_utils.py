@@ -58,8 +58,7 @@ def get_passage_raw(ref, version='NIV'):
     # Steps through all the html types and mark these
     soup = html_utils.stripmd_soup(passageSoup)
     soup = html_utils.mark_soup(passageSoup, 
-    BGW_PASSAGE_SELECT,
-    html_utils.HTML_HEADER_TAGS + html_utils.HTML_TEXT_TAGS)
+    BGW_PASSAGE_SELECT, html_utils.html_all_tags())
 
     html_utils.foreach_header(passageSoup, telegram_utils.bold)
 
@@ -70,7 +69,7 @@ def get_passage_raw(ref, version='NIV'):
         tag.string = telegram_utils.italics(telegram_utils.to_sup(tag.text))
 
     # Only at the last step do we do other destructive formatting
-    soup = html_utils.strip_soup(soup=passageSoup)
+    soup = html_utils.format_soup(soup=passageSoup)
 
     passageBlocks = []
     for tag in soup(class_=BGW_PASSAGE_SELECT):

@@ -63,3 +63,6 @@ def strip_block(s, start, end):
     start_block = s[:start].strip()
     end_block = s[end + 1:].strip()
     return start_block + end_block
+
+def replace(s, sub, new):
+    return s.replace(sub, new)

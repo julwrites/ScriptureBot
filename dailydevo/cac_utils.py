@@ -49,13 +49,12 @@ def get_cacdevo_raw(version='NIV'):
     # Steps through all the html types and mark these
     soup = html_utils.link_soup(soup, telegram_utils.link)
     soup = html_utils.mark_soup(soup, 
-    CAC_DEVO_SELECT,
-    html_utils.HTML_HEADER_TAGS + html_utils.HTML_TEXT_TAGS)
+    CAC_DEVO_SELECT, html_utils.html_all_tags())
 
     html_utils.foreach_header(soup, telegram_utils.bold)
 
     # Only at the last step do we do other destructive formatting
-    soup = html_utils.strip_soup(soup=soup)
+    soup = html_utils.format_soup(soup=soup)
 
     blocks = []
     for tag in soup(class_=CAC_DEVO_SELECT):
