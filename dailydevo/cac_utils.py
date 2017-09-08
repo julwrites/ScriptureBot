@@ -60,7 +60,6 @@ def get_cacdevo_raw(version='NIV'):
 
     blocks = []
     for tag in soup(class_=CAC_DEVO_SELECT):
-        debug.log('Block: ' + tag.text)
         blocks.append(tag.text)
 
     passage = telegram_utils.join(blocks, '\n\n')

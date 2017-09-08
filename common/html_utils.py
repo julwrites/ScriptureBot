@@ -11,7 +11,7 @@ from common import debug, text_utils, constants
 
 
 HTML_HEADER_TAGS = ['h1', 'h2', 'h3', 'h4', 'h5', 'h6']
-HTML_TEXT_TAGS = ['p', 'em']
+HTML_TEXT_TAGS = ['p']
 
 HTML_ITEM_TAG = 'a'
 HTML_BREAK_TAG = 'br'
@@ -93,10 +93,6 @@ def foreach_header(soup, fn):
 def foreach_text(soup, fn):
     foreach_tag(soup, soupify_tags(HTML_TEXT_TAGS), fn)
 
-def foreach_break(soup, fn):
-    for tag in soup.find_all(HTML_BREAK_TAG):
-        tag.string = fn(tag.text)
-
 def foreach_all(soup, fn):
     foreach_tag(soup, soupify_tags(html_common_tags()), fn)
 
@@ -104,6 +100,9 @@ def strip_soup(soup):
     debug.log('Stripping soup')
 
     foreach_all(soup, text_utils.strip_whitespace)
+
+    for tag in soup.find_all(HTML_BREAK_TAG):
+        tag.replace_with("\n")
 
     return soup
 
