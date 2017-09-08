@@ -117,6 +117,7 @@ def mark_soup(soup, htmlMark, tags=[]):
 
     for tag in soup.select(tags):
         tag['class'] = htmlMark
+        debug.log('Marking ' + tag.text)
 
     return soup
  
