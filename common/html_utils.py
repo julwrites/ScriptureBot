@@ -80,6 +80,7 @@ def strip_md(string):
 
 def convert_links(soup, fn):
     for tag in soup.find_all('a', href=True):
+        debug.log('Converting ' + tag.text)
         tag.string = fn(tag.text, tag['href'])
 
 def foreach_tag(soup, tags, fn):

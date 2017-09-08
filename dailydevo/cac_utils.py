@@ -45,6 +45,7 @@ def get_cacdevo_raw(version='NIV'):
     for tag in soup.select(CAC_DEVO_IGNORE):
         tag.decompose()
 
+    debug.log('Decomposed soup')
     # Steps through all the html types and mark these
     soup = html_utils.convert_links(soup, telegram_utils.link)
     soup = html_utils.mark_soup(soup, 
