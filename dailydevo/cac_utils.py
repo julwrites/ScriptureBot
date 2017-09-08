@@ -18,7 +18,7 @@ CAC_URL = 'https://cac.org/category/daily-meditations/'
 CAC_DEVO_CLASS = 'devo-text'
 CAC_DEVO_START = '<!--{}-->'.format('[Most recent post will go here, with week title, day title, and date headings—body of post itself, no banner image or title field.]')
 CAC_DEVO_END = '</div>'
-CAC_DEVO_SELECT = 'bgw-devo-text'
+CAC_DEVO_SELECT = 'cac-devo-text'
 CAC_DEVO_IGNORE = ''
 CAC_DEVO_TITLE = 'h3'
 
@@ -42,6 +42,8 @@ def get_cacdevo_raw(version='NIV'):
     if soup is None:
         return None
 
+    debug.log('Soup exists!')
+
     # Remove the unnecessary tags
     for tag in soup.select(CAC_DEVO_IGNORE):
         tag.decompose()
@@ -52,10 +54,14 @@ def get_cacdevo_raw(version='NIV'):
     CAC_DEVO_SELECT,
     html_utils.HTML_HEADER_TAGS + html_utils.HTML_TEXT_TAGS)
 
+    debug.log('Soup marked!')
+
     html_utils.foreach_header(soup, telegram_utils.bold)
 
     # Only at the last step do we do other destructive formatting
     soup = html_utils.strip_soup(soup=soup)
+
+    debug.log('Soup stripped!')
 
     blocks = []
     for tag in soup(class_=CAC_DEVO_SELECT):
@@ -68,9 +74,9 @@ def get_cacdevo_raw(version='NIV'):
     return passage
 
 def get_cacdevo(version='NIV'):
-    devo = get_cacdevo_raw(version)
+    passage = get_cacdevo_raw(version)
 
-    if devo is None:
+    if passage is None:
         return None
 
-    return devo
+    return passage
