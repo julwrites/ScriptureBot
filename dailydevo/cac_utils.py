@@ -32,6 +32,8 @@ def fetch_cac(version='NIV'):
     if html is None:
         return None
 
+    debug.log('Got html' + html)
+
     soup = html_utils.html_to_soup(html)
 
     return soup 
@@ -42,10 +44,6 @@ def get_cacdevo_raw(version='NIV'):
         return None
 
     debug.log('Soup exists!')
-
-    # Remove the unnecessary tags
-    for tag in soup.select(CAC_DEVO_IGNORE):
-        tag.decompose()
 
     # Steps through all the html types and mark these
     soup = html_utils.stripmd_soup(soup)
