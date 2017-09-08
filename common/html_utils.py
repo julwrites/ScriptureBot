@@ -97,7 +97,7 @@ def foreach_all(soup_, fn):
     foreach_tag(soup_, soupify_tags(html_common_tags()), fn)
 
 def strip_soup(soup_):
-    debug.log('Stripping soup: ' + soup_.get_text())
+    debug.log('Stripping soup: ')
 
     foreach_all(soup_, text_utils.strip_whitespace)
 
