@@ -23,6 +23,9 @@ CAC_DEVO_IGNORE = 'h2'
 CAC_DEVO_LINKS = 'href'
 CAC_DEVO_TITLE = 'h3'
 
+BR_TAG = '<br />'
+P_TAG = '<p></p>'
+
 REFERENCE = 'reference'
 VERSION = 'version'
 DEVO = 'devo'
@@ -31,8 +34,10 @@ def fetch_cac(version='NIV'):
     formatUrl = CAC_URL
 
     html = html_utils.fetch_html(formatUrl, CAC_DEVO_START, CAC_DEVO_END)
+    html = html_utils.replace_html(html, BR_TAG, P_TAG)
     if html is None:
         return None
+
 
     soup = html_utils.html_to_soup(html)
 
@@ -47,7 +52,6 @@ def get_cacdevo_raw(version='NIV'):
         tag.decompose()
 
     # Steps through all the html types and mark these
-    soup = html_utils.break_soup(soup)
     soup = html_utils.stripmd_soup(soup)
     soup = html_utils.link_soup(soup, telegram_utils.link)
     soup = html_utils.mark_soup(soup, 
