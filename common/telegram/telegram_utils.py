@@ -2,7 +2,7 @@
 # coding=utf-8
 
 # Local modules
-from common import debug
+from common import debug, text_utils
 from common.telegram.telegram_classes import TelegramPost
 
 MAX_LENGTH = 4096
@@ -33,7 +33,7 @@ def format_keyboard(options=[], width=KEYBOARD_WIDTH):
     return keyboardData
 
 def send_msg(msg, userId):
-    debug.log('Sending message to ' + str(userId) + ': ' +  msg)
+    debug.log('Sending message to ' + text_utils.stringify(userId) + ': ' +  msg)
 
     last = None
     chunks = []

@@ -3,7 +3,8 @@
 
 # Local modules
 import logging
-from common import chrono
+
+from common import chrono, text_utils
 
 DEBUG_MODE = True
 
@@ -42,4 +43,4 @@ def datetime():
     if not debug():
         return
 
-    logging.debug(str(chrono.now()))
+    logging.debug(text_utils.stringify(chrono.now()))

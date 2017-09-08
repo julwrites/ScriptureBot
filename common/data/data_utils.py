@@ -2,12 +2,13 @@
 # coding=utf-8
 
 # Local Modules
+from common import text_utils
 from common.data.data_classes import Data
 
 
 # Database util functions
 def get_key(path, userId):
-    return db.Key.from_path(path, str(userId))
+    return db.Key.from_path(path, text_utils.stringify(userId))
 
 
 # Functions for manipulation of data
@@ -26,9 +27,9 @@ def has_data(userId):
 def set_data(userId, data):
     if has_data(userId):
         val = get_data(userId)
-        val.data = str(data)
+        val.data = text_utils.stringify(data)
     else:
-        val = Data(key_name=str(userId), data=str(data))
+        val = Data(key_name=text_utils.stringify(userId), data=text_utils.stringify(data))
         val.put()
     
     return val

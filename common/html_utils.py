@@ -35,7 +35,7 @@ def fetch_url(url):
         debug.log('Attempting to fetch: ' + url)
         result = urlfetch.fetch(url, deadline=constants.URL_TIMEOUT)
     except urlfetch_errors.Error as e:
-        debug.log('Error fetching: ' + str(e))
+        debug.log('Error fetching: ' + text_utils.stringify(e))
         return None
 
     return result

@@ -2,11 +2,11 @@
 # coding=utf-8
 
 # Local modules
-from common import debug
-from user import user_utils
+from common import debug, text_utils
 from common.telegram import telegram_utils
 from common.action import action_classes
 
+from user import user_utils
 from admin import admin_utils
 
 

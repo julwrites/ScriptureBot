@@ -8,7 +8,7 @@ import json
 from google.appengine.api import urlfetch
 
 # Local modules
-from common import debug
+from common import debug, text_utils
 
 from secret import BOT_ID
 
@@ -20,7 +20,7 @@ JSON_HEADER = {'Content-Type': 'application/json;charset=utf-8'}
 class TelegramPost():
     def __init__(self, userId):
         self.formatData = {
-            'chat_id': str(userId), 
+            'chat_id': text_utils.stringify(userId), 
             'parse_mode': 'Markdown'
         }
 
@@ -47,7 +47,7 @@ class TelegramPost():
         self.formatData['text'] = msg
 
     def add_keyboard(self, keyboard=[], oneTime=False):
-        debug.log('Adding keyboard for ' + self.uid() + ': ' + str(keyboard))
+        debug.log('Adding keyboard for ' + self.uid() + ': ' + text_utils.stringify(keyboard))
 
         self.formatData['reply_markup'] = {
             'keyboard': keyboard,
@@ -62,7 +62,7 @@ class TelegramPost():
         }
 
     def add_inline_keyboard(self, keyboard=[]):
-        debug.log('Adding inline keyboard for ' + self.uid() + ': ' + str(keyboard))
+        debug.log('Adding inline keyboard for ' + self.uid() + ': ' + text_utils.stringify(keyboard))
        
         self.formatData['reply_markup'] = {
             'inline_keyboard': keyboard
