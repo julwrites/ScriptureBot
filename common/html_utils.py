@@ -54,7 +54,7 @@ def fetch_html(url, start, end):
     return html
 
 def replace_html(html, tag, rep):
-    if html is not None:
+    if text_utils.is_valid(html):
         html = html.replace(tag, rep)
     return html
 

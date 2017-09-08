@@ -34,7 +34,9 @@ def fetch_cac(version='NIV'):
     formatUrl = CAC_URL
 
     html = html_utils.fetch_html(formatUrl, CAC_DEVO_START, CAC_DEVO_END)
+    debug.log(html)
     html = html_utils.replace_html(html, BR_TAG, P_TAG)
+    debug.log(html)
     if html is None:
         return None
 
