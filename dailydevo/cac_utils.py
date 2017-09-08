@@ -1,4 +1,6 @@
 
+# -*- coding: ascii -*-
+
 # Python modules
 import urllib
 from bs4 import BeautifulSoup
