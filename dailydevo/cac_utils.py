@@ -15,7 +15,6 @@ from common.telegram import telegram_utils
 
 CAC_URL = 'https://cac.org/category/daily-meditations/'
 
-CAC_DEVO_CLASS = 'devo-text'
 CAC_DEVO_START = '<!--{}-->'.format('[Most recent post will go here, with week title, day title, and date headings—body of post itself, no banner image or title field.]')
 CAC_DEVO_END = '</div>'
 CAC_DEVO_SELECT = 'cac-devo-text'
@@ -33,7 +32,7 @@ def fetch_cac(version='NIV'):
     if html is None:
         return None
 
-    soup = html_utils.html_to_soup(html, CAC_DEVO_CLASS)
+    soup = html_utils.html_to_soup(html)
 
     return soup 
 
