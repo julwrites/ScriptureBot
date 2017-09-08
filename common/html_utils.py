@@ -12,7 +12,9 @@ from common import debug, text_utils, constants
 
 HTML_HEADER_TAGS = ['h1', 'h2', 'h3', 'h4', 'h5', 'h6']
 HTML_TEXT_TAGS = ['p']
-HTML_BREAK_TAGS = ['br']
+
+HTML_ITEM_TAG = 'a'
+HTML_BREAK_TAG = 'br'
 
 
 # Tags
@@ -20,7 +22,6 @@ def html_all_tags():
     tags = []
     tags.extend(HTML_HEADER_TAGS)
     tags.extend(HTML_TEXT_TAGS)
-    tags.extend(HTML_BREAK_TAGS)
 
     return tags
 
@@ -93,7 +94,8 @@ def foreach_text(soup, fn):
     foreach_tag(soup, soupify_tags(HTML_TEXT_TAGS), fn)
 
 def foreach_break(soup, fn):
-    foreach_tag(soup, soupify_tags(HTML_BREAK_TAGS), fn)
+    for tag in soup.find_all(HTML_BREAK_TAG):
+        tag.string = fn(tag.text)
 
 def foreach_all(soup, fn):
     foreach_tag(soup, soupify_tags(html_all_tags()), fn)
@@ -103,9 +105,9 @@ def format_soup(soup):
 
     foreach_all(soup, text_utils.strip_whitespace)
 
-    for tag in soup.select(soupify_tags(HTML_BREAK_TAGS)):
-        debug.log('Replacing a br')
-        tag.string = '\n\n\n'
+    def newline(s):
+        return '\n'
+    foreach_break(soup, newline)
 
     return soup
 
@@ -132,7 +134,7 @@ def mark_soup(soup, htmlMark, tags=[]):
     return soup
 
 def link_soup(soup, fn):
-    for tag in soup.find_all('a', href=True):
+    for tag in soup.find_all(HTML_ITEM_TAG, href=True):
         debug.log('Converting link: ' + tag.text)
         tag.string = fn(tag.text, tag['href'])
     
