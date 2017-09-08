@@ -19,7 +19,6 @@ CAC_DEVO_START = '<hr>'
 CAC_DEVO_END = '</div>'
 
 CAC_DEVO_SELECT = 'cac-devo-text'
-CAC_DEVO_BREAK = '<br>\n</br>'
 CAC_DEVO_IGNORE = 'h2'
 CAC_DEVO_LINKS = 'href'
 CAC_DEVO_TITLE = 'h3'
@@ -32,9 +31,10 @@ def fetch_cac(version='NIV'):
     formatUrl = CAC_URL
 
     html = html_utils.fetch_html(formatUrl, CAC_DEVO_START, CAC_DEVO_END)
-    html = html_utils.replace_html(html, html_utils.html_break_tag(), CAC_DEVO_BREAK)
     if html is None:
         return None
+
+    debug.log('Html: ' + html)
 
     soup = html_utils.html_to_soup(html)
 
@@ -57,7 +57,6 @@ def get_cacdevo_raw(version='NIV'):
 
     # Only at the last step do we do other destructive formatting
     soup = html_utils.strip_soup(soup)
-    soup = html_utils.replace_soup(soup, CAC_DEVO_BREAK, '\n')
 
     blocks = []
     for tag in soup(class_=CAC_DEVO_SELECT):

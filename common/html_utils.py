@@ -15,8 +15,6 @@ from common import debug, text_utils, constants
 HTML_HEADER_TAGS = ['h1', 'h2', 'h3', 'h4', 'h5', 'h6']
 HTML_TEXT_TAGS = ['p']
 
-HTML_BREAK_TAG = '<br />'
-
 HTML_ITEM_TAG = 'a'
 
 # Tags
@@ -26,9 +24,6 @@ def html_common_tags():
     tags.extend(HTML_TEXT_TAGS)
 
     return tags
-
-def html_break_tag():
-    return HTML_BREAK_TAG
 
 def soupify_tags(tags):
     return ','.join(tags)
@@ -104,6 +99,9 @@ def foreach_header(soup, fn):
 def foreach_text(soup, fn):
     foreach_tag(soup, soupify_tags(HTML_TEXT_TAGS), fn)
 
+def foreach_br(soup, fn):
+    foreach_tag(soup, 'br', fn)
+
 def foreach_all(soup, fn):
     foreach_tag(soup, soupify_tags(html_common_tags()), fn)
 
@@ -111,6 +109,8 @@ def strip_soup(soup):
     debug.log('Stripping soup: ')
 
     foreach_all(soup, text_utils.strip_whitespace)
+
+    foreach_br(soup, text_utils.replace_newline)
 
     return soup
 
@@ -141,11 +141,4 @@ def link_soup(soup, fn):
         debug.log('Converting link: ' + tag.text)
         tag.string = fn(tag.text, tag['href'])
     
-    return soup
-
-def replace_soup(soup, find='', replace=''):
-    for tag in soup.find_all(find):
-        debug.log('Replacing ' + find + ' with ' + replace)
-        tag.replace_with(replace)
-
     return soup
