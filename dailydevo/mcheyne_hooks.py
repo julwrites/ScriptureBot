@@ -19,9 +19,7 @@ class McheyneDailyHook(hook_classes.Hook):
         if passages is not None:
 
             for passage in passages:
-                debug.log("Sending passage")
                 telegram_utils.send_msg(passage, userObj.get_uid())
-        return True
 
 def get():
     return [
