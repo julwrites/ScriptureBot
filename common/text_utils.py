@@ -12,6 +12,9 @@ def stringify(value):
     if value is None:
         return ''
 
+    if isinstance(value, basestring):
+        value.encode("utf-8")
+
     return str(value)
 
 def is_valid(s):
