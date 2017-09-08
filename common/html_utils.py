@@ -100,14 +100,10 @@ def foreach_break(soup, fn):
 def foreach_all(soup, fn):
     foreach_tag(soup, soupify_tags(html_all_tags()), fn)
 
-def format_soup(soup):
+def strip_soup(soup):
     debug.log('Stripping soup')
 
     foreach_all(soup, text_utils.strip_whitespace)
-
-    def newline(s):
-        return '\n'
-    foreach_break(soup, newline)
 
     return soup
 
@@ -124,12 +120,16 @@ def stripmd_soup(soup):
 
     return soup
 
-def mark_soup(soup, htmlMark, tags=[]):
+def mark_soup(soup, htmlMark, tags=[], markbr_=True):
     tags = soupify_tags(tags)
     debug.log('Marking tags: ' + tags)
 
     for tag in soup.select(tags):
         tag['class'] = htmlMark
+    
+    if markbr_:
+        for tag in soup.find_all(HTML_BREAK_TAG):
+            tag['class'] = htmlMark
 
     return soup
 
