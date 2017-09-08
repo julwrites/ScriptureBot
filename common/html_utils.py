@@ -90,58 +90,57 @@ def rss_to_soup(rss, select=None):
 def strip_md(s_):
     return s_.replace('*', '\*').replace('_', '\_').replace('`', '\`').replace('[', '\[')
 
-def foreach_tag(soup_, tags, fn):
-    for tag in soup_.select(tags):
+def foreach_tag(soup, tags, fn):
+    for tag in soup.select(tags):
         tag.string = fn(tag.text)
 
-def foreach_header(soup_, fn):
-    foreach_tag(soup_, soupify_tags(HTML_HEADER_TAGS), fn)
+def foreach_header(soup, fn):
+    foreach_tag(soup, soupify_tags(HTML_HEADER_TAGS), fn)
 
-def foreach_text(soup_, fn):
-    foreach_tag(soup_, soupify_tags(HTML_TEXT_TAGS), fn)
+def foreach_text(soup, fn):
+    foreach_tag(soup, soupify_tags(HTML_TEXT_TAGS), fn)
 
-def foreach_all(soup_, fn):
-    foreach_tag(soup_, soupify_tags(html_common_tags()), fn)
+def foreach_all(soup, fn):
+    foreach_tag(soup, soupify_tags(html_common_tags()), fn)
 
-def strip_soup(soup_):
+def strip_soup(soup):
     debug.log('Stripping soup: ')
 
-    foreach_all(soup_, text_utils.strip_whitespace)
+    foreach_all(soup, text_utils.strip_whitespace)
 
-    return soup_
+    return soup
 
-def stripmd_soup(soup_):
+def stripmd_soup(soup):
     debug.log('Stripping soup markdown')
 
-    foreach_header(soup_, strip_md)
+    foreach_header(soup, strip_md)
 
-    for tag in soup_.select(soupify_tags(HTML_TEXT_TAGS)):
+    for tag in soup.select(soupify_tags(HTML_TEXT_TAGS)):
         badStrings = tag(text=re.compile('(\*|\_|\`|\[)'))
         for badString in badStrings:
             strippedText = strip_md(unicode(badString))
             badString.replace_with(strippedText)
 
-    return soup_
+    return soup
 
-def mark_soup(soup_, htmlMark, tags=[]):
+def mark_soup(soup, htmlMark, tags=[]):
     tags = soupify_tags(tags)
     debug.log('Marking tags: ' + tags)
 
-    for tag in soup_.select(tags):
+    for tag in soup.select(tags):
         tag['class'] = htmlMark
 
-    return soup_
+    return soup
 
-def link_soup(soup_, fn):
-    for tag in soup_.find_all(HTML_ITEM_TAG, href=True):
+def link_soup(soup, fn):
+    for tag in soup.find_all(HTML_ITEM_TAG, href=True):
         debug.log('Converting link: ' + tag.text)
         tag.string = fn(tag.text, tag['href'])
     
-    return soup_
+    return soup
 
-def break_soup(soup_, fn):
-    for tag in soup_.find_all(HTML_BREAK_TAG):
-        debug.log('Break to newline' + tag.text)
-        tag.string = '\n'
+def break_soup(soup, fn):
+    for tag in soup.find_all(HTML_BREAK_TAG):
+        tag.replace_with('\n')
 
-    return soup_
+    return soup
