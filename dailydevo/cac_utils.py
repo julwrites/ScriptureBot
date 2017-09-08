@@ -51,7 +51,7 @@ def get_cacdevo_raw(version='NIV'):
     soup = html_utils.stripmd_soup(soup)
     soup = html_utils.link_soup(soup, telegram_utils.link)
     soup = html_utils.mark_soup(soup, 
-    CAC_DEVO_SELECT, html_utils.html_all_tags())
+    CAC_DEVO_SELECT, html_utils.html_common_tags())
 
     html_utils.foreach_header(soup, telegram_utils.bold)
 
@@ -60,6 +60,7 @@ def get_cacdevo_raw(version='NIV'):
 
     blocks = []
     for tag in soup(class_=CAC_DEVO_SELECT):
+        debug.log('Block: ' + tag.text)
         blocks.append(tag.text)
 
     passage = telegram_utils.join(blocks, '\n\n')

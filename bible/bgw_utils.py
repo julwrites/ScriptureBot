@@ -58,7 +58,7 @@ def get_passage_raw(ref, version='NIV'):
     # Steps through all the html types and mark these
     soup = html_utils.stripmd_soup(soup)
     soup = html_utils.mark_soup(soup, 
-    BGW_PASSAGE_SELECT, html_utils.html_all_tags())
+    BGW_PASSAGE_SELECT, html_utils.html_common_tags())
 
     html_utils.foreach_header(soup, telegram_utils.bold)
 

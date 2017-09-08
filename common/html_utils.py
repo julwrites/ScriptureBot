@@ -18,7 +18,7 @@ HTML_BREAK_TAG = 'br'
 
 
 # Tags
-def html_all_tags():
+def html_common_tags():
     tags = []
     tags.extend(HTML_HEADER_TAGS)
     tags.extend(HTML_TEXT_TAGS)
@@ -98,7 +98,7 @@ def foreach_break(soup, fn):
         tag.string = fn(tag.text)
 
 def foreach_all(soup, fn):
-    foreach_tag(soup, soupify_tags(html_all_tags()), fn)
+    foreach_tag(soup, soupify_tags(html_common_tags()), fn)
 
 def strip_soup(soup):
     debug.log('Stripping soup')
