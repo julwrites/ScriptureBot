@@ -21,7 +21,6 @@ class DailyDevoAction(action_classes.Action):
 
     def resolve(self, userObj, msg):
         query = telegram_utils.strip_command(msg, self.identifier())
-        debug.log('Resolving in dailydevo ' + query)
         hooks = dailydevo_modules.get_hooks()
 
         if text_utils.is_valid(query):
@@ -40,7 +39,6 @@ class DailyDevoAction(action_classes.Action):
                 telegram_utils.send_msg(BADQUERY, userObj.get_uid())
 
         else:
-            debug.log('Preparing keyboard')
             options = [hook.name() for hook in hooks]
 
             telegram_utils.send_msg_keyboard(\
