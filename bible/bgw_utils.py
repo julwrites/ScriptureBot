@@ -62,22 +62,21 @@ def get_passage_raw(ref, version='NIV'):
 
     # Steps through all the html types and mark these
     soup = html_utils.stripmd_soup(soup)
-    soup = html_utils.mark_soup(soup, 
-    BGW_PASSAGE_SELECT, html_utils.html_common_tags())
 
-    debug.log(soup.get_text())
-    html_utils.foreach_header(soup, telegram_utils.bold)
-
-    debug.log(soup.get_text())
     # Special formatting for chapter and verse
     html_utils.foreach_tag(soup, '.chapternum', telegram_utils.bold)
     html_utils.foreach_tag(soup, '.versenum', telegram_utils.to_sup)
     html_utils.foreach_tag(soup, '.versenum', telegram_utils.italics)
+    html_utils.foreach_header(soup, telegram_utils.bold)
+
+    # Marking the parts of the soup we want to print
+    soup = html_utils.mark_soup(soup, 
+    BGW_PASSAGE_SELECT, html_utils.html_common_tags())
 
     debug.log(soup.get_text())
-
     blocks = []
     for tag in soup(class_=BGW_PASSAGE_SELECT):
+        debug.log('Joining ' + tag.text)
         blocks.append(tag.text)
 
     text = telegram_utils.join(blocks, '\n\n')
