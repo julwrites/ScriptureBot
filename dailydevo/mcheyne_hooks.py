@@ -22,8 +22,9 @@ class McheyneDailyHook(hook_classes.Hook):
         refs = mcheyne_utils.get_mcheyne()
 
         if refs is not None:
-            refString = '\n'.join(refs)
-            options = refs.append(user_actions.UserDoneAction().name())
+            options = refs
+            refString = '\n'.join(options)
+            options.append(user_actions.UserDoneAction().name())
 
             telegram_utils.send_msg_keyboard(PROMPT.format(refString), userObj.get_uid(), options)
             userObj.set_state(self.identifier())
