@@ -16,7 +16,7 @@ from common.telegram import telegram_utils
 CAC_URL = 'https://cac.org/category/daily-meditations/'
 
 CAC_DEVO_START = '<hr>'
-CAC_DEVO_END = '</div>'
+CAC_DEVO_END = '<p><strong>References:'
 
 CAC_DEVO_SELECT = 'cac-devo-text'
 CAC_DEVO_IGNORE = 'h2'
