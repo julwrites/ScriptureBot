@@ -93,14 +93,18 @@ def foreach_tag(soup, tags, fn):
     for tag in soup.select(tags):
         tag.string = fn(tag.text)
 
+def forall(soup, tag, fn):
+    for tag in soup.find_all(tag):
+        tag.string = fn(tag.text)
+
 def foreach_header(soup, fn):
     foreach_tag(soup, soupify_tags(HTML_HEADER_TAGS), fn)
 
 def foreach_text(soup, fn):
     foreach_tag(soup, soupify_tags(HTML_TEXT_TAGS), fn)
 
-def foreach_br(soup, fn):
-    foreach_tag(soup, 'br', fn)
+def forall_br(soup, fn):
+    forall(soup, 'br', fn)
 
 def foreach_all(soup, fn):
     foreach_tag(soup, soupify_tags(html_common_tags()), fn)
@@ -110,7 +114,7 @@ def strip_soup(soup):
 
     foreach_all(soup, text_utils.strip_whitespace)
 
-    foreach_br(soup, text_utils.replace_newline)
+    forall_br(soup, text_utils.replace_newline)
 
     return soup
 
