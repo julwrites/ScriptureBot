@@ -152,7 +152,7 @@ def link_soup(soup, fn):
 
     return soup
 
-def style_soup(soup, fn, find=''):
+def style_soup(soup, fn, find=True):
     for tag in soup.find_all(find, style=True):
         debug.log('Styling tag: ' + tag.text)
         tag.string = fn(tag.text)
