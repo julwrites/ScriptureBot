@@ -113,14 +113,14 @@ def soup_tags(soup):
     return '|'.join([tag.name for tag in soup.find_all(True)])
 
 def strip_soup(soup):
-    debug.log('Stripping soup: ')
+    debug.log('Stripping soup: ' + soup.get_text())
 
     foreach_all(soup, text_utils.strip_whitespace)
 
     return soup
 
 def stripmd_soup(soup):
-    debug.log('Stripping soup markdown')
+    debug.log('Stripping soup markdown: ' + soup.get_text())
 
     foreach_header(soup, strip_md)
 
