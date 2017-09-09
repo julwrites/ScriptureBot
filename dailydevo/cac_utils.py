@@ -38,6 +38,8 @@ def fetch_cac(version='NIV'):
 
     soup = html_utils.html_to_soup(html)
 
+    debug.log('Soup: ' + '|'.join([tag.name() for tag in soup.find_all(True)]))
+
     return soup 
 
 def get_cacdevo_raw(version='NIV'):
