@@ -56,7 +56,9 @@ def send_msg(msg, userId):
 
 def send_msg_keyboard(msg, userId, options=[], width=KEYBOARD_WIDTH, inline=False, oneTime=False):
     post = TelegramPost(userId)
-    post.add_text(msg)
+    if text_utils.is_valid():
+        post.add_text(msg)
+
     if inline:
         post.add_inline_keyboard(format_keyboard(options, width))
     else:

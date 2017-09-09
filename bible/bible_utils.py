@@ -12,3 +12,6 @@ def get_passage(ref, version='NIV'):
 
 def get_reference(query):
     return bgw_utils.get_reference(query)
+
+def get_link(query):
+    return bgw_utils.get_link(query)

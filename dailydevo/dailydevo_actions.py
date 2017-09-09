@@ -51,4 +51,5 @@ class DailyDevoAction(action_classes.Action):
 def get():
     return [
         DailyDevoAction()
-    ]
+    ] + \
+    dailydevo_modules.get_actions()

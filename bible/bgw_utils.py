@@ -106,3 +106,14 @@ def get_reference(query):
     reference = reference.strip()
 
     return reference
+
+def get_link(query, version='NIV'):
+    debug.log('Querying for link ' + query)
+
+    url = BGW_URL.format(query, version)
+
+    html = html_utils.fetch_url(url)
+    if html is None:
+        return None
+
+    return url

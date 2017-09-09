@@ -7,6 +7,9 @@ from common.telegram import telegram_utils
 from common.action import hook_classes
 
 from dailydevo import mcheyne_utils
+from user import user_actions
+
+PROMPT = "Here are today's verses!\n{}\nTap on any one to get the passage!"
 
 class McheyneDailyHook(hook_classes.Hook):
     def identifier(self):
@@ -16,12 +19,14 @@ class McheyneDailyHook(hook_classes.Hook):
         return 'Mcheyne Bible Reading Plan'
 
     def resolve(self, userObj):
-        passages = mcheyne_utils.get_mcheyne(userObj.get_version())
+        refs = mcheyne_utils.get_mcheyne()
 
-        if passages is not None:
+        if refs is not None:
+            refString = '\n'.join(refs)
+            options = refs.append(user_actions.UserDoneAction().name())
 
-            for passage in passages:
-                telegram_utils.send_msg(passage, userObj.get_uid())
+            telegram_utils.send_msg_keyboard(PROMPT.format(refString), userObj.get_uid(), options)
+            userObj.set_state(self.identifier())
 
 def get():
     return [
