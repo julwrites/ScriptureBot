@@ -73,4 +73,4 @@ def replace(s, sub, new):
     return s.replace(sub, new)
 
 def replace_newline(s):
-    return '\n'
+    return '\\n'
