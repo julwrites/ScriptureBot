@@ -28,6 +28,9 @@ def html_common_tags():
 def soupify_tags(tags):
     return ','.join(tags)
 
+def html_text_tag():
+    return ','.join(HTML_TEXT_TAGS)
+
 
 # HTML to BeautifulSoup
 def fetch_url(url):
@@ -149,8 +152,7 @@ def link_soup(soup, fn):
 
     return soup
 
-def style_soup(soup, fn, tags=[]):
-    tags = soupify_tags(tags)
-    for tag in soup.find_all(tags, style=True):
+def style_soup(soup, fn, find=''):
+    for tag in soup.find_all(find, style=True):
         debug.log('Styling tag: ' + tag.text)
         tag.string = fn(tag.text)
