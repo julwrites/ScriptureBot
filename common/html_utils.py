@@ -144,6 +144,6 @@ def mark_soup(soup, htmlMark, tags=[]):
 def link_soup(soup, fn):
     for tag in soup.find_all(HTML_ITEM_TAG, href=True):
         debug.log('Converting link: ' + tag.text)
-        tag.string = fn(tag.text, tag['href'])
+        tag.replace_with(fn(tag.text, tag['href']))
     
     return soup
