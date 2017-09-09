@@ -90,10 +90,10 @@ def rss_to_soup(rss, select=None):
 
 # BeautifulSoup Functionalities
 def strip_md(s):
-    return s.replace('*', '\*').replace('_', '\_').replace('`', '\`').replace('[', '\[').replace(']', '\]')
+    return s.replace('*', '\*').replace('_', '\_').replace('`', '\`').replace('[', '\[')
 
 def unstrip_md(s):
-    return s.replace('\*', '*').replace('\_', '_').replace('\`', '`').replace('\[', '[').replace('\]', ']')
+    return s.replace('\*', '*').replace('\_', '_').replace('\`', '`').replace('\[', '[')
 
 def foreach_tag(soup, tags, fn):
     for tag in soup.select(tags):
