@@ -91,6 +91,7 @@ def strip_md(s_):
 
 def foreach_tag(soup, tags, fn):
     for tag in soup.select(tags):
+        debug.log('Replacing ' + tag.text + '\n\n with ' + fn(tag.text))
         tag.string = fn(tag.text)
 
 def forall(soup, tag, fn):
