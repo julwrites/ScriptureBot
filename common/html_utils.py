@@ -104,18 +104,21 @@ def foreach_header(soup, fn):
 def foreach_text(soup, fn):
     foreach_tag(soup, soupify_tags(HTML_TEXT_TAGS), fn)
 
-def forall_br(soup, fn):
-    forall(soup, 'br', fn)
+def foreach_br(soup, fn):
+    foreach_tag(soup, 'br', fn)
 
 def foreach_all(soup, fn):
     foreach_tag(soup, soupify_tags(html_common_tags()), fn)
+
+def soup_tags(soup):
+    return '|'.join([tag.name for tag in soup.find_all(True)])
 
 def strip_soup(soup):
     debug.log('Stripping soup: ')
 
     foreach_all(soup, text_utils.strip_whitespace)
 
-    forall_br(soup, text_utils.replace_newline)
+    foreach_br(soup, text_utils.replace_newline)
 
     return soup
 
