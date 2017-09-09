@@ -122,7 +122,7 @@ def stripmd_soup(soup):
 
     foreach_header(soup, strip_md)
 
-    for tag in soup.select(soupify_tags(HTML_TEXT_TAGS)):
+    for tag in soup.find_all(soupify_tags(HTML_TEXT_TAGS)):
         badStrings = tag(text=re.compile('(\*|\_|\`|\[)'))
         for badString in badStrings:
             strippedText = strip_md(unicode(badString))
@@ -132,7 +132,7 @@ def mark_soup(soup, mark, tags=[]):
     tags = soupify_tags(tags)
     debug.log('Marking tags: ' + tags)
 
-    for tag in soup.select(tags):
+    for tag in soup.find_all(tags):
         debug.log('Marking ' + tag.text)
         tag['class'] = mark
 
