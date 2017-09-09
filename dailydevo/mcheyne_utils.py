@@ -12,6 +12,8 @@ from google.appengine.api import urlfetch, urlfetch_errors
 from common import debug, html_utils, text_utils, constants
 from common.telegram import telegram_utils
 
+from bible import bible_utils
+
 MCHEYNE_URL = "http://www.edginet.org/mcheyne/rss_feed.php?type=rss_2.0&tz=8&cal=classic&bible=esv&conf=no"
 
 MCHEYNE_IGNORE = ""
@@ -30,7 +32,8 @@ def get_mcheyne_raw():
     blocks = []
     for tag in soup.findAll(MCHEYNE_SELECT):
         ref = text_utils.strip_block(tag.text, '(', ')')
-        blocks.append(ref)
+        if bible_utils.get_passage_raw(ref) is not None:
+            blocks.append(ref)
 
     return blocks 
 
