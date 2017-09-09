@@ -60,9 +60,6 @@ def get_passage_raw(ref, version='NIV'):
     # Steps through all the html types and mark these
     soup = html_utils.stripmd_soup(soup)
 
-    # Only at the last step do we do other destructive formatting
-    soup = html_utils.strip_soup(soup)
-
     # Special formatting for chapter and verse
     html_utils.foreach_tag(soup, '.chapternum', telegram_utils.bold)
     html_utils.foreach_tag(soup, '.versenum', telegram_utils.to_sup)
@@ -71,6 +68,9 @@ def get_passage_raw(ref, version='NIV'):
 
     # Marking the parts of the soup we want to print
     soup = html_utils.mark_soup(soup, BGW_PASSAGE_SELECT, html_utils.html_common_tags())
+
+    # Only at the last step do we do other destructive formatting
+    soup = html_utils.strip_soup(soup)
 
     blocks = []
     for tag in soup(class_=BGW_PASSAGE_SELECT):
