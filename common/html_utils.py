@@ -89,8 +89,15 @@ def rss_to_soup(rss, select=None):
 
 
 # BeautifulSoup Functionalities
-def strip_md(s_):
-    return s_.replace('*', '\*').replace('_', '\_').replace('`', '\`').replace('[', '\[').replace(']', '\]')
+def strip_md(s):
+    s = s.replace('*', '\*')
+    s = s.replace('_', '\_')
+    s = s.replace('`', '\`')
+    s = s.replace('(', '\(').replace(')', '\)')
+    s = s.replace('[', '\[').replace(']', '\]')
+    s = s.replace('{', '\{').replace('}', '\}')
+
+    return s
 
 def foreach_tag(soup, tags, fn):
     for tag in soup.select(tags):
