@@ -117,26 +117,34 @@ def strip_soup(soup):
 
     foreach_all(soup, text_utils.strip_whitespace)
 
+    return soup
+
 def stripmd_soup(soup):
     debug.log('Stripping soup markdown: ')
 
     foreach_header(soup, strip_md)
 
-    for tag in soup.find_all(soupify_tags(HTML_TEXT_TAGS)):
+    for tag in soup.select(soupify_tags(HTML_TEXT_TAGS)):
         badStrings = tag(text=re.compile('(\*|\_|\`|\[)'))
         for badString in badStrings:
             strippedText = strip_md(unicode(badString))
             badString.replace_with(strippedText)
 
+    return soup
+
 def mark_soup(soup, mark, tags=[]):
     tags = soupify_tags(tags)
     debug.log('Marking tags: ' + tags)
 
-    for tag in soup.find_all(tags):
+    for tag in soup.select(tags):
         debug.log('Marking ' + tag.text)
         tag['class'] = mark
+    
+    return soup
 
 def link_soup(soup, fn):
     for tag in soup.find_all(HTML_ITEM_TAG, href=True):
         debug.log('Converting link: ' + tag.text)
         tag.replace_with(fn(tag.text, tag['href']))
+
+    return soup

@@ -57,21 +57,26 @@ def get_passage_raw(ref, version='NIV'):
     for tag in soup.select(BGW_PASSAGE_IGNORE):
         tag.decompose()
 
+    debug.log(soup.get_text())
     # Only at the last step do we do other destructive formatting
-    html_utils.strip_soup(soup)
+    soup = html_utils.strip_soup(soup)
 
+    debug.log(soup.get_text())
     # Steps through all the html types and mark these
-    html_utils.stripmd_soup(soup)
+    soup = html_utils.stripmd_soup(soup)
 
+    debug.log(soup.get_text())
     # Special formatting for chapter and verse
     html_utils.foreach_tag(soup, '.chapternum', telegram_utils.bold)
     html_utils.foreach_tag(soup, '.versenum', telegram_utils.to_sup)
     html_utils.foreach_tag(soup, '.versenum', telegram_utils.italics)
     html_utils.foreach_header(soup, telegram_utils.bold)
 
+    debug.log(soup.get_text())
     # Marking the parts of the soup we want to print
-    html_utils.mark_soup(soup, BGW_PASSAGE_SELECT, html_utils.html_common_tags())
+    soup = html_utils.mark_soup(soup, BGW_PASSAGE_SELECT, html_utils.html_common_tags())
 
+    debug.log(soup.get_text())
     blocks = []
     for tag in soup(class_=BGW_PASSAGE_SELECT):
         debug.log('Joining ' + tag.text)
