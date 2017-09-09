@@ -148,3 +148,9 @@ def link_soup(soup, fn):
         tag.string = fn(tag.text, tag['href'])
 
     return soup
+
+def style_soup(soup, fn, tags=[]):
+    tags = soupify_tags(tags)
+    for tag in soup.find_all(tags, style=True):
+        debug.log('Styling tag: ' + tag.text)
+        tag.string = fn(tag.text)
