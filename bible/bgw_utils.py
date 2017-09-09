@@ -71,7 +71,7 @@ def get_passage_raw(ref, version='NIV'):
         tag.string = telegram_utils.italics(telegram_utils.to_sup(tag.text))
 
     # Only at the last step do we do other destructive formatting
-    soup = html_utils.strip_soup(soup)
+    # soup = html_utils.strip_soup(soup)
 
     blocks = []
     for tag in soup(class_=BGW_PASSAGE_SELECT):
