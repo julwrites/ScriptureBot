@@ -140,19 +140,19 @@ def mark_soup(soup, mark, tags=[]):
     debug.log('Marking tags: ' + tags)
 
     for tag in soup.select(tags):
-        debug.log('Marking ' + tag.text)
+        # debug.log('Marking ' + tag.text)
         tag['class'] = mark
     
     return soup
 
 def link_soup(soup, fn):
     for tag in soup.find_all(HTML_ITEM_TAG, href=True):
-        debug.log('Converting link: ' + tag.text)
+        # debug.log('Converting link: ' + tag.text)
         tag.string = fn(tag.text, tag['href'])
 
     return soup
 
 def style_soup(soup, fn, find=True):
     for tag in soup.find_all(find, style=True):
-        debug.log('Styling tag: ' + tag.text)
+        # debug.log('Styling tag: ' + tag.text)
         tag.string = fn(tag.text)

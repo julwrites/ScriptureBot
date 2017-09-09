@@ -114,13 +114,13 @@ def surround(text, front, back = None):
     if back is None:
         back = front
 
-    return front + ' ' + text + ' ' + back
+    return front + text + back
 
 def bold(text):
-    return surround(text, '*')
+    return surround(text, '* ', ' *')
 
 def italics(text):
-    return surround(text, '_')
+    return surround(text, '_ ', ' _')
 
 def bracket(text):
     return surround(text, '(', ')')
