@@ -9,7 +9,7 @@ from common.action import hook_classes
 from dailydevo import mcheyne_utils
 from user import user_actions
 
-PROMPT = "Here are today's verses!\n{}\nTap on any one to get the passage!"
+PROMPT = "Here are today's M\'Cheyne verses!\n{}\nTap on any one to get the passage!"
 
 class McheyneDailyHook(hook_classes.Hook):
     def identifier(self):
