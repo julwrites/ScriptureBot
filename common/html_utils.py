@@ -117,10 +117,10 @@ def strip_soup(soup):
     debug.log('Stripping soup: ')
 
     debug.log(soup_tags(soup))
-    foreach_all(soup, text_utils.strip_whitespace)
+    foreach_br(soup, text_utils.replace_newline)
 
     debug.log(soup_tags(soup))
-    foreach_br(soup, text_utils.replace_newline)
+    foreach_all(soup, text_utils.strip_whitespace)
 
     return soup
 
