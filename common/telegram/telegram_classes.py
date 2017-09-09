@@ -42,7 +42,7 @@ class TelegramPost():
             debug.log('Send failed! ' + TELEGRAM_URL_SEND + ', ' + data)
 
     def add_text(self, msg):
-        debug.log('Adding text for ' + self.uid() + ': ' + msg)
+        debug.log('Adding text for ' + self.uid())
 
         self.formatData['text'] = msg
 

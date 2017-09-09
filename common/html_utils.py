@@ -95,6 +95,7 @@ def foreach_tag(soup, tags, fn):
 
 def forall(soup, tag, fn):
     for tag in soup.find_all(tag):
+        debug.log('Found a ' + tag)
         tag.string = fn(tag.text)
 
 def foreach_header(soup, fn):
