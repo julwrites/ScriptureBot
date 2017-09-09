@@ -91,13 +91,11 @@ def strip_md(s_):
 
 def foreach_tag(soup, tags, fn):
     for tag in soup.select(tags):
-        debug.log('Replacing ' + tag.text + '\n\n with ' + fn(tag.text))
-        tag.string = fn(tag.text)
+        tag.replace_with(fn(tag.text))
 
 def forall(soup, tag, fn):
     for tag in soup.find_all(tag):
-        debug.log('Found a ' + tag)
-        tag.string = fn(tag.text)
+        tag.replace_with(fn(tag.text))
 
 def foreach_header(soup, fn):
     foreach_tag(soup, soupify_tags(HTML_HEADER_TAGS), fn)
@@ -117,10 +115,6 @@ def soup_tags(soup):
 def strip_soup(soup):
     debug.log('Stripping soup: ')
 
-    debug.log(soup_tags(soup))
-    foreach_br(soup, text_utils.replace_newline)
-
-    debug.log(soup_tags(soup))
     foreach_all(soup, text_utils.strip_whitespace)
 
     return soup

@@ -3,6 +3,7 @@
 
 # Python modules
 import string
+import re
 
 # Local modules
 from common import debug
