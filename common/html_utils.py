@@ -91,11 +91,11 @@ def strip_md(s_):
 
 def foreach_tag(soup, tags, fn):
     for tag in soup.select(tags):
-        tag.replace_with(fn(tag.text))
+        tag.string = fn(tag.text)
 
 def forall(soup, tag, fn):
     for tag in soup.find_all(tag):
-        tag.replace_with(fn(tag.text))
+        tag.string = fn(tag.text)
 
 def foreach_header(soup, fn):
     foreach_tag(soup, soupify_tags(HTML_HEADER_TAGS), fn)
@@ -145,6 +145,6 @@ def mark_soup(soup, mark, tags=[]):
 def link_soup(soup, fn):
     for tag in soup.find_all(HTML_ITEM_TAG, href=True):
         debug.log('Converting link: ' + tag.text)
-        tag.replace_with(fn(tag.text, tag['href']))
+        tag.string = fn(tag.text, tag['href'])
 
     return soup
