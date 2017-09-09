@@ -114,7 +114,7 @@ def surround(text, front, back = None):
     if back is None:
         back = front
 
-    return front + text + back
+    return front + ' ' + text + ' ' + back
 
 def bold(text):
     return surround(text, '*')
