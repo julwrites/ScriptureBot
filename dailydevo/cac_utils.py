@@ -50,13 +50,16 @@ def get_cacdevo_raw(version='NIV'):
 
     # Steps through all the html types and mark these
     soup = html_utils.stripmd_soup(soup)
+
+    # Finds all links and converts to markdown
     soup = html_utils.link_soup(soup, telegram_utils.link)
+
+    # Marks the parts of the soup that we want
     soup = html_utils.mark_soup(soup, CAC_DEVO_SELECT, html_utils.html_common_tags())
 
+    # Prettifying the stuffs
     html_utils.foreach_header(soup, telegram_utils.bold)
-
-    # Only at the last step do we do other destructive formatting
-    soup = html_utils.strip_soup(soup)
+    html_utils.forall(soup, 'style', telegram_utils.italics)
 
     blocks = []
     for tag in soup(class_=CAC_DEVO_SELECT):
