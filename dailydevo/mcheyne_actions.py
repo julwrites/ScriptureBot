@@ -35,6 +35,8 @@ class McheyneDailyAction(action_classes.Action):
 
             telegram_utils.send_msg_keyboard('', userObj.get_uid(), options)
             userObj.set_state(self.identifier())
+        
+        return True
 
 def get():
     return [
