@@ -59,7 +59,8 @@ def get_cacdevo_raw(version='NIV'):
 
     # Prettifying the stuffs
     html_utils.foreach_header(soup, telegram_utils.bold)
-    html_utils.style_soup(soup, telegram_utils.italics, html_utils.html_text_tag())
+    html_utils.style_soup(soup, html_utils.unstrip_md, html_utils.html_p_tag())
+    html_utils.style_soup(soup, telegram_utils.italics, html_utils.html_p_tag())
 
     blocks = []
     for tag in soup(class_=CAC_DEVO_SELECT):

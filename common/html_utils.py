@@ -28,7 +28,7 @@ def html_common_tags():
 def soupify_tags(tags):
     return ','.join(tags)
 
-def html_text_tag():
+def html_p_tag():
     return ','.join(HTML_TEXT_TAGS)
 
 
@@ -91,6 +91,9 @@ def rss_to_soup(rss, select=None):
 # BeautifulSoup Functionalities
 def strip_md(s):
     return s.replace('*', '\*').replace('_', '\_').replace('`', '\`').replace('[', '\[').replace(']', '\]')
+
+def unstrip_md(s):
+    return s.replace('\*', '*').replace('\_', '_').replace('\`', '`').replace('\[', '[').replace('\]', ']')
 
 def foreach_tag(soup, tags, fn):
     for tag in soup.select(tags):
