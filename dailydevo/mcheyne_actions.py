@@ -2,6 +2,7 @@
 # coding=utf8
 
 # Local modules
+from common import debug
 from common.action import action_classes
 from common.telegram import telegram_utils
 
@@ -25,13 +26,14 @@ class McheyneDailyAction(action_classes.Action):
 
         passage = bible_utils.get_passage(query, userObj.get_version())
         if passage is not None:
+            debug.log('Sending passage ' + passage)
             telegram_utils.send_msg(passage, userObj.get_uid())
 
         refs = mcheyne_utils.get_mcheyne()
 
         if refs is not None:
-            refString = '\n'.join(refs)
-            options = refs.append(user_actions.UserDoneAction().name())
+            options = refs
+            options.append(doneAction.name())
 
             telegram_utils.send_msg_keyboard('', userObj.get_uid(), options)
             userObj.set_state(self.identifier())
