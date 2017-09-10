@@ -28,8 +28,8 @@ class StartAction(action_classes.Action):
     def description(self):
         return "Start the Bot"
 
-    def execute(self, userObj, msg):
-        return self.resolve(userObj, msg)
+    # def execute(self, userObj, msg):
+    #     return self.resolve(userObj, msg)
 
     def resolve(self, userObj, msg):
         # Register User

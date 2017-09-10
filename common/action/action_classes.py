@@ -9,18 +9,6 @@ from common import debug, text_utils
 
 # Defines an interface for all functionality that can be executed by the bot
 class Action():
-    # Do not overwrite if possible, this performs basic checks and resolves the action
-    def execute(self, userObj, msg):
-        try:
-            if userObj is not None:
-                if self.match(msg) or self.waiting(userObj):
-                    debug.log_action(self.identifier())
-                    self.resolve(userObj, msg)
-                    return True
-        except:
-            debug.log('Execute failed! ' + self.identifier())
-        return False
-
     # To be inherited and overwritten with a check for whether this is waiting for a response
     def waiting(self, userObj):
         if userObj.get_state() == self.identifier():
