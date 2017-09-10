@@ -7,6 +7,7 @@ from common import debug
 def execute(actions, userObj, msg):
     try:
         if userObj is not None:
+            debug.log("Trying actions: " + "|".join([action.identifier() for action in actions]))
             waiting = [action for action in actions if action.waiting(userObj)]
 
             if len(waiting) == 1:
