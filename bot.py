@@ -59,10 +59,6 @@ class BotHandler(webapp2.RequestHandler):
         if data.get('message'):
             msg = data.get('message')
 
-            # TODO: Replace?
-            # Runs to register new users
-            start(msg)
-
             # Read the user to echo back
             userId = user_utils.get_uid(msg.get('from').get('id'))
             userObj = user_utils.get_user(userId)
