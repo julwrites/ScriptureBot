@@ -15,10 +15,10 @@ class McheyneDailyAction(action_classes.Action):
         return '/mcheynedaily'
 
     def name(self):
-        return "M\'cheyne Bible Reading Plan"
+        return "M'cheyne Bible Reading Plan"
 
     def description(self):
-        return "M\'cheyne Bible Reading Plan (1 Year)"
+        return "M'cheyne Bible Reading Plan (1 Year)"
 
     def resolve(self, userObj, msg):
         query = telegram_utils.strip_command(msg, self.identifier())

@@ -16,10 +16,10 @@ class McheyneDailyHook(hook_classes.Hook):
         return "/mcheynedaily"
 
     def name(self):
-        return "M\"cheyne Bible Reading Plan"
+        return "M'cheyne Bible Reading Plan"
 
     def description(self):
-        return "M\'cheyne Bible Reading Plan (1 Year)"
+        return "M'cheyne Bible Reading Plan (1 Year)"
 
     def resolve(self, userObj):
         refs = mcheyne_utils.get_mcheyne()
