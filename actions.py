@@ -47,7 +47,6 @@ class StartAction(action_classes.Action):
 
         # If this is the user"s first time registering
         if userObj is None:
-            debug.log_cmd("New user!")
             userObj = user_utils.get_user(userId)
 
             HelpAction().resolve(userObj, msg)
