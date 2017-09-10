@@ -134,4 +134,3 @@ def get():
         AdminMigrateAction(),
         AdminRagnarokAction(),
     ]
-]
