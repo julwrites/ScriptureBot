@@ -9,18 +9,17 @@ def execute(actions, userObj, msg):
         debug.log("Trying actions: " + "|".join([action.identifier() for action in actions]))
         waiting = [action for action in actions if action.waiting(userObj)]
 
-        if len(waiting) == 1:
-            action = waiting[0]
+        for action in waiting:
             debug.log_action(action.identifier())
-            return action.resolve(userObj, msg)
+            if action.resolve(userObj, msg):
+                return True
 
         matched = [action for action in actions if action.match(msg)]
 
-        debug.log("Matches found: " + "|".join([action.identifier() for action in matched]))
-        if len(matched) == 1:
-            action = matched[0]
+        for action in matched:
             debug.log_action(action.identifier())
-            return action.resolve(userObj, msg)
+            if action.resolve(userObj, msg):
+                return True
         return False
     except:
         debug.log("Execute failed!")
