@@ -17,10 +17,16 @@ STATE_VERSION_PROMPT = "I\'ve changed your version to {}!"
 
 class BibleUserVersionAction(action_classes.Action):
     def identifier(self):
-        return '/version'
+        return "/version"
 
     def name(self):
-        return 'Bible Version'
+        return "Bible Version"
+
+    def description(self):
+        return "Choose your preferred Bible version"
+
+    def is_command(self):
+        return True
 
     def resolve(self, userObj, msg):
         query = telegram_utils.strip_command(msg, self.identifier())

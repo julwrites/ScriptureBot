@@ -14,10 +14,16 @@ CONFIRM = "Give me a moment to get it~!"
 
 class DailyDevoAction(action_classes.Action):
     def identifier(self):
-        return '/dailydevo'
+        return "/dailydevo"
 
     def name(self):
-        return 'Daily-Devo'
+        return "Daily-Devo"
+
+    def description(self):
+        return "Get reading material right now"
+
+    def is_command(self):
+        return True
 
     def resolve(self, userObj, msg):
         query = telegram_utils.strip_command(msg, self.identifier())

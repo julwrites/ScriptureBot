@@ -14,10 +14,16 @@ BADQUERY = "Sorry, I can't find this reference"
 
 class BiblePassageAction(action_classes.Action):
     def identifier(self):
-        return '/passage'
+        return "/passage"
 
     def name(self):
-        return 'Bible Passage'
+        return "Bible Passage"
+
+    def description(self):
+        return "Search for a passage of Scripture"
+
+    def is_command(self):
+        return True
 
     def resolve(self, userObj, msg):
         query = telegram_utils.strip_command(msg, self.identifier())

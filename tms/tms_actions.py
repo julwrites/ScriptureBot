@@ -16,10 +16,16 @@ BADQUERY = "I can't find anything related to this, try another one?"
 
 class TMSAction(action_classes.Action):
     def identifier(self):
-        return '/tms'
+        return "/tms"
 
     def name(self):
-        return 'Topical Memory System'
+        return "Topical Memory System"
+
+    def description(self):
+        return "Get a card from the Navigators' Topical Memory System"
+
+    def is_command(self):
+        return True
 
     def resolve(self, userObj, msg):
         query = telegram_utils.strip_command(msg, self.identifier())

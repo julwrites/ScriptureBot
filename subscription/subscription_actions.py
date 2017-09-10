@@ -16,10 +16,16 @@ CONFIRM_UNSUBSCRIBE = "I\'ve unsubscribed you from {}!"
 
 class DevoSubscriptionAction(action_classes.Action):
     def identifier(self):
-        return '/subscribe'
+        return "/dailydevosub"
 
     def name(self):
-        return 'Subscriptions'
+        return "Daily-Devo Subscriptions"
+
+    def description(self):
+        return "Subscribe to get reading material daily"
+
+    def is_command(self):
+        return True
 
     def resolve(self, userObj, msg):
         query = telegram_utils.strip_command(msg, self.identifier())

@@ -42,16 +42,21 @@ class Action():
 
 
 
+    # To be inherited if this action is to be exposed as a command
+    def is_command(self):
+        return False
+
     # To be inherited and overwritten with the command name of this action
     def identifier(self):
         return ''
 
-    def states(self):
-        return []
-
     # To be inherited and overwritten with the display name of this action
     def name(self):
         return ''
+
+    # To be inherited and overwritten with the description of this action
+    def description(self):
+        return''
 
     # To be inherited and overwritten with functionality
     def resolve(self, userObj, msg):
