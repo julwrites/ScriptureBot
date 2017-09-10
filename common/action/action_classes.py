@@ -11,25 +11,26 @@ from common import debug, text_utils
 class Action():
     # To be inherited and overwritten with a check for whether this is waiting for a response
     def waiting(self, userObj):
-        if userObj.get_state() == self.identifier():
-            debug.log("Waiting for " + self.identifier())
-            return True
+        if userObj is not None:
+            if userObj.get_state() == self.identifier():
+                debug.log("Waiting for " + self.identifier())
+                return True
         return False
 
     # Do not overwrite if possible, this checks the message text against the command name
     def match(self, msg):
-        msgText = msg.get("text").strip() 
-        if text_utils.overlap_compare(msgText, self.identifier()) or \
-            text_utils.text_compare(msgText, self.name()):
-            debug.log("Matched with " + self.identifier())
-            return True
+        if msg is not None:
+            msgText = msg.get("text").strip() 
+            if text_utils.overlap_compare(msgText, self.identifier()) or \
+                text_utils.text_compare(msgText, self.name()):
+                debug.log("Matched with " + self.identifier())
+                return True
         return False
 
     def try_execute(self, userObj, msg):
         try:
-            if userObj is not None and msg is not None:
-                if self.waiting(userObj) or self.match(msg):
-                    return self.resolve(userObj, msg)
+            if self.waiting(userObj) or self.match(msg):
+                return self.resolve(userObj, msg)
         except:
             debug.log("Tried, but failed to execute " + self.identifier())
         return False
