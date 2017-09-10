@@ -16,20 +16,20 @@ from common.telegram import telegram_utils
 from bible import bgw_classes
 
 
-BGW_URL = 'http://www.biblegateway.com/passage/?search={}&version={}&interface=print'
+BGW_URL = "http://www.biblegateway.com/passage/?search={}&version={}&interface=print"
 
-BGW_PASSAGE_CLASS = 'passage-text'
+BGW_PASSAGE_CLASS = "passage-text"
 BGW_PASSAGE_START = '<div class="{}">'.format(BGW_PASSAGE_CLASS)
-BGW_PASSAGE_END = '<!--END .{}-->'.format(BGW_PASSAGE_CLASS)
-BGW_PASSAGE_SELECT = 'bgw-passage-text'
-BGW_PASSAGE_IGNORE = '.passage-display, .footnote, .footnotes, .crossrefs, .publisher-info-bottom'
-BGW_PASSAGE_TITLE = '.passage-display-bcv'
+BGW_PASSAGE_END = "<!--END .{}-->".format(BGW_PASSAGE_CLASS)
+BGW_PASSAGE_SELECT = "bgw-passage-text"
+BGW_PASSAGE_IGNORE = ".passage-display, .footnote, .footnotes, .crossrefs, .publisher-info-bottom"
+BGW_PASSAGE_TITLE = ".passage-display-bcv"
 
-REFERENCE = 'reference'
-VERSION = 'version'
-PASSAGE = 'passage'
+REFERENCE = "reference"
+VERSION = "version"
+PASSAGE = "passage"
 
-def fetch_bgw(query, version='NIV'):
+def fetch_bgw(query, version="NIV"):
     formatRef = urllib.quote(query.lower().strip())
     formatUrl = BGW_URL.format(formatRef, version)
 
@@ -42,8 +42,8 @@ def fetch_bgw(query, version='NIV'):
  
     return soup 
 
-def get_passage_raw(ref, version='NIV'):
-    debug.log('Querying for passage ' + ref)
+def get_passage_raw(ref, version="NIV"):
+    debug.log("Querying for passage " + ref)
 
     soup = fetch_bgw(ref, version)
     if soup is None:
@@ -61,9 +61,9 @@ def get_passage_raw(ref, version='NIV'):
     soup = html_utils.stripmd_soup(soup)
 
     # Special formatting for chapter and verse
-    html_utils.foreach_tag(soup, '.chapternum', telegram_utils.bold)
-    html_utils.foreach_tag(soup, '.versenum', telegram_utils.to_sup)
-    html_utils.foreach_tag(soup, '.versenum', telegram_utils.italics)
+    html_utils.foreach_tag(soup, ".chapternum", telegram_utils.bold)
+    html_utils.foreach_tag(soup, ".versenum", telegram_utils.to_sup)
+    html_utils.foreach_tag(soup, ".versenum", telegram_utils.italics)
     html_utils.foreach_header(soup, telegram_utils.bold)
 
     # Marking the parts of the soup we want to print
@@ -74,29 +74,29 @@ def get_passage_raw(ref, version='NIV'):
 
     blocks = []
     for tag in soup(class_=BGW_PASSAGE_SELECT):
-        debug.log('Joining ' + tag.text)
+        debug.log("Joining " + tag.text)
         blocks.append(tag.text)
 
-    text = telegram_utils.join(blocks, '\n\n')
+    text = telegram_utils.join(blocks, "\n\n")
 
     debug.log("Finished parsing soup")
 
     return bgw_classes.BGWPassage(reference, version, text)
 
-def get_passage(ref, version='NIV'):
+def get_passage(ref, version="NIV"):
     passage = get_passage_raw(ref, version)
 
     if passage is None:
         return None
 
     text = telegram_utils.bold(passage.get_reference())
-    text += ' ' + telegram_utils.bracket(passage.get_version())
-    text += '\n\n' + passage.get_text()
+    text += " " + telegram_utils.bracket(passage.get_version())
+    text += "\n\n" + passage.get_text()
 
     return text
 
 def get_reference(query):
-    debug.log('Querying for reference ' + query)
+    debug.log("Querying for reference " + query)
 
     soup = fetch_bgw(query)
     if soup is None:
@@ -107,8 +107,8 @@ def get_reference(query):
 
     return reference
 
-def get_link(query, version='NIV'):
-    debug.log('Querying for link ' + query)
+def get_link(query, version="NIV"):
+    debug.log("Querying for link " + query)
 
     url = BGW_URL.format(query, version)
 

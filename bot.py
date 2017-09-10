@@ -27,17 +27,17 @@ class BotHandler(webapp2.RequestHandler):
         data = json.loads(self.request.body)
         debug.log(data)
 
-        if data.get('message'):
-            msg = data.get('message')
+        if data.get("message"):
+            msg = data.get("message")
 
             # Read the user to echo back
-            userId = user_utils.get_uid(msg.get('from').get('id'))
+            userId = user_utils.get_uid(msg.get("from").get("id"))
             userObj = user_utils.get_user(userId)
 
             if action_utils.execute(actions.get(), userObj, msg):
                 return
 
-            telegram_utils.send_msg('Hello I am bot', msg.get('from').get('id'))
+            telegram_utils.send_msg("Hello I am bot", msg.get("from").get("id"))
 
 
 app = webapp2.WSGIApplication([

@@ -13,10 +13,10 @@ from user import user_utils
 
 import modules
 
-INTRO_MSG = "Hello {}, I\'m Biblica Bot! I hope I will be helpful as a tool for you to handle the Bible!"
+INTRO_MSG = "Hello {}, I'm Biblica Bot! I hope I will be helpful as a tool for you to handle the Bible!"
 COMMAND_MSG = "Here are some things I can do:"
-COMMAND_LIST = '\n'.join([(action.identifier() + ' - ' + action.description()) for action in modules.get_actions() if action.is_command()])
-HELP_MSG = INTRO_MSG + '\n\n' + COMMAND_MSG + '\n' + COMMAND_LIST
+COMMAND_LIST = "\n".join([(action.identifier() + " - " + action.description()) for action in modules.get_actions() if action.is_command()])
+HELP_MSG = INTRO_MSG + "\n\n" + COMMAND_MSG + "\n" + COMMAND_LIST
 
 class StartAction(action_classes.Action):
     def identifier(self):
@@ -28,31 +28,28 @@ class StartAction(action_classes.Action):
     def description(self):
         return "Start the Bot"
 
-    # def execute(self, userObj, msg):
-    #     return self.resolve(userObj, msg)
-
     def resolve(self, userObj, msg):
         # Register User
-        userJson = msg.get('from')
-        userId = user_utils.get_uid(userJson.get('id'))
+        userJson = msg.get("from")
+        userId = user_utils.get_uid(userJson.get("id"))
 
-        # This runs to update the user's info, or register
+        # This runs to update the user"s info, or register
         if userJson is not None:
-            debug.log('Updating user info')
+            debug.log("Updating user info")
             user_utils.set_profile(
-                userJson.get('id'), 
-                userJson.get('username'), 
-                userJson.get('first_name'), 
-                userJson.get('last_name'))
+                userJson.get("id"), 
+                userJson.get("username"), 
+                userJson.get("first_name"), 
+                userJson.get("last_name"))
 
-        # If this is the user's first time registering
+        # If this is the user"s first time registering
         if userObj is None:
-            debug.log_cmd('New user!')
+            debug.log_cmd("New user!")
             userObj = user_utils.get_user(userId)
 
             HelpAction().resolve(userObj, msg)
 
-            debug.log('Registering ' + userObj.get_name_string())
+            debug.log("Registering " + userObj.get_name_string())
 
             return True
         return False

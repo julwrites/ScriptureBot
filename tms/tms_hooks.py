@@ -4,29 +4,24 @@
 # Local modules
 from common import debug
 from common.telegram import telegram_utils
+from common.action import hook_classes
 from user import user_utils
 
 from tms import tms_utils
 from bible import bible_utils
 
+class DailyTMSHook(hook_classes.Hook):
+    def identifier(self):
+        return "/tms"
 
-HOOK_DAILYTMS = '/dailytms'
-SUBSCRIPTION_DAILYTMS = '/*dailytms*/'
+    def name(self):
+        return "Topical Memory System"
 
-def get():
-    return [
-    ]
+    def description(self):
+        return "The Navigators' Topical Memory System"
 
-def hooks(data):
-    debug.log('Running TMS hooks')
-
-    return (    \
-    hook_dailytms()   \
-    )
-
-def resolve_dailytms(userObj):
-    if userObj is not None:
-        if userObj.has_subscription(SUBSCRIPTION_DAILYTMS):
+    def resolve(self, userObj):
+        if userObj is not None:
             verse = tms_utils.get_random_verse()
             passage = bible_utils.get_passage_raw(verse.reference, userObj.get_version())
             verseMsg = tms_utils.format_verse(verse, passage)
@@ -35,8 +30,7 @@ def resolve_dailytms(userObj):
             
             telegram_utils.send_msg(verseMsg, userObj.get_uid())
 
-def hook_dailytms():
-    debug.log_hook(HOOK_DAILYTMS)
-
-    user_utils.for_each_user(resolve_dailytms)
- 
+def get():
+    return [
+        DailyTMSHook()
+    ]

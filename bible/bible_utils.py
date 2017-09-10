@@ -4,13 +4,13 @@
 # Local modules
 from bible import bgw_utils
 
-def fetch_passage_html(ref, version='NIV'):
+def fetch_passage_html(ref, version="NIV"):
     return bgw_utils.fetch_bgw(ref, version)
 
-def get_passage_raw(ref, version='NIV'):
+def get_passage_raw(ref, version="NIV"):
     return bgw_utils.get_passage_raw(ref, version)
 
-def get_passage(ref, version='NIV'):
+def get_passage(ref, version="NIV"):
     return bgw_utils.get_passage(ref, version)
 
 def get_reference(query):

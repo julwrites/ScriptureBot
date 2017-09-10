@@ -8,7 +8,7 @@ APP_MAIN_URL = "/"
 
 class MainPage(webapp2.RequestHandler):
     def get(self):
-        self.response.headers['Content-Type'] = 'text/plain'
+        self.response.headers["Content-Type"] = "text/plain"
         self.response.write("Hi,I'm julwrites")
 
 app = webapp2.WSGIApplication([

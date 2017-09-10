@@ -11,10 +11,10 @@ from bible import bible_utils
 
 class CACDevoHook(hook_classes.Hook):
     def identifier(self):
-        return '/cacdevo'
+        return "/cacdevo"
 
     def name(self):
-        return 'Center for Action and Contemplation Devotional'
+        return "Center for Action and Contemplation Devotional"
 
     def resolve(self, userObj):
         passage = cac_utils.get_cacdevo(userObj.get_version())

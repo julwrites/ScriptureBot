@@ -15,7 +15,7 @@ def get_key(path, userId):
 
 # Functions for manipulation of user info
 def get_user(userId):
-    userObj = db.get(get_key('BibleUser', userId))
+    userObj = db.get(get_key("BibleUser", userId))
     return userObj
 
 def get_uid(userIdObj):
@@ -48,11 +48,11 @@ def get_user_query():
     return bibleuser_classes.BibleUser.all()
 
 def for_each_user(fn):
-    debug.log('Running ' + text_utils.stringify(fn) + ' for each user')
+    debug.log("Running " + text_utils.stringify(fn) + " for each user")
     
     # Read user database
     query = get_user_query()
-    query.filter('active =', True)
+    query.filter("active =", True)
 
     try:
         for dbUser in query.run(batch_size=500):

@@ -13,34 +13,34 @@ from common import debug, html_utils, constants
 from common.telegram import telegram_utils
 
 
-CAC_URL = 'https://cac.org/category/daily-meditations/'
+CAC_URL = "https://cac.org/category/daily-meditations/"
 
-CAC_DEVO_START = '<hr>'
-CAC_DEVO_END = '<p><strong>References:'
+CAC_DEVO_START = "<hr>"
+CAC_DEVO_END = "<p><strong>References:"
 
-CAC_DEVO_SELECT = 'cac-devo-text'
-CAC_DEVO_IGNORE = 'h2'
-CAC_DEVO_LINKS = 'href'
-CAC_DEVO_TITLE = 'h3'
+CAC_DEVO_SELECT = "cac-devo-text"
+CAC_DEVO_IGNORE = "h2"
+CAC_DEVO_LINKS = "href"
+CAC_DEVO_TITLE = "h3"
 
-REFERENCE = 'reference'
-VERSION = 'version'
-DEVO = 'devo'
+REFERENCE = "reference"
+VERSION = "version"
+DEVO = "devo"
 
-def fetch_cac(version='NIV'):
+def fetch_cac(version="NIV"):
     formatUrl = CAC_URL
 
     html = html_utils.fetch_html(formatUrl, CAC_DEVO_START, CAC_DEVO_END)
     if html is None:
         return None
 
-    debug.log('Html: ' + html)
+    debug.log("Html: " + html)
 
     soup = html_utils.html_to_soup(html)
 
     return soup 
 
-def get_cacdevo_raw(version='NIV'):
+def get_cacdevo_raw(version="NIV"):
     soup = fetch_cac(version)
     if soup is None:
         return None
@@ -66,11 +66,11 @@ def get_cacdevo_raw(version='NIV'):
     for tag in soup(class_=CAC_DEVO_SELECT):
         blocks.append(tag.text)
 
-    passage = telegram_utils.join(blocks, '\n\n')
+    passage = telegram_utils.join(blocks, "\n\n")
 
     return passage
 
-def get_cacdevo(version='NIV'):
+def get_cacdevo(version="NIV"):
     passage = get_cacdevo_raw(version)
 
     if passage is None:

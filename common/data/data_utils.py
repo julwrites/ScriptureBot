@@ -13,12 +13,12 @@ def get_key(path, userId):
 
 # Functions for manipulation of data
 def get_data(userId):
-    val = db.get(get_key('Data', userId))
+    val = db.get(get_key("Data", userId))
     return val
 
 def has_data(userId):
     try:
-        val = db.get(get_key('Data', userId))
+        val = db.get(get_key("Data", userId))
     except db.KindError:
         val = None
     

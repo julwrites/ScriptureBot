@@ -12,24 +12,24 @@ from common import debug, text_utils
 
 from secret import BOT_ID
 
-TELEGRAM_URL = 'https://api.telegram.org/bot' + BOT_ID
-TELEGRAM_URL_SEND = TELEGRAM_URL + '/sendMessage'
+TELEGRAM_URL = "https://api.telegram.org/bot" + BOT_ID
+TELEGRAM_URL_SEND = TELEGRAM_URL + "/sendMessage"
 
-JSON_HEADER = {'Content-Type': 'application/json;charset=utf-8'}
+JSON_HEADER = {"Content-Type": "application/json;charset=utf-8"}
 
 class TelegramPost():
     def __init__(self, userId):
         self.formatData = {
-            'chat_id': text_utils.stringify(userId), 
-            'parse_mode': 'Markdown'
+            "chat_id": text_utils.stringify(userId), 
+            "parse_mode": "Markdown"
         }
 
     def uid(self):
-        return self.formatData.get('chat_id')
+        return self.formatData.get("chat_id")
 
     def send(self):
         data = json.dumps(self.formatData)
-        debug.log('Performing send: ' + data)
+        debug.log("Performing send: " + data)
 
         try:
             urlfetch.fetch(
@@ -39,32 +39,32 @@ class TelegramPost():
                 headers=JSON_HEADER
                 )
         except:
-            debug.log('Send failed! ' + TELEGRAM_URL_SEND + ', ' + data)
+            debug.log("Send failed! " + TELEGRAM_URL_SEND + ", " + data)
 
     def add_text(self, msg):
-        debug.log('Adding text for ' + self.uid())
+        debug.log("Adding text for " + self.uid())
 
-        self.formatData['text'] = msg
+        self.formatData["text"] = msg
 
     def add_keyboard(self, keyboard=[], oneTime=False):
-        debug.log('Adding keyboard for ' + self.uid() + ': ' + text_utils.stringify(keyboard))
+        debug.log("Adding keyboard for " + self.uid() + ": " + text_utils.stringify(keyboard))
 
-        self.formatData['reply_markup'] = {
-            'keyboard': keyboard,
-            'one_time_keyboard': oneTime
+        self.formatData["reply_markup"] = {
+            "keyboard": keyboard,
+            "one_time_keyboard": oneTime
         }
     
     def close_keyboard(self):
-        debug.log('Removing keyboard for ' + self.uid())
+        debug.log("Removing keyboard for " + self.uid())
 
-        self.formatData['reply_markup'] = {
-            'remove_keyboard': True
+        self.formatData["reply_markup"] = {
+            "remove_keyboard": True
         }
 
     def add_inline_keyboard(self, keyboard=[]):
-        debug.log('Adding inline keyboard for ' + self.uid() + ': ' + text_utils.stringify(keyboard))
+        debug.log("Adding inline keyboard for " + self.uid() + ": " + text_utils.stringify(keyboard))
        
-        self.formatData['reply_markup'] = {
-            'inline_keyboard': keyboard
+        self.formatData["reply_markup"] = {
+            "inline_keyboard": keyboard
         }
 

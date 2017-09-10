@@ -11,16 +11,14 @@ from bible import bible_utils
 
 class DailyVerseHook(hook_classes.Hook):
     def identifier(self):
-        return '/dailyverse'
+        return "/dailyverse"
 
     def name(self):
-        return 'Daily Verse'
+        return "Daily Verse"
 
     def resolve(self, userObj):
         if userObj is not None:
-            debug.log("Sending verse: " + '')
-
-            # telegram_utils.send_msg(verseMsg, userObj.get_uid())
+            debug.log("Sending verse: " + "")
 
 def get():
     return [

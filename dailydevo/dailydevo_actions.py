@@ -9,7 +9,7 @@ from common.action import action_classes
 from common.telegram import telegram_utils
 
 PROMPT = "Choose a Daily-Devo to read!"
-BADQUERY = "I don\'t have this devotional!"
+BADQUERY = "I don't have this devotional!"
 CONFIRM = "Give me a moment to get it~!"
 
 class DailyDevoAction(action_classes.Action):

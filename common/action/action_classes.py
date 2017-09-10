@@ -12,16 +12,16 @@ class Action():
     # To be inherited and overwritten with a check for whether this is waiting for a response
     def waiting(self, userObj):
         if userObj.get_state() == self.identifier():
-            debug.log('Waiting for ' + self.identifier())
+            debug.log("Waiting for " + self.identifier())
             return True
         return False
 
     # Do not overwrite if possible, this checks the message text against the command name
     def match(self, msg):
-        msgText = msg.get('text').strip() 
+        msgText = msg.get("text").strip() 
         if text_utils.overlap_compare(msgText, self.identifier()) or \
             text_utils.text_compare(msgText, self.name()):
-            debug.log('Matched with ' + self.identifier())
+            debug.log("Matched with " + self.identifier())
             return True
         return False
 
@@ -42,15 +42,15 @@ class Action():
 
     # To be inherited and overwritten with the command name of this action
     def identifier(self):
-        return ''
+        return ""
 
     # To be inherited and overwritten with the display name of this action
     def name(self):
-        return ''
+        return ""
 
     # To be inherited and overwritten with the description of this action
     def description(self):
-        return''
+        return ""
 
     # To be inherited and overwritten with functionality
     def resolve(self, userObj, msg):

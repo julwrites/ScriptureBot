@@ -11,10 +11,10 @@ CONFIRM = "Alright~"
 
 class UserDoneAction(action_classes.Action):
     def identifier(self):
-        return '/done'
+        return "/done"
 
     def name(self):
-        return 'Done'
+        return "Done"
 
     def resolve(self, userObj, msg):
         telegram_utils.send_close_keyboard(CONFIRM, userObj.get_uid())

@@ -151,7 +151,7 @@ def query_verse_by_topic(query):
             pack = get_pack(packKey)
             addPack = False
 
-            debug.log('Check alias for ' + packKey)
+            debug.log("Check alias for " + packKey)
             for alias in get_aliases(packKey):
 
                 if text_utils.fuzzy_compare(query, alias):
@@ -160,7 +160,7 @@ def query_verse_by_topic(query):
                     break
 
             if not addPack:
-                debug.log('Check verses for related topics')
+                debug.log("Check verses for related topics")
                 for verse in pack:
 
                     if text_utils.fuzzy_compare(query, verse.get_title()):
@@ -170,7 +170,7 @@ def query_verse_by_topic(query):
                             if text_utils.fuzzy_compare(query, topic):
                                 shortlist.append(verse)
 
-        debug.log('Found these related queries: ' + text_utils.stringify(shortlist))
+        debug.log("Found these related queries: " + text_utils.stringify(shortlist))
         num = len(shortlist)
         if num > 0:
             choose = random.randint(0, num - 1)
@@ -182,12 +182,12 @@ def format_verse(verse, passage):
     if verse is not None and passage is not None:
         versePrep = []
 
-        versePrep.append(get_names(verse.get_pack()) + ' ' + text_utils.stringify(verse.get_position()))
+        versePrep.append(get_names(verse.get_pack()) + " " + text_utils.stringify(verse.get_position()))
         versePrep.append(telegram_utils.bold(verse.get_title()))
-        versePrep.append(telegram_utils.bold(verse.reference) + ' ' \
+        versePrep.append(telegram_utils.bold(verse.reference) + " " \
                         + telegram_utils.bracket(passage.get_version()))
         versePrep.append(passage.get_text())
         versePrep.append(telegram_utils.bold(verse.reference))
 
-        return telegram_utils.join(versePrep, '\n\n')
+        return telegram_utils.join(versePrep, "\n\n")
     return None

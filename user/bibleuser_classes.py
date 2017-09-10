@@ -17,7 +17,7 @@ class BibleUser(db.Model):
     lastAuto = db.DateTimeProperty(auto_now_add=True)
     active = db.BooleanProperty(default=True)
     state = db.StringProperty(indexed=True)
-    version = db.StringProperty(indexed=True, default='NIV')
+    version = db.StringProperty(indexed=True, default="NIV")
     subscriptions = db.StringListProperty(indexed=True)
 
     def clone(self, obj):
@@ -39,15 +39,15 @@ class BibleUser(db.Model):
 
     def get_name_string(self):
         name = text_utils.stringify(self.firstName)
-        if self.lastName:
-            name += text_utils.stringify(' ') + text_utils.stringify(self.lastName)
+        if self.lastName and self.firstName != self.lastName:
+            name += text_utils.stringify(" ") + text_utils.stringify(self.lastName)
         if self.username:
-            name += text_utils.stringify(' @') + text_utils.stringify(self.username)
+            name += text_utils.stringify(" @") + text_utils.stringify(self.username)
 
         return name
 
     def get_description(self):
-        userType = 'Group ' if self.is_group() else 'User '
+        userType = "Group " if self.is_group() else "User "
         return text_utils.stringify(userType) + self.get_name_string()
 
     def is_group(self):
@@ -75,7 +75,7 @@ class BibleUser(db.Model):
         self.put()
 
     def get_subscription(self):
-        return ','.join(self.subscriptions)
+        return ",".join(self.subscriptions)
 
     def has_subscription(self, subId):
         try:

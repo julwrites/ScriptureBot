@@ -31,7 +31,7 @@ def get_mcheyne_raw():
     # Steps through all the html types and mark these
     blocks = []
     for tag in soup.findAll(MCHEYNE_SELECT):
-        ref = text_utils.strip_block(tag.text, '(', ')')
+        ref = text_utils.strip_block(tag.text, "(", ")")
         if bible_utils.fetch_passage_html(ref) is not None:
             blocks.append(ref)
 

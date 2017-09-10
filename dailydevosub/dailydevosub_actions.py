@@ -10,8 +10,8 @@ from dailydevo import dailydevo_modules
 
 PROMPT = "Choose any of these subscriptions to subscribe or unsubscribe!"
 BADQUERY = "I don't have this subscription!"
-CONFIRM_SUBSCRIBE = "I\'ve set up your subscription to {}!"
-CONFIRM_UNSUBSCRIBE = "I\'ve unsubscribed you from {}!"
+CONFIRM_SUBSCRIBE = "I've set up your subscription to {}!"
+CONFIRM_UNSUBSCRIBE = "I've unsubscribed you from {}!"
 
 
 class DailyDevoSubAction(action_classes.Action):
@@ -31,7 +31,7 @@ class DailyDevoSubAction(action_classes.Action):
         query = telegram_utils.strip_command(msg, self.identifier())
         subs = dailydevo_modules.get_hooks()
 
-        debug.log('Querying ' + query)
+        debug.log("Querying " + query)
 
         if text_utils.is_valid(query):
 
@@ -62,7 +62,7 @@ class DailyDevoSubAction(action_classes.Action):
             for i in range(len(subList)):
 
                 if userObj.has_subscription(subs[i].identifier()):
-                    subList[i] = subList[i] + ' ' + telegram_utils.tick()
+                    subList[i] = subList[i] + " " + telegram_utils.tick()
 
             telegram_utils.send_msg_keyboard(\
             PROMPT, userObj.get_uid(), subList, 1)

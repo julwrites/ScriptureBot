@@ -12,7 +12,7 @@ from user import user_actions
 
 class McheyneDailyAction(action_classes.Action):
     def identifier(self):
-        return '/mcheynedaily'
+        return "/mcheynedaily"
 
     def name(self):
         return "M'cheyne Bible Reading Plan"
@@ -29,7 +29,7 @@ class McheyneDailyAction(action_classes.Action):
 
         passage = bible_utils.get_passage(query, userObj.get_version())
         if passage is not None:
-            debug.log('Sending passage ' + passage)
+            debug.log("Sending passage " + passage)
             telegram_utils.send_msg(passage, userObj.get_uid())
 
         refs = mcheyne_utils.get_mcheyne()
@@ -38,7 +38,7 @@ class McheyneDailyAction(action_classes.Action):
             options = refs
             options.append(doneAction.name())
 
-            telegram_utils.send_msg_keyboard('', userObj.get_uid(), options)
+            telegram_utils.send_msg_keyboard("", userObj.get_uid(), options)
             userObj.set_state(self.identifier())
         
         return True

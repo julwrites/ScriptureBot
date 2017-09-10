@@ -18,7 +18,7 @@ class Hook():
                     debug.log_hook(self.identifier())
                     self.resolve(userObj)
         except:
-            debug.log('Hook failed! ' + self.identifier())
+            debug.log("Hook failed! " + self.identifier())
 
     def dispatch(self):
         user_utils.for_each_user(self.try_execute)
@@ -27,7 +27,7 @@ class Hook():
     def match(self, userObj):
         subs = userObj.get_subscription()
         if subs.find(self.identifier()) != -1:
-            debug.log('Matched with ' + self.identifier())
+            debug.log("Matched with " + self.identifier())
             return True
         return False
 
@@ -35,11 +35,11 @@ class Hook():
 
     # To be inherited and overwritten with the command name of this action
     def identifier(self):
-        return ''
+        return ""
 
     # To be inherited and overwritten with the display name of this action
     def name(self):
-        return ''
+        return ""
 
     # To be inherited and overwritten with functionality
     def resolve(self, userObj):

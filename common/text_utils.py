@@ -11,7 +11,7 @@ from common import debug
 
 def stringify(value):
     if value is None:
-        return ''
+        return ""
 
     if not isinstance(value, basestring):
         value = str(value)
@@ -25,10 +25,10 @@ def is_valid(s):
     return False
 
 def fuzzify_raw(s):
-    return s.upper().replace('-', ' ').replace(',', ' ').strip().split()
+    return s.upper().replace("-", " ").replace(",", " ").strip().split()
 
 def fuzzify_join(parts):
-    return ''.join(parts)
+    return "".join(parts)
 
 def fuzzify(s):
     return fuzzify_join(fuzzify_raw(s))
@@ -59,14 +59,14 @@ def text_compare(lhs, rhs):
 
 def strip_whitespace(s):
     s = s.strip().split()
-    return ' '.join(s)
+    return " ".join(s)
 
 def strip_numbers(s):
-    result = ''.join([c for c in s if not c.isdigit()])
+    result = "".join([c for c in s if not c.isdigit()])
     return result if len(result) > 0 else None
 
 def strip_alpha(s):
-    result = ''.join([c for c in s if not c.isalpha()])
+    result = "".join([c for c in s if not c.isalpha()])
     return result if len(result) > 0 else None
 
 def strip_block(s, start, end):
@@ -80,4 +80,4 @@ def replace(s, sub, new):
     return s.replace(sub, new)
 
 def replace_newline(s):
-    return '\n'
+    return "\n"

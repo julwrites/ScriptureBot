@@ -7,7 +7,7 @@ from common.telegram.telegram_classes import TelegramPost
 
 MAX_LENGTH = 4096
 
-OPTION_REPLY_KEYBOARD = 'reply_markup'
+OPTION_REPLY_KEYBOARD = "reply_markup"
 KEYBOARD_WIDTH = 3
 
 # Telegram message sending functionality
@@ -25,7 +25,7 @@ def format_keyboard(options=[], width=KEYBOARD_WIDTH):
                 break
 
             data = options[i * width + j]
-            keyboardRow.append({'text': data})
+            keyboardRow.append({"text": data})
             numButtons -= 1
         
         keyboardData.append(keyboardRow)
@@ -33,16 +33,16 @@ def format_keyboard(options=[], width=KEYBOARD_WIDTH):
     return keyboardData
 
 def send_msg(msg, userId):
-    debug.log('Sending message to ' + text_utils.stringify(userId) + ': ' +  msg)
+    debug.log("Sending message to " + text_utils.stringify(userId) + ": " +  msg)
 
     last = None
     chunks = []
     while len(msg) > MAX_LENGTH:
-        last = msg.rfind(' ', 0, MAX_LENGTH)
+        last = msg.rfind(" ", 0, MAX_LENGTH)
         if last == -1:
             last = MAX_LENGTH
 
-        debug.log('Chunk: ' + msg[:last])
+        debug.log("Chunk: " + msg[:last])
         chunks.append(msg[:last])
         msg = msg[last:]
         last = None
@@ -77,38 +77,38 @@ def parse_payload(msg):
     if msg is None:
         return None
 
-    text = msg.get('text')
+    text = msg.get("text")
     if text is not None:
         return text
 
-    audio = msg.get('audio')
+    audio = msg.get("audio")
     if audio is not None:
         return audio
 
-    document = msg.get('document')
+    document = msg.get("document")
     if document is not None:
         return document
 
-    photo = msg.get('photo')
+    photo = msg.get("photo")
     if photo is not None:
         return photo
 
-    sticker = msg.get('sticker')
+    sticker = msg.get("sticker")
     if sticker is not None:
         return sticker
 
-    video = msg.get('video')
+    video = msg.get("video")
     if video is not None:
         return video
 
-    voice = msg.get('voice')
+    voice = msg.get("voice")
     if voice is not None:
         return voice
 
     return None
 
 def strip_command(msg, cmd):
-    return msg.get('text').strip().replace(cmd, '')
+    return msg.get("text").strip().replace(cmd, "")
 
 
 # Telegram message prettifying
@@ -119,16 +119,16 @@ def surround(text, front, back = None):
     return front + text + back
 
 def bold(text):
-    return surround(text, '* ', ' *')
+    return surround(text, "* ", " *")
 
 def italics(text):
-    return surround(text, '_ ', ' _')
+    return surround(text, "_ ", " _")
 
 def bracket(text):
-    return surround(text, '(', ')')
+    return surround(text, "(", ")")
 
 def bracket_square(text):
-    return surround(text, '[', ']')
+    return surround(text, "[", "]")
 
 def link(text, hyperlink):
     return bracket_square(text) + bracket(hyperlink)
@@ -139,19 +139,19 @@ def join(blocks, separator):
 
 # Telegram special symbols
 def tick():
-    return u'\u2714'
+    return u"\u2714"
 
 def to_sup(text):
-        sups = {u'0': u'\u2070',
-                u'1': u'\xb9',
-                u'2': u'\xb2',
-                u'3': u'\xb3',
-                u'4': u'\u2074',
-                u'5': u'\u2075',
-                u'6': u'\u2076',
-                u'7': u'\u2077',
-                u'8': u'\u2078',
-                u'9': u'\u2079',
-                u'-': u'\u207b'}
-        return ''.join(sups.get(char, char) for char in text)
+        sups = {u"0": u"\u2070",
+                u"1": u"\xb9",
+                u"2": u"\xb2",
+                u"3": u"\xb3",
+                u"4": u"\u2074",
+                u"5": u"\u2075",
+                u"6": u"\u2076",
+                u"7": u"\u2077",
+                u"8": u"\u2078",
+                u"9": u"\u2079",
+                u"-": u"\u207b"}
+        return "".join(sups.get(char, char) for char in text)
 

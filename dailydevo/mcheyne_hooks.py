@@ -9,7 +9,7 @@ from common.action import hook_classes
 from dailydevo import mcheyne_utils
 from user import user_actions
 
-PROMPT = "Here are today's M\'Cheyne verses!\n{}\nTap on any one to get the passage!"
+PROMPT = "Here are today's M'Cheyne verses!\n{}\nTap on any one to get the passage!"
 
 class McheyneDailyHook(hook_classes.Hook):
     def identifier(self):
@@ -26,7 +26,7 @@ class McheyneDailyHook(hook_classes.Hook):
 
         if refs is not None:
             options = refs
-            refString = '\n'.join(options)
+            refString = "\n".join(options)
             options.append(user_actions.UserDoneAction().name())
 
             telegram_utils.send_msg_keyboard(PROMPT.format(refString), userObj.get_uid(), options)
