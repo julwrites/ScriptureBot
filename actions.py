@@ -50,7 +50,8 @@ class StartAction(action_classes.Action):
             debug.log_cmd('New user!')
             userObj = user_utils.get_user(userId)
 
-            telegram_utils.send_msg(INTRO_MSG.format(userObj.get_name_string()), userObj.get_uid())
+            HelpAction().resolve(userObj, msg)
+
             debug.log('Registering ' + userObj.get_name_string())
 
             return True

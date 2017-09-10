@@ -31,6 +31,8 @@ class DailyDevoSubAction(action_classes.Action):
         query = telegram_utils.strip_command(msg, self.identifier())
         subs = dailydevo_modules.get_hooks()
 
+        debug.log('Querying ' + query)
+
         if text_utils.is_valid(query):
 
             for sub in subs:
