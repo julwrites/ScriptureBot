@@ -24,14 +24,16 @@ def execute(actions, userObj, msg):
             waiting = [action for action in actions if action.waiting(userObj)]
 
             if len(waiting) == 1:
-                debug.log_action(waiting.identifier())
-                return waiting.resolve(userObj, msg)
+                action = waiting[0]
+                debug.log_action(action.identifier())
+                return action.resolve(userObj, msg)
 
             matched = [action for action in actions if action.match(msg)]
 
             if len(matched) == 1:
-                debug.log_action(matched.identifier())
-                return waiting.resolve(userObj, msg)
+                action = matched[0]
+                debug.log_action(action.identifier())
+                return action.resolve(userObj, msg)
             return False
     except:
         debug.log('Execute failed!')
