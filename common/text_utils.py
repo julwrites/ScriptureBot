@@ -48,6 +48,12 @@ def fuzzy_compare(lhs, rhs):
 
     return ( lhs == rhs or overlap(lhsParts, rhsParts) )
 
+def overlap_compare(lhs, rhs):
+    lhsParts = fuzzify_raw(lhs)
+    rhsParts = fuzzify_raw(rhs)
+
+    return overlap(lhsParts, rhsParts)
+
 def text_compare(lhs, rhs):
     return fuzzify(lhs) == fuzzify(rhs)
 
