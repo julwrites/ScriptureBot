@@ -14,10 +14,6 @@ class Action():
         if userObj.get_state() == self.identifier():
             debug.log('Waiting for ' + self.identifier())
             return True
-        for state in self.states():
-            if userObj.get_state() == state:
-                debug.log('Waiting for ' + self.identifier() + state)
-                return True
         return False
 
     # Do not overwrite if possible, this checks the message text against the command name
