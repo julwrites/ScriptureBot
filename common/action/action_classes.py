@@ -5,7 +5,7 @@
 import json
 
 # Local modules
-from common import debug
+from common import debug, text_utils
 
 # Defines an interface for all functionality that can be executed by the bot
 class Action():
@@ -35,7 +35,8 @@ class Action():
     # Do not overwrite if possible, this checks the message text against the command name
     def match(self, msg):
         msgText = msg.get('text').strip() 
-        if (msgText.find(self.identifier()) != -1) or (msgText.find(self.name()) != -1):
+        if text_utils.text_compare(msgText, self.identifier() or \
+            text_utils.text_compare(msgText, self.name()):
             debug.log('Matched with ' + self.identifier())
             return True
         return False
