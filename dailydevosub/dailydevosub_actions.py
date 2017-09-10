@@ -14,7 +14,7 @@ CONFIRM_SUBSCRIBE = "I\'ve set up your subscription to {}!"
 CONFIRM_UNSUBSCRIBE = "I\'ve unsubscribed you from {}!"
 
 
-class DevoSubscriptionAction(action_classes.Action):
+class DailyDevoSubAction(action_classes.Action):
     def identifier(self):
         return "/dailydevosub"
 
@@ -71,5 +71,5 @@ class DevoSubscriptionAction(action_classes.Action):
 
 def get():
     return [
-        DevoSubscriptionAction()
+        DailyDevoSubAction()
     ]
