@@ -36,7 +36,7 @@ class Action():
     def match(self, msg):
         msgText = msg.get('text').strip() 
         if text_utils.overlap_compare(msgText, self.identifier()) or \
-            text_utils.overlap_compare(msgText, self.name()):
+            text_utils.text_compare(msgText, self.name()):
             debug.log('Matched with ' + self.identifier())
             return True
         return False
