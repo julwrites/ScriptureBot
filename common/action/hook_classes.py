@@ -11,7 +11,7 @@ from user import user_utils
 # It checks for a subscription, and if the subscription matches itself, it executes the action.
 class Hook():
     # Do not overwrite if possible, this performs basic checks and resolves the action
-    def execute(self, userObj):
+    def try_execute(self, userObj):
         try:
             if userObj is not None:
                 if self.match(userObj):
@@ -21,7 +21,7 @@ class Hook():
             debug.log('Hook failed! ' + self.identifier())
 
     def dispatch(self):
-        user_utils.for_each_user(self.execute)
+        user_utils.for_each_user(self.try_execute)
 
     # Do not overwrite if possible, this checks the message text against the command name
     def match(self, userObj):

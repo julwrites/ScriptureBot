@@ -25,6 +25,15 @@ class Action():
             return True
         return False
 
+    def try_execute(self, userObj, msg):
+        try:
+            if userObj is not None and msg is not None:
+                if self.waiting(userObj) or self.match(msg):
+                    return self.resolve(userObj, msg)
+        except:
+            debug.log("Tried, but failed to execute " + self.identifier())
+        return False
+
 
 
     # To be inherited if this action is to be exposed as a command

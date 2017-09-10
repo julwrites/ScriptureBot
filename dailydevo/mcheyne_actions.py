@@ -24,7 +24,7 @@ class McheyneDailyAction(action_classes.Action):
         query = telegram_utils.strip_command(msg, self.identifier())
 
         doneAction = user_actions.UserDoneAction()
-        if doneAction.execute(userObj, msg):
+        if doneAction.try_execute(userObj, msg):
             return True
 
         passage = bible_utils.get_passage(query, userObj.get_version())
