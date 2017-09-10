@@ -151,7 +151,6 @@ def query_verse_by_topic(query):
             pack = get_pack(packKey)
             addPack = False
 
-            debug.log("Check alias for " + packKey)
             for alias in get_aliases(packKey):
 
                 if text_utils.fuzzy_compare(query, alias):
@@ -170,7 +169,6 @@ def query_verse_by_topic(query):
                             if text_utils.fuzzy_compare(query, topic):
                                 shortlist.append(verse)
 
-        debug.log("Found these related queries: " + text_utils.stringify(shortlist))
         num = len(shortlist)
         if num > 0:
             choose = random.randint(0, num - 1)
