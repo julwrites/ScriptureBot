@@ -38,7 +38,6 @@ class BibleUser(db.Model):
         return self.key().name()
 
     def get_name_string(self):
-        debug.log("Adding name~")
         name = text_utils.stringify(self.firstName)
         if self.lastName and self.firstName != self.lastName:
             name += text_utils.stringify(" ") + text_utils.stringify(self.lastName)

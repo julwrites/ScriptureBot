@@ -16,6 +16,7 @@ def execute(actions, userObj, msg):
 
         matched = [action for action in actions if action.match(msg)]
 
+        debug.log("Matches found: " + "|".join([action.identifier() for action in matched]))
         if len(matched) == 1:
             action = matched[0]
             debug.log_action(action.identifier())
