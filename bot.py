@@ -34,7 +34,8 @@ class BotHandler(webapp2.RequestHandler):
             userId = user_utils.get_uid(msg.get('from').get('id'))
             userObj = user_utils.get_user(userId)
 
-            action_utils.execute(actions.get(), userObj, msg)
+            if action_utils.execute(actions.get(), userObj, msg):
+                return
 
             telegram_utils.send_msg('Hello I am bot', msg.get('from').get('id'))
 
