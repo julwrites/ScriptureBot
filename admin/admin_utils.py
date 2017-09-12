@@ -3,6 +3,7 @@
 
 # Local modules
 from common import debug, text_utils
+from common.telegram import telegram_utils
 
 from secret import BOT_ADMIN
 
@@ -12,4 +13,3 @@ def access(userId):
     if text_utils.stringify(userId) == text_utils.stringify(BOT_ADMIN):
         return True
     return False
-

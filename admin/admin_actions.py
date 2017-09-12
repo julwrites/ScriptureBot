@@ -120,6 +120,25 @@ class AdminRagnarokAction(action_classes.Action):
         
         return False
 
+class AdminFeedbackAction(action_classes.Action):
+    def identifier(self):
+        return "/feedback"
+
+    def name(self):
+        return "Feedback"
+
+    def description(self):
+        return "Send Feedback to Administrator"
+
+    def resolve(self, userObj, msg):
+        query = telegram_utils.strip_command(msg, self.identifier())
+
+        if text_utils.is_valid(query):
+            telegram_utils.send_msg(query, admin_utils.BOT_ADMIN)
+        else:
+            userObj.set_state(self.identifier())
+        return True
+
 
 def get():
     return [
