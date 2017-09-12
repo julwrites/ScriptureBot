@@ -6,8 +6,8 @@ from common import debug, text_utils
 from common.telegram import telegram_utils
 from common.action import action_classes
 
+from bible import bible_utils
 
-SUPPORTED_VERSIONS = ["NIV", "ESV", "KJV", "NASB", "NLT", "AMP"]
 
 PROMPT = "Please select a version of your choosing\n\
 (if unsure, always go with the one you are comfortable with!)"
@@ -33,7 +33,7 @@ class BibleUserVersionAction(action_classes.Action):
 
         if text_utils.is_valid(query):
 
-            for ver in SUPPORTED_VERSIONS:
+            for ver in bible_utils.get_versions():
 
                 if text_utils.text_compare(query, ver):
                     userObj.set_version(ver)
@@ -47,7 +47,7 @@ class BibleUserVersionAction(action_classes.Action):
 
         else:
             telegram_utils.send_msg_keyboard(\
-            PROMPT, userObj.get_uid(), SUPPORTED_VERSIONS)
+            PROMPT, userObj.get_uid(), bible_utils.get_versions())
 
             userObj.set_state(self.identifier())
 

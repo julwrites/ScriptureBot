@@ -19,6 +19,7 @@ class BibleUser(db.Model):
     state = db.StringProperty(indexed=True)
     version = db.StringProperty(indexed=True, default="NIV")
     subscriptions = db.StringListProperty(indexed=True)
+    subscriptionTime = db.DateTimeProperty(indexed=True)
 
     def clone(self, obj):
         self.username = obj.username
@@ -32,6 +33,7 @@ class BibleUser(db.Model):
         self.state = obj.state
         self.version = obj.version
         self.subscriptions = obj.subscriptions
+        self.subscriptionTime = obj.subscriptionTime
         return self
 
     def get_uid(self):

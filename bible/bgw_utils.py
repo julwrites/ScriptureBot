@@ -25,6 +25,8 @@ BGW_PASSAGE_SELECT = "bgw-passage-text"
 BGW_PASSAGE_IGNORE = ".passage-display, .footnote, .footnotes, .crossrefs, .publisher-info-bottom"
 BGW_PASSAGE_TITLE = ".passage-display-bcv"
 
+BGW_VERSIONS = ["NIV", "ESV", "KJV", "NASB", "NLT", "AMP"]
+
 REFERENCE = "reference"
 VERSION = "version"
 PASSAGE = "passage"
@@ -117,3 +119,6 @@ def get_link(query, version="NIV"):
         return None
 
     return url
+
+def get_versions():
+    return BGW_VERSIONS

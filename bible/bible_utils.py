@@ -18,3 +18,6 @@ def get_reference(query):
 
 def get_link(query):
     return bgw_utils.get_link(query)
+
+def get_versions():
+    return bgw_utils.get_versions()
