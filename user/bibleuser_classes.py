@@ -39,11 +39,11 @@ class BibleUser(db.Model):
     def get_uid(self):
         return self.key().name()
 
-    def get_name_string(self):
+    def get_name_string(self, username=False):
         name = text_utils.stringify(self.firstName)
-        if self.lastName and self.firstName != self.lastName:
+        if text_utils.is_valid(self.lastName) and self.firstName != self.lastName:
             name += text_utils.stringify(" ") + text_utils.stringify(self.lastName)
-        if self.username:
+        if username and text_utils.is_valid(self.username):
             name += text_utils.stringify(" @") + text_utils.stringify(self.username)
 
         return name

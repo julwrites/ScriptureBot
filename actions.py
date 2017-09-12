@@ -66,6 +66,9 @@ class HelpAction(action_classes.Action):
     def description(self):
         return "Get the Bot's Help menu"
 
+    def match(self, msg):
+        return msg is not None
+
     def resolve(self, userObj, msg):
         telegram_utils.send_msg(HELP_MSG.format(userObj.get_name_string()), userObj.get_uid())
         return True
@@ -73,6 +76,8 @@ class HelpAction(action_classes.Action):
 def get():
     return [
         StartAction(),
-        HelpAction()
     ] + \
-    modules.get_actions()
+    modules.get_actions() + \
+    [
+        HelpAction(),
+    ]
