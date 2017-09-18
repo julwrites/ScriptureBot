@@ -39,8 +39,8 @@ def send_msg(msg, userId):
     chunks = []
     while len(msg) > MAX_LENGTH:
         last = msg.rfind(" ", 0, MAX_LENGTH)
-        last = min(last, msg.rfind("_ ", 0, MAX_LENGTH))
-        last = min(last, msg.rfind("* ", 0, MAX_LENGTH))
+        last = max(last, msg.rfind("_ ", 0, MAX_LENGTH))
+        last = max(last, msg.rfind("* ", 0, MAX_LENGTH))
         if last == -1:
             last = MAX_LENGTH
 
