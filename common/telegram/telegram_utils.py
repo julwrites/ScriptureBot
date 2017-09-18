@@ -41,7 +41,7 @@ def send_msg(msg, userId):
         last = msg.rfind(" ", 0, MAX_LENGTH)
         last = max(last, msg.rfind("_ ", 0, MAX_LENGTH))
         last = max(last, msg.rfind("* ", 0, MAX_LENGTH))
-        if last == -1:
+        if last <= 0:
             last = MAX_LENGTH
 
         debug.log("Chunk: " + msg[:last])
