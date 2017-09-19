@@ -38,7 +38,7 @@ class McheyneDailyAction(action_classes.Action):
             options = refs
             options.append(doneAction.name())
 
-            telegram_utils.send_msg_keyboard("", userObj.get_uid(), options)
+            telegram_utils.send_msg_keyboard("", userObj.get_uid(), options, 1)
             userObj.set_state(self.identifier())
         
         return True

@@ -29,7 +29,7 @@ class McheyneDailyHook(hook_classes.Hook):
             refString = "\n".join(options)
             options.append(user_actions.UserDoneAction().name())
 
-            telegram_utils.send_msg_keyboard(PROMPT.format(refString), userObj.get_uid(), options)
+            telegram_utils.send_msg_keyboard(PROMPT.format(refString), userObj.get_uid(), options, 1)
             userObj.set_state(self.identifier())
 
 def get():
