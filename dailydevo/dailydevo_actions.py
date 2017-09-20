@@ -19,7 +19,7 @@ CONFIRM = [
     "I'll be right back, {}",
     "Got it! Wait for a bit {}",
     "I need to step away for a moment to get it, {}",
-    "Yes, let me get back to you with that, {}~",
+    "Let me get back to you with that, {}~",
 ]
 
 class DailyDevoAction(action_classes.Action):
