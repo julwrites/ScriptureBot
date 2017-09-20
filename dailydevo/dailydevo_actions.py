@@ -1,6 +1,9 @@
 
 # coding=utf-8
 
+# Python modules
+import random
+
 # Local modules
 from dailydevo import dailydevo_modules
 
@@ -10,7 +13,14 @@ from common.telegram import telegram_utils
 
 PROMPT = "Choose a Daily-Devo to read!"
 BADQUERY = "I don't have this devotional!"
-CONFIRM = "Give me a moment to get it~!"
+CONFIRM = [
+    "Give me a moment to get it {}~!",
+    "Hold on, {}",
+    "I'll be right back, {}",
+    "Got it! Wait for a bit {}",
+    "I need to step away for a moment to get it, {}",
+    "Yes, let me get back to you with that, {}~",
+]
 
 class DailyDevoAction(action_classes.Action):
     def identifier(self):
@@ -34,8 +44,10 @@ class DailyDevoAction(action_classes.Action):
             for hook in hooks:
 
                 if text_utils.text_compare(query, hook.name()):
+                    choose = random.randint(0, len(CONFIRM) - 1)
+                    confirmString = CONFIRM[choose].format(userObj.get_name_string())
 
-                    telegram_utils.send_close_keyboard(CONFIRM, userObj.get_uid())
+                    telegram_utils.send_close_keyboard(confirmString, userObj.get_uid())
                     userObj.set_state(None)
 
                     hook.resolve(userObj)
