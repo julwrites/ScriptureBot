@@ -32,15 +32,28 @@ def format_keyboard(options=[], width=KEYBOARD_WIDTH):
 
     return keyboardData
 
+def last_md(chunk):
+    start = chunk.rfind("_ ")
+    end = chunk.rfind(" _")
+    if end < start:
+        return start
+
+    start = chunk.rfind("* ")
+    end = chunk.rfind(" *")
+    if end < start:
+        return start
+
+    return -1
+
 def send_msg(msg, userId):
     debug.log("Sending message to " + text_utils.stringify(userId) + ": " +  msg)
 
     last = None
     chunks = []
     while len(msg) > MAX_LENGTH:
-        last = msg.rfind(" ", 0, MAX_LENGTH)
-        last = max(last, msg.rfind("_ ", 0, MAX_LENGTH))
-        last = max(last, msg.rfind("* ", 0, MAX_LENGTH))
+        last = last_md(msg[:MAX_LENGTH])
+        if last <= 0:
+            last = min(last, msg.rfind(" ", 0, MAX_LENGTH))
         if last <= 0:
             last = MAX_LENGTH
 
