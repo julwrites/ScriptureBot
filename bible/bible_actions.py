@@ -1,6 +1,5 @@
 
 # coding=utf-8
-            bible_actions.get() + \
 
 # Local modules
 from common import debug, text_utils
