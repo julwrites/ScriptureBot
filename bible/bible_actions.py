@@ -1,5 +1,6 @@
 
 # coding=utf-8
+            bible_actions.get() + \
 
 # Local modules
 from common import debug, text_utils
@@ -22,8 +23,8 @@ class BiblePassageAction(action_classes.Action):
     def description(self):
         return "Search for a passage of Scripture"
 
-    def is_command(self):
-        return True
+    def match(self, msg):
+        return msg is not None
 
     def resolve(self, userObj, msg):
         query = telegram_utils.strip_command(msg, self.identifier())
@@ -34,8 +35,10 @@ class BiblePassageAction(action_classes.Action):
             if passage is not None:
                 telegram_utils.send_msg(passage, userObj.get_uid())
                 userObj.set_state(None)
-            else:
+            else if self.waiting(self, userObj):
                 telegram_utils.send_msg(BADQUERY, userObj.get_uid())
+            else:
+                return False
         else:
             telegram_utils.send_msg(PROMPT, userObj.get_uid())
 
