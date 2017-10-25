@@ -13,7 +13,7 @@ from user import user_utils
 
 import modules
 
-INTRO_MSG = "Hello {}, I'm Biblica Bot! I'm good at telling you things from the Bible!"
+INTRO_MSG = "Hello {}, I'm Biblica Bot! Give me a Bible reference and I'll give you the passage!"
 COMMAND_MSG = "Here are some other things I can do:"
 COMMAND_LIST = "\n".join([(action.identifier() + " - " + action.description()) for action in modules.get_actions() if action.is_command()])
 HELP_MSG = INTRO_MSG + "\n\n" + COMMAND_MSG + "\n" + COMMAND_LIST
