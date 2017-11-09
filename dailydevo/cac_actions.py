@@ -15,10 +15,14 @@ class CACDevoAction(action_classes.Action):
         return "Center for Action and Contemplation Devotional"
 
     def resolve(self, userObj):
+        debug.log("Resolving CAC Devo Action")
         passage = cac_utils.get_cacdevo(userObj.get_version())
+
+        debug.log("Got CAC Devo Passage")
 
         if passage is not None:
             telegram_utils.send_msg(passage, userObj.get_uid())
+            debug.log("Sent message")
 
         return True
 
