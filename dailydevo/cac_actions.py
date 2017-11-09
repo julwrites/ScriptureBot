@@ -20,6 +20,8 @@ class CACDevoAction(action_classes.Action):
         if passage is not None:
             telegram_utils.send_msg(passage, userObj.get_uid())
 
+        return True
+
 def get():
     return [
         CACDevoAction()
