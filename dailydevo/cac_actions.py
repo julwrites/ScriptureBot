@@ -1,14 +1,13 @@
-
-# coding=utf-8
+# coding=utf8
 
 # Local modules
-from common import debug, text_utils
-from common.action import hook_classes
+from common import debug
+from common.action import action_classes
 from common.telegram import telegram_utils
 
 from dailydevo import cac_utils
 
-class CACDevoHook(hook_classes.Hook):
+class CACDevoAction(action_classes.Action):
     def identifier(self):
         return "/cacdevo"
 
@@ -21,8 +20,7 @@ class CACDevoHook(hook_classes.Hook):
         if passage is not None:
             telegram_utils.send_msg(passage, userObj.get_uid())
 
-
 def get():
     return [
-        CACDevoHook()
+        CACDevoAction()
     ]
