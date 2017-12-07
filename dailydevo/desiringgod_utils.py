@@ -15,6 +15,11 @@ from common.telegram import telegram_utils
 # Link to fetch html from
 DG_URL = "https://www.desiringgod.org/articles"
 
+# Coarse isolation of the html block we want
+DG_START = "<main role='main'>"
+DG_END = "</main>"
+
+
 # Which class to isolate?
 DG_SELECT = "share share--card js-share-values"
 
@@ -23,13 +28,11 @@ def fetch_desiringgod(query=""):
     if(text_utils.is_valid(query)):
         formatUrl = formatUrl + "/" + query
 
-    html = html_utils.fetch_html(formatUrl)
+    html = html_utils.fetch_html(formatUrl, DG_START, DG_END)
     if html is None:
         return None
 
-    debug.log("Html: " + html)
-
-    soup = html_utils.html_to_soup(html.main)
+    soup = html_utils.html_to_soup(html)
 
     return soup 
 
