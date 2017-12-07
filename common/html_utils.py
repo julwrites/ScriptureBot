@@ -54,10 +54,10 @@ def extract_html(html, top, bottom):
 def fetch_html(url, start=None, end=None):
     result = fetch_url(url)
 
-    debug.log("Fetched url" + url)
     if start is not None and end is not None:
         html = extract_html(result.content, start, end)
-        debug.log("Extracted from " + start + " to " + end)
+
+    debug.log("Returning html: " + html)
 
     return html
 
