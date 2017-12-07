@@ -20,7 +20,7 @@ DG_SELECT = "share share--card js-share-values"
 
 def fetch_desiringgod(query=""):
     formatUrl = DG_URL
-    if(text_utils.is_valid(query):
+    if(text_utils.is_valid(query)):
         formatUrl.append("/" + query)
 
     html = html_utils.fetch_html(formatUrl)
