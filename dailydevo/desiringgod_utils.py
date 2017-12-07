@@ -9,7 +9,7 @@ from bs4 import BeautifulSoup
 from google.appengine.api import urlfetch, urlfetch_errors
 
 # Local modules
-from common import debug, html_utils, constants
+from common import debug, html_utils, text_utils, constants
 from common.telegram import telegram_utils
 
 # Link to fetch html from
@@ -19,7 +19,9 @@ DG_URL = "https://www.desiringgod.org/articles"
 DG_SELECT = "share share--card js-share-values"
 
 def fetch_desiringgod(query=""):
-    formatUrl = DG_URL + "/" + query
+    formatUrl = DG_URL
+    if(text_utils.is_valid(query):
+        formatUrl.append("/" + query)
 
     html = html_utils.fetch_html(formatUrl)
     if html is None:
