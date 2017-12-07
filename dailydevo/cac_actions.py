@@ -7,6 +7,7 @@ from common.telegram import telegram_utils
 
 from dailydevo import cac_utils
 
+
 class CACDevoAction(action_classes.Action):
     def identifier(self):
         return "/cacdevo"
@@ -22,7 +23,6 @@ class CACDevoAction(action_classes.Action):
 
         return True
 
+
 def get():
-    return [
-        CACDevoAction()
-    ]
+    return [CACDevoAction()]
