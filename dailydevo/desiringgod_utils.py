@@ -23,10 +23,8 @@ DG_END = "</main>"
 # Which class to isolate?
 DG_SELECT = "share share--card js-share-values"
 
-def fetch_desiringgod(query=""):
+def fetch_desiringgod():
     formatUrl = DG_URL
-    if(text_utils.is_valid(query)):
-        formatUrl = formatUrl + "/" + query
 
     html = html_utils.fetch_html(formatUrl, DG_START, DG_END)
     if html is None:
@@ -38,8 +36,8 @@ def fetch_desiringgod(query=""):
 
     return soup 
 
-def get_desiringgod_raw(query=""):
-    soup = fetch_desiringgod(query)
+def get_desiringgod_raw():
+    soup = fetch_desiringgod()
     if soup is None:
         return None
 
@@ -50,8 +48,8 @@ def get_desiringgod_raw(query=""):
 
     return blocks
 
-def get_desiringgod(query=""):
-    passage = get_desiringgod_raw(query)
+def get_desiringgod():
+    passage = get_desiringgod_raw()
 
     if passage is None:
         return None
