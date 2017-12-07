@@ -44,20 +44,21 @@ def fetch_url(url):
 
     return result
 
-def extract_html(html, top, bottom):
+def extract_html(html, top=None, bottom=None):
+    if top is None or bottom is None:
+        return html
+
     start = html.find(top)
     if start == -1:
-        return None
+        return html
+
     end = html.find(bottom, start)
     return html[start:end]
 
 def fetch_html(url, start=None, end=None):
     result = fetch_url(url)
 
-    if start is not None and end is not None:
-        html = extract_html(result.content, start, end)
-
-    debug.log("Returning html: " + html)
+    html = extract_html(result.content, start, end)
 
     return html
 
