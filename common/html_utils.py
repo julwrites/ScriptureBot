@@ -51,10 +51,11 @@ def extract_html(html, top, bottom):
     end = html.find(bottom, start)
     return html[start:end]
 
-def fetch_html(url, start, end):
+def fetch_html(url, start=None, end=None):
     result = fetch_url(url)
 
-    html = extract_html(result.content, start, end)
+    if start is not None and end is not None:
+        html = extract_html(result.content, start, end)
 
     return html
 

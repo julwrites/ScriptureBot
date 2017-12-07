@@ -34,7 +34,7 @@ class DGDevoAction(action_classes.Action):
 
         if refs is not None:
             options = refs
-            options.append(doneAction.name())
+            options.append({"text":doneAction.name(), "url":None})
 
             telegram_utils.send_msg_keyboard("", userObj.get_uid(), options, 1)
             userObj.set_state(self.identifier())

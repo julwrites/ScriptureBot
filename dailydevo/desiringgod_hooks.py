@@ -9,7 +9,7 @@ from common.telegram import telegram_utils
 from dailydevo import desiringgod_utils
 from user import user_actions
 
-PROMPT = "Here are today's articles from desiringgod.org!\n{}\nTap on any one to get the article!"
+PROMPT = "Here are today's articles from desiringgod.org!\nTap on any one to get the article!"
 
 class DGDevoHook(hook_classes.Hook):
     def identifier(self):
@@ -26,10 +26,9 @@ class DGDevoHook(hook_classes.Hook):
 
         if refs is not None:
             options = refs
-            refString = "\n".join(options)
-            options.append(user_actions.UserDoneAction().name())
+            options.append({"text":user_actions.UserDoneAction().name(), "url":""})
 
-            telegram_utils.send_url_keyboard(PROMPT.format(refString), userObj.get_uid(), options, urls, 1)
+            telegram_utils.send_url_keyboard(PROMPT, userObj.get_uid(), options, 1)
             userObj.set_state(self.identifier())
 
 
