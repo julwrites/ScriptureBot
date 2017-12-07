@@ -7,6 +7,9 @@ from common.action import hook_classes
 from common.telegram import telegram_utils
 
 from dailydevo import desiringgod_utils
+from user import user_actions
+
+PROMPT = "Here are today's articles from desiringgod.org!\n{}\nTap on any one to get the article!"
 
 class DGDevoHook(hook_classes.Hook):
     def identifier(self):
@@ -15,11 +18,19 @@ class DGDevoHook(hook_classes.Hook):
     def name(self):
         return "Desiring God Articles"
 
-    def resolve(self, userObj):
-        passage = desiringgod_utils.get_desiringgoddevo(userObj.get_version())
+    def description(self):
+        return "Articles from DesiringGod.org"
 
-        if passage is not None:
-            telegram_utils.send_msg(passage, userObj.get_uid())
+    def resolve(self, userObj):
+        refs = desiringgod_utils.get_desiringgod_raw()
+
+        if refs is not None:
+            options = refs
+            refString = "\n".join(options)
+            options.append(user_actions.UserDoneAction().name())
+
+            telegram_utils.send_url_keyboard(PROMPT.format(refString), userObj.get_uid(), options, urls, 1)
+            userObj.set_state(self.identifier())
 
 
 def get():

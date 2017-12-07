@@ -14,9 +14,10 @@ from common.telegram import telegram_utils
 
 from bible import bible_utils
 
+# Link to fetch html from
 MCHEYNE_URL = "http://www.edginet.org/mcheyne/rss_feed.php?type=rss_2.0&tz=8&cal=classic&bible=esv&conf=no"
 
-MCHEYNE_IGNORE = ""
+# Which class to isolate?
 MCHEYNE_SELECT = "title"
 
 def get_mcheyne_raw():

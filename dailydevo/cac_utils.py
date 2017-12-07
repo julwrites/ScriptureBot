@@ -12,20 +12,17 @@ from google.appengine.api import urlfetch, urlfetch_errors
 from common import debug, html_utils, constants
 from common.telegram import telegram_utils
 
-
+# Link to fetch html from
 CAC_URL = "https://cac.org/category/daily-meditations/"
 
+# Coarse isolation of the html block we want
 CAC_DEVO_START = "<hr>"
 CAC_DEVO_END = "<p><strong>References:"
 
+# Which class to isolate?
 CAC_DEVO_SELECT = "cac-devo-text"
+# Which tags to ignore?
 CAC_DEVO_IGNORE = "h2"
-CAC_DEVO_LINKS = "href"
-CAC_DEVO_TITLE = "h3"
-
-REFERENCE = "reference"
-VERSION = "version"
-DEVO = "devo"
 
 def fetch_cac(version="NIV"):
     formatUrl = CAC_URL
@@ -34,7 +31,7 @@ def fetch_cac(version="NIV"):
     if html is None:
         return None
 
-    debug.log("Html: " + html)
+    # debug.log("Html: " + html)
 
     soup = html_utils.html_to_soup(html)
 

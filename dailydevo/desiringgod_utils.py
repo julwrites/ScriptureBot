@@ -12,23 +12,18 @@ from google.appengine.api import urlfetch, urlfetch_errors
 from common import debug, html_utils, constants
 from common.telegram import telegram_utils
 
-
+# Link to fetch html from
 DG_URL = "https://www.desiringgod.org/articles"
 
+# Coarse isolation of the html block we want
 DG_DEVO_START = "<main role='main'>"
 DG_DEVO_END = "</main>"
 
-DG_DEVO_SELECT = "highlighted-section"
-DG_DEVO_IGNORE = "h2"
-DG_DEVO_LINKS = "href"
-DG_DEVO_TITLE = "h3"
+# Which class to isolate?
+DG_DEVO_SELECT = "card__shadow"
 
-REFERENCE = "reference"
-VERSION = "version"
-DEVO = "devo"
-
-def fetch_desiringgod(version="NIV"):
-    formatUrl = DG_URL
+def fetch_desiringgod(query=""):
+    formatUrl = DG_URL + "/" + query
 
     html = html_utils.fetch_html(formatUrl, DG_DEVO_START, DG_DEVO_END)
     if html is None:
@@ -40,13 +35,10 @@ def fetch_desiringgod(version="NIV"):
 
     return soup 
 
-def get_desiringgoddevo_raw(version="NIV"):
-    soup = fetch_desiringgod(version)
+def get_desiringgod_raw(query=""):
+    soup = fetch_desiringgod(query)
     if soup is None:
         return None
-
-    for tag in soup.select(DG_DEVO_IGNORE):
-        tag.decompose()
 
     # Steps through all the html types and mark these
     soup = html_utils.stripmd_soup(soup)
@@ -70,8 +62,8 @@ def get_desiringgoddevo_raw(version="NIV"):
 
     return passage
 
-def get_desiringgoddevo(version="NIV"):
-    passage = get_desiringgoddevo_raw(version)
+def get_desiringgod(query=""):
+    passage = get_desiringgod_raw(query)
 
     if passage is None:
         return None
