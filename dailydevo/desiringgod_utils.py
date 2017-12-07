@@ -30,7 +30,7 @@ def fetch_desiringgod():
     if html is None:
         return None
 
-    debug.log("Html: " + html)
+    # debug.log("Html: " + html)
 
     soup = html_utils.html_to_soup(html)
 
@@ -40,6 +40,8 @@ def get_desiringgod_raw():
     soup = fetch_desiringgod()
     if soup is None:
         return None
+
+    debug.log("Selecting tag: " + DG_SELECT)
 
     blocks = []
     for tag in soup.select(DG_SELECT):
