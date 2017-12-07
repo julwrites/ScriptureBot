@@ -32,6 +32,8 @@ def fetch_desiringgod(query=""):
     if html is None:
         return None
 
+    debug.log("Html: " + html)
+
     soup = html_utils.html_to_soup(html)
 
     return soup 
@@ -43,6 +45,7 @@ def get_desiringgod_raw(query=""):
 
     blocks = []
     for tag in soup.select(DG_SELECT):
+        debug.log("Selecting " + tag)
         blocks.append({"text":tag["data-title"], "url":tag["data-link"]})
 
     return blocks
