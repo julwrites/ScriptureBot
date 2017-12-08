@@ -26,9 +26,9 @@ class DGDevoHook(hook_classes.Hook):
 
         if refs is not None:
             refs.append({"title":user_actions.UserDoneAction().name(), "link":""})
-            options = [telegram_utils.make_button(text=text_utils.stringify(ref["title"]), fields={"url":text_utils.stringify(ref["link"])}) for ref in refs]
+            options = [telegram_utils.make_button(text=ref["title"], fields={"url":ref["link"]}) for ref in refs]
 
-            telegram_utils.send_url_keyboard(PROMPT, userObj.get_uid(), options, 1)
+            telegram_utils.send_msg_keyboard(PROMPT, userObj.get_uid(), options, 1)
 
 def get():
     return [
