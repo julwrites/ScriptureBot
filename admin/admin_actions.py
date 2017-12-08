@@ -9,6 +9,35 @@ from common.action import action_classes
 from user import user_utils
 from admin import admin_utils
 
+
+class AdminNotifyAction(action_classes.Action):
+    def identifier(self):
+        return "/notify"
+
+    def name(self):
+        return "Notifies users about Bot Update"
+
+    def resolve(self, userObj, msg):
+        if admin_utils.access(userObj.get_uid()):
+            # Read user database
+            query = user_utils.get_user_query()
+            query.filter("active =", True)
+
+            msg = telegram_utils.strip_command(msg, self.identifier())
+
+            try:
+                userList = []
+                for dbUser in query.run(batch_size=10):
+                    dbUserObj = user_utils.get_user(user_utils.get_uid(dbUser))
+                    telegram_utils.send_msg(msg, dbUserObj.get_uid())
+
+            except Exception as e:
+                debug.log(str(e))
+
+            return True 
+        return False
+
+
 class AdminDumpAction(action_classes.Action):
     def identifier(self):
         return "/dump"
@@ -142,8 +171,10 @@ class AdminFeedbackAction(action_classes.Action):
 
 def get():
     return [
+        AdminNotifyAction(),
         AdminDumpAction(),
         AdminCleanAction(),
         AdminMigrateAction(),
         AdminRagnarokAction(),
+        AdminFeedbackAction(),
     ]
