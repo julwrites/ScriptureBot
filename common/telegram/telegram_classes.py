@@ -38,8 +38,9 @@ class TelegramPost():
                 method=urlfetch.POST, 
                 headers=JSON_HEADER
                 )
-        except:
+        except Exception as e:
             debug.log("Send failed! " + TELEGRAM_URL_SEND + ", " + data)
+            debug.err(e)
 
     def add_text(self, msg):
         debug.log("Adding text for " + self.uid())

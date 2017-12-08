@@ -54,11 +54,8 @@ def for_each_user(fn):
     query = get_user_query()
     query.filter("active =", True)
 
-    try:
-        for dbUser in query.run(batch_size=500):
-            fn(get_user(get_uid(dbUser)))
-    except Exception as e:
-        debug.log(text_utils.stringify(e))
+    for dbUser in query.run(batch_size=500):
+        fn(get_user(get_uid(dbUser)))
 
 def migrate(userObj):
     newUserObj = bibleuser_classes.BibleUser(key_name=text_utils.stringify(userObj.get_uid()))

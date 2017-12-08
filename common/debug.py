@@ -19,6 +19,11 @@ def log(msg):
         return
     logging.debug(msg)
 
+def err(e):
+    if not debug():
+        return
+    logging.debug(str(e))
+
 def log_cmd(cmd):
     if not debug():
         return

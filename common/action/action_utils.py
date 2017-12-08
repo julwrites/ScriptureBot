@@ -21,6 +21,7 @@ def execute(actions, userObj, msg):
             if action.resolve(userObj, msg):
                 return True
         return False
-    except:
+    except Exception as e:
         debug.log("Execute failed!")
+        debug.err(e)
     return False

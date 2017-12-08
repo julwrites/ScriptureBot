@@ -17,8 +17,9 @@ class Hook():
                 if self.match(userObj):
                     debug.log_hook(self.identifier())
                     self.resolve(userObj)
-        except:
+        except Exception as e:
             debug.log("Hook failed! " + self.identifier())
+            debug.err(e)
 
     def dispatch(self):
         user_utils.for_each_user(self.try_execute)

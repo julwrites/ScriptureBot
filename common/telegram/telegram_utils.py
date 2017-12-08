@@ -36,7 +36,7 @@ def send_msg(msg, userId):
     chunks = []
     while len(msg) > MAX_LENGTH:
         last = last_md(msg[:MAX_LENGTH])
-        if last <= 0:
+        
             last = min(last, msg.rfind(" ", 0, MAX_LENGTH))
         if last <= 0:
             last = MAX_LENGTH
@@ -83,7 +83,7 @@ def create_keyboard_post(msg, userId):
 def make_button(text="", fields={}):
     debug.log("Creating button: " + text)
     button = {"text": text}
-    button = {**button, **fields}
+    button.update(fields)
     debug.log("Created button: " + button)
     return button
 

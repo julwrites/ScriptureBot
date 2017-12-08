@@ -31,8 +31,9 @@ class Action():
         try:
             if self.waiting(userObj) or self.match(msg):
                 return self.resolve(userObj, msg)
-        except:
+        except Exception as e:
             debug.log("Tried, but failed to execute " + self.identifier())
+            debug.err(e)
         return False
 
 

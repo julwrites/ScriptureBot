@@ -25,14 +25,10 @@ class AdminNotifyAction(action_classes.Action):
 
             msg = telegram_utils.strip_command(msg, self.identifier())
 
-            try:
-                userList = []
-                for dbUser in query.run(batch_size=10):
-                    dbUserObj = user_utils.get_user(user_utils.get_uid(dbUser))
-                    telegram_utils.send_msg(msg, dbUserObj.get_uid())
-
-            except Exception as e:
-                debug.log(str(e))
+            userList = []
+            for dbUser in query.run(batch_size=10):
+                dbUserObj = user_utils.get_user(user_utils.get_uid(dbUser))
+                telegram_utils.send_msg(msg, dbUserObj.get_uid())
 
             return True 
         return False
@@ -51,16 +47,12 @@ class AdminDumpAction(action_classes.Action):
             query = user_utils.get_user_query()
             query.filter("active =", True)
 
-            try:
-                userList = []
-                for dbUser in query.run(batch_size=10):
-                    dbUserObj = user_utils.get_user(user_utils.get_uid(dbUser))
-                    userList.append(dbUserObj.get_description())
-                userListMsg = "\n".join(userList)
-                telegram_utils.send_msg(userListMsg, userObj.get_uid())
-
-            except Exception as e:
-                debug.log(str(e))
+            userList = []
+            for dbUser in query.run(batch_size=10):
+                dbUserObj = user_utils.get_user(user_utils.get_uid(dbUser))
+                userList.append(dbUserObj.get_description())
+            userListMsg = "\n".join(userList)
+            telegram_utils.send_msg(userListMsg, userObj.get_uid())
 
             return True 
         return False
@@ -77,26 +69,22 @@ class AdminCleanAction(action_classes.Action):
             # Read user database
             query = user_utils.get_user_query()
 
-            try:
-                for dbUser in query.run():
-                    dbUserObj = user_utils.get_user(user_utils.get_uid(dbUser))
-                    if dbUserObj.get_name_string() == "-":
-                        debug.log("Deleting: " + dbUserObj.get_uid())
-                        dbUserObj.delete()
+            for dbUser in query.run():
+                dbUserObj = user_utils.get_user(user_utils.get_uid(dbUser))
+                if dbUserObj.get_name_string() == "-":
+                    debug.log("Deleting: " + dbUserObj.get_uid())
+                    dbUserObj.delete()
 
-                for dbUser in query.run():
-                    dbUserObj = user_utils.get_user(user_utils.get_uid(dbUser))
-                    count = 0
+            for dbUser in query.run():
+                dbUserObj = user_utils.get_user(user_utils.get_uid(dbUser))
+                count = 0
 
-                    for dbUserDup in query.run():
-                        dbUserObjDup = user_utils.get_user(user_utils.get_uid(dbUserDup))
-                        if dbUserObj.get_uid() == dbUserObjDup.get_uid():
-                            count += 1
-                            if count > 1:
-                                dbUserObjDup.delete()
-
-            except Exception as e:
-                debug.log(str(e))
+                for dbUserDup in query.run():
+                    dbUserObjDup = user_utils.get_user(user_utils.get_uid(dbUserDup))
+                    if dbUserObj.get_uid() == dbUserObjDup.get_uid():
+                        count += 1
+                        if count > 1:
+                            dbUserObjDup.delete()
 
             return True
         return False
@@ -113,12 +101,9 @@ class AdminMigrateAction(action_classes.Action):
             # Read user database
             query = user_utils.get_user_query()
 
-            try:
-                for dbUser in query.run():
-                    dbUserObj = user_utils.get_user(user_utils.get_uid(dbUser))
-                    user_utils.migrate(dbUserObj)
-            except Exception as e:
-                debug.log(str(e))
+            for dbUser in query.run():
+                dbUserObj = user_utils.get_user(user_utils.get_uid(dbUser))
+                user_utils.migrate(dbUserObj)
 
             return True
         return False
@@ -135,13 +120,10 @@ class AdminRagnarokAction(action_classes.Action):
             # Read user database
             query = user_utils.get_user_query()
 
-            try:
-                for dbUser in query.run(batch_size=500):
-                    dbUserObj = user_utils.get_user(user_utils.get_uid(dbUser))
-                    debug.log("Deleting: " + dbUserObj.get_uid())
-                    dbUserObj.delete()
-            except Exception as e:
-                debug.log(str(e))
+            for dbUser in query.run(batch_size=500):
+                dbUserObj = user_utils.get_user(user_utils.get_uid(dbUser))
+                debug.log("Deleting: " + dbUserObj.get_uid())
+                dbUserObj.delete()
 
             telegram_utils.send_msg("Baboomz~", userObj.get_uid())
             
