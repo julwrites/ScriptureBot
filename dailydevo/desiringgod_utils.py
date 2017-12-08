@@ -42,8 +42,8 @@ def get_desiringgod_raw():
         return None
 
     blocks = []
-    for tag in soup.find_all(class_=DG_SELECT):
-        debug.log("Selecting " + tag)
+    for tag in soup(class_=DG_SELECT):
+        debug.log("Selecting " + str(tag))
         blocks.append({"text":tag["data-title"], "url":tag["data-link"]})
 
     return blocks
