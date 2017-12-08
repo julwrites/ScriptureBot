@@ -36,7 +36,7 @@ class McheyneDailyAction(action_classes.Action):
 
         if refs is not None:
             refs.append(doneAction.name())
-            options=[telegram.make_button(text=ref) for ref in refs]
+            options=[telegram_utils.make_button(text=ref) for ref in refs]
 
             telegram_utils.send_msg_keyboard("", userObj.get_uid(), options, 1)
             userObj.set_state(self.identifier())
