@@ -87,6 +87,7 @@ def make_button(text="", fields={}):
     button = {"text": text}
     for key in fields.keys():
         button[key] = fields[key]
+    debug.log("Button created: " + str(button))
     return button
 
 def send_url_keyboard(msg, userId, buttons=[], width=KEYBOARD_WIDTH):
