@@ -36,7 +36,7 @@ class DGDevoAction(action_classes.Action):
             options = refs
             options.append({"text":doneAction.name(), "url":None})
 
-            telegram_utils.send_msg_keyboard("", userObj.get_uid(), options, 1)
+            telegram_utils.send_url_keyboard("", userObj.get_uid(), options, 1)
             userObj.set_state(self.identifier())
         
         return True
