@@ -19,7 +19,6 @@ DG_URL = "https://www.desiringgod.org/articles"
 DG_START = "<main role='main'>"
 DG_END = "</main>"
 
-
 # Which class to isolate?
 DG_SELECT = "share share--card js-share-values"
 
@@ -43,6 +42,7 @@ def get_desiringgod_raw():
 
     blocks = []
     for tag in soup(class_=DG_SELECT):
+        debug.log("Selecting " + tag["data-title"] + " with link " + tag["data-link"])
         blocks.append({"title":tag["data-title"], "link":tag["data-link"]})
 
     return blocks
