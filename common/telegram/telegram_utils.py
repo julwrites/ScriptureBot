@@ -80,10 +80,10 @@ def create_keyboard_post(msg, userId):
 
     return post
 
-def make_button(text, fields=[]):
+def make_button(text="", fields={}):
     button = {"text": text}
-    for field in fields:
-        button.update(field[0], field[1])
+    for key in fields.keys():
+        button.update(key, fields[key])
     return button
 
 def send_url_keyboard(msg, userId, buttons=[], width=KEYBOARD_WIDTH):
