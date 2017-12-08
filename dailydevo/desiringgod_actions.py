@@ -24,7 +24,7 @@ class DGDevoAction(action_classes.Action):
         refs = desiringgod_utils.get_desiringgod()
 
         if refs is not None:
-            ref.append([user_actions.UserDoneAction.name(), ""])
+            refs.append([user_actions.UserDoneAction.name(), ""])
             options = [telegram_utils.make_button(text=ref[0], fields={"url":ref[1]}) for ref in refs]
 
             telegram_utils.send_url_keyboard(PROMPT, userObj.get_uid(), options, 1)
