@@ -5,7 +5,7 @@ from common import debug
 from common.action import action_classes
 from common.telegram import telegram_utils
 
-from dailydevo import desiringgod_utils
+from dailydevo import desiringgod_utils, desiringgod_hooks
 from user import user_actions
 
 class DGDevoAction(action_classes.Action):
@@ -25,15 +25,8 @@ class DGDevoAction(action_classes.Action):
         if doneAction.try_execute(userObj, msg):
             return True
 
-        refs = desiringgod_utils.get_desiringgod()
+        desiringgod_hooks.DGDevoHook().resolve(userObj)
 
-        if refs is not None:
-            options = refs
-            options.append({"text":doneAction.name(), "url":None})
-
-            telegram_utils.send_url_keyboard("", userObj.get_uid(), options, 1)
-            userObj.set_state(self.identifier())
-        
         return True
 
 

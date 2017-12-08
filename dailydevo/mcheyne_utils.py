@@ -20,12 +20,22 @@ MCHEYNE_URL = "http://www.edginet.org/mcheyne/rss_feed.php?type=rss_2.0&tz=8&cal
 # Which class to isolate?
 MCHEYNE_SELECT = "title"
 
-def get_mcheyne_raw():
+def fetch_mcheyne():
     formatUrl = MCHEYNE_URL
 
     rss = html_utils.fetch_rss(formatUrl)
+    if rss is None:
+        return None
+
+    # debug.log("RSS: " + rss)
+
     soup = html_utils.rss_to_soup(rss)
 
+    return soup 
+
+
+def get_mcheyne_raw():
+    soup = fetch_mcheyne()
     if soup is None:
         return None
 
@@ -39,9 +49,9 @@ def get_mcheyne_raw():
     return blocks 
 
 def get_mcheyne():
-    refs = get_mcheyne_raw()
+    blocks = get_mcheyne_raw()
 
-    if refs is None:
+    if blocks is None:
         return None
 
-    return refs
+    return blocks 

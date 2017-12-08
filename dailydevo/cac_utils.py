@@ -63,14 +63,14 @@ def get_cacdevo_raw(version="NIV"):
     for tag in soup(class_=CAC_DEVO_SELECT):
         blocks.append(tag.text)
 
-    passage = telegram_utils.join(blocks, "\n\n")
-
-    return passage
+    return blocks
 
 def get_cacdevo(version="NIV"):
-    passage = get_cacdevo_raw(version)
+    blocks = get_cacdevo_raw(version)
 
-    if passage is None:
+    if blocks is None:
         return None
+
+    passage = telegram_utils.join(blocks, "\n\n")
 
     return passage
