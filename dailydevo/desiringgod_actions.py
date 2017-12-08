@@ -25,7 +25,7 @@ class DGDevoAction(action_classes.Action):
 
         if refs is not None:
             refs.append([user_actions.UserDoneAction.name(), ""])
-            options = [telegram_utils.make_button(text=ref[0], fields={"url":ref[1]}) for ref in refs]
+            options = [telegram_utils.make_button(text=ref["title"], fields={"url":ref["link"]}) for ref in refs]
 
             telegram_utils.send_url_keyboard(PROMPT, userObj.get_uid(), options, 1)
 
