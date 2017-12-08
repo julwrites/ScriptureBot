@@ -67,7 +67,7 @@ def format_keyboard(buttons=[], width=KEYBOARD_WIDTH):
             if numButtons == 0:
                 break
 
-            keyboardRow.append(buttons[i * width + j])
+            keyboardRow.append({"text":buttons[i * width + j]})
             numButtons -= 1
         
         keyboardData.append(keyboardRow)
