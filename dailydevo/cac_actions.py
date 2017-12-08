@@ -5,7 +5,7 @@ from common import debug
 from common.action import action_classes
 from common.telegram import telegram_utils
 
-from dailydevo import cac_utils
+from dailydevo import cac_hooks
 
 
 class CACDevoAction(action_classes.Action):
@@ -16,10 +16,7 @@ class CACDevoAction(action_classes.Action):
         return "Center for Action and Contemplation Devotional"
 
     def resolve(self, userObj, msg):
-        passage = cac_utils.get_cacdevo(userObj.get_version())
-
-        if passage is not None:
-            telegram_utils.send_msg(passage, userObj.get_uid())
+        cac_hooks.CACDevoHook().resolve(userObj)
 
         return True
 

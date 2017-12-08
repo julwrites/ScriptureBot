@@ -6,7 +6,7 @@ from common import debug
 from common.action import action_classes
 from common.telegram import telegram_utils
 
-from dailydevo import mcheyne_utils
+from dailydevo import mcheyne_utils, mcheyne_hooks
 from bible import bible_utils
 from user import user_actions
 
@@ -32,14 +32,7 @@ class McheyneDailyAction(action_classes.Action):
             debug.log("Sending passage " + passage)
             telegram_utils.send_msg(passage, userObj.get_uid())
 
-        refs = mcheyne_utils.get_mcheyne()
-
-        if refs is not None:
-            refs.append(user_actions.UserDoneAction().name())
-            options=[telegram_utils.make_button(text=ref) for ref in refs]
-
-            telegram_utils.send_msg_keyboard("", userObj.get_uid(), options, 1)
-            userObj.set_state(self.identifier())
+        mcheyne_hooks.McheyneDailyHook().resolve(userObj)
 
         return True
 
