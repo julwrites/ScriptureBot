@@ -25,11 +25,6 @@ class DGDevoAction(action_classes.Action):
         if doneAction.try_execute(userObj, msg):
             return True
 
-        # passage = desiringgod_utils.get_desiringgod(query)
-        # if passage is not None:
-        #     debug.log("Sending passage " + passage)
-        #     telegram_utils.send_msg(passage, userObj.get_uid())
-
         refs = desiringgod_utils.get_desiringgod()
 
         if refs is not None:

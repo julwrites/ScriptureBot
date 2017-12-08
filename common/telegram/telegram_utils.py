@@ -86,17 +86,13 @@ def make_button(text, fields=[]):
         button.update(field[0], field[1])
     return button
 
-def send_url_keyboard(msg, userId, options=[], width=KEYBOARD_WIDTH):
+def send_url_keyboard(msg, userId, buttons=[], width=KEYBOARD_WIDTH):
     post = create_keyboard_post(msg, userId)
-    buttons = []
-    for option in options:
-        buttons.append(option)
     post.add_inline_keyboard(format_keyboard(buttons, width))
     post.send()
 
-def send_msg_keyboard(msg, userId, options=[], width=KEYBOARD_WIDTH, oneTime=False):
+def send_msg_keyboard(msg, userId, buttons=[], width=KEYBOARD_WIDTH, oneTime=False):
     post = create_keyboard_post(msg, userId)
-    buttons = [make_button(option) for option in options]
     post.add_keyboard(format_keyboard(buttons, width), oneTime)
     post.send()
 
