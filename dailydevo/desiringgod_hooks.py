@@ -25,8 +25,9 @@ class DGDevoHook(hook_classes.Hook):
         refs = desiringgod_utils.get_desiringgod_raw()
 
         if refs is not None:
-            options = refs
-            options.append({"text":user_actions.UserDoneAction().name(), "url":""})
+            options=[{"text":"Done", "url":""}]
+            # options = refs
+            # options.append({"text":user_actions.UserDoneAction().name(), "url":""})
 
             telegram_utils.send_url_keyboard(PROMPT, userObj.get_uid(), options, 1)
             userObj.set_state(self.identifier())
