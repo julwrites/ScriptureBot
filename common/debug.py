@@ -7,15 +7,21 @@ import logging
 from common import chrono
 
 DEBUG_MODE = True
+VERBOSE_MODE = True
 
 def debug():
     return DEBUG_MODE
+
+def verbose():
+    return VERBOSE_MODE
 
 def toggle():
     DEBUG_MODE = not DEBUG_MODE
 
 def log(msg):
     if not debug():
+        return
+    if not verbose():
         return
     logging.debug(msg)
 
