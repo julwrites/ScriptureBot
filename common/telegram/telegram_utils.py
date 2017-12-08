@@ -81,6 +81,7 @@ def create_keyboard_post(msg, userId):
     return post
 
 def make_button(text="", fields={}):
+    debug.log("Creating button: " + text + fields)
     button = {"text": text}
     button.update(fields)
     debug.log("Button created: " + button)
