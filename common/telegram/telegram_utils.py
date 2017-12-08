@@ -78,6 +78,8 @@ def create_keyboard_post(msg, userId):
     post = TelegramPost(userId)
     if text_utils.is_valid(msg):
         post.add_text(msg)
+    else:
+        post.add_text("")
 
     return post
 
