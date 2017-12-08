@@ -5,8 +5,10 @@ from common import debug
 from common.action import action_classes
 from common.telegram import telegram_utils
 
-from dailydevo import desiringgod_utils, desiringgod_hooks
+from dailydevo import desiringgod_utils
 from user import user_actions
+
+PROMPT = "Here are today's articles from desiringgod.org!\nTap on any one to get the article!"
 
 class DGDevoAction(action_classes.Action):
     def identifier(self):
@@ -19,13 +21,14 @@ class DGDevoAction(action_classes.Action):
         return "Articles from DesiringGod.org"
 
     def resolve(self, userObj, msg):
-        query = telegram_utils.strip_command(msg, self.identifier())
+        refs = desiringgod_utils.get_desiringgod()
 
-        doneAction = user_actions.UserDoneAction()
-        if doneAction.try_execute(userObj, msg):
-            return True
+        if refs is not None:
+            options=[{"text":"Done", "url":""}]
+            # options = refs
+            # options.append({"text":user_actions.UserDoneAction().name(), "url":""})
 
-        desiringgod_hooks.DGDevoHook().resolve(userObj)
+            telegram_utils.send_url_keyboard(PROMPT, userObj.get_uid(), options, 1)
 
         return True
 
