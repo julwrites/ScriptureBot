@@ -28,7 +28,7 @@ class DGDevoHook(hook_classes.Hook):
             refs.append({"title":user_actions.UserDoneAction().name(), "link":""})
             options = [telegram_utils.make_button(text=ref["title"], fields={"url":ref["link"]}) for ref in refs]
 
-            telegram_utils.send_msg_keyboard(PROMPT, userObj.get_uid(), options, 1)
+            telegram_utils.send_url_keyboard(PROMPT, userObj.get_uid(), options, 1)
 
 def get():
     return [
