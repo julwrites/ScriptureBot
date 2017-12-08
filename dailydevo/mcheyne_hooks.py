@@ -30,6 +30,7 @@ class McheyneDailyHook(hook_classes.Hook):
             options = [telegram_utils.make_button(text=ref) for ref in refs]
 
             telegram_utils.send_msg_keyboard(PROMPT.format(refString), userObj.get_uid(), options, 1)
+            userObj.set_state(self.identifier())
 
 def get():
     return [

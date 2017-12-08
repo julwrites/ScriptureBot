@@ -21,6 +21,17 @@ class McheyneDailyAction(action_classes.Action):
         return "M'cheyne Bible Reading Plan (1 Year)"
 
     def resolve(self, userObj, msg):
+        query = telegram_utils.strip_command(msg, self.identifier())
+
+        doneAction = user_actions.UserDoneAction()
+        if doneAction.try_execute(userObj, msg):
+            return True
+
+        passage = bible_utils.get_passage(query, userObj.get_version())
+        if passage is not None:
+            debug.log("Sending passage " + passage)
+            telegram_utils.send_msg(passage, userObj.get_uid())
+
         refs = mcheyne_utils.get_mcheyne()
 
         if refs is not None:
@@ -28,6 +39,7 @@ class McheyneDailyAction(action_classes.Action):
             options=[telegram_utils.make_button(text=ref) for ref in refs]
 
             telegram_utils.send_msg_keyboard("", userObj.get_uid(), options, 1)
+            userObj.set_state(self.identifier())
 
         return True
 
