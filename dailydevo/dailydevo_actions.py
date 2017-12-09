@@ -11,6 +11,8 @@ from common import text_utils, debug
 from common.action import action_classes
 from common.telegram import telegram_utils
 
+from user import user_actions
+
 PROMPT = "Choose a Daily-Devo to read!"
 BADQUERY = "I don't have this devotional!"
 CONFIRM = [
