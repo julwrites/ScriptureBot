@@ -18,6 +18,22 @@ class Action():
         return False
 
     # Do not overwrite if possible, this checks the message text against the command name
+    def match_command(self, msg):
+        if msg is not None:
+            msgText = msg.get("text").strip() 
+            if text_utils.overlap_compare(msgText, self.identifier()):
+                debug.log("Matched with " + self.identifier())
+                return True
+        return False
+
+    def match_name(self, msg):
+        if msg is not None:
+            msgText = msg.get("text").strip() 
+            if text_utils.text_compare(msgText, self.name()):
+                debug.log("Matched with " + self.name())
+                return True
+        return False
+
     def match(self, msg):
         if msg is not None:
             msgText = msg.get("text").strip() 

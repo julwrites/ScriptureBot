@@ -4,23 +4,18 @@
 # Local modules
 from common import debug
 
-def clear():
-    debug.log("Clearing the user's state and keyboard")
-
-    telegram_utils.send_close_keyboard(confirmString, userObj.get_uid())
-    userObj.set_state(None)
-
-
 def execute(actions, userObj, msg):
     try:
         debug.log("Trying actions: " + "|".join([action.identifier() for action in actions]))
 
-        matched = [action for action in actions if action.match(msg)]
+        # Execute in order:
+        # Commands
+        # Waiting
+        # Names
 
-        if len(matched) > 0:
-            clear()
+        commands = [action for action in actions if action.match_command(msg)]
 
-        for action in matched:
+        for action in commands:
             debug.log_action(action.identifier())
             if action.resolve(userObj, msg):
                 return True
@@ -31,6 +26,14 @@ def execute(actions, userObj, msg):
             debug.log_action(action.identifier())
             if action.resolve(userObj, msg):
                 return True
+
+        names = [action for action in actions if action.match_name(msg)]
+
+        for action in names:
+            debug.log_action(action.identifier())
+            if action.resolve(userObj, msg):
+                return True
+
 
         return False
     except Exception as e:
