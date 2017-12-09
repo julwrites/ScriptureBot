@@ -28,7 +28,7 @@ class AdminNotifyAction(action_classes.Action):
             userList = []
             for dbUser in query.run(batch_size=10):
                 dbUserObj = user_utils.get_user(user_utils.get_uid(dbUser))
-                telegram_utils.send_msg(msg, dbUserObj.get_uid())
+                telegram_utils.send_msg(msg.format(dbUserObj.get_name_string()), dbUserObj.get_uid())
 
             return True 
         return False
