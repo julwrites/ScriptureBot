@@ -10,12 +10,12 @@ from dailydevo import dailydevo_actions, dailydevo_hooks
 from subscribe import subscribe_actions
 
 def get_actions():
-    return tms_actions.get() + \
+    return  admin_actions.get() + \
+            tms_actions.get() + \
             user_actions.get() + \
             dailydevo_actions.get() + \
             subscribe_actions.get() + \
-            bible_actions.get() + \
-            admin_actions.get()
+            bible_actions.get()
 
 def get_hooks():
     return tms_hooks.get() + \
