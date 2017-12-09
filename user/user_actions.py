@@ -28,14 +28,10 @@ class UserDoneAction(action_classes.Action):
         return "Done"
 
     def resolve(self, userObj, msg):
-        if userObj.get_state() is None:
-            return True
-
         choose = random.randint(0, len(CONFIRM) - 1)
         confirmString = CONFIRM[choose].format(userObj.get_name_string())
 
-        telegram_utils.send_close_keyboard(confirmString, userObj.get_uid())
-        userObj.set_state(None)
+        action_utils.clear()
 
         return True
 
