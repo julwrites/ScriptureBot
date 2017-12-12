@@ -1,4 +1,3 @@
-
 # coding=utf-8
 
 # Python std modules
@@ -13,6 +12,7 @@ import modules
 APP_HOOKS_URL = "/hooks"
 APP_DAILY_HOOKS_URL = APP_HOOKS_URL + "/daily"
 
+
 class HookHandler(webapp2.RequestHandler):
     def get(self):
         self.post()
@@ -24,9 +24,9 @@ class HookHandler(webapp2.RequestHandler):
             hook.dispatch()
 
 
-
-app = webapp2.WSGIApplication([
-    # (url being accessed, class to call)
-    (APP_DAILY_HOOKS_URL, HookHandler),
-], debug=True)
- 
+app = webapp2.WSGIApplication(
+    [
+        # (url being accessed, class to call)
+        (APP_DAILY_HOOKS_URL, HookHandler),
+    ],
+    debug=True)

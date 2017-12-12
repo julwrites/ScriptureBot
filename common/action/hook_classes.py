@@ -1,4 +1,3 @@
-
 # coding=utf-8
 
 # Local modules
@@ -6,6 +5,7 @@ from common import debug
 from common.action import action_classes
 
 from user import user_utils
+
 
 # A hook is an action which is dispatched on all users.
 # It checks for a subscription, and if the subscription matches itself, it executes the action.
@@ -31,8 +31,6 @@ class Hook():
             debug.log("Matched with " + self.identifier())
             return True
         return False
-
-
 
     # To be inherited and overwritten with the command name of this action
     def identifier(self):

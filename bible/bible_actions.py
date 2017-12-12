@@ -1,4 +1,3 @@
-
 # coding=utf-8
 
 # Local modules
@@ -45,7 +44,6 @@ class BiblePassageAction(action_classes.Action):
 
         return True
 
+
 def get():
-    return [
-        BiblePassageAction()
-    ]
+    return [BiblePassageAction()]

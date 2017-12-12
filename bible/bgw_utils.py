@@ -1,4 +1,3 @@
-
 # coding=utf-8
 
 # Python modules
@@ -15,7 +14,6 @@ from common.telegram import telegram_utils
 
 from bible import bgw_classes
 
-
 BGW_URL = "http://www.biblegateway.com/passage/?search={}&version={}&interface=print"
 
 BGW_PASSAGE_CLASS = "passage-text"
@@ -31,6 +29,7 @@ REFERENCE = "reference"
 VERSION = "version"
 PASSAGE = "passage"
 
+
 def fetch_bgw(query, version="NIV"):
     formatRef = urllib.quote(query.lower().strip())
     formatUrl = BGW_URL.format(formatRef, version)
@@ -41,8 +40,9 @@ def fetch_bgw(query, version="NIV"):
         return None
 
     soup = html_utils.html_to_soup(html, BGW_PASSAGE_CLASS)
- 
-    return soup 
+
+    return soup
+
 
 def get_passage_raw(ref, version="NIV"):
     debug.log("Querying for passage " + ref)
@@ -69,7 +69,8 @@ def get_passage_raw(ref, version="NIV"):
     html_utils.foreach_header(soup, telegram_utils.bold)
 
     # Marking the parts of the soup we want to print
-    soup = html_utils.mark_soup(soup, BGW_PASSAGE_SELECT, html_utils.html_common_tags())
+    soup = html_utils.mark_soup(soup, BGW_PASSAGE_SELECT,
+                                html_utils.html_common_tags())
 
     # Only at the last step do we do other destructive formatting
     soup = html_utils.strip_soup(soup)
@@ -85,6 +86,7 @@ def get_passage_raw(ref, version="NIV"):
 
     return bgw_classes.BGWPassage(reference, version, text)
 
+
 def get_passage(ref, version="NIV"):
     passage = get_passage_raw(ref, version)
 
@@ -96,6 +98,7 @@ def get_passage(ref, version="NIV"):
     text += "\n\n" + passage.get_text()
 
     return text
+
 
 def get_reference(query):
     debug.log("Querying for reference " + query)
@@ -109,6 +112,7 @@ def get_reference(query):
 
     return reference
 
+
 def get_link(query, version="NIV"):
     debug.log("Querying for link " + query)
 
@@ -119,6 +123,7 @@ def get_link(query, version="NIV"):
         return None
 
     return url
+
 
 def get_versions():
     return BGW_VERSIONS

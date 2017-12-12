@@ -9,9 +9,9 @@ from bible import bible_utils
 
 from tms import tms_utils
 
-
 PROMPT = "Give me a Verse reference, or Pack and Verse number\n(P.S. you can even try giving me a topic)"
 BADQUERY = "I can't find anything related to this, try another one?"
+
 
 class TMSAction(action_classes.Action):
     def identifier(self):
@@ -43,7 +43,8 @@ class TMSAction(action_classes.Action):
                 verse = tms_utils.query_verse_by_topic(query)
 
             if verse is not None:
-                passage = bible_utils.get_passage_raw(verse.reference, userObj.get_version())
+                passage = bible_utils.get_passage_raw(verse.reference,
+                                                      userObj.get_version())
                 verseMsg = tms_utils.format_verse(verse, passage)
 
                 telegram_utils.send_msg(user=userObj.get_uid(), text=verseMsg)
@@ -59,6 +60,4 @@ class TMSAction(action_classes.Action):
 
 
 def get():
-    return [
-        TMSAction()
-    ]
+    return [TMSAction()]

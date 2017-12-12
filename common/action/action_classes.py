@@ -1,4 +1,3 @@
-
 # coding=utf-8
 
 # Python modules
@@ -6,6 +5,7 @@ import json
 
 # Local modules
 from common import debug, text_utils
+
 
 # Defines an interface for all functionality that can be executed by the bot
 class Action():
@@ -20,7 +20,7 @@ class Action():
     # Do not overwrite if possible, this checks the message text against the command name
     def match_command(self, msg):
         if msg is not None:
-            msgText = msg.get("text").strip() 
+            msgText = msg.get("text").strip()
             if text_utils.overlap_compare(msgText, self.identifier()):
                 debug.log("Matched with " + self.identifier())
                 return True
@@ -28,7 +28,7 @@ class Action():
 
     def match_name(self, msg):
         if msg is not None:
-            msgText = msg.get("text").strip() 
+            msgText = msg.get("text").strip()
             if text_utils.text_compare(msgText, self.name()):
                 debug.log("Matched with " + self.name())
                 return True
@@ -36,7 +36,7 @@ class Action():
 
     def match(self, msg):
         if msg is not None:
-            msgText = msg.get("text").strip() 
+            msgText = msg.get("text").strip()
             if text_utils.overlap_compare(msgText, self.identifier()) or \
                 text_utils.text_compare(msgText, self.name()):
                 debug.log("Matched with " + self.identifier())
@@ -51,8 +51,6 @@ class Action():
             debug.log("Tried, but failed to execute " + self.identifier())
             debug.err(e)
         return False
-
-
 
     # To be inherited if this action is to be exposed as a command
     def is_command(self):

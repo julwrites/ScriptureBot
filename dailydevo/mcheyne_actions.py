@@ -1,4 +1,3 @@
-
 # coding=utf8
 
 # Local modules
@@ -9,6 +8,7 @@ from common.telegram import telegram_utils
 from dailydevo import mcheyne_utils, mcheyne_hooks
 from bible import bible_utils
 from user import user_actions
+
 
 class McheyneDailyAction(action_classes.Action):
     def identifier(self):
@@ -36,7 +36,6 @@ class McheyneDailyAction(action_classes.Action):
 
         return True
 
+
 def get():
-    return [
-        McheyneDailyAction()
-    ]
+    return [McheyneDailyAction()]

@@ -1,4 +1,3 @@
-
 # coding=utf-8
 
 # Local modules
@@ -10,7 +9,9 @@ class Markup():
         self.formatData = {}
 
     def set_field(self, key, value):
-        debug.log(unicode(self.__class__.__name__) +  ": setting field " + unicode(key) + ": " + unicode(value))
+        debug.log(
+            unicode(self.__class__.__name__) + ": setting field " +
+            unicode(key) + ": " + unicode(value))
         self.formatData[key] = value
 
     def set_text(self, text):
@@ -21,6 +22,8 @@ class Markup():
 
 
 KEYBOARD_WIDTH = 3
+
+
 class Keyboard(Markup):
     def __init__(self):
         Markup.__init__(self)
@@ -55,6 +58,7 @@ class Keyboard(Markup):
 
         return keyboard
 
+
 class ReplyKeyboard(Keyboard):
     def __init__(self):
         Keyboard.__init__(self)
@@ -63,6 +67,7 @@ class ReplyKeyboard(Keyboard):
         self.set_field("keyboard", self.format())
 
         return self.formatData
+
 
 class InlineKeyboard(Keyboard):
     def __init__(self):
@@ -73,6 +78,7 @@ class InlineKeyboard(Keyboard):
 
         return self.formatData
 
+
 class CloseKeyboard(Markup):
     def __init__(self):
         Markup.__init__(self)
@@ -81,6 +87,7 @@ class CloseKeyboard(Markup):
         self.set_field("remove_keyboard", True)
 
         return self.formatData
+
 
 class Post(Markup):
     def __init__(self):
@@ -93,4 +100,3 @@ class Post(Markup):
 
     def set_reply(self, reply):
         self.set_field("reply_markup", reply.data())
-

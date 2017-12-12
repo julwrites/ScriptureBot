@@ -1,4 +1,3 @@
-
 # coding=utf-8
 
 # Python modules
@@ -24,6 +23,7 @@ CAC_DEVO_SELECT = "cac-devo-text"
 # Which tags to ignore?
 CAC_DEVO_IGNORE = "h2"
 
+
 def fetch_cac(version="NIV"):
     formatUrl = CAC_URL
 
@@ -35,7 +35,8 @@ def fetch_cac(version="NIV"):
 
     soup = html_utils.html_to_soup(html)
 
-    return soup 
+    return soup
+
 
 def get_cacdevo_raw(version="NIV"):
     soup = fetch_cac(version)
@@ -52,18 +53,21 @@ def get_cacdevo_raw(version="NIV"):
     soup = html_utils.link_soup(soup, telegram_utils.link)
 
     # Marks the parts of the soup that we want
-    soup = html_utils.mark_soup(soup, CAC_DEVO_SELECT, html_utils.html_common_tags())
+    soup = html_utils.mark_soup(soup, CAC_DEVO_SELECT,
+                                html_utils.html_common_tags())
 
     # Prettifying the stuffs
     html_utils.foreach_header(soup, telegram_utils.bold)
     html_utils.style_soup(soup, html_utils.unstrip_md, html_utils.html_p_tag())
-    html_utils.style_soup(soup, telegram_utils.italics, html_utils.html_p_tag())
+    html_utils.style_soup(soup, telegram_utils.italics,
+                          html_utils.html_p_tag())
 
     blocks = []
     for tag in soup(class_=CAC_DEVO_SELECT):
         blocks.append(tag.text)
 
     return blocks
+
 
 def get_cacdevo(version="NIV"):
     blocks = get_cacdevo_raw(version)

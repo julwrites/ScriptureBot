@@ -1,12 +1,13 @@
-
 # coding=utf-8
 
 # Local modules
 from common import debug
 
+
 def execute(actions, userObj, msg):
     try:
-        debug.log("Trying actions: " + "|".join([action.identifier() for action in actions]))
+        debug.log("Trying actions: " +
+                  "|".join([action.identifier() for action in actions]))
 
         # Execute in order:
         # Commands
@@ -33,7 +34,6 @@ def execute(actions, userObj, msg):
             debug.log_action(action.identifier())
             if action.resolve(userObj, msg):
                 return True
-
 
         return False
     except Exception as e:

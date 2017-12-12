@@ -1,4 +1,3 @@
-
 # coding=utf-8
 
 # Python modules
@@ -22,6 +21,7 @@ DG_END = "</main>"
 # Which class to isolate?
 DG_SELECT = "share share--card js-share-values"
 
+
 def fetch_desiringgod():
     formatUrl = DG_URL
 
@@ -33,7 +33,8 @@ def fetch_desiringgod():
 
     soup = html_utils.html_to_soup(html)
 
-    return soup 
+    return soup
+
 
 def get_desiringgod_raw():
     soup = fetch_desiringgod()
@@ -42,9 +43,10 @@ def get_desiringgod_raw():
 
     blocks = []
     for tag in soup(class_=DG_SELECT):
-        blocks.append({"title":tag["data-title"], "link":tag["data-link"]})
+        blocks.append({"title": tag["data-title"], "link": tag["data-link"]})
 
     return blocks
+
 
 def get_desiringgod():
     blocks = get_desiringgod_raw()

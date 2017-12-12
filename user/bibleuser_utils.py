@@ -1,4 +1,3 @@
-
 # coding=utf-8
 
 # Google App Engine Modules
@@ -13,10 +12,12 @@ from user import bibleuser_classes
 def get_key(path, userId):
     return db.Key.from_path(path, unicode(userId))
 
+
 # Functions for manipulation of user info
 def get_user(userId):
     userObj = db.get(get_key("BibleUser", userId))
     return userObj
+
 
 def get_uid(userIdObj):
     try:
@@ -25,6 +26,7 @@ def get_uid(userIdObj):
         userId = userIdObj
 
     return userId
+
 
 def set_profile(userId, uname, fname, lname):
     existingUser = get_user(userId)
@@ -40,16 +42,22 @@ def set_profile(userId, uname, fname, lname):
         existingUser.update_last_received()
         return existingUser
     else:
-        userObj = bibleuser_classes.BibleUser(key_name=unicode(userId), username=uname, firstName=fname, lastName=lname)
+        userObj = bibleuser_classes.BibleUser(
+            key_name=unicode(userId),
+            username=uname,
+            firstName=fname,
+            lastName=lname)
         userObj.put()
         return userObj
+
 
 def get_user_query():
     return bibleuser_classes.BibleUser.all()
 
+
 def for_each_user(fn):
     debug.log("Running " + unicode(fn) + " for each user")
-    
+
     # Read user database
     query = get_user_query()
     query.filter("active =", True)
@@ -57,8 +65,10 @@ def for_each_user(fn):
     for dbUser in query.run(batch_size=500):
         fn(get_user(get_uid(dbUser)))
 
+
 def migrate(userObj):
-    newUserObj = bibleuser_classes.BibleUser(key_name=unicode(userObj.get_uid()))
+    newUserObj = bibleuser_classes.BibleUser(
+        key_name=unicode(userObj.get_uid()))
 
     newUserObj.clone(userObj)
 

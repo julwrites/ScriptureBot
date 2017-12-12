@@ -23,6 +23,7 @@ CONFIRM = [
     "Let me get back to you with that, {}~",
 ]
 
+
 class DailyDevoAction(action_classes.Action):
     def identifier(self):
         return "/dailydevo"
@@ -46,7 +47,8 @@ class DailyDevoAction(action_classes.Action):
 
                 if text_utils.text_compare(query, hook.name()):
                     choose = random.randint(0, len(CONFIRM) - 1)
-                    confirmString = CONFIRM[choose].format(userObj.get_name_string())
+                    confirmString = CONFIRM[choose].format(
+                        userObj.get_name_string())
 
                     telegram_utils.send_reply(
                         user=userObj.get_uid(),
@@ -63,8 +65,9 @@ class DailyDevoAction(action_classes.Action):
 
         else:
             options = [
-                telegram_utils.make_reply_button(text=hook.name()) for hook in hooks
-                ]
+                telegram_utils.make_reply_button(text=hook.name())
+                for hook in hooks
+            ]
 
             telegram_utils.send_reply(
                 user=userObj.get_uid(),
@@ -75,6 +78,7 @@ class DailyDevoAction(action_classes.Action):
             userObj.set_state(self.identifier())
 
         return True
+
 
 def get():
     return [

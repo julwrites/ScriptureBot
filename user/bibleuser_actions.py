@@ -7,12 +7,13 @@ from common.action import action_classes
 
 from bible import bible_utils
 
-
 PROMPT = "Please select a version of your choosing\n\
 (if unsure, always go with the one you are comfortable with!)"
+
 BADQUERY = "I don't have this version!"
 
 STATE_VERSION_PROMPT = "I\'ve changed your version to {}!"
+
 
 class BibleUserVersionAction(action_classes.Action):
     def identifier(self):
@@ -57,7 +58,6 @@ class BibleUserVersionAction(action_classes.Action):
 
         return True
 
+
 def get():
-    return [
-        BibleUserVersionAction()
-    ]
+    return [BibleUserVersionAction()]

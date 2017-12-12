@@ -1,4 +1,3 @@
-
 # coding=utf-8
 
 # Python modules
@@ -20,6 +19,7 @@ MCHEYNE_URL = "http://www.edginet.org/mcheyne/rss_feed.php?type=rss_2.0&tz=8&cal
 # Which class to isolate?
 MCHEYNE_SELECT = "title"
 
+
 def fetch_mcheyne():
     formatUrl = MCHEYNE_URL
 
@@ -31,7 +31,7 @@ def fetch_mcheyne():
 
     soup = html_utils.rss_to_soup(rss)
 
-    return soup 
+    return soup
 
 
 def get_mcheyne_raw():
@@ -46,7 +46,8 @@ def get_mcheyne_raw():
         if bible_utils.fetch_passage_html(ref) is not None:
             blocks.append(ref)
 
-    return blocks 
+    return blocks
+
 
 def get_mcheyne():
     blocks = get_mcheyne_raw()
@@ -54,4 +55,4 @@ def get_mcheyne():
     if blocks is None:
         return None
 
-    return blocks 
+    return blocks

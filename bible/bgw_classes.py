@@ -1,5 +1,5 @@
-
 # coding=utf-8
+
 
 class BGWPassage():
     def __init__(self, ref, ver, txt):
@@ -15,4 +15,3 @@ class BGWPassage():
 
     def get_text(self):
         return self.text
-

@@ -19,6 +19,7 @@ CONFIRM = [
     "Done, {}~",
 ]
 
+
 class UserDoneAction(action_classes.Action):
     def identifier(self):
         return "/done"
@@ -37,6 +38,7 @@ class UserDoneAction(action_classes.Action):
         userObj.set_state(None)
 
         return True
+
 
 def get():
     return [

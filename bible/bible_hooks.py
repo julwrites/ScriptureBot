@@ -1,4 +1,3 @@
-
 # coding=utf-8
 
 # Local modules
@@ -20,7 +19,6 @@ class DailyVerseHook(hook_classes.Hook):
         if userObj is not None:
             debug.log("Sending verse: " + "")
 
+
 def get():
-    return [
-        DailyVerseHook()
-    ]
+    return [DailyVerseHook()]

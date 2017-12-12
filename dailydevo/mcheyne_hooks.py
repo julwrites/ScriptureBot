@@ -10,6 +10,7 @@ from user import user_actions
 
 PROMPT = "Here are today's M'Cheyne verses!\n{}\nTap on any one to get the passage!"
 
+
 class McheyneDailyHook(hook_classes.Hook):
     def identifier(self):
         return "/mcheynedaily"
@@ -38,7 +39,6 @@ class McheyneDailyHook(hook_classes.Hook):
 
             userObj.set_state(self.identifier())
 
+
 def get():
-    return [
-        McheyneDailyHook()
-    ]
+    return [McheyneDailyHook()]

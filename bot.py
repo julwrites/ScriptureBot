@@ -1,4 +1,3 @@
-
 # coding=utf-8
 
 # Python std modules
@@ -19,6 +18,7 @@ import actions
 from secret import BOT_ID
 APP_BOT_URL = "/" + BOT_ID
 
+
 class BotHandler(webapp2.RequestHandler):
     def get(self):
         self.post()
@@ -37,9 +37,11 @@ class BotHandler(webapp2.RequestHandler):
             if action_utils.execute(actions.get(), userObj, msg):
                 return
 
-            telegram_utils.send_msg(user=msg.get("from").get("id"), text="Hello, I am bot")
+            telegram_utils.send_msg(
+                user=msg.get("from").get("id"), text="Hello, I am bot")
 
 
-app = webapp2.WSGIApplication([
-    (APP_BOT_URL, BotHandler),
-], debug=True)
+app = webapp2.WSGIApplication(
+    [
+        (APP_BOT_URL, BotHandler),
+    ], debug=True)

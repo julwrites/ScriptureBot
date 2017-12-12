@@ -7,6 +7,7 @@ from common.telegram import telegram_utils
 
 from dailydevo import cac_utils
 
+
 class CACDevoHook(hook_classes.Hook):
     def identifier(self):
         return "/cacdevo"
@@ -22,6 +23,4 @@ class CACDevoHook(hook_classes.Hook):
 
 
 def get():
-    return [
-        CACDevoHook()
-    ]
+    return [CACDevoHook()]

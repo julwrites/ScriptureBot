@@ -14,8 +14,11 @@ import modules
 
 INTRO_MSG = "Hello {}, I'm Biblica Bot! Give me a Bible reference and I'll give you the passage!"
 COMMAND_MSG = "Here are some other things I can do:"
-COMMAND_LIST = "\n".join([(action.identifier() + " - " + action.description()) for action in modules.get_actions() if action.is_command()])
+COMMAND_LIST = "\n".join([(action.identifier() + " - " + action.description())
+                          for action in modules.get_actions()
+                          if action.is_command()])
 HELP_MSG = INTRO_MSG + "\n\n" + COMMAND_MSG + "\n" + COMMAND_LIST
+
 
 class StartAction(action_classes.Action):
     def identifier(self):
@@ -39,10 +42,8 @@ class StartAction(action_classes.Action):
         if userJson is not None:
             debug.log("Updating user info")
             user_utils.set_profile(
-                userJson.get("id"),
-                userJson.get("username"),
-                userJson.get("first_name"),
-                userJson.get("last_name"))
+                userJson.get("id"), userJson.get("username"),
+                userJson.get("first_name"), userJson.get("last_name"))
 
         # If this is the user"s first time registering
         if userObj is None:
@@ -54,6 +55,7 @@ class StartAction(action_classes.Action):
 
             return True
         return False
+
 
 class HelpAction(action_classes.Action):
     def identifier(self):
@@ -73,6 +75,7 @@ class HelpAction(action_classes.Action):
             user=userObj.get_uid(),
             text=HELP_MSG.format(userObj.get_name_string()))
         return True
+
 
 def get():
     return [

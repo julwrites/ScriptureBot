@@ -10,6 +10,7 @@ from user import user_actions
 
 PROMPT = "Here are today's articles from desiringgod.org!\nTap on any one to get the article!"
 
+
 class DGDevoHook(hook_classes.Hook):
     def identifier(self):
         return "/desiringgod"
@@ -37,6 +38,4 @@ class DGDevoHook(hook_classes.Hook):
 
 
 def get():
-    return [
-        DGDevoHook()
-    ]
+    return [DGDevoHook()]

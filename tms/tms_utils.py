@@ -1,4 +1,3 @@
-
 # coding=utf-8
 
 # Python modules
@@ -20,6 +19,7 @@ def get_pack(packKey):
             return selectPack
     return None
 
+
 def get_aliases(packKey):
     if text_utils.is_valid(packKey):
         selectAliases = tms_data.get_aliases().get(packKey)
@@ -27,6 +27,7 @@ def get_aliases(packKey):
         if selectAliases is not None:
             return selectAliases
     return None
+
 
 def get_names(packKey):
     if text_utils.is_valid(packKey):
@@ -36,8 +37,10 @@ def get_names(packKey):
             return selectNames
     return None
 
+
 def get_all_pack_keys():
     return tms_data.get_keys()
+
 
 def get_verse_by_pack_pos(packKey, pos):
     if text_utils.is_valid(packKey) and pos is not None:
@@ -50,6 +53,7 @@ def get_verse_by_pack_pos(packKey, pos):
                 return selectVerse
     return None
 
+
 def get_verse_by_title(title, pos):
     if text_utils.is_valid(title) and pos is not None:
         verses = get_verses_by_title(title)
@@ -57,6 +61,7 @@ def get_verse_by_title(title, pos):
         if len(verses) > pos:
             return verses[pos - 1]
     return None
+
 
 def get_verses_by_title(title):
     if text_utils.is_valid(title):
@@ -70,15 +75,17 @@ def get_verses_by_title(title):
                 selectVerse = selectPack[i]
                 if text_utils.text_compare(title, selectVerse.get_title()):
                     verses.append(selectVerse)
-        
+
         return verses
     return None
+
 
 def get_start_verse():
     startKey = tms_data.get_top()
     selectPack = get_pack(startKey)
     selectVerse = selectPack[0]
     return selectVerse
+
 
 def get_random_verse():
     packKeys = get_all_pack_keys()
@@ -106,6 +113,7 @@ def query_pack_by_alias(query):
                     return packKey
     return None
 
+
 def query_verse_by_pack_pos(query):
     if text_utils.is_valid(query):
         debug.log("Attempting to get by position: " + query)
@@ -126,6 +134,7 @@ def query_verse_by_pack_pos(query):
                         return selectPack[pos - 1]
     return None
 
+
 def query_verse_by_reference(query):
     if text_utils.is_valid(query):
         debug.log("Attempting to get by reference " + query)
@@ -140,6 +149,7 @@ def query_verse_by_reference(query):
                 if text_utils.text_compare(query, selectVerse.get_reference()):
                     return selectVerse
     return None
+
 
 def query_verse_by_topic(query):
     if text_utils.is_valid(query):
@@ -180,7 +190,8 @@ def format_verse(verse, passage):
     if verse is not None and passage is not None:
         versePrep = []
 
-        versePrep.append(get_names(verse.get_pack()) + " " + unicode(verse.get_position()))
+        versePrep.append(
+            get_names(verse.get_pack()) + " " + unicode(verse.get_position()))
         versePrep.append(telegram_utils.bold(verse.get_title()))
         versePrep.append(telegram_utils.bold(verse.reference) + " " \
                         + telegram_utils.bracket(passage.get_version()))

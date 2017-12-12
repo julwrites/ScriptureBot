@@ -58,6 +58,7 @@ class AdminDumpAction(action_classes.Action):
             return True
         return False
 
+
 class AdminCleanAction(action_classes.Action):
     def identifier(self):
         return "/clean"
@@ -81,7 +82,8 @@ class AdminCleanAction(action_classes.Action):
                 count = 0
 
                 for dbUserDup in query.run():
-                    dbUserObjDup = user_utils.get_user(user_utils.get_uid(dbUserDup))
+                    dbUserObjDup = user_utils.get_user(
+                        user_utils.get_uid(dbUserDup))
                     if dbUserObj.get_uid() == dbUserObjDup.get_uid():
                         count += 1
                         if count > 1:
@@ -89,6 +91,7 @@ class AdminCleanAction(action_classes.Action):
 
             return True
         return False
+
 
 class AdminMigrateAction(action_classes.Action):
     def identifier(self):
@@ -108,6 +111,7 @@ class AdminMigrateAction(action_classes.Action):
 
             return True
         return False
+
 
 class AdminRagnarokAction(action_classes.Action):
     def identifier(self):
@@ -131,6 +135,7 @@ class AdminRagnarokAction(action_classes.Action):
             return True
 
         return False
+
 
 class AdminFeedbackAction(action_classes.Action):
     def identifier(self):

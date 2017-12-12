@@ -1,4 +1,3 @@
-
 # coding=utf-8
 
 # Google App Engine Modules
@@ -6,6 +5,7 @@ from google.appengine.ext import db
 
 # Local Modules
 from common import chrono, text_utils, debug
+
 
 class BibleUser(db.Model):
     username = db.StringProperty(indexed=True)
@@ -41,7 +41,8 @@ class BibleUser(db.Model):
 
     def get_name_string(self, username=False):
         name = unicode(self.firstName)
-        if text_utils.is_valid(self.lastName) and self.firstName != self.lastName:
+        if text_utils.is_valid(
+                self.lastName) and self.firstName != self.lastName:
             name += unicode(" ") + unicode(self.lastName)
         if username and text_utils.is_valid(self.username):
             name += unicode(" @") + unicode(self.username)

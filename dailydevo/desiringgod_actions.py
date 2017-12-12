@@ -7,6 +7,7 @@ from common.telegram import telegram_utils
 
 from dailydevo import desiringgod_hooks
 
+
 class DGDevoAction(action_classes.Action):
     def identifier(self):
         return "/desiringgod"
@@ -25,4 +26,3 @@ class DGDevoAction(action_classes.Action):
 
 def get():
     return [DGDevoAction()]
-
