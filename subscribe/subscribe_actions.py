@@ -42,13 +42,13 @@ class SubscribeAction(action_classes.Action):
                     if userObj.has_subscription(sub.identifier()):
                         userObj.remove_subscription(sub.identifier())
 
-                        telegram_utils.send_close_keyboard(\
+                        telegram_utils.close_keyboard(\
                         CONFIRM_UNSUBSCRIBE.format(sub.name()), userObj.get_uid())
 
                     else:
                         userObj.add_subscription(sub.identifier())
 
-                        telegram_utils.send_close_keyboard(\
+                        telegram_utils.close_keyboard(\
                         CONFIRM_SUBSCRIBE.format(sub.name()), userObj.get_uid())
 
                     userObj.set_state(None)
@@ -71,7 +71,25 @@ class SubscribeAction(action_classes.Action):
 
         return True
 
+class ScheduleAction(action_classes.Action):
+    def identifier(self):
+        return "/schedule"
+
+    def name(self):
+        return "Schedule"
+
+    def description(self):
+        return "Set subscription delivery time"
+
+    def is_command(self):
+        return False
+
+    def resolve(self, userObj, msg):
+
+        return True
+
 def get():
     return [
-        SubscribeAction()
+        SubscribeAction(),
+        ScheduleAction()
     ]

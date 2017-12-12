@@ -31,7 +31,7 @@ class UserDoneAction(action_classes.Action):
         choose = random.randint(0, len(CONFIRM) - 1)
         confirmString = CONFIRM[choose].format(userObj.get_name_string())
 
-        telegram_utils.send_close_keyboard(confirmString, userObj.get_uid())
+        telegram_utils.close_keyboard(confirmString, userObj.get_uid())
         userObj.set_state(None)
 
         return True

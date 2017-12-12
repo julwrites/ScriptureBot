@@ -1,4 +1,3 @@
-
 # coding=utf-8
 
 # Local modules
@@ -69,7 +68,7 @@ def format_keyboard(buttons=[], width=KEYBOARD_WIDTH):
 
             keyboardRow.append(buttons[i * width + j])
             numButtons -= 1
-        
+
         keyboardData.append(keyboardRow)
 
     return keyboardData
@@ -95,12 +94,12 @@ def send_url_keyboard(msg, userId, buttons=[], width=KEYBOARD_WIDTH):
     post.add_inline_keyboard(format_keyboard(buttons, width))
     post.send()
 
-def send_msg_keyboard(msg, userId, buttons=[], width=KEYBOARD_WIDTH, oneTime=False):
+def send_msg_keyboard(msg, userId, buttons=[], width=KEYBOARD_WIDTH):
     post = create_keyboard_post(msg, userId)
-    post.add_keyboard(format_keyboard(buttons, width), oneTime)
+    post.add_keyboard(format_keyboard(buttons, width))
     post.send()
 
-def send_close_keyboard(msg, userId):
+def close_keyboard(msg, userId):
     post = create_keyboard_post(msg, userId)
     post.close_keyboard()
     post.send()
@@ -176,16 +175,15 @@ def tick():
     return u"\u2714"
 
 def to_sup(text):
-        sups = {u"0": u"\u2070",
-                u"1": u"\xb9",
-                u"2": u"\xb2",
-                u"3": u"\xb3",
-                u"4": u"\u2074",
-                u"5": u"\u2075",
-                u"6": u"\u2076",
-                u"7": u"\u2077",
-                u"8": u"\u2078",
-                u"9": u"\u2079",
-                u"-": u"\u207b"}
-        return "".join(sups.get(char, char) for char in text)
-
+    sups = {u"0": u"\u2070",
+            u"1": u"\xb9",
+            u"2": u"\xb2",
+            u"3": u"\xb3",
+            u"4": u"\u2074",
+            u"5": u"\u2075",
+            u"6": u"\u2076",
+            u"7": u"\u2077",
+            u"8": u"\u2078",
+            u"9": u"\u2079",
+            u"-": u"\u207b"}
+    return "".join(sups.get(char, char) for char in text)

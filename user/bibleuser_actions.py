@@ -39,7 +39,7 @@ class BibleUserVersionAction(action_classes.Action):
                     userObj.set_version(ver)
                     userObj.set_state(None)
 
-                    telegram_utils.send_close_keyboard(\
+                    telegram_utils.close_keyboard(\
                     STATE_VERSION_PROMPT.format(ver), userObj.get_uid())
                     break
             else:
