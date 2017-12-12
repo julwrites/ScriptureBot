@@ -17,7 +17,7 @@ TELEGRAM_URL_SEND = TELEGRAM_URL + "/sendMessage"
 JSON_HEADER = {"Content-Type": "application/json;charset=utf-8"}
 
 # Telegram message sending functionality
-def send_post(userId, post):
+def send_post(post):
     data = json.dumps(post.jsonify())
     debug.log("Performing send: " + data)
 
@@ -77,14 +77,16 @@ def send_msg(user, text):
 
     for chunk in chunks:
         post = telegram_classes.Post()
-        post.field("text", chunk)
-        send_post(user, post)
+        post.set_user(user)
+        post.set_text(chunk)
+        send_post(post)
 
 def send_reply(user, text, reply):
     post = telegram_classes.Post()
-    post.field("text", text)
-    post.field("reply_markup", reply)
-    send_post(user, post)
+    post.set_user(user)
+    post.set_text(text)
+    post.set_reply(reply)
+    send_post(post)
 
 def make_reply_button(text="", contact=False, location=False):
     button = telegram_classes.Markup()

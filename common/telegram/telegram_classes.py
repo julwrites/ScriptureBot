@@ -94,5 +94,8 @@ class Post(Markup):
     def set_user(self, user):
         self.field("chat_id", text_utils.stringify(user))
 
-    def add_keyboard(self, keyboard):
-        self.field("reply_markup", keyboard.jsonify())
+    def set_reply(self, reply):
+        self.field("reply_markup", reply.jsonify())
+
+    def set_text(self, text):
+        self.field("text", text)
