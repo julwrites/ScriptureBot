@@ -27,9 +27,9 @@ def execute(actions, userObj, msg):
             if action.resolve(userObj, msg):
                 return True
 
-        names = [action for action in actions if action.match_name(msg)]
+        matched = [action for action in actions if action.match(msg)]
 
-        for action in names:
+        for action in matched:
             debug.log_action(action.identifier())
             if action.resolve(userObj, msg):
                 return True

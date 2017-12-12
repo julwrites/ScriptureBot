@@ -55,7 +55,7 @@ def last_md(chunk):
     return -1
 
 def format_msg(msg):
-    debug.log("Splitting up message if necessary: " +  msg)
+    debug.log("Splitting up message if necessary)
 
     last = None
     chunks = []

@@ -96,3 +96,4 @@ class Post(Markup):
 
     def set_text(self, text):
         self.field("text", text)
+
