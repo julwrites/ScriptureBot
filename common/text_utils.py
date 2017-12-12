@@ -14,7 +14,7 @@ def stringify(value):
         return ""
 
     if not isinstance(value, basestring):
-        value = unicode(value)
+        value = str(value)
 
     return unicode(value)
 

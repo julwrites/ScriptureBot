@@ -22,7 +22,7 @@ JSON_HEADER = {"Content-Type": "application/json;charset=utf-8"}
 
 # Telegram message sending functionality
 def send_post(post):
-    data = json.dumps(post.jsonify())
+    data = json.dumps(post.data())
     debug.log("Performing send: " + data)
 
     try:

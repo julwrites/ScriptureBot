@@ -40,17 +40,17 @@ class BibleUser(db.Model):
         return self.key().name()
 
     def get_name_string(self, username=False):
-        name = text_utils.stringify(self.firstName)
+        name = unicode(self.firstName)
         if text_utils.is_valid(self.lastName) and self.firstName != self.lastName:
-            name += text_utils.stringify(" ") + text_utils.stringify(self.lastName)
+            name += unicode(" ") + unicode(self.lastName)
         if username and text_utils.is_valid(self.username):
-            name += text_utils.stringify(" @") + text_utils.stringify(self.username)
+            name += unicode(" @") + unicode(self.username)
 
         return name
 
     def get_description(self):
         userType = "Group " if self.is_group() else "User "
-        return text_utils.stringify(userType) + self.get_name_string(username=True)
+        return unicode(userType) + self.get_name_string(username=True)
 
     def is_group(self):
         return int(self.get_uid()) < 0

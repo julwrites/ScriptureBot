@@ -11,7 +11,7 @@ from user import bibleuser_classes
 
 # Database util functions
 def get_key(path, userId):
-    return db.Key.from_path(path, text_utils.stringify(userId))
+    return db.Key.from_path(path, unicode(userId))
 
 # Functions for manipulation of user info
 def get_user(userId):
@@ -29,9 +29,9 @@ def get_uid(userIdObj):
 def set_profile(userId, uname, fname, lname):
     existingUser = get_user(userId)
 
-    uname = text_utils.stringify(uname)
-    fname = text_utils.stringify(fname)
-    lname = text_utils.stringify(fname)
+    uname = unicode(uname)
+    fname = unicode(fname)
+    lname = unicode(fname)
 
     if existingUser:
         existingUser.username = uname
@@ -40,7 +40,7 @@ def set_profile(userId, uname, fname, lname):
         existingUser.update_last_received()
         return existingUser
     else:
-        userObj = bibleuser_classes.BibleUser(key_name=text_utils.stringify(userId), username=uname, firstName=fname, lastName=lname)
+        userObj = bibleuser_classes.BibleUser(key_name=unicode(userId), username=uname, firstName=fname, lastName=lname)
         userObj.put()
         return userObj
 
@@ -48,7 +48,7 @@ def get_user_query():
     return bibleuser_classes.BibleUser.all()
 
 def for_each_user(fn):
-    debug.log("Running " + text_utils.stringify(fn) + " for each user")
+    debug.log("Running " + unicode(fn) + " for each user")
     
     # Read user database
     query = get_user_query()
@@ -58,7 +58,7 @@ def for_each_user(fn):
         fn(get_user(get_uid(dbUser)))
 
 def migrate(userObj):
-    newUserObj = bibleuser_classes.BibleUser(key_name=text_utils.stringify(userObj.get_uid()))
+    newUserObj = bibleuser_classes.BibleUser(key_name=unicode(userObj.get_uid()))
 
     newUserObj.clone(userObj)
 
