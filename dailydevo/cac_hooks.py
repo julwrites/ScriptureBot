@@ -19,7 +19,7 @@ class CACDevoHook(hook_classes.Hook):
         passage = cac_utils.get_cacdevo(userObj.get_version())
 
         if passage is not None:
-            telegram_utils.send_msg(passage, userObj.get_uid())
+            telegram_utils.send_msg(userObj.get_uid(), passage)
 
 
 def get():

@@ -1,4 +1,3 @@
-
 # coding=utf-8
 
 # Local modules
@@ -42,19 +41,23 @@ class SubscribeAction(action_classes.Action):
                     if userObj.has_subscription(sub.identifier()):
                         userObj.remove_subscription(sub.identifier())
 
-                        telegram_utils.close_keyboard(\
-                        CONFIRM_UNSUBSCRIBE.format(sub.name()), userObj.get_uid())
+                        telegram_utils.send_keyboard(
+                            id=userObj.get_uid(),
+                            text=CONFIRM_UNSUBSCRIBE.format(sub.name()),
+                            keyboard=telegram_utils.make_close_keyboard())
 
                     else:
                         userObj.add_subscription(sub.identifier())
 
-                        telegram_utils.close_keyboard(\
-                        CONFIRM_SUBSCRIBE.format(sub.name()), userObj.get_uid())
+                        telegram_utils.send_keyboard(
+                            id=userObj.get_uid(),
+                            text=CONFIRM_SUBSCRIBE.format(sub.name()),
+                            keyboard=telegram_utils.make_close_keyboard())
 
                     userObj.set_state(None)
                     break
             else:
-                telegram_utils.send_msg(BADQUERY, userObj.get_uid())
+                telegram_utils.send_msg(userObj.get_uid(), BADQUERY)
 
         else:
             subList = [sub.name() for sub in subs]
@@ -64,8 +67,10 @@ class SubscribeAction(action_classes.Action):
                 if userObj.has_subscription(subs[i].identifier()):
                     subList[i] = subList[i] + " " + telegram_utils.tick()
 
-            telegram_utils.send_msg_keyboard(\
-            PROMPT, userObj.get_uid(), subList, 1)
+            telegram_utils.send_keyboard(
+                id=userObj.get_uid(),
+                text=PROMPT,
+                telegram_utils.make_reply_keyboard(buttons=subList, width=1))
 
             userObj.set_state(self.identifier())
 

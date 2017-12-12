@@ -37,7 +37,7 @@ class BotHandler(webapp2.RequestHandler):
             if action_utils.execute(actions.get(), userObj, msg):
                 return
 
-            telegram_utils.send_msg("Hello I am bot", msg.get("from").get("id"))
+            telegram_utils.send_msg(msg.get("from").get("id"), "Hello, I am bot")
 
 
 app = webapp2.WSGIApplication([

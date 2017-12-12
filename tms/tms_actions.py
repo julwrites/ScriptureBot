@@ -1,4 +1,3 @@
-
 # coding=utf-8
 
 # Local modules
@@ -30,13 +29,13 @@ class TMSAction(action_classes.Action):
     def resolve(self, userObj, msg):
         query = telegram_utils.strip_command(msg, self.identifier())
 
-        if text_utils.is_valid(query): 
+        if text_utils.is_valid(query):
             verse = None
 
             verseReference = bible_utils.get_reference(query)
             if text_utils.is_valid(verseReference):
                 verse = tms_utils.query_verse_by_reference(verseReference)
-            
+
             if verse is None:
                 verse = tms_utils.query_verse_by_pack_pos(query)
 
@@ -47,12 +46,15 @@ class TMSAction(action_classes.Action):
                 passage = bible_utils.get_passage_raw(verse.reference, userObj.get_version())
                 verseMsg = tms_utils.format_verse(verse, passage)
 
-                telegram_utils.send_msg(verseMsg, userObj.get_uid())
+                telegram_utils.send_msg(userObj.get_uid(), verseMsg)
                 userObj.set_state(None)
             else:
-                telegram_utils.send_msg(BADQUERY, userObj.get_uid())
+                telegram_utils.send_msg(userObj.get_uid(), BADQUERY)
         else:
-            telegram_utils.send_msg_keyboard(PROMPT, userObj.get_uid())
+            telegram_utils.send_keyboard(
+                id=userObj.get_uid(),
+                text=PROMPT,
+                keyboard=telegram_utils.make_inline_keyboard())
 
             userObj.set_state(self.identifier())
 

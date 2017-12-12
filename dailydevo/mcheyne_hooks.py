@@ -1,4 +1,3 @@
-
 # coding=utf-8
 
 # Local modules
@@ -27,9 +26,16 @@ class McheyneDailyHook(hook_classes.Hook):
         if refs is not None:
             refString = "\n".join(refs)
             refs.append(user_actions.UserDoneAction().name())
-            options = [telegram_utils.make_button(text=ref) for ref in refs]
+            options = [
+                telegram_utils.make_reply_button(text=ref) for ref in refs
+            ]
 
-            telegram_utils.send_msg_keyboard(PROMPT.format(refString), userObj.get_uid(), options, 1)
+            telegram_utils.send_keyboard(
+                id=userObj.get_uid(),
+                text=PROMPT.format(refString),
+                keyboard=telegram_utils.make_reply_keyboard(
+                    buttons=options, width=1))
+
             userObj.set_state(self.identifier())
 
 def get():

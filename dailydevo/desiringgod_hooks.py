@@ -1,4 +1,3 @@
-
 # coding=utf-8
 
 # Local modules
@@ -25,9 +24,17 @@ class DGDevoHook(hook_classes.Hook):
         refs = desiringgod_utils.get_desiringgod()
 
         if refs is not None:
-            options = [telegram_utils.make_button(text=ref["title"], fields={"url":ref["link"]}) for ref in refs]
+            options = [
+                telegram_utils.make_inline_button(
+                    text=ref["title"], url=ref["link"]) for ref in refs
+            ]
 
-            telegram_utils.send_url_keyboard(PROMPT, userObj.get_uid(), options, 1)
+            telegram_utils.send_keyboard(
+                id=userObj.get_uid(),
+                text=PROMPT,
+                keyboard=telegram_utils.make_inline_keyboard(
+                    buttons=options, width=1))
+
 
 def get():
     return [

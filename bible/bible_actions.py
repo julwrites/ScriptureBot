@@ -32,14 +32,14 @@ class BiblePassageAction(action_classes.Action):
             passage = bible_utils.get_passage(query, userObj.get_version())
 
             if passage is not None:
-                telegram_utils.send_msg(passage, userObj.get_uid())
+                telegram_utils.send_msg(userObj.get_uid(), passage)
                 userObj.set_state(None)
             elif self.waiting(userObj):
-                telegram_utils.send_msg(BADQUERY, userObj.get_uid())
+                telegram_utils.send_msg(userObj.get_uid(), BADQUERY)
             else:
                 return False
         else:
-            telegram_utils.send_msg(PROMPT, userObj.get_uid())
+            telegram_utils.send_msg(userObj.get_uid(), PROMPT)
 
             userObj.set_state(self.identifier())
 

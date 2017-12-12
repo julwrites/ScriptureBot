@@ -28,7 +28,7 @@ class DailyTMSHook(hook_classes.Hook):
 
             debug.log("Sending verse: " + verseMsg)
             
-            telegram_utils.send_msg(verseMsg, userObj.get_uid())
+            telegram_utils.send_msg(userObj.get_uid(), verseMsg)
 
 def get():
     return [

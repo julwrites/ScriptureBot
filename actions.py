@@ -70,7 +70,7 @@ class HelpAction(action_classes.Action):
         return msg is not None
 
     def resolve(self, userObj, msg):
-        telegram_utils.send_msg(HELP_MSG.format(userObj.get_name_string()), userObj.get_uid())
+        telegram_utils.send_msg(userObj.get_uid(), HELP_MSG.format(userObj.get_name_string()))
         return True
 
 def get():

@@ -1,4 +1,3 @@
-
 # coding=utf-8
 
 # Python modules
@@ -31,7 +30,10 @@ class UserDoneAction(action_classes.Action):
         choose = random.randint(0, len(CONFIRM) - 1)
         confirmString = CONFIRM[choose].format(userObj.get_name_string())
 
-        telegram_utils.close_keyboard(confirmString, userObj.get_uid())
+        telegram_utils.send_keyboard(
+            id=userObj.get_uid(),
+            text=confirmString,
+            keyboard=telegram_utils.make_close_keyboard())
         userObj.set_state(None)
 
         return True

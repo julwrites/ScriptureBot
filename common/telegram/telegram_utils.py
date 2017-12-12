@@ -1,15 +1,35 @@
 # coding=utf-8
 
+# Python std modules
+import json
+
 # Local modules
 from common import debug, text_utils
-from common.telegram.telegram_classes import TelegramPost
+from common.telegram import telegram_classes
 
 MAX_LENGTH = 4096
 
-OPTION_REPLY_KEYBOARD = "reply_markup"
-KEYBOARD_WIDTH = 3
+TELEGRAM_URL = "https://api.telegram.org/bot" + BOT_ID
+TELEGRAM_URL_SEND = TELEGRAM_URL + "/sendMessage"
+
+JSON_HEADER = {"Content-Type": "application/json;charset=utf-8"}
 
 # Telegram message sending functionality
+def send_post(userId, post):
+    data = json.dumps(post.jsonify())
+    debug.log("Performing send: " + data)
+
+    try:
+        urlfetch.fetch(
+            url=TELEGRAM_URL_SEND, 
+            payload=data,
+            method=urlfetch.POST, 
+            headers=JSON_HEADER
+            )
+    except Exception as e:
+        debug.log("Send failed! " + TELEGRAM_URL_SEND + ", " + data)
+        debug.err(e)
+
 def last_md(chunk):
     start = chunk.rfind("\n")
     end = chunk.rfind("\n")
@@ -28,8 +48,8 @@ def last_md(chunk):
 
     return -1
 
-def send_msg(msg, userId):
-    debug.log("Sending message to " + text_utils.stringify(userId) + ": " +  msg)
+def format_msg(msg):
+    debug.log("Splitting up message if necessary: " +  msg)
 
     last = None
     chunks = []
@@ -48,61 +68,59 @@ def send_msg(msg, userId):
 
     chunks.append(msg[last:])
 
+    return chunks
+
+def send_msg(id, msg):
+    chunks = format_msg(msg)
+
     for chunk in chunks:
-        post = TelegramPost(userId)
+        post = telegram_classes.Post()
         post.add_text(chunk)
-        post.send()
+        send_post(id, post)
 
-def format_keyboard(buttons=[], width=KEYBOARD_WIDTH):
-    numButtons = len(buttons)
-    modulus = 1 if numButtons % width else 0
-    numRows = int(numButtons / width) + modulus
+def send_keyboard(id, text, keyboard):
+    post = telegram_classes.Post()
+    post.add_text(text)
+    post.add_keyboard(keyboard)
+    send_post(id, post)
 
-    keyboardData = []
-    for i in range(0, numRows):
-        keyboardRow = []
-
-        for j in range(0, width):
-            if numButtons == 0:
-                break
-
-            keyboardRow.append(buttons[i * width + j])
-            numButtons -= 1
-
-        keyboardData.append(keyboardRow)
-
-    return keyboardData
-
-def create_keyboard_post(msg, userId):
-    post = TelegramPost(userId)
-    if text_utils.is_valid(msg):
-        post.add_text(msg)
-    else:
-        post.add_text("")
-
-    return post
-
-def make_button(text="", fields={}):
-    button = {"text": text}
-    for key in fields.keys():
-        button[key] = text_utils.stringify(fields[key])
-    debug.log("Button created: " + str(button))
+def make_reply_button(text="", contact=False, location=False):
+    button = telegram_classes.Button()
+    button.add_text(text)
+    button.field("request_contact", contact)
+    button.field("request_location", location)
     return button
 
-def send_url_keyboard(msg, userId, buttons=[], width=KEYBOARD_WIDTH):
-    post = create_keyboard_post(msg, userId)
-    post.add_inline_keyboard(format_keyboard(buttons, width))
-    post.send()
+def make_reply_keyboard(buttons=[], width=None, resize=False, one_time=False, select=False):
+    keyboard = telegram_classes.ReplyKeyboard()
+    for button in buttons:
+        keyboard.add_button(button)
+    if width is not None:
+        keyboard.set_width(width)
+    keyboard.field("resize_keyboard", resize)
+    keyboard.field("one_time_keyboard", one_time)
+    keyboard.field("select", select)
+    return keyboard
 
-def send_msg_keyboard(msg, userId, buttons=[], width=KEYBOARD_WIDTH):
-    post = create_keyboard_post(msg, userId)
-    post.add_keyboard(format_keyboard(buttons, width))
-    post.send()
+def make_inline_button(text="", url="", callback="", query=""):
+    button = telegram_classes.Button()
+    button.add_text(text)
+    button.field("url", url)
+    button.field("callback_data", callback)
+    button.field("switch_inline_query", query)
+    return button
 
-def close_keyboard(msg, userId):
-    post = create_keyboard_post(msg, userId)
-    post.close_keyboard()
-    post.send()
+def make_inline_keyboard(buttons=[], width=None):
+    keyboard = telegram_classes.InlineKeyboard()
+    for button in buttons:
+        keyboard.add_button(button)
+    if width is not None:
+        keyboard.set_width(width)
+    return keyboard
+
+def make_close_keyboard():
+    keyboard = telegram_classes.CloseKeyboard()
+    return keyboard
 
 
 # Telegram message parsing

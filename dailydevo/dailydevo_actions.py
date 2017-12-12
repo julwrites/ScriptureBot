@@ -1,4 +1,3 @@
-
 # coding=utf-8
 
 # Python modules
@@ -49,20 +48,27 @@ class DailyDevoAction(action_classes.Action):
                     choose = random.randint(0, len(CONFIRM) - 1)
                     confirmString = CONFIRM[choose].format(userObj.get_name_string())
 
-                    telegram_utils.close_keyboard(confirmString, userObj.get_uid())
+                    telegram_utils.send_keyboard(
+                        id=userObj.get_uid(),
+                        text=confirmString,
+                        keyboard=telegram_utils.make_close_keyboard())
+
                     userObj.set_state(None)
 
                     hook.resolve(userObj)
 
                     break
             else:
-                telegram_utils.send_msg(BADQUERY, userObj.get_uid())
+                telegram_utils.send_msg(userObj.get_uid(), BADQUERY)
 
         else:
             options = [hook.name() for hook in hooks]
 
-            telegram_utils.send_msg_keyboard(\
-            PROMPT, userObj.get_uid(), options, 1)
+            telegram_utils.send_keyboard(
+                id=userObj.get_uid(),
+                text=PROMPT,
+                keyboard=telegram_utils.make_reply_keyboard(
+                    buttons=options, width=1))
 
             userObj.set_state(self.identifier())
 
