@@ -70,7 +70,7 @@ class SubscribeAction(action_classes.Action):
             telegram_utils.send_keyboard(
                 user=userObj.get_uid(),
                 text=PROMPT,
-                telegram_utils.make_reply_keyboard(buttons=subList, width=1))
+                keyboard=telegram_utils.make_reply_keyboard(buttons=subList, width=1))
 
             userObj.set_state(self.identifier())
 
