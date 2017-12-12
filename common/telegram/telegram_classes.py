@@ -14,7 +14,7 @@ class Markup():
     def __init__(self):
         self.formatData = {}
 
-    def field(key, value):
+    def field(self, key, value):
         self.formatData[key] = value
 
     def jsonify(self):
@@ -109,15 +109,16 @@ class Post(Markup):
             "parse_mode": "Markdown"
         }
 
-    def set_id(self, id):
-        return self.formatData["chat_id"] = text_utils.stringify(id)
+    def set_user(self, user):
+        debug.log("Adding id " + user)
+        self.field("chat_id", text_utils.stringify(user))
 
     def add_text(self, msg):
-        debug.log("Adding text for " + self.uid())
+        debug.log("Adding text " + msg)
         self.field("text", msg)
 
     def add_keyboard(self, keyboard):
-        debug.log("Adding keyboard for " + self.uid() + ": " + text_utils.stringify(keyboard))
+        debug.log("Adding keyboard : " + text_utils.stringify(keyboard))
         self.field("reply_markup", keyboard.jsonify())
 
     def jsonify(self):
