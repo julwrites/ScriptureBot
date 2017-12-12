@@ -20,6 +20,8 @@ class Markup():
 KEYBOARD_WIDTH = 3
 class Keyboard(Markup):
     def __init__(self):
+        super(Keyboard, self).__init__()
+
         self.buttons = []
         self.width = KEYBOARD_WIDTH
 
@@ -52,18 +54,27 @@ class Keyboard(Markup):
 
 
 class ReplyKeyboard(Keyboard):
+    def __init__(self):
+        super(ReplyKeyboard, self).__init__()
+
     def jsonify(self):
         self.field("keyboard", self.format())
 
         return self.formatData
 
 class InlineKeyboard(Keyboard):
+    def __init__(self):
+        super(InlineKeyboard, self).__init__()
+
     def jsonify(self):
         self.field("inline_keyboard", self.format())
 
         return self.formatData
 
 class CloseKeyboard(Markup):
+    def __init__(self):
+        super(CloseKeyboard, self).__init__()
+
     def jsonify(self):
         self.field("remove_keyboard", True)
 
@@ -71,6 +82,8 @@ class CloseKeyboard(Markup):
 
 class Post(Markup):
     def __init__(self):
+        super(Post, self).__init__()
+
         self.formatData = {
             "parse_mode": "Markdown"
         }
