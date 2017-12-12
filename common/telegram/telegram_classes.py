@@ -7,8 +7,6 @@ from google.appengine.api import urlfetch
 # Local modules
 from common import debug, text_utils
 
-from secret import BOT_ID
-
 
 class Markup():
     def __init__(self):

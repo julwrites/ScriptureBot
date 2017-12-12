@@ -7,6 +7,8 @@ import json
 from common import debug, text_utils
 from common.telegram import telegram_classes
 
+from secret import BOT_ID
+
 MAX_LENGTH = 4096
 
 TELEGRAM_URL = "https://api.telegram.org/bot" + BOT_ID
