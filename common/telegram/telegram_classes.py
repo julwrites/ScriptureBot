@@ -14,7 +14,7 @@ class Markup():
         self.formatData[key] = value
 
     def set_text(self, text):
-        field("text", unicode(text))
+        self.set_field("text", unicode(text))
 
     def jsonify(self):
         return self.formatData
