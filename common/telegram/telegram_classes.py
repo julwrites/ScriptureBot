@@ -10,7 +10,7 @@ class Markup():
         self.formatData = {}
 
     def set_field(self, key, value):
-        debug.log("Setting field " + unicode(key) + ": " + unicode(value))
+        debug.log(unicode(self.__class__.__name__) +  ": setting field " + unicode(key) + ": " + unicode(value))
         self.formatData[key] = value
 
     def set_text(self, text):
