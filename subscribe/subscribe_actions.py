@@ -22,7 +22,7 @@ class SubscribeAction(action_classes.Action):
         return "Subscriptions"
 
     def description(self):
-        return "Subscribe to get reading material daily"
+        return "Subscribe to / Unsubscribe from daily reading material"
 
     def is_command(self):
         return True
