@@ -46,13 +46,13 @@ class TMSAction(action_classes.Action):
                 passage = bible_utils.get_passage_raw(verse.reference, userObj.get_version())
                 verseMsg = tms_utils.format_verse(verse, passage)
 
-                telegram_utils.send_msg(userObj.get_uid(), verseMsg)
+                telegram_utils.send_msg(user=userObj.get_uid(), text=verseMsg)
                 userObj.set_state(None)
             else:
-                telegram_utils.send_msg(userObj.get_uid(), BADQUERY)
+                telegram_utils.send_msg(user=userObj.get_uid(), text=BADQUERY)
         else:
             telegram_utils.send_keyboard(
-                id=userObj.get_uid(),
+                user=userObj.get_uid(),
                 text=PROMPT,
                 keyboard=telegram_utils.make_inline_keyboard())
 

@@ -1,4 +1,3 @@
-
 # coding=utf-8
 
 # Python std modules
@@ -40,9 +39,9 @@ class StartAction(action_classes.Action):
         if userJson is not None:
             debug.log("Updating user info")
             user_utils.set_profile(
-                userJson.get("id"), 
-                userJson.get("username"), 
-                userJson.get("first_name"), 
+                userJson.get("id"),
+                userJson.get("username"),
+                userJson.get("first_name"),
                 userJson.get("last_name"))
 
         # If this is the user"s first time registering
@@ -70,7 +69,9 @@ class HelpAction(action_classes.Action):
         return msg is not None
 
     def resolve(self, userObj, msg):
-        telegram_utils.send_msg(userObj.get_uid(), HELP_MSG.format(userObj.get_name_string()))
+        telegram_utils.send_msg(
+            user=userObj.get_uid(),
+            text=HELP_MSG.format(userObj.get_name_string()))
         return True
 
 def get():

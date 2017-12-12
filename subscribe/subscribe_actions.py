@@ -42,7 +42,7 @@ class SubscribeAction(action_classes.Action):
                         userObj.remove_subscription(sub.identifier())
 
                         telegram_utils.send_keyboard(
-                            id=userObj.get_uid(),
+                            user=userObj.get_uid(),
                             text=CONFIRM_UNSUBSCRIBE.format(sub.name()),
                             keyboard=telegram_utils.make_close_keyboard())
 
@@ -50,14 +50,14 @@ class SubscribeAction(action_classes.Action):
                         userObj.add_subscription(sub.identifier())
 
                         telegram_utils.send_keyboard(
-                            id=userObj.get_uid(),
+                            user=userObj.get_uid(),
                             text=CONFIRM_SUBSCRIBE.format(sub.name()),
                             keyboard=telegram_utils.make_close_keyboard())
 
                     userObj.set_state(None)
                     break
             else:
-                telegram_utils.send_msg(userObj.get_uid(), BADQUERY)
+                telegram_utils.send_msg(user=userObj.get_uid(), text=BADQUERY)
 
         else:
             subList = [sub.name() for sub in subs]
@@ -68,7 +68,7 @@ class SubscribeAction(action_classes.Action):
                     subList[i] = subList[i] + " " + telegram_utils.tick()
 
             telegram_utils.send_keyboard(
-                id=userObj.get_uid(),
+                user=userObj.get_uid(),
                 text=PROMPT,
                 telegram_utils.make_reply_keyboard(buttons=subList, width=1))
 

@@ -1,4 +1,3 @@
-
 # coding=utf-8
 
 # Local modules
@@ -28,9 +27,11 @@ class AdminNotifyAction(action_classes.Action):
             userList = []
             for dbUser in query.run(batch_size=10):
                 dbUserObj = user_utils.get_user(user_utils.get_uid(dbUser))
-                telegram_utils.send_msg(dbUserObj.get_uid(), msg.format(dbUserObj.get_name_string()))
+                telegram_utils.send_msg(
+                    user=dbUserObj.get_uid(),
+                    text=msg.format(dbUserObj.get_name_string()))
 
-            return True 
+            return True
         return False
 
 
@@ -52,9 +53,9 @@ class AdminDumpAction(action_classes.Action):
                 dbUserObj = user_utils.get_user(user_utils.get_uid(dbUser))
                 userList.append(dbUserObj.get_description())
             userListMsg = "\n".join(userList)
-            telegram_utils.send_msg(userObj.get_uid(), userListMsg)
+            telegram_utils.send_msg(user=userObj.get_uid(), text=userListMsg)
 
-            return True 
+            return True
         return False
 
 class AdminCleanAction(action_classes.Action):
@@ -125,10 +126,10 @@ class AdminRagnarokAction(action_classes.Action):
                 debug.log("Deleting: " + dbUserObj.get_uid())
                 dbUserObj.delete()
 
-            telegram_utils.send_msg(userObj.get_uid(), "Baboomz~")
-            
+            telegram_utils.send_msg(user=userObj.get_uid(), text="Baboomz~")
+
             return True
-        
+
         return False
 
 class AdminFeedbackAction(action_classes.Action):
@@ -145,7 +146,7 @@ class AdminFeedbackAction(action_classes.Action):
         query = telegram_utils.strip_command(msg, self.identifier())
 
         if text_utils.is_valid(query):
-            telegram_utils.send_msg(admin_utils.BOT_ADMIN, query)
+            telegram_utils.send_msg(user=admin_utils.BOT_ADMIN, text=query)
         else:
             userObj.set_state(self.identifier())
         return True

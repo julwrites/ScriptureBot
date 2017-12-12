@@ -31,7 +31,7 @@ class McheyneDailyHook(hook_classes.Hook):
             ]
 
             telegram_utils.send_keyboard(
-                id=userObj.get_uid(),
+                user=userObj.get_uid(),
                 text=PROMPT.format(refString),
                 keyboard=telegram_utils.make_reply_keyboard(
                     buttons=options, width=1))

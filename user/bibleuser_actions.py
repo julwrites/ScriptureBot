@@ -39,16 +39,16 @@ class BibleUserVersionAction(action_classes.Action):
                     userObj.set_state(None)
 
                     telegram_utils.send_keyboard(
-                        id=userObj.get_uid(),
+                        user=userObj.get_uid(),
                         text=STATE_VERSION_PROMPT.format(ver),
                         keyboard=telegram_utils.make_close_keyboard())
                     break
             else:
-                telegram_utils.send_msg(userObj.get_uid(), BADQUERY)
+                telegram_utils.send_msg(user=userObj.get_uid(), text=BADQUERY)
 
         else:
             telegram_utils.send_keyboard(
-                id=userObj.get_uid(),
+                user=userObj.get_uid(),
                 text=PROMPT,
                 keyboard=telegram_utils.make_reply_keyboard(
                     buttons=bible_utils.get_versions()))

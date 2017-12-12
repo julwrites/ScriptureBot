@@ -30,7 +30,7 @@ class DGDevoHook(hook_classes.Hook):
             ]
 
             telegram_utils.send_keyboard(
-                id=userObj.get_uid(),
+                user=userObj.get_uid(),
                 text=PROMPT,
                 keyboard=telegram_utils.make_inline_keyboard(
                     buttons=options, width=1))

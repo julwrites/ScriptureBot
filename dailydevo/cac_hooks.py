@@ -1,4 +1,3 @@
-
 # coding=utf-8
 
 # Local modules
@@ -19,7 +18,7 @@ class CACDevoHook(hook_classes.Hook):
         passage = cac_utils.get_cacdevo(userObj.get_version())
 
         if passage is not None:
-            telegram_utils.send_msg(userObj.get_uid(), passage)
+            telegram_utils.send_msg(user=userObj.get_uid(), text=passage)
 
 
 def get():

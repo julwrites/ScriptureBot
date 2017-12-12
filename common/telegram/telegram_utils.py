@@ -70,19 +70,19 @@ def format_msg(msg):
 
     return chunks
 
-def send_msg(id, msg):
-    chunks = format_msg(msg)
+def send_msg(user, text):
+    chunks = format_msg(text)
 
     for chunk in chunks:
         post = telegram_classes.Post()
         post.add_text(chunk)
-        send_post(id, post)
+        send_post(user, post)
 
-def send_keyboard(id, text, keyboard):
+def send_keyboard(user, text, keyboard):
     post = telegram_classes.Post()
     post.add_text(text)
     post.add_keyboard(keyboard)
-    send_post(id, post)
+    send_post(user, post)
 
 def make_reply_button(text="", contact=False, location=False):
     button = telegram_classes.Button()
