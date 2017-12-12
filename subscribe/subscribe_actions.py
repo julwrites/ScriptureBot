@@ -67,10 +67,12 @@ class SubscribeAction(action_classes.Action):
                 if userObj.has_subscription(subs[i].identifier()):
                     subList[i] = subList[i] + " " + telegram_utils.tick()
 
+            options = [telegram_utils.make_reply_button(text=sub) for sub in subList]
+
             telegram_utils.send_reply(
                 user=userObj.get_uid(),
                 text=PROMPT,
-                reply=telegram_utils.make_reply_keyboard(buttons=subList, width=1))
+                reply=telegram_utils.make_reply_keyboard(buttons=options, width=1))
 
             userObj.set_state(self.identifier())
 

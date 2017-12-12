@@ -62,7 +62,9 @@ class DailyDevoAction(action_classes.Action):
                 telegram_utils.send_msg(user=userObj.get_uid(), text=BADQUERY)
 
         else:
-            options = [hook.name() for hook in hooks]
+            options = [
+                telegram_utils.make_reply_button(text=hook.name()) for hook in hooks
+                ]
 
             telegram_utils.send_reply(
                 user=userObj.get_uid(),
