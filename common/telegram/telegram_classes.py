@@ -60,19 +60,28 @@ class ReplyKeyboard(Keyboard):
     def __init__(self):
         super(ReplyKeyboard, self).__init__()
 
+    def jsonify(self):
         self.field("keyboard", self.format())
+
+        return self.formatData
 
 class InlineKeyboard(Keyboard):
     def __init__(self):
         super(InlineKeyboard, self).__init__()
 
+    def jsonify(self):
         self.field("inline_keyboard", self.format())
+
+        return self.formatData
 
 class CloseKeyboard(Markup):
     def __init__(self):
         super(CloseKeyboard, self).__init__()
 
+    def jsonify(self):
         self.field("remove_keyboard", True)
+
+        return self.formatData
 
 class Post(Markup):
     def __init__(self):
@@ -82,3 +91,8 @@ class Post(Markup):
             "parse_mode": "Markdown"
         }
 
+    def set_user(self, user):
+        self.field("chat_id", text_utils.stringify(user))
+
+    def add_keyboard(self, keyboard):
+        self.field("reply_markup", keyboard.jsonify())
