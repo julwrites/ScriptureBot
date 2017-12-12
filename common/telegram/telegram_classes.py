@@ -13,25 +13,10 @@ class Markup():
         self.formatData = {}
 
     def field(self, key, value):
+        debug.log("Adding field " + str(key) + ": " + str(value))
         self.formatData[key] = value
 
     def jsonify(self):
-        return self.formatData
-
-
-class Button(Markup):
-    def __init__(self):
-        super(Button, self).__init__()
-
-        self.text = ""
-        self.fields = {}
-
-    def jsonify(self):
-        self.field("text", self.text)
-
-        for key in self.fields.keys():
-            self.field(key, self.fields[key])
-
         return self.formatData
 
 
@@ -41,7 +26,6 @@ class Keyboard(Markup):
         super(Keyboard, self).__init__()
 
         self.buttons = []
-        self.fields = {}
         self.width = KEYBOARD_WIDTH
 
     def add_button(self, button):
@@ -76,28 +60,19 @@ class ReplyKeyboard(Keyboard):
     def __init__(self):
         super(ReplyKeyboard, self).__init__()
 
-    def jsonify(self):
         self.field("keyboard", self.format())
-
-        return self.formatData
 
 class InlineKeyboard(Keyboard):
     def __init__(self):
         super(InlineKeyboard, self).__init__()
 
-    def jsonify(self):
         self.field("inline_keyboard", self.format())
-
-        return self.formatData
 
 class CloseKeyboard(Markup):
     def __init__(self):
         super(CloseKeyboard, self).__init__()
 
-    def jsonify(self):
         self.field("remove_keyboard", True)
-
-        return self.formatData
 
 class Post(Markup):
     def __init__(self):
@@ -106,20 +81,4 @@ class Post(Markup):
         self.formatData = {
             "parse_mode": "Markdown"
         }
-
-    def set_user(self, user):
-        debug.log("Adding id " + user)
-        self.field("chat_id", text_utils.stringify(user))
-
-    def add_text(self, msg):
-        debug.log("Adding text " + msg)
-        self.field("text", msg)
-
-    def add_keyboard(self, keyboard):
-        debug.log("Adding keyboard : " + text_utils.stringify(keyboard))
-        self.field("reply_markup", keyboard.jsonify())
-
-    def jsonify(self):
-        return self.formatData
-
 

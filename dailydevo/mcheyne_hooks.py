@@ -30,10 +30,10 @@ class McheyneDailyHook(hook_classes.Hook):
                 telegram_utils.make_reply_button(text=ref) for ref in refs
             ]
 
-            telegram_utils.send_keyboard(
+            telegram_utils.send_reply(
                 user=userObj.get_uid(),
                 text=PROMPT.format(refString),
-                keyboard=telegram_utils.make_reply_keyboard(
+                reply=telegram_utils.make_reply_keyboard(
                     buttons=options, width=1))
 
             userObj.set_state(self.identifier())

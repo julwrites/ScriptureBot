@@ -51,10 +51,10 @@ class TMSAction(action_classes.Action):
             else:
                 telegram_utils.send_msg(user=userObj.get_uid(), text=BADQUERY)
         else:
-            telegram_utils.send_keyboard(
+            telegram_utils.send_reply(
                 user=userObj.get_uid(),
                 text=PROMPT,
-                keyboard=telegram_utils.make_inline_keyboard())
+                reply=telegram_utils.make_inline_keyboard())
 
             userObj.set_state(self.identifier())
 

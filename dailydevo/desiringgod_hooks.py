@@ -29,10 +29,10 @@ class DGDevoHook(hook_classes.Hook):
                     text=ref["title"], url=ref["link"]) for ref in refs
             ]
 
-            telegram_utils.send_keyboard(
+            telegram_utils.send_reply(
                 user=userObj.get_uid(),
                 text=PROMPT,
-                keyboard=telegram_utils.make_inline_keyboard(
+                reply=telegram_utils.make_inline_keyboard(
                     buttons=options, width=1))
 
 

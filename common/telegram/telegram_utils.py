@@ -77,18 +77,18 @@ def send_msg(user, text):
 
     for chunk in chunks:
         post = telegram_classes.Post()
-        post.add_text(chunk)
+        post.field("text", chunk)
         send_post(user, post)
 
-def send_keyboard(user, text, keyboard):
+def send_reply(user, text, reply):
     post = telegram_classes.Post()
-    post.add_text(text)
-    post.add_keyboard(keyboard)
+    post.field("text", text)
+    post.field("reply_markup", reply)
     send_post(user, post)
 
 def make_reply_button(text="", contact=False, location=False):
-    button = telegram_classes.Button()
-    button.add_text(text)
+    button = telegram_classes.Markup()
+    button.field("text", text)
     button.field("request_contact", contact)
     button.field("request_location", location)
     return button
@@ -105,8 +105,8 @@ def make_reply_keyboard(buttons=[], width=None, resize=False, one_time=False, se
     return keyboard
 
 def make_inline_button(text="", url="", callback="", query=""):
-    button = telegram_classes.Button()
-    button.add_text(text)
+    button = telegram_classes.Markup()
+    button.field("text", text)
     button.field("url", url)
     button.field("callback_data", callback)
     button.field("switch_inline_query", query)

@@ -48,10 +48,10 @@ class DailyDevoAction(action_classes.Action):
                     choose = random.randint(0, len(CONFIRM) - 1)
                     confirmString = CONFIRM[choose].format(userObj.get_name_string())
 
-                    telegram_utils.send_keyboard(
+                    telegram_utils.send_reply(
                         user=userObj.get_uid(),
                         text=confirmString,
-                        keyboard=telegram_utils.make_close_keyboard())
+                        reply=telegram_utils.make_close_keyboard())
 
                     userObj.set_state(None)
 
@@ -64,10 +64,10 @@ class DailyDevoAction(action_classes.Action):
         else:
             options = [hook.name() for hook in hooks]
 
-            telegram_utils.send_keyboard(
+            telegram_utils.send_reply(
                 user=userObj.get_uid(),
                 text=PROMPT,
-                keyboard=telegram_utils.make_reply_keyboard(
+                reply=telegram_utils.make_reply_keyboard(
                     buttons=options, width=1))
 
             userObj.set_state(self.identifier())
