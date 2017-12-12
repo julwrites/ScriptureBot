@@ -9,9 +9,12 @@ class Markup():
     def __init__(self):
         self.formatData = {}
 
-    def field(self, key, value):
-        debug.log("Adding field " + str(key) + ": " + str(value))
+    def set_field(self, key, value):
+        debug.log("Setting field " + unicode(key) + ": " + unicode(value))
         self.formatData[key] = value
+
+    def set_text(self, text):
+        field("text", unicode(text))
 
     def jsonify(self):
         return self.formatData
@@ -58,7 +61,7 @@ class ReplyKeyboard(Keyboard):
         Keyboard.__init__(self)
 
     def jsonify(self):
-        self.field("keyboard", self.format())
+        self.set_field("keyboard", self.format())
 
         return self.formatData
 
@@ -67,7 +70,7 @@ class InlineKeyboard(Keyboard):
         Keyboard.__init__(self)
 
     def jsonify(self):
-        self.field("inline_keyboard", self.format())
+        self.set_field("inline_keyboard", self.format())
 
         return self.formatData
 
@@ -76,7 +79,7 @@ class CloseKeyboard(Markup):
         Markup.__init__(self)
 
     def jsonify(self):
-        self.field("remove_keyboard", True)
+        self.set_field("remove_keyboard", True)
 
         return self.formatData
 
@@ -84,14 +87,11 @@ class Post(Markup):
     def __init__(self):
         Markup.__init__(self)
 
-        self.field("parse_mode", "Markdown")
+        self.set_field("parse_mode", "Markdown")
 
     def set_user(self, user):
-        self.field("chat_id", text_utils.stringify(user))
+        self.set_field("chat_id", text_utils.stringify(user))
 
     def set_reply(self, reply):
-        self.field("reply_markup", reply.jsonify())
-
-    def set_text(self, text):
-        self.field("text", text_utils.stringify(text))
+        self.set_field("reply_markup", reply.jsonify())
 

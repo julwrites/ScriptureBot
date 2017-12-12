@@ -77,7 +77,7 @@ def format_msg(msg):
     return chunks
 
 def send_msg(user, text):
-    debug.log("Preparing to send " + user + ": " + text)
+    debug.log("Preparing to send " + unicode(user) + ": " + text)
     chunks = format_msg(text)
 
     for chunk in chunks:
@@ -95,9 +95,9 @@ def send_reply(user, text, reply):
 
 def make_reply_button(text="", contact=False, location=False):
     button = telegram_classes.Markup()
-    button.field("text", text)
-    button.field("request_contact", contact)
-    button.field("request_location", location)
+    button.set_text(text)
+    button.set_field("request_contact", contact)
+    button.set_field("request_location", location)
     return button
 
 def make_reply_keyboard(buttons=[], width=None, resize=False, one_time=False, select=False):
@@ -106,17 +106,17 @@ def make_reply_keyboard(buttons=[], width=None, resize=False, one_time=False, se
         keyboard.add_button(button)
     if width is not None:
         keyboard.set_width(width)
-    keyboard.field("resize_keyboard", resize)
-    keyboard.field("one_time_keyboard", one_time)
-    keyboard.field("select", select)
+    keyboard.set_field("resize_keyboard", resize)
+    keyboard.set_field("one_time_keyboard", one_time)
+    keyboard.set_field("select", select)
     return keyboard
 
 def make_inline_button(text="", url="", callback="", query=""):
     button = telegram_classes.Markup()
-    button.field("text", text)
-    button.field("url", url)
-    button.field("callback_data", callback)
-    button.field("switch_inline_query", query)
+    button.set_text(text)
+    button.set_field("url", url)
+    button.set_field("callback_data", callback)
+    button.set_field("switch_inline_query", query)
     return button
 
 def make_inline_keyboard(buttons=[], width=None):
