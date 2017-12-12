@@ -84,9 +84,7 @@ class Post(Markup):
     def __init__(self):
         Markup.__init__(self)
 
-        self.formatData = {
-            "parse_mode": "Markdown"
-        }
+        self.field("parse_mode", "Markdown")
 
     def set_user(self, user):
         self.field("chat_id", text_utils.stringify(user))
@@ -95,5 +93,5 @@ class Post(Markup):
         self.field("reply_markup", reply.jsonify())
 
     def set_text(self, text):
-        self.field("text", text)
+        self.field("text", text_utils.stringify(text))
 
