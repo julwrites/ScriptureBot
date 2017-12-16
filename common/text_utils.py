@@ -10,10 +10,7 @@ from common import debug
 
 def stringify(value):
     if value is None:
-        return ""
-
-    if not isinstance(value, basestring):
-        value = str(value)
+        return unicode("")
 
     return unicode(value)
 
