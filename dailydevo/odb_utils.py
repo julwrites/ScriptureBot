@@ -20,7 +20,8 @@ ODB_START = "<article"
 ODB_END = "</article>"
 
 # Which class to isolate?
-ODB_SELECT_CLASS = ["verse-box", "post-content"]
+ODB_VERSE = "verse-box"
+ODB_PASSAGE = "post-content"
 ODB_IGNORE = ""
 
 
@@ -49,6 +50,8 @@ def get_odb_raw():
     # Steps through all the html types and mark these
     soup = html_utils.stripmd_soup(soup)
 
+    debug.log("Finished stripping, going to select blocks")
+
     # # Finds all links and converts to markdown
     # soup = html_utils.link_soup(soup, telegram_utils.link)
 
@@ -56,7 +59,10 @@ def get_odb_raw():
     # soup = html_utils.mark_soup(soup, ODB_DEVO_SELECT, html_utils.html_p_tag())
 
     blocks = []
-    for tag in soup(class_=ODB_SELECT_CLASS):
+    for tag in soup(class_=ODB_VERSE):
+        blocks.append(telegram_utils.italics(tag.text))
+
+    for tag in soup(class_=ODB_PASSAGE):
         blocks.append(tag.text)
 
     return blocks
