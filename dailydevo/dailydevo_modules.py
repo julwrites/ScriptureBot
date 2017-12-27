@@ -16,4 +16,5 @@ def get_actions():
 
 def get_hooks():
     return mcheyne_hooks.get() + \
-            desiringgod_hooks.get()
+            desiringgod_hooks.get() + \
+            odb_hooks.get()

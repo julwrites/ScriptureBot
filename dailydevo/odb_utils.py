@@ -20,8 +20,8 @@ ODB_START = "<article"
 ODB_END = "</article>"
 
 # Which class to isolate?
-ODB_SELECT = ""
-ODB_IGNORE = 
+ODB_SELECT_CLASS = ["verse-box", "post-content"]
+ODB_IGNORE = ""
 
 
 def fetch_odb():
@@ -43,27 +43,20 @@ def get_odb_raw():
     if soup is None:
         return None
 
-    for tag in soup.select(ODB_IGNORE):
-        tag.decompose()
+    # for tag in soup.select(ODB_IGNORE):
+    #     tag.decompose()
 
     # Steps through all the html types and mark these
     soup = html_utils.stripmd_soup(soup)
 
-    # Finds all links and converts to markdown
-    soup = html_utils.link_soup(soup, telegram_utils.link)
+    # # Finds all links and converts to markdown
+    # soup = html_utils.link_soup(soup, telegram_utils.link)
 
-    # Marks the parts of the soup that we want
-    soup = html_utils.mark_soup(soup, ODB_DEVO_SELECT,
-                                html_utils.html_common_tags())
-
-    # Prettifying the stuffs
-    html_utils.foreach_header(soup, telegram_utils.bold)
-    html_utils.style_soup(soup, html_utils.unstrip_md, html_utils.html_p_tag())
-    html_utils.style_soup(soup, telegram_utils.italics,
-                          html_utils.html_p_tag())
+    # # Marks the parts of the soup that we want
+    # soup = html_utils.mark_soup(soup, ODB_DEVO_SELECT, html_utils.html_p_tag())
 
     blocks = []
-    for tag in soup(class_=ODB_DEVO_SELECT):
+    for tag in soup(class_=ODB_SELECT_CLASS):
         blocks.append(tag.text)
 
     return blocks
