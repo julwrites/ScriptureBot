@@ -53,7 +53,7 @@ def get_odb_raw(version="NIV"):
             passage = bible_utils.get_passage(link.text)
             blocks.append(passage)
 
-    blocks.append("\n")
+    blocks.append("")
 
     for tag in soup(class_=ODB_PASSAGE):
         for p in tag.select(html_utils.html_p_tag()):
