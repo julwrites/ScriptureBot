@@ -22,7 +22,6 @@ ODB_END = "</article>"
 # Which class to isolate?
 ODB_VERSE = "verse-box"
 ODB_PASSAGE = "post-content"
-ODB_IGNORE = ""
 
 
 def fetch_odb():
@@ -49,11 +48,11 @@ def get_odb_raw():
 
     blocks = []
     for tag in soup(class_=ODB_VERSE):
-        blocks.append(
-            telegram_utils.italics(text_utils.strip_whitespace(tag.text)))
+        blocks.append(telegram_utils.italics(text_utils.strip_whitespace(tag.text)))
 
     for tag in soup(class_=ODB_PASSAGE):
-        blocks.append(text_utils.strip_whitespace(tag.text))
+        for tag in soup.select(html_utils.html_p_tag()):
+            blocks.append(text_utils.strip_whitespace(tag.text))
 
     return blocks
 
