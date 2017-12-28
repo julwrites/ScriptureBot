@@ -12,8 +12,8 @@ def get_passage_raw(ref, version="NIV"):
     return bgw_utils.get_passage_raw(ref, version)
 
 
-def get_passage(ref, version="NIV"):
-    return bgw_utils.get_passage(ref, version)
+def get_passage(ref, version="NIV", markdown=None):
+    return bgw_utils.get_passage(ref, version, markdown)
 
 
 def get_reference(query):
