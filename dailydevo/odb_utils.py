@@ -60,8 +60,12 @@ def get_odb_raw():
     for tag in soup(class_=ODB_VERSE):
         blocks.append(telegram_utils.italics(tag.text))
 
+    debug.log("Added verse")
+
     for tag in soup(class_=ODB_PASSAGE):
         blocks.append(tag.text)
+
+    debug.log("Added passage")
 
     return blocks
 
