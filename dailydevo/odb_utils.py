@@ -32,7 +32,7 @@ def fetch_odb():
     if html is None:
         return None
 
-    debug.log("Html: " + html)
+    # debug.log("Html: " + html)
 
     soup = html_utils.html_to_soup(html)
 
@@ -60,12 +60,8 @@ def get_odb_raw():
     for tag in soup(class_=ODB_VERSE):
         blocks.append(telegram_utils.italics(tag.text))
 
-    debug.log("Added verse")
-
     for tag in soup(class_=ODB_PASSAGE):
         blocks.append(tag.text)
-
-    debug.log("Added passage")
 
     return blocks
 
@@ -76,4 +72,6 @@ def get_odb():
     if blocks is None:
         return None
 
-    return blocks
+    passage = telegram_utils.join(blocks, "\n\n")
+
+    return passage
