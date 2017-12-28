@@ -49,10 +49,11 @@ def get_odb_raw():
 
     blocks = []
     for tag in soup(class_=ODB_VERSE):
-        blocks.append(telegram_utils.italics(tag.text))
+        blocks.append(
+            telegram_utils.italics(text_utils.strip_whitespace(tag.text)))
 
     for tag in soup(class_=ODB_PASSAGE):
-        blocks.append(tag.text)
+        blocks.append(text_utils.strip_whitespace(tag.text))
 
     return blocks
 
