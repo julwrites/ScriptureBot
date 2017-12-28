@@ -21,6 +21,7 @@ ODB_END = "</article>"
 
 # Which class to isolate?
 ODB_VERSE = "verse-box"
+ODB_SCRIPTURE_LINK = "scripture-link"
 ODB_PASSAGE = "post-content"
 
 
@@ -48,12 +49,13 @@ def get_odb_raw():
 
     blocks = []
     for tag in soup(class_=ODB_VERSE):
-        blocks.append(
-            telegram_utils.italics(text_utils.strip_whitespace(tag.text)))
+        for link in tag(class_=ODB_SCRIPTURE_LINK):
+            verse = bible_utils.get_passage(link.text)
+            blocks.append(telegram_utils.italics(verse))
 
     for tag in soup(class_=ODB_PASSAGE):
-        for tag in tag.select(html_utils.html_p_tag()):
-            blocks.append(text_utils.strip_whitespace(tag.text))
+        for p in tag.select(html_utils.html_p_tag()):
+            blocks.append(text_utils.strip_whitespace(p.text))
 
     return blocks
 
