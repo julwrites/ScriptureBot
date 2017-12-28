@@ -87,25 +87,15 @@ def get_passage_raw(ref, version="NIV"):
     return bgw_classes.BGWPassage(reference, version, text)
 
 
-def get_passage(ref, version="NIV", ref_md=telegram_utils.bold, text_md=None):
+def get_passage(ref, version="NIV"):
     passage = get_passage_raw(ref, version)
 
     if passage is None:
         return None
 
-    text = ""
-
-    if ref_md is not None:
-        text = ref_md(passage.get_reference())
-    else:
-        text = passage.get_reference()
-
+    text = telegram_utils.bold(passage.get_reference())
     text += " " + telegram_utils.bracket(passage.get_version())
-
-    if text_md is not None:
-        text += "\n\n" + text_md(passage.get_text())
-    else:
-        text += "\n\n" + passage.get_text()
+    text += "\n\n" + passage.get_text()
 
     return text
 

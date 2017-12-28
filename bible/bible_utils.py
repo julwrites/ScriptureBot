@@ -13,8 +13,8 @@ def get_passage_raw(ref, version="NIV"):
     return bgw_utils.get_passage_raw(ref, version)
 
 
-def get_passage(ref, version="NIV", ref_md=telegram_utils.bold, text_md=None):
-    return bgw_utils.get_passage(ref, version, ref_md, text_md)
+def get_passage(ref, version="NIV"):
+    return bgw_utils.get_passage(ref, version)
 
 
 def get_reference(query):

@@ -39,7 +39,7 @@ def fetch_odb():
     return soup
 
 
-def get_odb_raw():
+def get_odb_raw(version="NIV"):
     soup = fetch_odb()
     if soup is None:
         return None
@@ -50,9 +50,10 @@ def get_odb_raw():
     blocks = []
     for tag in soup(class_=ODB_VERSE):
         for link in tag(class_=ODB_SCRIPTURE_LINK):
-            verse = bible_utils.get_passage(
-                link.text, text_md=telegram_utils.italics)
-            blocks.append(verse)
+            passage = bible_utils.get_passage(link.text)
+            blocks.append(passage)
+
+    blocks.append("\n")
 
     for tag in soup(class_=ODB_PASSAGE):
         for p in tag.select(html_utils.html_p_tag()):
@@ -61,7 +62,7 @@ def get_odb_raw():
     return blocks
 
 
-def get_odb():
+def get_odb(version="NIV"):
     blocks = get_odb_raw()
 
     if blocks is None:
