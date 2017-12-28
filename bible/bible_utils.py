@@ -2,6 +2,7 @@
 
 # Local modules
 from bible import bgw_utils
+from common.telegram import telegram_utils
 
 
 def fetch_passage_html(ref, version="NIV"):
@@ -12,8 +13,8 @@ def get_passage_raw(ref, version="NIV"):
     return bgw_utils.get_passage_raw(ref, version)
 
 
-def get_passage(ref, version="NIV", markdown=None):
-    return bgw_utils.get_passage(ref, version, markdown)
+def get_passage(ref, version="NIV", ref_md=telegram_utils.bold, text_md=None):
+    return bgw_utils.get_passage(ref, version, ref_md, text_md)
 
 
 def get_reference(query):

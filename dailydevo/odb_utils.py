@@ -51,7 +51,7 @@ def get_odb_raw():
     for tag in soup(class_=ODB_VERSE):
         for link in tag(class_=ODB_SCRIPTURE_LINK):
             verse = bible_utils.get_passage(
-                link.text, markdown=telegram_utils.italics)
+                link.text, text_md=telegram_utils.italics)
             blocks.append(verse)
 
     for tag in soup(class_=ODB_PASSAGE):
