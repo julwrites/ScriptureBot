@@ -44,17 +44,8 @@ def get_odb_raw():
     if soup is None:
         return None
 
-    # for tag in soup.select(ODB_IGNORE):
-    #     tag.decompose()
-
-    # Steps through all the html types and mark these
+    # Strips the markdown from the html
     soup = html_utils.stripmd_soup(soup)
-
-    # # Finds all links and converts to markdown
-    # soup = html_utils.link_soup(soup, telegram_utils.link)
-
-    # # Marks the parts of the soup that we want
-    # soup = html_utils.mark_soup(soup, ODB_DEVO_SELECT, html_utils.html_p_tag())
 
     blocks = []
     for tag in soup(class_=ODB_VERSE):
@@ -71,6 +62,9 @@ def get_odb():
 
     if blocks is None:
         return None
+
+    for block in blocks:
+        debug.log("Block:" + block)
 
     passage = telegram_utils.join(blocks, "\n\n")
 
