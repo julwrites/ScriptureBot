@@ -69,6 +69,10 @@ class DailyDevoAction(action_classes.Action):
                 for hook in hooks
             ]
 
+            options.append(
+                telegram_utils.make_reply_button(
+                    text=user_actions.UserDoneAction().name()))
+
             telegram_utils.send_reply(
                 user=userObj.get_uid(),
                 text=PROMPT,

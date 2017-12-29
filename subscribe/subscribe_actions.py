@@ -5,6 +5,8 @@ from common import debug, text_utils
 from common.telegram import telegram_utils
 from common.action import action_classes
 
+from user import user_actions
+
 from dailydevo import dailydevo_modules
 
 PROMPT = "Choose any of these subscriptions to subscribe or unsubscribe!"
@@ -33,11 +35,8 @@ class SubscribeAction(action_classes.Action):
         debug.log("Querying " + query)
 
         if text_utils.is_valid(query):
-
             for sub in subs:
-
                 if text_utils.fuzzy_compare(query, sub.name()):
-
                     if userObj.has_subscription(sub.identifier()):
                         userObj.remove_subscription(sub.identifier())
 
@@ -63,13 +62,16 @@ class SubscribeAction(action_classes.Action):
             subList = [sub.name() for sub in subs]
 
             for i in range(len(subList)):
-
                 if userObj.has_subscription(subs[i].identifier()):
                     subList[i] = subList[i] + " " + telegram_utils.tick()
 
             options = [
                 telegram_utils.make_reply_button(text=sub) for sub in subList
             ]
+
+            options.append(
+                telegram_utils.make_reply_button(
+                    text=user_actions.UserDoneAction().name()))
 
             telegram_utils.send_reply(
                 user=userObj.get_uid(),
