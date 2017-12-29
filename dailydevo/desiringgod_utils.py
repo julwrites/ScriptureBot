@@ -19,6 +19,7 @@ DG_START = "<main role='main'>"
 DG_END = "</main>"
 
 # Which class to isolate?
+DG_TODAY = "section-1"
 DG_SELECT = "share share--card js-share-values"
 
 
@@ -43,9 +44,13 @@ def get_desiringgod_raw():
 
     blocks = []
     for tag in soup(class_=DG_SELECT):
-        blocks.append({"title": tag["data-title"], "link": tag["data-link"]})
+        if tag.find(id=DG_TODAY):
+            blocks.append({
+                "title": tag["data-title"],
+                "link": tag["data-link"]
+            })
 
-    return blocks
+    return blocks[:3]
 
 
 def get_desiringgod():
