@@ -42,7 +42,7 @@ def get_desiringgod_raw():
     if soup is None:
         return None
 
-    soup = soup(id=DG_TODAY)
+    soup(id=DG_TODAY)
 
     blocks = []
     for tag in soup(class_=DG_SELECT):
