@@ -41,6 +41,9 @@ class DailyDevoAction(action_classes.Action):
         query = telegram_utils.strip_command(msg, self.identifier())
         hooks = dailydevo_modules.get_hooks()
 
+        if user_actions.UserDoneAction().match(msg):
+            return True
+
         if text_utils.is_valid(query):
 
             for hook in hooks:

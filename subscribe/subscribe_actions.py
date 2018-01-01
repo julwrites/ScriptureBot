@@ -32,7 +32,8 @@ class SubscribeAction(action_classes.Action):
         query = telegram_utils.strip_command(msg, self.identifier())
         subs = dailydevo_modules.get_hooks()
 
-        debug.log("Querying " + query)
+        if user_actions.UserDoneAction().match(msg):
+            return True
 
         if text_utils.is_valid(query):
             for sub in subs:
