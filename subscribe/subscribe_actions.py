@@ -32,7 +32,10 @@ class SubscribeAction(action_classes.Action):
         query = telegram_utils.strip_command(msg, self.identifier())
         subs = dailydevo_modules.get_hooks()
 
-        if user_actions.UserDoneAction().match(msg):
+        done = user_actions.UserDoneAction()
+
+        if done.match(msg):
+            done.resolve(userObj, msg)
             return True
 
         if text_utils.is_valid(query):
@@ -72,7 +75,7 @@ class SubscribeAction(action_classes.Action):
 
             options.append(
                 telegram_utils.make_reply_button(
-                    text=user_actions.UserDoneAction().name()))
+                    text=done.name()))
 
             telegram_utils.send_reply(
                 user=userObj.get_uid(),
