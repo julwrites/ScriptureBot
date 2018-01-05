@@ -50,7 +50,7 @@ def get_odb_raw(version="NIV"):
     blocks = []
     for tag in soup(class_=ODB_VERSE):
         for link in tag(class_=ODB_SCRIPTURE_LINK):
-            if text_utils.is_valid(link):
+            if text_utils.is_valid(link.text):
                 passage = bible_utils.get_passage(
                     text_utils.stringify(link.text))
                 blocks.append(passage)
