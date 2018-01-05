@@ -31,17 +31,21 @@ PASSAGE = "passage"
 
 
 def fetch_bgw(query, version="NIV"):
-    formatRef = urllib.quote(query.lower().strip())
-    formatUrl = BGW_URL.format(formatRef, version)
+    try:
+        formatRef = urllib.quote(query.lower().strip())
+        formatUrl = BGW_URL.format(formatRef, version)
 
-    html = html_utils.fetch_html(formatUrl, BGW_PASSAGE_START, BGW_PASSAGE_END)
+        html = html_utils.fetch_html(formatUrl, BGW_PASSAGE_START,
+                                     BGW_PASSAGE_END)
 
-    if html is None:
-        return None
+        if html is None:
+            return None
 
-    soup = html_utils.html_to_soup(html, BGW_PASSAGE_CLASS)
+        soup = html_utils.html_to_soup(html, BGW_PASSAGE_CLASS)
 
-    return soup
+        return soup
+    except Exception as e:
+        debug.err(e)
 
 
 def get_passage_raw(ref, version="NIV"):
