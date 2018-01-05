@@ -31,10 +31,11 @@ PASSAGE = "passage"
 
 
 def fetch_bgw(query, version="NIV"):
-    formatQuery = query.lower().strip()
-    debug.log("Formatted query " + formatQuery)
-    formatRef = urllib.quote(formatQuery)
-    debug.log("Formatted ref " + formatRef)
+    try:
+        formatRef = urllib.quote(query.lower().strip())
+    except Exception as e:
+        debug.err(e)
+
     formatUrl = BGW_URL.format(formatRef, version)
 
     html = html_utils.fetch_html(formatUrl, BGW_PASSAGE_START, BGW_PASSAGE_END)
