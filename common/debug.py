@@ -32,7 +32,7 @@ def log(msg):
 def err(e):
     if not debug():
         return
-    logging.debug(unicode(e))
+    logging.debug("Error: " + unicode(e))
 
 
 def log_cmd(cmd):
