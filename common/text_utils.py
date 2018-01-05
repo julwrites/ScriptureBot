@@ -16,10 +16,7 @@ def stringify(value):
 
 
 def is_valid(s):
-    if s is not None:
-        if s.strip():
-            return True
-    return False
+    return bool(s is not None and s.strip())
 
 
 def fuzzify_raw(s):
