@@ -53,15 +53,11 @@ def get_odb_raw(version="NIV"):
             passage = bible_utils.get_passage(link.text)
             blocks.append(passage)
 
-    debug.log("Added scripture link")
-
     blocks.append("")
 
     for tag in soup(class_=ODB_PASSAGE):
         for p in tag.select(html_utils.html_p_tag()):
             blocks.append(text_utils.strip_whitespace(p.text))
-
-    debug.log("Added text")
 
     return blocks
 

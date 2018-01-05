@@ -34,6 +34,8 @@ def fetch_bgw(query, version="NIV"):
     formatRef = urllib.quote(query.lower().strip())
     formatUrl = BGW_URL.format(formatRef, version)
 
+    debug.log("Fetching " + formatUrl)
+
     html = html_utils.fetch_html(formatUrl, BGW_PASSAGE_START, BGW_PASSAGE_END)
 
     if html is None:
