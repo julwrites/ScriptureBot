@@ -64,8 +64,7 @@ class BibleUserVersionAction(action_classes.Action):
             telegram_utils.send_reply(
                 user=userObj.get_uid(),
                 text=PROMPT,
-                reply=telegram_utils.make_reply_keyboard(
-                    buttons=))
+                reply=telegram_utils.make_reply_keyboard(buttons=options))
 
             userObj.set_state(self.identifier())
 
