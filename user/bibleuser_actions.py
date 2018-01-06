@@ -31,6 +31,12 @@ class BibleUserVersionAction(action_classes.Action):
     def resolve(self, userObj, msg):
         query = telegram_utils.strip_command(msg, self.identifier())
 
+        done = user_actions.UserDoneAction()
+
+        if done.match(msg):
+            done.resolve(userObj, msg)
+            return True
+
         if text_utils.is_valid(query):
 
             for ver in bible_utils.get_versions():
@@ -48,11 +54,18 @@ class BibleUserVersionAction(action_classes.Action):
                 telegram_utils.send_msg(user=userObj.get_uid(), text=BADQUERY)
 
         else:
+            options = [
+                telegram_utils.make_reply_button(text=version)
+                for version in bible_utils.get_versions()
+            ]
+
+            options.append(telegram_utils.make_reply_button(text=done.name()))
+
             telegram_utils.send_reply(
                 user=userObj.get_uid(),
                 text=PROMPT,
                 reply=telegram_utils.make_reply_keyboard(
-                    buttons=bible_utils.get_versions()))
+                    buttons=))
 
             userObj.set_state(self.identifier())
 
