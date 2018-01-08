@@ -8,11 +8,15 @@ import re
 from common import debug
 
 
-def stringify(value):
+def utf8(value):
     if value is None:
-        return unicode("")
+        return "".encode("utf-8")
 
-    return unicode(value)
+    return value.encode("utf-8")
+
+
+def stringify(value):
+    return utf8(value)
 
 
 def is_valid(s):

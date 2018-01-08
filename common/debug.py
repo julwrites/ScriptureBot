@@ -32,7 +32,7 @@ def log(msg):
 def err(e):
     if not debug():
         return
-    logging.debug("Error: " + unicode(e))
+    logging.debug("Error: " + text_utils.stringify(e))
 
 
 def log_cmd(cmd):
@@ -63,4 +63,4 @@ def datetime():
     if not debug():
         return
 
-    logging.debug(unicode(chrono.now()))
+    logging.debug(text_utils.stringify(chrono.now()))

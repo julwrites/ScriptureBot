@@ -10,12 +10,12 @@ class Markup():
 
     def set_field(self, key, value):
         debug.log(
-            unicode(self.__class__.__name__) + ": setting field " +
-            unicode(key) + ": " + unicode(value))
+            text_utils.stringify(self.__class__.__name__) + ": setting field "
+            + text_utils.stringify(key) + ": " + text_utils.stringify(value))
         self.formatData[key] = value
 
     def set_text(self, text):
-        self.set_field("text", unicode(text))
+        self.set_field("text", text_utils.stringify(text))
 
     def data(self):
         return self.formatData
@@ -96,7 +96,7 @@ class Post(Markup):
         self.set_field("parse_mode", "Markdown")
 
     def set_user(self, user):
-        self.set_field("chat_id", unicode(user))
+        self.set_field("chat_id", text_utils.stringify(user))
 
     def set_reply(self, reply):
         self.set_field("reply_markup", reply.data())

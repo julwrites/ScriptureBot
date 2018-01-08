@@ -79,7 +79,7 @@ def format_msg(msg):
 
 
 def send_msg(user, text):
-    debug.log("Preparing to send " + unicode(user) + ": " + text)
+    debug.log("Preparing to send " + text_utils.stringify(user) + ": " + text)
     chunks = format_msg(text)
 
     for chunk in chunks:
