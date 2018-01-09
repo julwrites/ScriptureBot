@@ -60,7 +60,8 @@ class BibleUser(db.Model):
 
     def get_description(self):
         userType = "Group " if self.is_group() else "User "
-        return text_utils.stringify(userType) + self.get_name_string()
+        return text_utils.stringify(userType) + self.get_name_string(
+            verbose=True)
 
     def is_group(self):
         return int(self.get_uid()) < 0
