@@ -16,7 +16,7 @@ def utf8(value):
 
 
 def stringify(value):
-    return utf8(str(value))
+    return utf8(unicode(value))
 
 
 def is_valid(s):
