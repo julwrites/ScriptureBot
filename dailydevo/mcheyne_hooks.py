@@ -13,7 +13,7 @@ PROMPT = "Here are today's M'Cheyne verses!\n{}\nTap on any one to get the passa
 
 class McheyneDailyHook(hook_classes.Hook):
     def identifier(self):
-        return "/mcheynedaily"
+        return "/mcheyne"
 
     def name(self):
         return "M'cheyne Bible Reading Plan"

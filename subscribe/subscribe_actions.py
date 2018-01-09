@@ -33,9 +33,7 @@ class SubscribeAction(action_classes.Action):
         subs = dailydevo_modules.get_hooks()
 
         done = user_actions.UserDoneAction()
-
-        if done.match(msg):
-            done.resolve(userObj, msg)
+        if done.try_execute(userObj, msg):
             return True
 
         if text_utils.is_valid(query):

@@ -12,7 +12,7 @@ from user import user_actions
 
 class McheyneDailyAction(action_classes.Action):
     def identifier(self):
-        return "/mcheynedaily"
+        return "/mcheyne"
 
     def name(self):
         return "M'cheyne Bible Reading Plan"
@@ -23,8 +23,8 @@ class McheyneDailyAction(action_classes.Action):
     def resolve(self, userObj, msg):
         query = telegram_utils.strip_command(msg, self.identifier())
 
-        doneAction = user_actions.UserDoneAction()
-        if doneAction.try_execute(userObj, msg):
+        done = user_actions.UserDoneAction()
+        if done.try_execute(userObj, msg):
             return True
 
         passage = bible_utils.get_passage(query, userObj.get_version())

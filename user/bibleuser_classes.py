@@ -40,14 +40,16 @@ class BibleUser(db.Model):
         return self.key().name()
 
     def get_name_string(self, username=False):
-        name = text_utils.stringify(self.firstName)
-        if text_utils.is_valid(
-                self.lastName) and self.firstName != self.lastName:
-            name += text_utils.stringify(" ") + text_utils.stringify(
-                self.lastName)
-        if username and text_utils.is_valid(self.username):
-            name += text_utils.stringify(" @") + text_utils.stringify(
-                self.username)
+        fname = text_utils.stringify(self.firstName)
+        lname = text_utils.stringify(self.lastName)
+        uname = text_utils.stringify(self.username)
+
+        name = fname
+        if text_utils.is_valid(fname) and fname != lname:
+            name += text_utils.stringify(" ") + lname
+
+        if username and text_utils.is_valid(uname):
+            name += text_utils.stringify(" @") + uname
 
         return name
 
