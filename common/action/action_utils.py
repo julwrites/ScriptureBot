@@ -6,15 +6,18 @@ from common import debug
 
 def execute(actions, userObj, msg):
     try:
-        debug.log("Trying actions: " +
-                  "|".join([action.identifier() for action in actions]))
+        debug.log("Trying actions: " + "|".join(
+            [action.identifier() for action in actions]))
 
         # Execute in order:
         # Commands
         # Waiting
         # Names
 
-        commands = [action for action in actions if action.match_command(msg)]
+        commands = [
+            action for action in actions
+            if action.match(msg, [action.match_command])
+        ]
 
         for action in commands:
             debug.log_action(action.identifier())
@@ -28,7 +31,10 @@ def execute(actions, userObj, msg):
             if action.resolve(userObj, msg):
                 return True
 
-        matched = [action for action in actions if action.match(msg)]
+        matched = [
+            action for action in actions
+            if action.match(msg, [action.match_name])
+        ]
 
         for action in matched:
             debug.log_action(action.identifier())

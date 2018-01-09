@@ -33,6 +33,12 @@ class StartAction(action_classes.Action):
     def match(self, msg):
         return msg is not None
 
+    def match_command(self, msg):
+        return self.match(msg)
+
+    def waiting(self, msg):
+        return self.match(msg)
+
     def resolve(self, userObj, msg):
         # Register User
         userJson = msg.get("from")
@@ -42,7 +48,8 @@ class StartAction(action_classes.Action):
         if userJson is not None:
             debug.log("Updating user info")
             user_utils.set_profile(
-                userJson.get("id"), userJson.get("username"),
+                userJson.get("id"),
+                userJson.get("username"),
                 userJson.get("first_name"), userJson.get("last_name"))
 
         # If this is the user"s first time registering
