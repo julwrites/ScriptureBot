@@ -73,9 +73,7 @@ class SubscribeAction(action_classes.Action):
                 telegram_utils.make_reply_button(text=sub) for sub in subList
             ]
 
-            options.append(
-                telegram_utils.make_reply_button(
-                    text=done.name()))
+            options.append(telegram_utils.make_reply_button(text=done.name()))
 
             telegram_utils.send_reply(
                 user=userObj.get_uid(),
