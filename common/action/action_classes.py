@@ -6,6 +6,7 @@ import json
 # Local modules
 from common import debug, text_utils
 
+
 # Defines an interface for all functionality that can be executed by the bot
 class Action():
     # To be inherited and overwritten with a check for whether this is waiting for a response
@@ -18,9 +19,7 @@ class Action():
 
     # Do not overwrite if possible, this checks the message text against the command name
     def match(self, msg):
-        if self.match_command(msg) or self.match_name(msg)
-            return True
-        return False
+        return self.match_command(msg) or self.match_name(msg)
 
     def match_command(self, msg):
         if msg is not None:
