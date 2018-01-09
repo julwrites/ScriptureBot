@@ -15,10 +15,7 @@ def execute(actions, userObj, msg):
         # Waiting
         # Names
 
-        commands = [
-            action for action in actions
-            if action.match(msg, [action_classes.Action.match_command])
-        ]
+        commands = [action for action in actions if action.match_command(msg)]
 
         for action in commands:
             debug.log_action(action.identifier())
@@ -32,10 +29,7 @@ def execute(actions, userObj, msg):
             if action.resolve(userObj, msg):
                 return True
 
-        matched = [
-            action for action in actions
-            if action.match(msg, [action_classes.Action.match_name])
-        ]
+        matched = [action for action in actions if action.match(msg)]
 
         for action in matched:
             debug.log_action(action.identifier())

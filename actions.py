@@ -30,7 +30,7 @@ class StartAction(action_classes.Action):
     def description(self):
         return "Start the Bot"
 
-    def match(self, msg):
+    def match_command(self, msg):
         return msg is not None
 
     def resolve(self, userObj, msg):
