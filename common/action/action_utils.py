@@ -2,6 +2,7 @@
 
 # Local modules
 from common import debug
+from common.action import action_classes
 
 
 def execute(actions, userObj, msg):
@@ -16,7 +17,7 @@ def execute(actions, userObj, msg):
 
         commands = [
             action for action in actions
-            if action.match(msg, [action.match_command])
+            if action.match(msg, [action_classes.Action.match_command])
         ]
 
         for action in commands:
@@ -33,7 +34,7 @@ def execute(actions, userObj, msg):
 
         matched = [
             action for action in actions
-            if action.match(msg, [action.match_name])
+            if action.match(msg, [action_classes.Action.match_name])
         ]
 
         for action in matched:

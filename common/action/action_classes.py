@@ -18,7 +18,7 @@ class Action():
         return False
 
     # Do not overwrite if possible, this checks the message text against the command name
-    def match(self, msg, criteria):
+    def match(self, msg, criteria=[]):
         if msg is not None:
             msgText = msg.get("text").strip()
             for c in criteria:
