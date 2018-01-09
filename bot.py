@@ -8,7 +8,7 @@ import json
 from google.appengine.api import urlfetch
 
 # Local modules
-from common import debug
+from common import debug, text_utils
 from common.telegram import telegram_utils
 from common.action import action_utils
 from user import user_utils
@@ -28,7 +28,7 @@ class BotHandler(webapp2.RequestHandler):
         debug.log(data)
 
         if data.get("message"):
-            msg = data.get("message")
+            msg = text_utils.stringify(data.get("message"))
 
             # Read the user to echo back
             userId = user_utils.get_uid(msg.get("from").get("id"))
