@@ -30,8 +30,8 @@ class UserDoneAction(action_classes.Action):
 
     def resolve(self, userObj, msg):
         choose = random.randint(0, len(CONFIRM) - 1)
-        confirmString = CONFIRM[choose].format(
-            text_utils.stringify(userObj.get_name_string()))
+        confirmString = text_utils.stringify(CONFIRM[choose]).format(
+            userObj.get_name_string())
 
         telegram_utils.send_reply(
             user=userObj.get_uid(),

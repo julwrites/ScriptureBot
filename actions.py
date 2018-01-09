@@ -4,7 +4,7 @@
 import json
 
 # Local modules
-from common import debug
+from common import debug, text_utils
 from common.action import action_classes
 from common.telegram import telegram_utils
 
@@ -74,7 +74,8 @@ class HelpAction(action_classes.Action):
     def resolve(self, userObj, msg):
         telegram_utils.send_msg(
             user=userObj.get_uid(),
-            text=HELP_MSG.format(userObj.get_name_string()))
+            text=text_utils.stringify(HELP_MSG).format(
+                userObj.get_name_string()))
         return True
 
 
