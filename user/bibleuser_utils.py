@@ -29,6 +29,8 @@ def get_uid(userIdObj):
 
 
 def set_profile(userId, uname, fname, lname):
+    debug.log("Setting profile of " + unicode(userId))
+
     existingUser = get_user(userId)
 
     uname = text_utils.stringify(uname)
