@@ -33,7 +33,7 @@ def set_profile(userId, uname, fname, lname):
 
     uname = text_utils.stringify(uname)
     fname = text_utils.stringify(fname)
-    lname = text_utils.stringify(fname)
+    lname = text_utils.stringify(lname)
 
     if existingUser:
         existingUser.username = uname
