@@ -39,17 +39,22 @@ class BibleUser(db.Model):
     def get_uid(self):
         return self.key().name()
 
-    def get_name_string(self, username=False):
+    def get_name_string(self, verbose=False):
         fname = text_utils.stringify(self.firstName)
         lname = text_utils.stringify(self.lastName)
         uname = text_utils.stringify(self.username)
 
         name = fname
-        if text_utils.is_valid(fname) and fname != lname:
-            name += text_utils.stringify(" ") + lname
 
-        if username and text_utils.is_valid(uname):
-            name += text_utils.stringify(" @") + uname
+        if text_utils.is_valid(name):
+            name = text_utils.stringify(" ") + lname if verbose
+        else:
+            name = lname
+
+        if text_utils.is_valid(name):
+            name = text_utils.stringify(" @") + uname if verbose
+        else:
+            name = uname
 
         return name
 
