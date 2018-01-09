@@ -9,7 +9,7 @@ from common import debug
 
 
 def utf8(value):
-    return bytearray(value).encode("utf-8")
+    return bytearray(value, "utf-8")
 
 
 def stringify(value):
