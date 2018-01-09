@@ -181,7 +181,7 @@ def parse_payload(msg):
 
 
 def strip_command(msg, cmd):
-    return msg.get("text").strip().replace(cmd, "")
+    return text_utils.stringify(msg.get("text")).strip().replace(cmd, "")
 
 
 # Telegram message prettifying

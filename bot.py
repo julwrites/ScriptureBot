@@ -28,7 +28,7 @@ class BotHandler(webapp2.RequestHandler):
         debug.log(data)
 
         if data.get("message"):
-            msg = text_utils.stringify(data.get("message"))
+            msg = data.get("message")
 
             # Read the user to echo back
             userId = user_utils.get_uid(msg.get("from").get("id"))
