@@ -52,9 +52,6 @@ class StartAction(action_classes.Action):
 
             HelpAction().resolve(userObj, msg)
 
-            debug.log("Registering " + userObj.get_name_string(
-                lastname=True, username=True))
-
             return True
         return False
 

@@ -29,7 +29,7 @@ class AdminNotifyAction(action_classes.Action):
                 dbUserObj = user_utils.get_user(user_utils.get_uid(dbUser))
                 telegram_utils.send_msg(
                     user=dbUserObj.get_uid(),
-                    text=msg.format(dbUserObj.get_name_string()))
+                    text=msg.format(dbUserObj.get_name_string(verbose=True)))
 
             return True
         return False
