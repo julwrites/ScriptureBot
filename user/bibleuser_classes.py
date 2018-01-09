@@ -47,12 +47,12 @@ class BibleUser(db.Model):
         name = fname
 
         if text_utils.is_valid(name):
-            name = text_utils.stringify(" ") + lname if verbose
+            name = text_utils.stringify(" ") + lname if verbose else name
         else:
             name = lname
 
         if text_utils.is_valid(name):
-            name = text_utils.stringify(" @") + uname if verbose
+            name = text_utils.stringify(" @") + uname if verbose else name
         else:
             name = uname
 
