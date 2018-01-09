@@ -16,7 +16,10 @@ def utf8(value):
 
 
 def stringify(value):
-    return utf8(unicode(value).decode("utf-8"))
+    if not isinstance(value, basestring):
+        value = unicode(value)
+
+    return utf8(value)
 
 
 def is_valid(s):
