@@ -64,8 +64,6 @@ def format_msg(msg):
     debug.log("Formatting message")
 
     md, esc = find_md(msg, ["_", "*"])
-    debug.log(md)
-    debug.log(esc)
 
     for symbol in esc:
         msg = msg[:symbol] + "\\" + msg[symbol:]
@@ -88,6 +86,8 @@ def split_msg(msg):
         for pair in md:
             if pair[0] < MAX_LENGTH and pair[1] > MAX_LENGTH:
                 max_pos = pair[0]
+
+        debug.log("Chunk: " + msg[curr:max_pos])
 
         chunks.append(msg[curr:max_pos])
     chunks.append(msg[max_pos:])
