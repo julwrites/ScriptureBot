@@ -38,8 +38,8 @@ def send_post(post):
 
 def set_intersect(lhs, rhs):
     rhs = set(rhs)
-    non = [item for item in lhs if item in rhs]
-    both = [item for item in lhs if not item in rhs]
+    both = [item for item in lhs if item in rhs]
+    non = [item for item in lhs if not item in rhs]
     return both, non
 
 
