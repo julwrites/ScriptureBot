@@ -46,10 +46,14 @@ def find_md(text, symbols):
             start = text[curr:].find(symbol)
             if start == -1:
                 break
+            start += curr
+
             end = text[start:].find(symbol)
             if end == -1:
                 esc.append(start)
                 break
+            end += start
+
             md.append((start, end))
             curr = end + 1
 
@@ -75,7 +79,6 @@ def split_msg(msg):
     chunks = []
     md, esc = find_md(msg, ["_", "*"])
 
-    end = len(msg)
     max_pos = 0
 
     while len(msg[max_pos:]) > MAX_LENGTH:
