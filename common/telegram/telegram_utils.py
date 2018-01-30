@@ -36,44 +36,48 @@ def send_post(post):
         debug.err(e)
 
 
-def last_md(chunk):
-    start = chunk.rfind("\n")
-    end = chunk.rfind("\n")
-    if end < start:
-        return start
+def find_md(text, symbols):
+    md = []
+    esc = []
 
-    start = chunk.rfind("_ ")
-    end = chunk.rfind(" _")
-    if end < start:
-        return start
+    curr = 0
+    for symbol in symbols:
+        while True:
+            start = text[curr:].find(symbol)
+            if start == -1:
+                break
+            end = text[start:].find(symbol)
+            if pair == -1:
+                esc.append(start)
+                break
+            md.append((start, end))
+            curr = end + 1
 
-    start = chunk.rfind("* ")
-    end = chunk.rfind(" *")
-    if end < start:
-        return start
-
-    return -1
+    return md, esc
 
 
 def format_msg(msg):
     debug.log("Splitting up message if necessary")
 
-    last = None
     chunks = []
-    while len(msg) > MAX_LENGTH:
-        last = last_md(msg[:MAX_LENGTH])
+    md, esc = find_md(msg, ["_", "*"])
 
-        if last <= 0:
-            last = min(last, msg.rfind(" ", 0, MAX_LENGTH))
-        if last <= 0:
-            last = MAX_LENGTH
+    for symbol in esc:
+        msg = msg[:symbol] + "\\" + msg[symbol:]
 
-        debug.log("Chunk: " + msg[:last])
-        chunks.append(msg[:last])
-        msg = msg[last:]
-        last = None
+    end = len(msg)
+    curr = 0
 
-    chunks.append(msg[last:])
+    while True:
+        max_pos = curr + MAX_LENGTH
+
+        for pair in md:
+            if pair[0] < MAX_LENGTH and pair[1] > MAX_LENGTH:
+                max_pos = pair[0]
+
+        curr = max_pos
+        chunks.append(msg[curr:max_pos])
+        msg = msg[max_pos:]
 
     return chunks
 

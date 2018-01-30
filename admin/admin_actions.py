@@ -52,12 +52,8 @@ class AdminDumpAction(action_classes.Action):
             for dbUser in query.run(batch_size=10):
                 dbUserObj = user_utils.get_user(user_utils.get_uid(dbUser))
                 userList.append(dbUserObj.get_description())
-            for i in range(len(userList) / 5):
-                start = i * 5
-                end = min(i * 5 + 5, len(userList))
-                userListMsg = "\n".join(userList[start:end])
-                telegram_utils.send_msg(
-                    user=userObj.get_uid(), text=userListMsg)
+            userListMsg = "\n".join(userList[start:end])
+            telegram_utils.send_msg(user=userObj.get_uid(), text=userListMsg)
 
             return True
         return False
