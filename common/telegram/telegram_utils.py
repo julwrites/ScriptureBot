@@ -48,14 +48,14 @@ def find_md(text, symbols):
                 break
             start += curr
 
-            end = text[start:].find(symbol)
+            end = text[start + 1:].find(symbol)
             if end == -1:
                 esc.append(start)
                 break
-            end += start
+            end += start + 1
 
             md.append((start, end))
-            curr = end + 1
+            curr = end
 
     return md, esc
 
