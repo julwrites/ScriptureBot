@@ -115,8 +115,8 @@ def split_msg(msg):
         max_pos += MAX_LENGTH
 
         for i in range(0, len(md), 2):
-            if pair[i] < max_pos and pair[i + 1] >= max_pos:
-                max_pos = pair[i]
+            if md[i] < max_pos and md[i + 1] >= max_pos:
+                max_pos = md[i]
 
         debug.log("Chunk: " + msg[curr:max_pos])
 
