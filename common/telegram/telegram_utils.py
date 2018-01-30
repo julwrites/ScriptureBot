@@ -35,13 +35,14 @@ def send_post(post):
         debug.log("Send failed! " + TELEGRAM_URL_SEND + ", " + data)
         debug.err(e)
 
+
 def set_intersect(lhs, rhs):
     non = [item for item in lhs if rhs.find(item) == -1]
     both = [item for item in lhs if lhs.find(item) != -1]
     return both, non
 
 
-def find_symbols(text, symbols, exclude):
+def find_symbols(text, symbols):
     sym = []
 
     for symbol in symbols:
@@ -57,6 +58,7 @@ def find_symbols(text, symbols, exclude):
             sym.append(pos)
 
     return sym
+
 
 def find_symbol_pairs(text, symbols):
     sym = []
