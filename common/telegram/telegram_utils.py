@@ -77,7 +77,7 @@ def split_msg(msg):
     debug.log("Splitting up message if necessary")
 
     chunks = []
-    md, esc = find_md(msg, ["_", "*"])
+    md, esc = find_md(msg, ["_", "*", "\n"])
 
     for pair in md:
         debug.log("Md: " + msg[pair[0]:pair[1]])
