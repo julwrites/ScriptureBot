@@ -40,8 +40,8 @@ def find_md(text, symbols):
     md = []
     esc = []
 
-    curr = 0
     for symbol in symbols:
+        curr = 0
         slength = len(symbol)
         while True:
             first = text[curr:].find(symbol)
