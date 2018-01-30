@@ -60,6 +60,8 @@ def format_msg(msg):
     debug.log("Formatting message")
 
     md, esc = find_md(msg, ["_", "*"])
+    debug.log(md)
+    debug.log(esc)
 
     for symbol in esc:
         msg = msg[:symbol] + "\\" + msg[symbol:]
