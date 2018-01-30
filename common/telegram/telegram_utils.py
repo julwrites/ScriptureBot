@@ -57,6 +57,17 @@ def find_md(text, symbols):
 
 
 def format_msg(msg):
+    debug.log("Formatting message")
+
+    md, esc = find_md(msg, ["_", "*"])
+
+    for symbol in esc:
+        msg = msg[:symbol] + "\\" + msg[symbol:]
+
+    return msg
+
+
+def split_msg(msg):
     debug.log("Splitting up message if necessary")
 
     chunks = []
@@ -84,7 +95,7 @@ def format_msg(msg):
 
 def send_msg(user, text):
     debug.log("Preparing to send " + text_utils.stringify(user) + ": " + text)
-    chunks = format_msg(text)
+    chunks = split_msg(format_msg(text))
 
     for chunk in chunks:
         post = telegram_classes.Post()
@@ -96,14 +107,14 @@ def send_msg(user, text):
 def send_reply(user, text, reply):
     post = telegram_classes.Post()
     post.set_user(user)
-    post.set_text(text)
+    post.set_text(format_msg(text))
     post.set_reply(reply)
     send_post(post)
 
 
 def make_reply_button(text="", contact=False, location=False):
     button = telegram_classes.Markup()
-    button.set_text(text)
+    button.set_text(format_msg(text))
     button.set_field("request_contact", contact)
     button.set_field("request_location", location)
     return button
@@ -127,7 +138,7 @@ def make_reply_keyboard(buttons=[],
 
 def make_inline_button(text="", url="", callback="", query=""):
     button = telegram_classes.Markup()
-    button.set_text(text)
+    button.set_text(format_msg(text))
     button.set_field("url", url)
     button.set_field("callback_data", callback)
     button.set_field("switch_inline_query", query)
