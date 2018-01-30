@@ -47,7 +47,7 @@ def find_md(text, symbols):
             if start == -1:
                 break
             end = text[start:].find(symbol)
-            if pair == -1:
+            if end == -1:
                 esc.append(start)
                 break
             md.append((start, end))
