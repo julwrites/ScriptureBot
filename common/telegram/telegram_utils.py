@@ -73,9 +73,6 @@ def split_msg(msg):
     chunks = []
     md, esc = find_md(msg, ["_", "*"])
 
-    for symbol in esc:
-        msg = msg[:symbol] + "\\" + msg[symbol:]
-
     end = len(msg)
     max_pos = 0
 
