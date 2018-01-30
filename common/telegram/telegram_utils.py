@@ -35,10 +35,31 @@ def send_post(post):
         debug.log("Send failed! " + TELEGRAM_URL_SEND + ", " + data)
         debug.err(e)
 
+def set_intersect(lhs, rhs):
+    non = [item for item in lhs if rhs.find(item) == -1]
+    both = [item for item in lhs if lhs.find(item) != -1]
+    return both, non
 
-def find_md(text, symbols):
-    md = []
-    esc = []
+
+def find_symbols(text, symbols, exclude):
+    sym = []
+
+    for symbol in symbols:
+        curr = 0
+        slength = len(symbol)
+        while True:
+            pos = text[curr:].find(symbol)
+            if pos == -1:
+                break
+            pos += curr
+            curr = pos + slength
+
+            sym.append(pos)
+
+    return sym
+
+def find_symbol_pairs(text, symbols):
+    sym = []
 
     for symbol in symbols:
         curr = 0
@@ -52,20 +73,22 @@ def find_md(text, symbols):
 
             last = text[curr:].find(symbol)
             if last == -1:
-                esc.append(first)
                 break
             last += curr
             curr = last + slength
 
-            md.append((first, curr))
+            sym.append(first)
+            sym.append(last)
 
-    return md, esc
+    return sym
 
 
 def format_msg(msg):
     debug.log("Formatting message")
 
-    md, esc = find_md(msg, ["_", "*"])
+    symbols = find_symbols(msg, ["_", "*"])
+    pairs = find_symbol_pairs(msg, ["_", "*"])
+    md, esc = set_intersect(symbols, pairs)
 
     for symbol in esc:
         msg = msg[:symbol] + "\\" + msg[symbol:]
@@ -77,10 +100,10 @@ def split_msg(msg):
     debug.log("Splitting up message if necessary")
 
     chunks = []
-    md, esc = find_md(msg, ["_", "*", "\n"])
 
-    for pair in md:
-        debug.log("Md: " + msg[pair[0]:pair[1]])
+    symbols = find_symbols(msg, ["_", "*"])
+    pairs = find_symbol_pairs(msg, ["_", "*"])
+    md, esc = set_intersect(symbols, pairs)
 
     max_pos = 0
 
@@ -88,9 +111,9 @@ def split_msg(msg):
         curr = max_pos
         max_pos += MAX_LENGTH
 
-        for pair in md:
-            if pair[0] < max_pos and pair[1] >= max_pos:
-                max_pos = pair[0]
+        for i in range(0, len(md), 2):
+            if pair[i] < max_pos and pair[i + 1] >= max_pos:
+                max_pos = pair[i]
 
         debug.log("Chunk: " + msg[curr:max_pos])
 
