@@ -42,19 +42,20 @@ def find_md(text, symbols):
 
     curr = 0
     for symbol in symbols:
+        slength = len(symbol)
         while True:
             first = text[curr:].find(symbol)
             if first == -1:
                 break
             first += curr
-            curr = first + 1
+            curr = first + slength
 
             last = text[curr:].find(symbol)
             if last == -1:
                 esc.append(first)
                 break
             last += curr
-            curr = last + 1
+            curr = last + slength
 
             md.append((first, curr))
 
