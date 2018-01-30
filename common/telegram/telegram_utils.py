@@ -43,19 +43,20 @@ def find_md(text, symbols):
     curr = 0
     for symbol in symbols:
         while True:
-            start = text[curr:].find(symbol)
-            if start == -1:
+            first = text[curr:].find(symbol)
+            if first == -1:
                 break
-            start += curr
+            first += curr
+            curr = first + 1
 
-            end = text[start + 1:].find(symbol)
-            if end == -1:
-                esc.append(start)
+            last = text[curr:].find(symbol)
+            if last == -1:
+                esc.append(first)
                 break
-            end += start + 1
+            last += curr
+            curr = last + 1
 
-            md.append((start, end))
-            curr = end
+            md.append((first, curr))
 
     return md, esc
 
