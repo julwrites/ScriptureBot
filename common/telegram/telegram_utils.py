@@ -107,7 +107,7 @@ def split_msg(msg):
     symbols = find_symbols(msg, ["_", "*"])
     pairs = find_symbol_pairs(msg, ["_", "*"])
     md, esc = set_intersect(symbols, pairs)
-    pairs = find_symbol_pairs(msg, ["\n"], False)_
+    pairs = find_symbol_pairs(msg, ["\n"], False)
     md.append(pairs)
 
     max_pos = 0
