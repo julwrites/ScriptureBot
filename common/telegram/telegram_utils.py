@@ -61,7 +61,7 @@ def find_symbols(text, symbols):
     return sym
 
 
-def find_symbol_pairs(text, symbols):
+def find_symbol_pairs(text, symbols, exclusive=True):
     sym = []
 
     for symbol in symbols:
@@ -78,7 +78,7 @@ def find_symbol_pairs(text, symbols):
             if last == -1:
                 break
             last += curr
-            curr = last + slength
+            curr = last + (slength if exclusive else 0)
 
             sym.append(first)
             sym.append(last)
@@ -107,6 +107,8 @@ def split_msg(msg):
     symbols = find_symbols(msg, ["_", "*"])
     pairs = find_symbol_pairs(msg, ["_", "*"])
     md, esc = set_intersect(symbols, pairs)
+    pairs = find_symbol_pairs(msg, ["\n"], False)_
+    md.append(pairs)
 
     max_pos = 0
 
