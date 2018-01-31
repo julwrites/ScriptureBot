@@ -110,6 +110,9 @@ def split_msg(msg):
     pairs = find_symbol_pairs(msg, ["\n"], False)
     md.append(pairs)
 
+    for i in range(0, len(md), 2):
+        debug.log("MD: " + msg[md[i]:md[i+1] + 1])
+
     max_pos = 0
 
     while len(msg[max_pos:]) > MAX_LENGTH:
