@@ -50,12 +50,14 @@ def fetch_bgw(query, version="NIV"):
 
     return soup
 
+
 def find_book(parts):
     # First find the book name as an anchor
     for i in range(len(parts)):
         if parts[i].isalpha():
             return i
     return -1
+
 
 def find_reference(ref):
     debug.log("Parsing reference " + ref)
@@ -68,7 +70,10 @@ def find_reference(ref):
     if book == -1:
         return ref
 
-    parts = [parts[i] for i in range(len(parts) if (i == book) or not (parts[i].isalpha())]
+    parts = [
+        parts[i] for i in range(len(parts))
+        if (i == book) or not (parts[i].isalpha())
+    ]
     debug.log(parts)
     return "".join(parts)
 
