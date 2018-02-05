@@ -112,9 +112,6 @@ def split_msg(msg):
 
     debug.log("Markdown pairs: " + text_utils.stringify(str(md)))
 
-    for i in range(0, len(md), 2):
-        debug.log("MD: " + msg[md[i]:md[i + 1] + 1])
-
     max_pos = 0
 
     while len(msg[max_pos:]) > MAX_LENGTH:
