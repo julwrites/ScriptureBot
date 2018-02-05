@@ -55,7 +55,7 @@ def find_reference(ref):
     debug.log("Parsing reference " + ref)
 
     parts = ref.split(" ")
-    book = text_utils.find_book(parts)
+    book = text_utils.find_alpha(parts)
 
     # Just return it, let the caller handle it
     if book == -1:
