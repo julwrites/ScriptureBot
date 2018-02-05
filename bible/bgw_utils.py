@@ -31,6 +31,8 @@ PASSAGE = "passage"
 
 
 def fetch_bgw(query, version="NIV"):
+    debug.log("Querying for " + query)
+
     query = query.lower().strip()
 
     if query is None:
@@ -48,9 +50,33 @@ def fetch_bgw(query, version="NIV"):
 
     return soup
 
+def find_book(parts):
+    # First find the book name as an anchor
+    for i in range(len(parts)):
+        if parts[i].isalpha():
+            return i
+    return -1
+
+def find_reference(ref):
+    debug.log("Parsing reference " + ref)
+
+    parts = ref.split(" ")
+    book = find_book(parts)
+    debug.log(book)
+
+    # Just return it, let the caller handle it
+    if book == -1:
+        return ref
+
+    parts = [parts[i] for i in range(len(parts) if (i == book) or not (parts[i].isalpha())]
+    debug.log(parts)
+    return "".join(parts)
+
 
 def get_passage_raw(ref, version="NIV"):
     debug.log("Querying for passage " + ref)
+
+    ref = find_reference(ref)
 
     soup = fetch_bgw(ref, version)
     if soup is None:
