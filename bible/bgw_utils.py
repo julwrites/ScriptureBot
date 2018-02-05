@@ -9,7 +9,7 @@ from google.appengine.api import urlfetch, urlfetch_errors
 from google.appengine.ext import db
 
 # Local modules
-from common import debug, html_utils, constants
+from common import debug, html_utils, constants, text_utils
 from common.telegram import telegram_utils
 
 from bible import bgw_classes
@@ -51,20 +51,11 @@ def fetch_bgw(query, version="NIV"):
     return soup
 
 
-def find_book(parts):
-    # First find the book name as an anchor
-    for i in range(len(parts)):
-        if parts[i].isalpha():
-            return i
-    return -1
-
-
 def find_reference(ref):
     debug.log("Parsing reference " + ref)
 
     parts = ref.split(" ")
-    book = find_book(parts)
-    debug.log(book)
+    book = text_utils.find_book(parts)
 
     # Just return it, let the caller handle it
     if book == -1:
@@ -74,7 +65,9 @@ def find_reference(ref):
         parts[i] for i in range(len(parts))
         if (i == book) or not (parts[i].isalpha())
     ]
-    debug.log(parts)
+
+    debug.log("Reference parts: " + text_utils.stringify(str(parts)))
+
     return "".join(parts)
 
 

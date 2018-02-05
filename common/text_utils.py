@@ -43,6 +43,13 @@ def overlap(lhsSub, rhsSub):
     return False
 
 
+def find_alpha(blocks):
+    for i in range(len(blocks)):
+        if blocks[i].isalpha():
+            return i
+    return -1
+
+
 def fuzzy_compare(lhs, rhs):
     lhsParts = fuzzify_raw(lhs)
     rhsParts = fuzzify_raw(rhs)
