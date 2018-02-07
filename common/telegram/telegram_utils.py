@@ -107,8 +107,8 @@ def split_msg(msg):
     symbols = find_symbols(msg, ["_", "*"])
     pairs = find_symbol_pairs(msg, ["_", "*"])
     md, esc = set_intersect(symbols, pairs)
-    pairs = find_symbol_pairs(msg, ["\n"], False)
-    md.append(pairs)
+
+    seps = find_symbols(msg, ["\n"])
 
     debug.log("Markdown pairs: " + text_utils.stringify(str(md)))
 
@@ -121,6 +121,11 @@ def split_msg(msg):
         for i in range(0, len(md), 2):
             if md[i] < max_pos and md[i + 1] >= max_pos:
                 max_pos = md[i]
+
+        for i in range(len(seps)):
+            if max_pos < seps[i]:
+                max_pos = seps[i] if seps[i] < MAX_LENGTH else seps[
+                    i - 1] if i > 0 else max_pos
 
         debug.log("Chunk: " + msg[curr:max_pos])
 
