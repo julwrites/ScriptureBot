@@ -117,19 +117,21 @@ def split_msg(msg):
     while len(msg[max_pos:]) > MAX_LENGTH:
         curr = max_pos
         max_pos += MAX_LENGTH
+        end_pos = max_pos
 
         for i in range(0, len(md), 2):
             if md[i] < max_pos and md[i + 1] >= max_pos:
-                max_pos = md[i]
+                end_pos = md[i]
 
         for i in range(len(seps)):
-            if max_pos < seps[i]:
-                max_pos = seps[i] if seps[i] < MAX_LENGTH else seps[
-                    i - 1] if i > 0 else max_pos
+            if end_pos < seps[i]:
+                end_pos = seps[i] if seps[i] < max_pos else seps[
+                    i - 1] if i > 0 else end_pos
 
-        debug.log("Chunk: " + msg[curr:max_pos])
+        chunk = msg[curr:end_pos]
+        debug.log("Chunk: " + chunk)
+        chunks.append(chunk)
 
-        chunks.append(msg[curr:max_pos])
     chunks.append(msg[max_pos:])
 
     return chunks
