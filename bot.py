@@ -4,9 +4,6 @@
 import webapp2
 import json
 
-# Google App Engine modules
-from google.appengine.api import urlfetch
-
 # Local modules
 from common import debug, text_utils
 from common.telegram import telegram_utils

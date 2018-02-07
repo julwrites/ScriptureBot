@@ -4,9 +4,6 @@
 import urllib
 from bs4 import BeautifulSoup
 
-# Google App Engine Modules
-from google.appengine.api import urlfetch, urlfetch_errors
-
 # Local Modules
 from common import debug, html_utils, text_utils
 from common.telegram import telegram_utils
