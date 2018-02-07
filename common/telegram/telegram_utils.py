@@ -126,6 +126,7 @@ def split_msg(msg):
         for sep in reversed(seps):
             if end_pos > sep:
                 end_pos = sep
+                break
 
         chunk = msg[curr:end_pos]
         debug.log("Chunk: " + chunk)
