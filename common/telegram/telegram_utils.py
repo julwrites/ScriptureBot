@@ -112,11 +112,11 @@ def split_msg(msg):
 
     debug.log("Markdown pairs: " + text_utils.stringify(str(md)))
 
-    max_pos = 0
+    end_pos = 0
 
     while len(msg[max_pos:]) > MAX_LENGTH:
-        curr = max_pos
-        max_pos += MAX_LENGTH
+        curr = end_pos
+        max_pos = end_pos + MAX_LENGTH
         end_pos = max_pos
 
         for i in range(0, len(md), 2):
@@ -132,7 +132,7 @@ def split_msg(msg):
         debug.log("Chunk: " + chunk)
         chunks.append(chunk)
 
-    chunks.append(msg[max_pos:])
+    chunks.append(msg[end_pos:])
 
     return chunks
 
