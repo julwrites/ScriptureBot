@@ -114,7 +114,7 @@ def split_msg(msg):
 
     end_pos = 0
 
-    while len(msg[max_pos:]) > MAX_LENGTH:
+    while len(msg[end_pos:]) > MAX_LENGTH:
         curr = end_pos
         max_pos = end_pos + MAX_LENGTH
         end_pos = max_pos
