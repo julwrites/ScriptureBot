@@ -123,10 +123,9 @@ def split_msg(msg):
             if md[i] < max_pos and md[i + 1] >= max_pos:
                 end_pos = md[i]
 
-        for i in range(len(seps)):
-            if end_pos < seps[i]:
-                end_pos = seps[i] if seps[i] < max_pos else seps[
-                    i - 1] if i > 0 else end_pos
+        for sep in reversed(seps):
+            if end_pos > sep:
+                end_pos = sep
 
         chunk = msg[curr:end_pos]
         debug.log("Chunk: " + chunk)
