@@ -2,7 +2,7 @@
 
 # Python std modules
 import json
-import urllib2
+import requests
 
 # Local modules
 from common import debug, text_utils
@@ -24,12 +24,7 @@ def send_post(post):
     debug.log("Performing send: " + data)
 
     try:
-        urllib2.Request(TELEGRAM_URL_SEND, data, JSON_HEADER)
-        # urlfetch.fetch(
-        #     url=TELEGRAM_URL_SEND,
-        #     payload=data,
-        #     method=urlfetch.POST,
-        #     headers=JSON_HEADER)
+        requests.post(url=TELEGRAM_URL_SEND, data=data, headers=JSON_HEADER)
     except Exception as e:
         debug.log("Send failed! " + TELEGRAM_URL_SEND + ", " + data)
         debug.err(e)
