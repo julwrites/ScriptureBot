@@ -1,7 +1,7 @@
 # coding=utf-8
 
 # Google App Engine API
-from google.appengine.api import urlfetch
+from google.appengine.api import urlfetch, urlfetch_errors
 
 # Local modules
 from common import debug
