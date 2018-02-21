@@ -5,7 +5,8 @@ from google.appengine.ext import db
 
 
 def retrieve(region, name):
-    return db.get(db.Key.from_path(region, name))
+    key = db.Key.from_path(region, name)
+    return db.get(key)
 
 
 class BooleanProperty(db.BooleanProperty):
@@ -39,4 +40,4 @@ class Item(db.Model):
         return self.key()
 
     def name(self):
-        return self.key().name
+        return self.key().name()

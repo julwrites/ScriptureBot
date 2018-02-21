@@ -7,8 +7,7 @@ from user import bibleuser_classes
 
 # Functions for manipulation of user info
 def get_user(userId):
-    userObj = database.retrieve("BibleUser", text_utils.stringify(userId))
-    return userObj
+    return database.retrieve("BibleUser", text_utils.stringify(userId))
 
 
 def get_uid(userIdObj):
