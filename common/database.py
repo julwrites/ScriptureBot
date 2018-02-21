@@ -19,6 +19,12 @@ class StringProperty(db.StringProperty):
             default=default, indexed=indexed, multiline=multiline)
 
 
+class StringListProperty(db.StringListProperty):
+    def __init__(self, default=None, indexed=False):
+        super(StringListProperty, self).__init__(
+            default=default, indexed=indexed)
+
+
 class DateTimeProperty(db.DateTimeProperty):
     def __init__(self, default=None, indexed=False):
         super(DateTimeProperty, self).__init__(
