@@ -4,7 +4,7 @@
 from google.appengine.api import urlfetch, urlfetch_errors
 
 # Local modules
-from common import debug
+from common import debug, constants
 
 
 def post_http(url, data, headers):
