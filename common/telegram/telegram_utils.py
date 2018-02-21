@@ -2,7 +2,9 @@
 
 # Python std modules
 import json
-import requests
+
+# Google App Engine API
+from google.appengine.api import urlfetch
 
 # Local modules
 from common import debug, text_utils
@@ -24,7 +26,11 @@ def send_post(post):
     debug.log("Performing send: " + data)
 
     try:
-        requests.post(url=TELEGRAM_URL_SEND, data=data, headers=JSON_HEADER)
+        urlfetch.fetch(
+            url=TELEGRAM_URL_SEND,
+            payload=data,
+            method=urlfetch.POST,
+            headers=JSON_HEADER)
     except Exception as e:
         debug.log("Send failed! " + TELEGRAM_URL_SEND + ", " + data)
         debug.err(e)

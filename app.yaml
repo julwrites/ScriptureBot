@@ -15,5 +15,3 @@ libraries:
   version: "2.5.2"
 - name: lxml
   version: "2.3"
-- name: ssl
-  version: latest
