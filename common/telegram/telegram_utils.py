@@ -3,11 +3,8 @@
 # Python std modules
 import json
 
-# Google App Engine API
-from google.appengine.api import urlfetch
-
 # Local modules
-from common import debug, text_utils
+from common import debug, text_utils, web_utils
 from common.telegram import telegram_classes
 
 from secret import BOT_ID
@@ -26,11 +23,7 @@ def send_post(post):
     debug.log("Performing send: " + data)
 
     try:
-        urlfetch.fetch(
-            url=TELEGRAM_URL_SEND,
-            payload=data,
-            method=urlfetch.POST,
-            headers=JSON_HEADER)
+        web_utils.post(TELEGRAM_URL_SEND, data, JSON_HEADER)
     except Exception as e:
         debug.log("Send failed! " + TELEGRAM_URL_SEND + ", " + data)
         debug.err(e)
