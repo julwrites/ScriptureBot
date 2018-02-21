@@ -4,11 +4,8 @@
 import re
 from bs4 import BeautifulSoup
 
-# Google App Engine Modules
-from google.appengine.api import urlfetch, urlfetch_errors
-
 # Local modules
-from common import debug, text_utils, constants
+from common import debug, text_utils, web_utils, constants
 
 HTML_HEADER_TAGS = ["h1", "h2", "h3", "h4", "h5", "h6"]
 HTML_TEXT_TAGS = ["p"]
@@ -34,19 +31,6 @@ def html_p_tag():
     return ",".join(HTML_TEXT_TAGS)
 
 
-# HTML to BeautifulSoup
-def fetch_url(url):
-    try:
-        debug.log("Attempting to fetch: " + url)
-        result = urlfetch.fetch(url, deadline=constants.URL_TIMEOUT)
-    except urlfetch_errors.Error as e:
-        debug.log("Error fetching: " + text_utils.stringify(e))
-        debug.err(e)
-        return None
-
-    return result
-
-
 def extract_html(html, top=None, bottom=None):
     if top is None or bottom is None:
         return html
@@ -60,7 +44,7 @@ def extract_html(html, top=None, bottom=None):
 
 
 def fetch_html(url, start=None, end=None):
-    result = fetch_url(url)
+    result = web_utils.fetch_url(url)
 
     html = extract_html(result.content, start, end)
 

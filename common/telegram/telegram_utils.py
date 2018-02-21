@@ -23,7 +23,7 @@ def send_post(post):
     debug.log("Performing send: " + data)
 
     try:
-        web_utils.post(TELEGRAM_URL_SEND, data, JSON_HEADER)
+        web_utils.post_http(TELEGRAM_URL_SEND, data, JSON_HEADER)
     except Exception as e:
         debug.log("Send failed! " + TELEGRAM_URL_SEND + ", " + data)
         debug.err(e)

@@ -1,13 +1,10 @@
 # coding=utf-8
 
-# Google App Engine Modules
-from google.appengine.ext import db
-
 # Local Modules
-from common import chrono, text_utils, debug
+from common import chrono, text_utils, debug, database
 
 
-class BibleUser(db.Model):
+class BibleUser(database.Item):
     username = db.StringProperty(indexed=True)
     firstName = db.StringProperty(multiline=True, indexed=True)
     lastName = db.StringProperty(multiline=True, indexed=True)
@@ -37,7 +34,7 @@ class BibleUser(db.Model):
         return self
 
     def get_uid(self):
-        return self.key().name()
+        return self.name()
 
     def get_name_string(self, verbose=False):
         fname = text_utils.stringify(self.firstName)
@@ -71,21 +68,21 @@ class BibleUser(db.Model):
 
     def set_active(self, active):
         self.active = active
-        self.put()
+        self.update()
 
     def get_state(self):
         return self.state
 
     def set_state(self, state):
         self.state = state
-        self.put()
+        self.update()
 
     def get_version(self):
         return self.version
 
     def set_version(self, version):
         self.version = version
-        self.put()
+        self.update()
 
     def get_subscription(self):
         return ",".join(self.subscriptions)
@@ -102,26 +99,26 @@ class BibleUser(db.Model):
             return
 
         self.subscriptions.append(subId)
-        self.put()
+        self.update()
 
     def remove_subscription(self, subId):
         try:
             self.subscriptions.remove(subId)
-            self.put()
+            self.update()
         except:
             return
 
     def update_last_received(self):
         self.lastReceived = chrono.now()
-        self.put()
+        self.update()
 
     def update_last_sent(self):
         self.lastSent = chrono.now()
-        self.put()
+        self.update()
 
     def update_last_auto(self):
         self.lastAuto = chrono.now()
-        self.put()
+        self.update()
 
     def refresh(self):
-        self.put()
+        self.update()

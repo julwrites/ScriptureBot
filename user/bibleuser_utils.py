@@ -1,21 +1,13 @@
 # coding=utf-8
 
-# Google App Engine Modules
-from google.appengine.ext import db
-
 # Local Modules
-from common import debug, text_utils
+from common import debug, text_utils, database
 from user import bibleuser_classes
-
-
-# Database util functions
-def get_key(path, userId):
-    return db.Key.from_path(path, text_utils.stringify(userId))
 
 
 # Functions for manipulation of user info
 def get_user(userId):
-    userObj = db.get(get_key("BibleUser", userId))
+    userObj = database.retrieve("BibleUser", text_utils.stringify(userId))
     return userObj
 
 

@@ -5,7 +5,7 @@ import urllib
 from bs4 import BeautifulSoup
 
 # Local modules
-from common import debug, html_utils, constants, text_utils
+from common import debug, html_utils, constants, text_utils, web_utils
 from common.telegram import telegram_utils
 
 from bible import bgw_classes
@@ -143,7 +143,7 @@ def get_link(query, version="NIV"):
 
     url = BGW_URL.format(query, version)
 
-    html = html_utils.fetch_url(url)
+    html = web_utils.fetch_url(url)
     if html is None:
         return None
 
