@@ -10,7 +10,7 @@ def retrieve(region, name):
 
 class BooleanProperty(db.BooleanProperty):
     def __init__(self, default=None, indexed=False):
-        super(StringProperty, self).__init__(default=default, indexed=indexed)
+        super(BooleanProperty, self).__init__(default=default, indexed=indexed)
 
 
 class StringProperty(db.StringProperty):
@@ -21,7 +21,8 @@ class StringProperty(db.StringProperty):
 
 class DateTimeProperty(db.DateTimeProperty):
     def __init__(self, default=None, indexed=False):
-        super(StringProperty, self).__init__(default=default, indexed=indexed)
+        super(DateTimeProperty, self).__init__(
+            default=default, indexed=indexed)
 
 
 class Item(db.Model):
