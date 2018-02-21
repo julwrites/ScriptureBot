@@ -8,10 +8,20 @@ def retrieve(region, name):
     return db.get(db.Key.from_path(region, name))
 
 
+class BooleanProperty(db.BooleanProperty):
+    def __init__(self, default=None, indexed=False):
+        super(StringProperty, self).__init__(default=default, indexed=indexed)
+
+
 class StringProperty(db.StringProperty):
     def __init__(self, default=None, indexed=False, multiline=False):
         super(StringProperty, self).__init__(
             default=default, indexed=indexed, multiline=multiline)
+
+
+class DateTimeProperty(db.DateTimeProperty):
+    def __init__(self, default=None, indexed=False):
+        super(StringProperty, self).__init__(default=default, indexed=indexed)
 
 
 class Item(db.Model):
