@@ -5,18 +5,18 @@ from common import chrono, text_utils, debug, database
 
 
 class BibleUser(database.Item):
-    username = db.StringProperty(indexed=True)
-    firstName = db.StringProperty(multiline=True, indexed=True)
-    lastName = db.StringProperty(multiline=True, indexed=True)
-    created = db.DateTimeProperty(auto_now_add=True, indexed=True)
-    lastReceived = db.DateTimeProperty(auto_now_add=True, indexed=True)
-    lastSent = db.DateTimeProperty(indexed=True)
-    lastAuto = db.DateTimeProperty(auto_now_add=True)
-    active = db.BooleanProperty(default=True)
-    state = db.StringProperty(indexed=True)
-    version = db.StringProperty(indexed=True, default="NIV")
-    subscriptions = db.StringListProperty(indexed=True)
-    subscriptionTime = db.DateTimeProperty(indexed=True)
+    username = database.StringProperty(indexed=True)
+    firstName = database.StringProperty(multiline=True, indexed=True)
+    lastName = database.StringProperty(multiline=True, indexed=True)
+    created = database.DateTimeProperty(indexed=True)
+    lastReceived = database.DateTimeProperty(indexed=True)
+    lastSent = database.DateTimeProperty(indexed=True)
+    lastAuto = database.DateTimeProperty()
+    active = database.BooleanProperty(default=True)
+    state = database.StringProperty(indexed=True)
+    version = database.StringProperty(indexed=True, default="NIV")
+    subscriptions = database.StringListProperty(indexed=True)
+    subscriptionTime = database.DateTimeProperty(indexed=True)
 
     def clone(self, obj):
         self.username = obj.username
