@@ -32,11 +32,11 @@ class DateTimeProperty(db.DateTimeProperty):
 
 
 class Item(db.Model):
-    def update():
+    def update(self):
         self.put()
 
-    def id():
+    def id(self):
         return self.key()
 
-    def name():
+    def name(self):
         return self.key().name
