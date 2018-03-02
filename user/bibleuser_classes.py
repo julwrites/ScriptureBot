@@ -12,7 +12,7 @@ class BibleUser(database.Item):
     lastReceived = database.DateTimeProperty(indexed=True)
     lastSent = database.DateTimeProperty(indexed=True)
     lastAuto = database.DateTimeProperty()
-    active = database.BooleanProperty(default=True)
+    active = database.BooleanProperty(indexed=True, default=True)
     state = database.StringProperty(indexed=True)
     version = database.StringProperty(indexed=True, default="NIV")
     subscriptions = database.StringListProperty(indexed=True)
