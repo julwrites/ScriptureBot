@@ -79,9 +79,24 @@ def find_symbol_pairs(text, symbols, exclusive=True):
     return sym
 
 
+def fix_sentences(text):
+    text = text.replace('"', ". ")
+    text = text.replace("'", ". ")
+    text = text.replace("-", ". ")
+    text = text.replace(":", ". ")
+    text = text.replace(";", ". ")
+    text = text.replace(",", ". ")
+    text = text.replace(".", ". ")
+    text = text.replace("!", ". ")
+    text = text.replace("?", ". ")
+    text = text.replace("  ", " ")
+    return text
+
+
 def format_msg(msg):
     debug.log("Formatting message")
 
+    msg = fix_sentences(msg)
     symbols = find_symbols(msg, ["_", "*"])
     pairs = find_symbol_pairs(msg, ["_", "*"])
     md, esc = set_intersect(symbols, pairs)

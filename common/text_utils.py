@@ -99,3 +99,39 @@ def replace(s, sub, new):
 
 def replace_newline(s):
     return "\n"
+
+
+def segment_text(text, delimiters):
+    blocks = []
+
+    index = 0
+    while index <= len(text):
+        disp = -1
+
+        delim_disp = [text[index:].find(d) for d in delimiters]
+        delim_disp.sort()
+        for d in delim_disp:
+            if d != -1:
+                disp = d
+                break
+
+        if disp == -1:
+            break
+
+        pos = index + disp + 1
+        try_block = text[index:pos].strip()
+
+        if try_block:
+            blocks.append([index, pos])
+
+        index = pos + 1
+
+    return blocks
+
+
+def detect_paragraphs(text):
+    return segment_text(text, ["\n"])
+
+
+def detect_sentences(text):
+    return segment_text(text, [".", "!", "?"])
