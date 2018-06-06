@@ -80,15 +80,32 @@ def find_symbol_pairs(text, symbols, exclusive=True):
 
 
 def fix_sentences(text):
-    text = text.replace('"', ". ")
-    text = text.replace("'", ". ")
-    text = text.replace("-", ". ")
-    text = text.replace(":", ". ")
-    text = text.replace(";", ". ")
-    text = text.replace(",", ". ")
+    # Special cases
+
+    # Quotes should always be preceeded by a space when open, and when closed
+    text = text.replace("'", " ' ")
+    text = text.replace('"', ' " ')
+    text = text.replace("-", " - ")
+
+    # Ensuring spaces after
+    text = text.replace(":", ": ")
+    text = text.replace(";", "; ")
+    text = text.replace(",", ", ")
     text = text.replace(".", ". ")
-    text = text.replace("!", ". ")
-    text = text.replace("?", ". ")
+    text = text.replace("!", "! ")
+    text = text.replace("?", "? ")
+
+    # Ensuring no spaces before
+    text = text.replace(" :", ":")
+    text = text.replace(" ;", ";")
+    text = text.replace(" ,", ",")
+    text = text.replace(" .", ".")
+    text = text.replace(" !", "!")
+    text = text.replace(" ?", "?")
+
+    # Removing extra spaces
+    text = text.replace("    ", " ")
+    text = text.replace("   ", " ")
     text = text.replace("  ", " ")
     return text
 
