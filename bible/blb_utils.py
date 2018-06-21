@@ -10,23 +10,25 @@ from common.telegram import telegram_utils
 
 from bible import blb_classes
 
-BLB_URL = "http://www.biblegateway.com/passage/?search={}&version={}&interface=print"
+# This URL will return the entire chapter (BLB does not return single verses); we will have to sift
+BLB_PASSAGE_SEARCH_URL = "https://www.blueletterbible.org/{}/{}/{}/1/ss1"
 
-BLB_PASSAGE_CLASS = "passage-text"
-BLB_PASSAGE_START = '<div class="{}">'.format(BLB_PASSAGE_CLASS)
-BLB_PASSAGE_END = "<!--END .{}-->".format(BLB_PASSAGE_CLASS)
-BLB_PASSAGE_SELECT = "blb-passage-text"
-BLB_PASSAGE_IGNORE = ".passage-display, .footnote, .footnotes, .crossrefs, .publisher-info-bottom"
-BLB_PASSAGE_TITLE = ".passage-display-bcv"
+# This URL will return search results
+BLB_KEYWORD_SEARCH_URL = "https://www.blueletterbible.org/search/search.cfm?Criteria={}&t={}"
 
-BLB_VERSIONS = ["NIV", "ESV", "KJV", "NASB", "NLT", "AMP"]
+BLB_VERSIONS = ["NIV", "ESV", "KJV", "NASB", "RSV", "NKJV"]
+
+# We want to grab all <div> with this id, and pick only the last bit.
+BLB_VERSE_ID = "verse_{}{}"  # verse_<chapter num><3 digit verse num>
+BLB_VERSE_START = "</span>"
+BLB_VERS_END = " </div></div>
 
 REFERENCE = "reference"
 VERSION = "version"
 PASSAGE = "passage"
 
 
-def fetch_blb(query, version="NIV"):
+def fetch_blb(query, version="NASB"):
     debug.log("Querying for " + query)
 
     query = query.lower().strip()
@@ -67,7 +69,7 @@ def find_reference(ref):
     return "".join(parts)
 
 
-def get_passage_raw(ref, version="NIV"):
+def get_passage_raw(ref, version="NASB"):
     debug.log("Querying for passage " + ref)
 
     ref = find_reference(ref)
@@ -112,7 +114,7 @@ def get_passage_raw(ref, version="NIV"):
     return blb_classes.BLBPassage(reference, version, text)
 
 
-def get_passage(ref, version="NIV"):
+def get_passage(ref, version="NASB"):
     passage = get_passage_raw(ref, version)
 
     if passage is None:
@@ -138,7 +140,7 @@ def get_reference(query):
     return reference
 
 
-def get_link(query, version="NIV"):
+def get_link(query, version="NASB"):
     debug.log("Querying for link " + query)
 
     url = BLB_URL.format(query, version)
