@@ -40,7 +40,7 @@ def get_mcheyne_raw():
     blocks = []
     for tag in soup.findAll(MCHEYNE_SELECT):
         ref = text_utils.strip_block(tag.text, "(", ")")
-        if bible_utils.fetch_passage_html(ref) is not None:
+        if bible_utils.get_passage_raw(ref) is not None:
             blocks.append(ref)
 
     return blocks

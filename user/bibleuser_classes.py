@@ -1,5 +1,7 @@
 # coding=utf-8
 
+import random
+
 # Local Modules
 from common import chrono, text_utils, debug, database
 
@@ -54,6 +56,13 @@ class BibleUser(database.Item):
             name = uname
 
         return name
+
+    def get_reply_string(self, strings):
+        choose = random.randint(0, len(strings) - 1)
+        reply = text_utils.stringify(strings[choose]).format(
+            userObj.get_name_string())
+
+        return reply
 
     def get_description(self):
         userType = "Group " if self.is_group() else "User "
