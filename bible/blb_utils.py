@@ -121,14 +121,13 @@ def get_strongs_link(query):
     if html is None:
         return None
 
-    debug.log("Retrieved html: " + html)
-
     soup = html_utils.html_to_soup(html)
 
-    debug.log("Retrieving header: " + soup)
+    debug.log("Soup: " + str(soup))
 
     header = ""
-    for tag in soup:
+    for tag in soup.select("h1"):
+        debug.log("Retrieving header: " + tag.text)
         header = header + tag.text
 
     return telegram_utils.link(header, formatUrl)
