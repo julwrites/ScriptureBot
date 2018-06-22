@@ -121,9 +121,7 @@ def get_strongs_link(query):
     if html is None:
         return None
 
-    soup = html_utils.html_to_soup(html)
-
-    debug.log("Soup: " + str(soup))
+    soup = html_utils.html_to_soup(html, select="bubble")
 
     header = ""
     for tag in soup.select("h1"):
