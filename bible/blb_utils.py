@@ -19,11 +19,12 @@ BLB_VERSIONS = ["NIV", "ESV", "KJV", "NASB", "RSV", "NKJV"]
 # We want to grab all <div> with this id, and pick only the last bit.
 BLB_VERSE_ID = "verse_{}{}"  # verse_<chapter num><3 digit verse num>
 BLB_VERSE_START = "</span>"
-BLB_VERS_END = " </div></div>
+BLB_VERS_END = " </div></div>"
 
 REFERENCE = "reference"
 VERSION = "version"
 PASSAGE = "passage"
+
 
 def fetch_blb(query, version="NASB"):
     debug.log("Querying for " + query)
@@ -140,11 +141,13 @@ def get_search_raw(query):
 
     return text
 
+
 def get_search(query):
     soup = fetch_blb(query, version)
 
     if soup is None:
         return None
+
 
 def get_versions():
     return BLB_VERSIONS
