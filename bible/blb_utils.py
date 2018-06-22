@@ -21,10 +21,6 @@ BLB_VERSE_ID = "verse_{}{}"  # verse_<chapter num><3 digit verse num>
 BLB_VERSE_START = "</span>"
 BLB_VERS_END = " </div></div>"
 
-REFERENCE = "reference"
-VERSION = "version"
-PASSAGE = "passage"
-
 
 def fetch_blb(query, version="NASB"):
     debug.log("Querying for " + query)
