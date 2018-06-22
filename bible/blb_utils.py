@@ -114,13 +114,22 @@ def get_strongs_link(query):
         return None
 
     formatRef = text_utils.strip_whitespace(query)
-
     formatUrl = BLB_STRONGS_URL.format(formatRef)
 
-    if html_utils.fetch_html(formatUrl) is None:
+    html = html_utils.fetch_html(formatUrl)
+
+    if html is None:
         return None
 
-    return telegram_utils.link(formatRef, formatUrl)
+    soup = html_utils.html_to_soup(html, select="h1")
+
+    debug.log("Retrieving header: " + soup)
+
+    header = ""
+    for tag in soup:
+        header = header + tag.text
+
+    return telegram_utils.link(header, formatUrl)
 
 
 def get_search_raw(query):
