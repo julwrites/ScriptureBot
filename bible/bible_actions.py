@@ -122,7 +122,7 @@ class BiblePassageStrongsAction(action_classes.Action):
         return True
 
 
-class BiblePassageStrongsAction(action_classes.Action):
+class BibleStrongsAction(action_classes.Action):
     def identifier(self):
         return "/strongs"
 
