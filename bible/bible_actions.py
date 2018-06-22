@@ -64,6 +64,9 @@ class BibleSearchAction(action_classes.Action):
     def description(self):
         return "Search for a word or phrase in the Bible"
 
+    def is_command(self):
+        return True
+
     def resolve(self, userObj, msg):
         query = telegram_utils.strip_command(msg, self.identifier())
 
@@ -96,6 +99,9 @@ class BiblePassageStrongsAction(action_classes.Action):
 
     def description(self):
         return "Retrieve a passage with Strongs references"
+
+    def is_command(self):
+        return True
 
     def resolve(self, userObj, msg):
         query = telegram_utils.strip_command(msg, self.identifier())
@@ -132,6 +138,9 @@ class BibleStrongsAction(action_classes.Action):
     def description(self):
         return "Retrieve the Strongs Lexicon entry"
 
+    def is_command(self):
+        return True
+
     def resolve(self, userObj, msg):
         query = telegram_utils.strip_command(msg, self.identifier())
 
@@ -159,6 +168,7 @@ class BibleStrongsAction(action_classes.Action):
 def get():
     return [
         BiblePassageAction(),
-        BibleSearchAction(), BiblePassageStrongsAction,
+        BibleSearchAction(),
+        BiblePassageStrongsAction(),
         BibleStrongsAction()
     ]
