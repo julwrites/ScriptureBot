@@ -123,10 +123,7 @@ def get_strongs_link(query):
 
     soup = html_utils.html_to_soup(html, select="nocrumbs")
 
-    header = ""
-    for tag in soup.select("h1"):
-        debug.log("Retrieving header: " + tag.text)
-        header = header + tag.text
+    header = "\n".join([tag.text for tag in soup.select("h1")])
 
     return telegram_utils.link(header, formatUrl)
 
