@@ -162,9 +162,12 @@ def split_msg(msg):
     return chunks
 
 
-def send_msg(user, text):
+def send_msg(user, text, args=[]):
     debug.log("Preparing to send " + text_utils.stringify(user) + ": " + text)
-    chunks = split_msg(format_msg(text))
+    fmt_msg = format_msg(text)
+    if len(args) > 0:
+        fmt_mgs = fmt_msg.format(args)
+    chunks = split_msg(fmt_msg)
 
     for chunk in chunks:
         post = telegram_classes.Post()

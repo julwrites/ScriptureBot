@@ -148,7 +148,8 @@ class BibleStrongsAction(action_classes.Action):
             link = bible_utils.get_strongs_entry(query)
 
             if link is not None:
-                telegram_utils.send_msg(user=userObj.get_uid(), text=link)
+                telegram_utils.send_msg(
+                    user=userObj.get_uid(), text="{}", args=[link])
                 userObj.set_state(None)
             elif self.waiting(userObj):
                 telegram_utils.send_msg(
