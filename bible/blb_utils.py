@@ -123,6 +123,8 @@ def get_strongs_link(query):
 
     soup = html_utils.html_to_soup(html, select="bubble")
 
+    debug.log("Soup: " + str(soup))
+
     header = ""
     for tag in soup.select("h1"):
         debug.log("Retrieving header: " + tag.text)
