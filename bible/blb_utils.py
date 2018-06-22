@@ -121,7 +121,9 @@ def get_strongs_link(query):
     if html is None:
         return None
 
-    soup = html_utils.html_to_soup(html, select="h1")
+    debug.log("Retrieved html: " + html)
+
+    soup = html_utils.html_to_soup(html)
 
     debug.log("Retrieving header: " + soup)
 
