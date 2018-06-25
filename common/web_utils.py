@@ -1,8 +1,6 @@
 # coding=utf-8
 
-# Google App Engine API
-from google.appengine.api import urlfetch, urlfetch_errors
-
+import urllib
 import urllib2
 
 # Local modules
@@ -10,19 +8,24 @@ from common import debug, constants
 
 
 def post_http(url, data, headers):
-    urlfetch.fetch(
-        url=url, payload=data, method=urlfetch.POST, headers=headers)
+    data = urllib.urlencode(data)
+    request = urllib2.Request(url, data)
+    request.addheader(headers)
+
+    response = urllib2.urlopen(request)
 
 
 # HTML to BeautifulSoup
 def fetch_url(url):
+    debug.log("Fetching url: " + url)
+
     try:
-        result = urllib2.urlopen(url)
-        content = result.read()
-        url = result.geturl()
+        response = urllib2.urlopen(url)
+        html = response.read()
+        url = response.geturl()
     except urllib2.URLError:
         debug.log("Error fetching: " + text_utils.stringify(e))
         debug.err(e)
         return None
 
-    return url, content
+    return url, html

@@ -48,9 +48,11 @@ def extract_html(html, top=None, bottom=None):
 
 
 def fetch_html(url, start=None, end=None):
-    url, content = web_utils.fetch_url(url)
+    debug.log("Fetching html from: " + url)
 
-    html = extract_html(content, start, end)
+    url, html = web_utils.fetch_url(url)
+
+    html = extract_html(html, start, end)
 
     return url, html
 
@@ -73,9 +75,9 @@ def html_to_soup(html, select=None):
 
 
 def fetch_rss(url):
-    url, content = web_utils.fetch_url(url)
+    url, html = web_utils.fetch_url(url)
 
-    return url, content
+    return url, html
 
 
 def rss_to_soup(rss, select=None):
