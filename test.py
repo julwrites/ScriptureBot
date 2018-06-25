@@ -12,6 +12,24 @@ import secret
 logging.basicConfig(level=logging.DEBUG)
 
 
+class test_telegram_methods(unittest.TestCase):
+    def test_send_msg(self):
+        debug.log("Testing telegram_utils.send_msg")
+
+        debug.log("Trying: {}", ["utf-8: 👍🏻\n"])
+
+        msg = "Test [send msg] with:\nutf-8: 👍🏻\nMarkdown:*bold*,_italic_,~strikethrough~\nArguments:{}\n:: Pass"
+        args = ["[tehj](https://tehj.org)"]
+
+        try:
+            telegram_utils.send_msg(
+                text=msg,
+                user=text_utils.stringify(secret.BOT_ADMIN),
+                args=args)
+        except Exception as e:
+            self.assertTrue(False, e)
+
+
 class test_web_methods(unittest.TestCase):
     def test_post(self):
         debug.log("Testing web_utils.http_post")
@@ -31,23 +49,7 @@ class test_web_methods(unittest.TestCase):
         try:
             web_utils.post_http(TELEGRAM_URL_SEND, data, JSON_HEADER)
         except Exception as e:
-            self.assertTrue(False, unicode(e))
-
-
-class test_telegram_methods(unittest.TestCase):
-    def test_send_msg(self):
-        debug.log("Testing telegram_utils.send_msg")
-
-        msg = "Test [send msg] with:\nutf-8: 👍🏻\nMarkdown:*bold*,_italic_,~strikethrough~\nArguments:{}\n:: Pass"
-        args = ["[tehj](https://tehj.org)"]
-
-        try:
-            telegram_utils.send_msg(
-                text=msg,
-                user=text_utils.stringify(secret.BOT_ADMIN),
-                args=args)
-        except Exception as e:
-            self.assertTrue(False, unicode(e))
+            self.assertTrue(False, e)
 
 
 class test_html_methods(unittest.TestCase):
@@ -56,7 +58,7 @@ class test_html_methods(unittest.TestCase):
         try:
             url, html = html_utils.fetch_html("https://julwrites.github.io")
         except Exception as e:
-            self.assertTrue(False, unicode(e))
+            self.assertTrue(False, e)
 
 
 unittest.main()

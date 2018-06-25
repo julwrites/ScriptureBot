@@ -9,11 +9,15 @@ import re
 
 
 def to_utf8(value):
-    return bytearray(value, "utf-8").decode("utf-8")
+    return value.decode("utf-8")
 
 
 def stringify(value):
-    return to_utf8(unicode(value))
+    if not isinstance(value, str) and not isinstance(value, unicode):
+        value = unicode(value)
+
+    value = bytearray(value, "utf-8")
+    return value.decode("utf-8")
 
 
 def is_valid(s):
