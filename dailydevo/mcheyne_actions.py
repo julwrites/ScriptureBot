@@ -21,6 +21,8 @@ class McheyneDailyAction(action_classes.Action):
         return "M'cheyne Bible Reading Plan (1 Year)"
 
     def resolve(self, userObj, msg):
+        debug.log("Handling MCheyne action")
+
         query = telegram_utils.strip_command(msg, self.identifier())
 
         done = user_actions.UserDoneAction()

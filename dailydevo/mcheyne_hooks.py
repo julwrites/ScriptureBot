@@ -22,6 +22,8 @@ class McheyneDailyHook(hook_classes.Hook):
         return "M'cheyne Bible Reading Plan (1 Year)"
 
     def resolve(self, userObj):
+        debug.log("Resolving MCheyne hook")
+
         refs = mcheyne_utils.get_mcheyne()
 
         if refs is not None:
