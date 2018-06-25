@@ -22,7 +22,7 @@ DG_SELECT = "share share--card js-share-values"
 def fetch_desiringgod():
     formatUrl = DG_URL
 
-    html = html_utils.fetch_html(formatUrl, DG_START, DG_END)
+    url, html = html_utils.fetch_html(formatUrl, DG_START, DG_END)
     if html is None:
         return None
 

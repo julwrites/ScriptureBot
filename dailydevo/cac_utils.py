@@ -24,7 +24,7 @@ CAC_DEVO_IGNORE = "h2"
 def fetch_cac(version="NIV"):
     formatUrl = CAC_URL
 
-    html = html_utils.fetch_html(formatUrl, CAC_DEVO_START, CAC_DEVO_END)
+    url, html = html_utils.fetch_html(formatUrl, CAC_DEVO_START, CAC_DEVO_END)
     if html is None:
         return None
 

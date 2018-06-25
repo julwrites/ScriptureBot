@@ -25,7 +25,7 @@ ODB_PASSAGE = "post-content"
 def fetch_odb():
     formatUrl = ODB_URL
 
-    html = html_utils.fetch_html(formatUrl, ODB_START, ODB_END)
+    url, html = html_utils.fetch_html(formatUrl, ODB_START, ODB_END)
     if html is None:
         return None
 

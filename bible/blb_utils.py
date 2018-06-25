@@ -31,7 +31,7 @@ def fetch_blb(query, version="NASB"):
 
     formatUrl = BLB_SEARCH_URL.format(query, version)
 
-    html = html_utils.fetch_html(formatUrl)
+    url, html = html_utils.fetch_html(formatUrl)
 
     if html is None:
         return None
