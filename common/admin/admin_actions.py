@@ -74,7 +74,7 @@ class AdminCleanAction(action_classes.Action):
             for dbUser in query.run():
                 dbUserObj = user_utils.get_user(user_utils.get_uid(dbUser))
                 if dbUserObj.get_name_string() == "-":
-                    debug.log("Deleting: " + dbUserObj.get_uid())
+                    debug.log("Deleting: {}", [dbUserObj.get_uid()])
                     dbUserObj.delete()
 
             for dbUser in query.run():
@@ -127,7 +127,7 @@ class AdminRagnarokAction(action_classes.Action):
 
             for dbUser in query.run(batch_size=500):
                 dbUserObj = user_utils.get_user(user_utils.get_uid(dbUser))
-                debug.log("Deleting: " + dbUserObj.get_uid())
+                debug.log("Deleting: {}", [dbUserObj.get_uid()])
                 dbUserObj.delete()
 
             telegram_utils.send_msg(user=userObj.get_uid(), text="Baboomz~")

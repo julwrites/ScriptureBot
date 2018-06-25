@@ -20,7 +20,7 @@ def get_uid(userIdObj):
 
 
 def set_profile(userId, uname, fname, lname):
-    debug.log("Setting profile of " + unicode(userId))
+    debug.log("Setting profile of {}", [userId])
 
     existingUser = get_user(userId)
 
@@ -49,7 +49,7 @@ def get_user_query():
 
 
 def for_each_user(fn):
-    debug.log("Running " + text_utils.stringify(fn) + " for each user")
+    debug.log("Running {} for each user", [fn])
 
     # Read user database
     query = get_user_query()

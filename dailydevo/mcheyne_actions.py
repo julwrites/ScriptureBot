@@ -31,7 +31,7 @@ class McheyneDailyAction(action_classes.Action):
 
         passage = bible_utils.get_passage(query, userObj.get_version())
         if passage is not None:
-            debug.log("Sending passage " + passage)
+            debug.log("Sending passage {}", [passage])
             telegram_utils.send_msg(user=userObj.get_uid(), text=passage)
 
         mcheyne_hooks.McheyneDailyHook().resolve(userObj)

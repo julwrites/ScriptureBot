@@ -48,7 +48,7 @@ def extract_html(html, top=None, bottom=None):
 
 
 def fetch_html(url, start=None, end=None):
-    debug.log("Fetching html from: " + url)
+    debug.log("Fetching html from: {}", [url])
 
     url, html = web_utils.fetch_url(url)
 
@@ -77,11 +77,11 @@ def html_to_soup(html, select=None):
 
 
 def fetch_rss(url):
-    debug.log("Fetching rss: " + url)
+    debug.log("Fetching rss: {}", [url])
 
     url, html = web_utils.fetch_url(url)
 
-    debug.log("rss: " + str(html))
+    debug.log("rss: {}", [html])
 
     return url, html
 
@@ -162,10 +162,10 @@ def stripmd_soup(soup):
 
 def mark_soup(soup, mark, tags=[]):
     tags = soupify_tags(tags)
-    debug.log("Marking tags: " + tags)
+    debug.log("Marking tags: {}", [tags])
 
     for tag in soup.select(tags):
-        # debug.log("Marking " + tag.text)
+        # debug.log("Marking {}", [tag.text])
         tag["class"] = mark
 
     return soup
@@ -173,7 +173,7 @@ def mark_soup(soup, mark, tags=[]):
 
 def link_soup(soup, fn):
     for tag in soup.find_all(HTML_ITEM_TAG, href=True):
-        # debug.log("Converting link: " + tag.text)
+        # debug.log("Converting link: {}", [tag.text])
         tag.string = fn(tag.text, tag["href"])
 
     return soup
@@ -181,5 +181,5 @@ def link_soup(soup, fn):
 
 def style_soup(soup, fn, find=True):
     for tag in soup.find_all(find, style=True):
-        # debug.log("Styling tag: " + tag.text)
+        # debug.log("Styling tag: {}", [tag.text])
         tag.string = fn(tag.text)

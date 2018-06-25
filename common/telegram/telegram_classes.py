@@ -9,9 +9,8 @@ class Markup():
         self.formatData = {}
 
     def set_field(self, key, value):
-        debug.log(
-            text_utils.stringify(self.__class__.__name__) + ": setting field "
-            + text_utils.stringify(key) + ": " + text_utils.stringify(value))
+        debug.log("{}: setting field {}: {}",
+                  [self.__class__.__name__, key, value])
         self.formatData[key] = value
 
     def set_text(self, text):

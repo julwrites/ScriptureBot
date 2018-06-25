@@ -13,7 +13,7 @@ class Action():
     def waiting(self, userObj):
         if userObj is not None:
             if userObj.get_state() == self.identifier():
-                debug.log("Waiting for " + self.identifier())
+                debug.log("Waiting for {}", [self.identifier()])
                 return True
         return False
 
@@ -25,7 +25,7 @@ class Action():
         if msg is not None:
             msgText = msg.get("text").strip()
             if text_utils.overlap_compare(msgText, self.identifier()):
-                debug.log("Matched with " + self.identifier())
+                debug.log("Matched with {}", [self.identifier()])
                 return True
         return False
 
@@ -33,7 +33,7 @@ class Action():
         if msg is not None:
             msgText = msg.get("text").strip()
             if text_utils.text_compare(msgText, self.name()):
-                debug.log("Matched with " + self.name())
+                debug.log("Matched with {}", [self.name()])
                 return True
         return False
 
@@ -42,7 +42,7 @@ class Action():
             if self.waiting(userObj) or self.match(msg):
                 return self.resolve(userObj, msg)
         except Exception as e:
-            debug.log("Tried, but failed to execute " + self.identifier())
+            debug.log("Tried, but failed to execute {}", [self.identifier()])
             debug.err(e)
         return False
 

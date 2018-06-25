@@ -116,7 +116,7 @@ def query_pack_by_alias(query):
 
 def query_verse_by_pack_pos(query):
     if text_utils.is_valid(query):
-        debug.log("Attempting to get by position: " + query)
+        debug.log("Attempting to get by position: {}", [query])
         queryNum = text_utils.strip_alpha(query)
         queryText = text_utils.strip_numbers(query)
 
@@ -137,7 +137,7 @@ def query_verse_by_pack_pos(query):
 
 def query_verse_by_reference(query):
     if text_utils.is_valid(query):
-        debug.log("Attempting to get by reference " + query)
+        debug.log("Attempting to get by reference {}", [query])
 
         for packKey in get_all_pack_keys():
             selectPack = get_pack(packKey)
@@ -153,7 +153,7 @@ def query_verse_by_reference(query):
 
 def query_verse_by_topic(query):
     if text_utils.is_valid(query):
-        debug.log("Attempting to get by topic " + query)
+        debug.log("Attempting to get by topic {}", [query])
         query = text_utils.strip_numbers(query)
         shortlist = []
 
@@ -191,8 +191,8 @@ def format_verse(verse, passage):
         versePrep = []
 
         versePrep.append(
-            get_names(verse.get_pack()) + " " + text_utils.stringify(
-                verse.get_position()))
+            get_names(verse.get_pack()) + " " +
+            text_utils.stringify(verse.get_position()))
         versePrep.append(telegram_utils.bold(verse.get_title()))
         versePrep.append(telegram_utils.bold(verse.reference) + " " \
                         + telegram_utils.bracket(passage.get_version()))

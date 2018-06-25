@@ -17,7 +17,7 @@ class DailyVerseHook(hook_classes.Hook):
 
     def resolve(self, userObj):
         if userObj is not None:
-            debug.log("Sending verse: " + "")
+            debug.log("Sending verse: {}", [""])
 
 
 def get():

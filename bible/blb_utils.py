@@ -22,7 +22,7 @@ BLB_VERS_END = " </div></div>"
 
 
 def fetch_blb(query, version="NASB"):
-    debug.log("Querying for " + query)
+    debug.log("Querying for {}", [query])
 
     query = query.lower().strip()
 
@@ -53,7 +53,7 @@ def get_search_raw(soup, version="NASB"):
 
 
 def get_search(query, version="NASB"):
-    debug.log("Word search: " + query)
+    debug.log("Word search: {}", [query])
 
     html, soup = fetch_blb(query, version)
 
@@ -97,7 +97,7 @@ def get_passage_raw(soup, version="NASB"):
 
 
 def get_strongs_link(soup):
-    debug.log("Fetching Strongs: " + query)
+    debug.log("Fetching Strongs: {}", [query])
 
     header = "\n".join([tag.text for tag in soup.select("h1")])
 
@@ -105,7 +105,7 @@ def get_strongs_link(soup):
 
 
 def get_strongs(query, version="NASB"):
-    debug.log("Fetching Strongs: " + query)
+    debug.log("Fetching Strongs: {}", [query])
 
     html, soup = fetch_blb(query, version)
 

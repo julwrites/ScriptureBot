@@ -27,7 +27,7 @@ PASSAGE = "passage"
 
 
 def fetch_bgw(query, version="NIV"):
-    debug.log("Querying for " + query)
+    debug.log("Querying for {}", [query])
 
     query = query.lower().strip()
 
@@ -49,7 +49,7 @@ def fetch_bgw(query, version="NIV"):
 
 
 def find_reference(ref):
-    debug.log("Parsing reference " + ref)
+    debug.log("Parsing reference {}", [ref])
 
     parts = ref.split(" ")
     book = text_utils.find_alpha(parts)
@@ -63,13 +63,13 @@ def find_reference(ref):
         if (i == book) or not (parts[i].isalpha())
     ]
 
-    debug.log("Reference parts: " + text_utils.stringify(str(parts)))
+    debug.log("Reference parts: {}", [parts])
 
     return "".join(parts)
 
 
 def get_passage_raw(ref, version="NIV"):
-    debug.log("Querying for passage " + ref)
+    debug.log("Querying for passage {}", [ref])
 
     ref = find_reference(ref)
 
@@ -103,7 +103,7 @@ def get_passage_raw(ref, version="NIV"):
 
     blocks = []
     for tag in soup(class_=BGW_PASSAGE_SELECT):
-        debug.log("Joining " + tag.text)
+        debug.log("Joining {}", [tag.text])
         blocks.append(tag.text)
 
     text = telegram_utils.join(blocks, "\n\n")
@@ -127,7 +127,7 @@ def get_passage(ref, version="NIV"):
 
 
 def get_reference(query):
-    debug.log("Querying for reference " + query)
+    debug.log("Querying for reference {}", [query])
 
     soup = fetch_bgw(query)
     if soup is None:
@@ -140,7 +140,7 @@ def get_reference(query):
 
 
 def get_link(query, version="NIV"):
-    debug.log("Querying for link " + query)
+    debug.log("Querying for link {}", [query])
 
     url = BGW_URL.format(query, version)
 

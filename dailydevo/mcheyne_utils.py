@@ -24,7 +24,7 @@ def fetch_mcheyne():
     if rss is None:
         return None
 
-    debug.log("RSS: " + rss)
+    debug.log("RSS: {}", [rss])
 
     soup = html_utils.rss_to_soup(rss)
 

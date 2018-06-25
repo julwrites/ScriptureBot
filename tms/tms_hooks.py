@@ -27,7 +27,7 @@ class DailyTMSHook(hook_classes.Hook):
                                                   userObj.get_version())
             verseMsg = tms_utils.format_verse(verse, passage)
 
-            debug.log("Sending verse: " + verseMsg)
+            debug.log("Sending verse: {}", [verseMsg])
 
             telegram_utils.send_msg(user=userObj.get_uid(), text=verseMsg)
 

@@ -29,7 +29,7 @@ def fetch_odb():
     if html is None:
         return None
 
-    # debug.log("Html: " + html)
+    # debug.log("Html: {}", [html])
 
     soup = html_utils.html_to_soup(html)
 
@@ -68,7 +68,7 @@ def get_odb(version="NIV"):
         return None
 
     for block in blocks:
-        debug.log("Block:" + block)
+        debug.log("Block: {}", [block])
 
     passage = telegram_utils.join(blocks, "\n\n")
 

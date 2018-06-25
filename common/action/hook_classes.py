@@ -18,7 +18,7 @@ class Hook():
                     debug.log_hook(self.identifier())
                     self.resolve(userObj)
         except Exception as e:
-            debug.log("Hook failed! " + self.identifier())
+            debug.log("Hook failed! {}", [self.identifier()])
             debug.err(e)
 
     def dispatch(self):
@@ -28,7 +28,7 @@ class Hook():
     def match(self, userObj):
         subs = userObj.get_subscription()
         if subs.find(self.identifier()) != -1:
-            debug.log("Matched with " + self.identifier())
+            debug.log("Matched with {}", [self.identifier()])
             return True
         return False
 

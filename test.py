@@ -21,27 +21,33 @@ class test_web_methods(unittest.TestCase):
         JSON_HEADER = {"Content-Type": "application/json;charset=utf-8"}
 
         data = {
-            "text": "Testing",
+            "text": "Test [http post]\n:: Pass",
             "chat_id": text_utils.stringify(secret.BOT_ADMIN),
             "parse_mode": "Markdown"
         }
         data = json.dumps(data)
-        debug.log("Performing send: " + text_utils.stringify(str(data)))
+        debug.log("Performing send: {}", [data])
 
         try:
             web_utils.post_http(TELEGRAM_URL_SEND, data, JSON_HEADER)
         except Exception as e:
-            self.assertTrue(False, str(e))
+            self.assertTrue(False, unicode(e))
 
 
 class test_telegram_methods(unittest.TestCase):
     def test_send_msg(self):
         debug.log("Testing telegram_utils.send_msg")
+
+        msg = "Test [send msg] with:\nutf-8: 👍🏻\nMarkdown:*bold*,_italic_,~strikethrough~\nArguments:{}\n:: Pass"
+        args = ["[tehj](https://tehj.org)"]
+
         try:
             telegram_utils.send_msg(
-                text="Testing", user=text_utils.stringify(secret.BOT_ADMIN))
+                text=msg,
+                user=text_utils.stringify(secret.BOT_ADMIN),
+                args=args)
         except Exception as e:
-            self.assertTrue(False, str(e))
+            self.assertTrue(False, unicode(e))
 
 
 class test_html_methods(unittest.TestCase):
@@ -50,7 +56,7 @@ class test_html_methods(unittest.TestCase):
         try:
             url, html = html_utils.fetch_html("https://julwrites.github.io")
         except Exception as e:
-            self.assertTrue(False, str(e))
+            self.assertTrue(False, unicode(e))
 
 
 unittest.main()

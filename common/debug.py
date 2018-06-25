@@ -21,18 +21,21 @@ def toggle():
     DEBUG_MODE = not DEBUG_MODE
 
 
-def log(msg):
+def log(msg, args=[]):
     if not debug():
         return
     if not verbose():
         return
+    if len(args) > 0:
+        for arg in args:
+            msg = msg.format(text_utils.stringify(arg))
     logging.debug(msg)
 
 
 def err(e):
     if not debug():
         return
-    logging.debug("Error: " + str(e))
+    logging.debug("Error: " + text_utils.stringify(e))
 
 
 def log_cmd(cmd):

@@ -21,7 +21,7 @@ JSON_HEADER = {"Content-Type": "application/json;charset=utf-8"}
 def send_post(post):
     data = json.dumps(post.data())
 
-    debug.log("Performing send: " + text_utils.stringify(data))
+    debug.log("Performing send: {}", [data])
 
     try:
         web_utils.post_http(TELEGRAM_URL_SEND, data, JSON_HEADER)
@@ -121,7 +121,7 @@ def format_msg(msg):
     for symbol in esc:
         msg = msg[:symbol] + "\\" + msg[symbol:]
 
-    return text_utils.stringify(msg)
+    return msg
 
 
 def split_msg(msg):
@@ -135,7 +135,7 @@ def split_msg(msg):
 
     seps = find_symbols(msg, ["\n"])
 
-    debug.log("Markdown pairs: " + text_utils.stringify(str(md)))
+    debug.log("Markdown pairs: {}", [md])
 
     end_pos = 0
 
@@ -154,7 +154,7 @@ def split_msg(msg):
                 break
 
         chunk = msg[curr:end_pos]
-        debug.log("Chunk: " + chunk)
+        debug.log("Chunk: {}", [chunk])
         chunks.append(chunk)
 
     chunks.append(msg[end_pos:])
@@ -163,13 +163,14 @@ def split_msg(msg):
 
 
 def send_msg(user, text, args=[]):
-    debug.log("Preparing to send " + text_utils.stringify(user) + ": " + text)
+    debug.log("Preparing to send {}: {}", [user, text])
 
     fmt_msg = format_msg(text)
+    debug.log("fmt_msg: {}", [fmt_msg])
     if len(args) > 0:
-        debug.log("Detected arguments: " + text_utils.stringify(str(args)))
+        debug.log("Detected arguments: {}", [args])
         for arg in args:
-            fmt_msg = fmt_msg.format(text_utils.stringify(arg))
+            fmt_msg = fmt_msg.format(arg)
 
     chunks = split_msg(fmt_msg)
 

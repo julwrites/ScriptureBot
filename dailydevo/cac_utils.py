@@ -28,7 +28,7 @@ def fetch_cac(version="NIV"):
     if html is None:
         return None
 
-    # debug.log("Html: " + html)
+    # debug.log("Html: {}", [html])
 
     soup = html_utils.html_to_soup(html)
 

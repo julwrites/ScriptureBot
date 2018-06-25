@@ -8,12 +8,12 @@ import re
 from common import debug
 
 
-def utf8(value):
+def to_utf8(value):
     return bytearray(value, "utf-8").decode("utf-8")
 
 
 def stringify(value):
-    return utf8(unicode(value))
+    return to_utf8(unicode(value))
 
 
 def is_valid(s):

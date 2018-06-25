@@ -7,8 +7,8 @@ from common.action import action_classes
 
 def execute(actions, userObj, msg):
     try:
-        debug.log("Trying actions: " + "|".join(
-            [action.identifier() for action in actions]))
+        debug.log("Trying actions: {}",
+                  ["|".join([action.identifier() for action in actions])])
 
         # Execute in order:
         # Commands
