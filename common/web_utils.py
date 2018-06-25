@@ -25,7 +25,6 @@ def fetch_url(url):
         html = response.read()
         url = response.geturl()
     except urllib2.URLError:
-        debug.log("Error fetching " + url + ": " + text_utils.stringify(e))
         debug.err(e)
         return None
 
