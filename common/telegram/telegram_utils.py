@@ -121,7 +121,7 @@ def format_msg(msg):
     for symbol in esc:
         msg = msg[:symbol] + "\\" + msg[symbol:]
 
-    return msg
+    return text_utils.stringify(msg)
 
 
 def split_msg(msg):
