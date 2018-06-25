@@ -16,10 +16,10 @@ class test_telegram_methods(unittest.TestCase):
     def test_send_msg(self):
         debug.log("Testing telegram_utils.send_msg")
 
-        debug.log("Trying: {}", ["utf-8: 👍🏻\n"])
+        debug.log("Trying: {}", [u"utf-8: 👍🏻\n"])
 
-        msg = "Test [send msg] with:\nutf-8: 👍🏻\nMarkdown:*bold*,_italic_,~strikethrough~\nArguments:{}\n:: Pass"
-        args = ["[tehj](https://tehj.org)"]
+        msg = u"Test [send msg] with:\nutf-8: 👍🏻\nMarkdown:*bold*,_italic_,~strikethrough~\nArguments:{}\n:: Pass"
+        args = [u"[tehj](https://tehj.org)"]
 
         try:
             telegram_utils.send_msg(

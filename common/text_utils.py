@@ -4,20 +4,13 @@
 import string
 import re
 
-# Local modules
-# from common import debug # This cannot be imported if we want debug to use text_utils
-
 
 def to_utf8(value):
-    return value.decode("utf-8")
+    return bytearray(value, "utf-8").decode("utf-8")
 
 
 def stringify(value):
-    if not isinstance(value, str) and not isinstance(value, unicode):
-        value = unicode(value)
-
-    value = bytearray(value, "utf-8")
-    return value.decode("utf-8")
+    return unicode(value).encode("utf-8")
 
 
 def is_valid(s):
