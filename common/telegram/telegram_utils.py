@@ -24,7 +24,8 @@ def send_post(post):
     try:
         web_utils.post_http(TELEGRAM_URL_SEND, data, JSON_HEADER)
     except Exception as e:
-        debug.log("Send failed! " + TELEGRAM_URL_SEND + ", " + data)
+        debug.log("Send failed! " + TELEGRAM_URL_SEND + ", " +
+                  text_utils.stringify(str(data)))
         debug.err(e)
 
 
