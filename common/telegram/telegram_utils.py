@@ -169,8 +169,7 @@ def send_msg(user, text, args=[]):
     debug.log("fmt_msg: {}", [fmt_msg])
     if len(args) > 0:
         debug.log("Detected arguments: {}", [args])
-        for arg in args:
-            fmt_msg = fmt_msg.format(arg)
+        fmt_msg = fmt_msg.format(*args)
 
     chunks = split_msg(fmt_msg)
 

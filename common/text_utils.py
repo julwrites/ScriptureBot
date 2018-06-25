@@ -6,11 +6,11 @@ import re
 
 
 def to_utf8(value):
-    return bytearray(value, "utf-8").decode("utf-8")
+    return value.encode("utf-8")
 
 
 def stringify(value):
-    return unicode(value).encode("utf-8")
+    return to_utf8(unicode(value))
 
 
 def is_valid(s):
