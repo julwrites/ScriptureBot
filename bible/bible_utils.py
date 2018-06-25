@@ -26,16 +26,8 @@ def get_versions():
 
 
 def get_search(ref, version="NASB"):
-    return blb_utils.get_search(query)
+    return blb_utils.get_search(query, version)
 
 
-def get_passage_strongs_raw(ref, version="NASB"):
-    return blb_utils.get_passage_raw(ref, version)
-
-
-def get_passage_strongs(ref, version="NASB"):
-    return blb_utils.get_passage(ref, version)
-
-
-def get_strongs_entry(ref):
-    return blb_utils.get_strongs_link(ref)
+def get_strongs(query, version="NASB"):
+    return blb_utils.get_strongs(query, version)

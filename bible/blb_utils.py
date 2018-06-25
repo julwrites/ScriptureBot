@@ -12,7 +12,6 @@ from bible import blb_classes
 
 # This URL will return search results
 BLB_SEARCH_URL = "https://www.blueletterbible.org/search/preSearch.cfm?Criteria={}&t={}&ss=1"
-BLB_STRONGS_URL = "https://www.blueletterbible.org/lang/Lexicon/Lexicon.cfm?strongs={}"
 
 BLB_VERSIONS = ["NIV", "ESV", "KJV", "NASB", "RSV", "NKJV"]
 
@@ -30,124 +29,108 @@ def fetch_blb(query, version="NASB"):
     if query is None:
         return None
 
-    formatRef = text_utils.strip_whitespace(query)
-    formatRef = formatRef.replace(" ", "+")
-
-    formatUrl = BLB_SEARCH_URL.format(formatRef, version)
+    formatUrl = BLB_SEARCH_URL.format(query, version)
 
     html = html_utils.fetch_html(formatUrl)
 
     if html is None:
         return None
 
-    soup = html_utils.html_to_soup(html)
+    soup = html_utils.html_to_soup(html, "nocrumbs")
 
-    return soup
-
-
-def get_passage_raw(ref, version="NASB"):
-    debug.log("Querying for passage " + ref)
-
-    soup = fetch_blb(ref, version)
     if soup is None:
         return None
+
+    return html, soup
+
+
+def get_search_raw(soup, version="NASB"):
+    debug.log("Parsing search results")
+
+    text = ""
+
+    return blb_classes.BLBPassage(reference, version, text, lexicon)
+
+
+def get_search(query, version="NASB"):
+    debug.log("Word search: " + query)
+
+    html, soup = fetch_blb(query, version)
+
+    if soup is None:
+        return None
+
+    header = "\n".join([tag.text for tag in soup.select("h1")])
+
+    if header == "Search Results":
+        passage = get_search_raw(soup)
+
+        if passage is None:
+            return None
+
+        text = telegram_utils.bold(passage.get_reference())
+        text += " " + telegram_utils.bracket(passage.get_version())
+        text += "\n\n" + passage.get_text()
+
+        return text
+
+    return None
+
+
+def get_passage_raw(soup, version="NASB"):
+    debug.log("Parsing passage")
 
     blocks = []
     for tag in soup(class_="tools row align-middle"):
         blocks.append(tag.text)
 
-    # # Prepare the title and header
-    # reference = soup.select_one(BLB_PASSAGE_TITLE).text.strip()
-    # version = version
+    # Prepare the title and header
+    reference = soup.select_one(BLB_PASSAGE_TITLE).text.strip()
 
-    # # Remove the unnecessary tags
-    # for tag in soup.select(BLB_PASSAGE_IGNORE):
-    #     tag.decompose()
+    lexicon = []
 
-    # # Steps through all the html types and mark these
-    # soup = html_utils.stripmd_soup(soup)
-
-    # # Special formatting for chapter and verse
-    # html_utils.foreach_tag(soup, ".chapternum", telegram_utils.bold)
-    # html_utils.foreach_tag(soup, ".versenum", telegram_utils.to_sup)
-    # html_utils.foreach_tag(soup, ".versenum", telegram_utils.italics)
-    # html_utils.foreach_header(soup, telegram_utils.bold)
-
-    # # Marking the parts of the soup we want to print
-    # soup = html_utils.mark_soup(soup, BLB_PASSAGE_SELECT,
-    #                             html_utils.html_common_tags())
-
-    # # Only at the last step do we do other destructive formatting
-    # soup = html_utils.strip_soup(soup)
-
-    # blocks = []
-    # for tag in soup(class_=BLB_PASSAGE_SELECT):
-    #     debug.log("Joining " + tag.text)
-    #     blocks.append(tag.text)
-
-    # text = telegram_utils.join(blocks, "\n\n")
+    text = telegram_utils.join(blocks, "\n\n")
 
     debug.log("Finished parsing soup")
 
-    return blb_classes.BLBPassage(reference, version, text)
+    return {"text": text, "strongs": lexicon}
 
 
-def get_passage(ref, version="NASB"):
-    passage = get_passage_raw(ref, version)
-
-    if passage is None:
-        return None
-
-    text = telegram_utils.bold(passage.get_reference())
-    text += " " + telegram_utils.bracket(passage.get_version())
-    text += "\n\n" + passage.get_text()
-
-    return text
-
-
-def get_strongs_link(query):
+def get_strongs_link(soup):
     debug.log("Fetching Strongs: " + query)
-
-    query = query.upper().strip()
-
-    if query is None:
-        return None
-
-    formatRef = text_utils.strip_whitespace(query)
-    formatUrl = BLB_STRONGS_URL.format(formatRef)
-
-    html = html_utils.fetch_html(formatUrl)
-
-    if html is None:
-        return None
-
-    soup = html_utils.html_to_soup(html, select="nocrumbs")
 
     header = "\n".join([tag.text for tag in soup.select("h1")])
 
     return telegram_utils.link(header, formatUrl)
 
 
-def get_search_raw(query):
-    debug.log("Word search: " + query)
+def get_strongs(query, version="NASB"):
+    debug.log("Fetching Strongs: " + query)
 
-    passage = fetch_blb(ref, version)
-
-    if passage is None:
-        return None
-
-    text = telegram_utils.bold(passage.get_reference())
-    text += " " + telegram_utils.bracket(passage.get_version())
-    text += "\n\n" + passage.get_text()
-
-    return text
-
-
-def get_search(query):
-    soup = fetch_blb(query, version)
+    html, soup = fetch_blb(query, version)
 
     if soup is None:
         return None
+
+    header = "\n".join([tag.text for tag in soup.select("h1")])
+
+    if header.find("Lexicon") != -1:
+        url = html_utils.get_url(html)
+
+        return telegram_utils.link(header, url)
+    else:
+        passage = get_passage_raw(ref, version)
+
+        if passage is None:
+            return None
+
+        text = telegram_utils.bold(passage.get_reference())
+        text += " " + telegram_utils.bracket(passage.get_version())
+        text += "\n\n" + passage.get_text()
+        if len(passage.get_strongs()) > 0:
+            text.format(passage.get_strongs())
+
+        return text
 
 
 def get_versions():
