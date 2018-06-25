@@ -10,10 +10,15 @@ from common import debug, constants
 def post_http(url, data, headers):
     debug.log("Post request to " + url)
 
-    data = urllib.urlencode(data)
+    debug.log("headers : " + str(headers))
+
+    # data = urllib.urlencode(data)
+    debug.log("data : " + str(data))
+
     request = urllib2.Request(url, data, headers)
 
     response = urllib2.urlopen(request)
+    debug.log("response : " + str(response))
 
 
 # HTML to BeautifulSoup

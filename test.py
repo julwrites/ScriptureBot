@@ -1,5 +1,6 @@
 # coding=utf-8
 
+import json
 import logging
 import unittest
 
@@ -24,6 +25,7 @@ class test_web_methods(unittest.TestCase):
             "chat_id": text_utils.stringify(secret.BOT_ADMIN),
             "parse_mode": "Markdown"
         }
+        data = json.dumps(data)
         debug.log("Performing send: " + text_utils.stringify(str(data)))
 
         try:
@@ -46,7 +48,7 @@ class test_html_methods(unittest.TestCase):
     def test_get_url(self):
         debug.log("Testing html_utils.get_url")
         try:
-            url, html = html_utils.fetch_html("https://tehj.org")
+            url, html = html_utils.fetch_html("https://julwrites.github.io")
         except Exception as e:
             self.assertTrue(False, str(e))
 

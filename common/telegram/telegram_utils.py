@@ -1,6 +1,7 @@
 # coding=utf-8
 
 # Python std modules
+import json
 
 # Local modules
 from common import debug, text_utils, web_utils
@@ -18,8 +19,9 @@ JSON_HEADER = {"Content-Type": "application/json;charset=utf-8"}
 
 # Telegram message sending functionality
 def send_post(post):
-    data = post.data()
-    debug.log("Performing send: " + text_utils.stringify(str(data)))
+    data = json.dumps(post.data())
+
+    debug.log("Performing send: " + text_utils.stringify(data))
 
     try:
         web_utils.post_http(TELEGRAM_URL_SEND, data, JSON_HEADER)
