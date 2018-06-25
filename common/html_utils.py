@@ -64,6 +64,8 @@ def replace_html(html, tag, rep):
 
 
 def html_to_soup(html, select=None):
+    debug.log("Parsing html to soup")
+
     soup = BeautifulSoup(html, "lxml")
 
     if text_utils.is_valid(select):
