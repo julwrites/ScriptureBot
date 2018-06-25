@@ -18,11 +18,11 @@ def post_http(url, data, headers):
 def fetch_url(url):
     try:
         result = urllib2.urlopen(url)
-        result = result.read()
+        content = result.read()
         url = result.geturl()
     except urllib2.URLError:
         debug.log("Error fetching: " + text_utils.stringify(e))
         debug.err(e)
         return None
 
-    return url, result
+    return url, content
