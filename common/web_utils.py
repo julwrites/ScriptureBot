@@ -8,6 +8,8 @@ from common import debug, constants
 
 
 def post_http(url, data, headers):
+    debug.log("Post request to " + url)
+
     data = urllib.urlencode(data)
     request = urllib2.Request(url, data)
     request.addheader(headers)
