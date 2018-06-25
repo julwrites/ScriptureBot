@@ -20,7 +20,7 @@ MCHEYNE_SELECT = "title"
 def fetch_mcheyne():
     formatUrl = MCHEYNE_URL
 
-    rss = html_utils.fetch_rss(formatUrl)
+    url, rss = html_utils.fetch_rss(formatUrl)
     if rss is None:
         return None
 
