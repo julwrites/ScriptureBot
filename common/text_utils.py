@@ -5,7 +5,7 @@ import string
 import re
 
 # Local modules
-from common import debug
+# from common import debug # This cannot be imported if we want debug to use text_utils
 
 
 def to_utf8(value):

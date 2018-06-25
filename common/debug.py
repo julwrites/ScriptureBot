@@ -3,7 +3,7 @@
 # Local modules
 import logging
 
-from common import chrono
+from common import chrono, text_utils
 
 DEBUG_MODE = True
 VERBOSE_MODE = True
