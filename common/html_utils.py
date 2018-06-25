@@ -77,7 +77,11 @@ def html_to_soup(html, select=None):
 
 
 def fetch_rss(url):
+    debug.log("Fetching rss: " + url)
+
     url, html = web_utils.fetch_url(url)
+
+    debug.log("rss: " + str(html))
 
     return url, html
 
