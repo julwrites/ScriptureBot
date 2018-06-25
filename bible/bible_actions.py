@@ -107,7 +107,7 @@ class BibleStrongsAction(action_classes.Action):
         query = telegram_utils.strip_command(msg, self.identifier())
 
         if text_utils.is_valid(query):
-            link = bible_utils.get_strongs_entry(query)
+            link = bible_utils.get_strongs(query, userObj.get_version())
 
             if link is not None:
                 telegram_utils.send_msg(
