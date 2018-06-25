@@ -19,9 +19,10 @@ def fetch_url(url):
     try:
         result = urllib2.urlopen(url)
         result = result.read()
+        url = result.geturl()
     except urllib2.URLError:
         debug.log("Error fetching: " + text_utils.stringify(e))
         debug.err(e)
         return None
 
-    return result
+    return url, result

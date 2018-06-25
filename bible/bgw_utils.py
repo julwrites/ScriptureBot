@@ -143,7 +143,7 @@ def get_link(query, version="NIV"):
 
     url = BGW_URL.format(query, version)
 
-    html = web_utils.fetch_url(url)
+    url, html = web_utils.fetch_url(url)
     if html is None:
         return None
 
