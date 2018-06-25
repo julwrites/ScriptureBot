@@ -3,6 +3,8 @@
 # Google App Engine API
 from google.appengine.api import urlfetch, urlfetch_errors
 
+import urllib2
+
 # Local modules
 from common import debug, constants
 
@@ -15,9 +17,9 @@ def post_http(url, data, headers):
 # HTML to BeautifulSoup
 def fetch_url(url):
     try:
-        debug.log("Attempting to fetch: " + url)
-        result = urlfetch.fetch(url, deadline=constants.URL_TIMEOUT)
-    except urlfetch_errors.Error as e:
+        result = urllib2.urlopen(url)
+        result = result.read()
+    except urllib2.URLError:
         debug.log("Error fetching: " + text_utils.stringify(e))
         debug.err(e)
         return None
