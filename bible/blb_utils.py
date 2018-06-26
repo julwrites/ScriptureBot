@@ -87,7 +87,9 @@ def get_passage_raw(soup, version="NASB"):
     lexicon = []
 
     for verse in soup(class_=BLB_VERSE_CLASS):
-        debug.log(verse.contents)
+        html = verse.string
+        debug.log(html)
+
         # debug.log(verse.text)
         # blocks.append(verse.text)
         # for link in verse.findAll("a", attrs={"href": re.compile("^http://")}):
