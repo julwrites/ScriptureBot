@@ -97,20 +97,21 @@ def get_passage_raw(html, soup, version="NASB"):
         if end == -1:
             break
         cache_pos.append({"begin": beg, "end": end})
-    verse_pos = cache_pos
 
     # Filter each position into more specific chunks containing only the verse data
+    verse_pos = cache_pos
+    cache_pos = []
     for pos in verse_pos:
         beg = html[pos.begin:pos.end].find('class="hide-for-tablet">')
         end = html[beg + 1:pos.end].find("</div></div>")
         if beg != -1 and end != -1:
             cache_pos.append({"begin": beg, "end": end})
-    verse_pos = tmp
 
     # Split up the verses into blocks of text and links
     verse_blocks = []
     for pos in verse_pos:
         blocks = html[pos.begin:pos.end].split("sup")
+        debug.log("verse_block: {}", [blocks])
         verse_blocks.append(blocks)
 
     text = telegram_utils.join(verse_blocks, "\n\n")
