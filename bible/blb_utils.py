@@ -11,15 +11,9 @@ from common.telegram import telegram_utils
 from bible import blb_classes
 
 # This URL will return search results
-BLB_SEARCH_URL = "https://www.blueletterbible.org/search/preSearch.cfm?Criteria={}&t={}{}"
+BLB_SEARCH_URL = "https://www.blueletterbible.org/search/preSearch.cfm?Criteria={}&t={}"
 
 BLB_VERSIONS = ["NIV", "ESV", "KJV", "NASB", "RSV", "NKJV"]
-
-BLB_VERSE_CLASS = "columns tablet-8 small-10 tablet-order-3 small-order-2"
-
-
-def format_blb_url(query, version, modifier=""):
-    return BLB_SEARCH_URL.format(query, version, modifier)
 
 
 def fetch_blb(query, version="NASB", modifier=""):
@@ -30,7 +24,7 @@ def fetch_blb(query, version="NASB", modifier=""):
     if query is None:
         return None
 
-    formatUrl = format_blb_url(query, version, modifier)
+    formatUrl = BLB_SEARCH_URL.format(query, version)
 
     url, html = html_utils.fetch_html(formatUrl)
 
@@ -55,38 +49,13 @@ def get_search(query, version="NASB"):
 
     header = "\n".join([tag.text for tag in soup.select("h1")])
 
-    if header == "Search Results":
-        return telegram_utils.link(header, url)
-
-    return None
-
-
-def get_lexicon(query, version="NASB"):
-    debug.log("Fetching Lexicon: {}", [query])
-
-    url, html, soup = fetch_blb(query, version)
-
-    if soup is None:
-        return None
-
-    header = "\n".join([tag.text for tag in soup.select("h1")])
-
     if header.find("Lexicon") != -1:
         return telegram_utils.link(header, url)
-    else:
-        url, html, soup = fetch_blb(query, version, "#s=s_lexiconc")
+    elif header == "Search Results":
+        theader = "\n".join([tag.text for tag in soup.select("th")])
+        return telegram_utils.link(theader, url)
 
-        if soup is None:
-            return None
-
-        soup = soup.select_one("lexList")
-        if soup is None:
-            header = "Lexicon entries"
-        else:
-            header = "".join([tag.text for tag in soup])
-
-        return telegram_utils.link(
-            header, format_blb_url(query, version, "#s=s_lexiconc"))
+    return None
 
 
 def get_versions():

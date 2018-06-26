@@ -92,45 +92,5 @@ class BibleSearchAction(action_classes.Action):
         return True
 
 
-class BibleLexiconAction(action_classes.Action):
-    def identifier(self):
-        return "/lexicon"
-
-    def name(self):
-        return "Lexicon entry"
-
-    def description(self):
-        return "Retrieve relevant Lexicon data"
-
-    def is_command(self):
-        return True
-
-    def resolve(self, userObj, msg):
-        query = telegram_utils.strip_command(msg, self.identifier())
-
-        if text_utils.is_valid(query):
-            link = bible_utils.get_lexicon(query, userObj.get_version())
-
-            if link is not None:
-                telegram_utils.send_msg(
-                    user=userObj.get_uid(), text="{}", args=[
-                        link,
-                    ])
-                userObj.set_state(None)
-            elif self.waiting(userObj):
-                telegram_utils.send_msg(
-                    user=userObj.get_uid(),
-                    text=userObj.get_reply_string(BADQUERY))
-            else:
-                return False
-        else:
-            telegram_utils.send_msg(
-                user=userObj.get_uid(), text=STRONGS_PROMPT)
-
-            userObj.set_state(self.identifier())
-
-        return True
-
-
 def get():
     return [BiblePassageAction(), BibleSearchAction()]
