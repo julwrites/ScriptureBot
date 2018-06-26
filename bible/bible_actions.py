@@ -92,13 +92,13 @@ class BibleSearchAction(action_classes.Action):
 
 class BibleStrongsAction(action_classes.Action):
     def identifier(self):
-        return "/strongs"
+        return "/lexicon"
 
     def name(self):
-        return "Strongs Lexicon entry"
+        return "Lexicon entry"
 
     def description(self):
-        return "Retrieve the Strongs Lexicon entry"
+        return "Retrieve relevant Lexicon data"
 
     def is_command(self):
         return True
@@ -107,12 +107,11 @@ class BibleStrongsAction(action_classes.Action):
         query = telegram_utils.strip_command(msg, self.identifier())
 
         if text_utils.is_valid(query):
-            passage, links = bible_utils.get_strongs(query,
-                                                     userObj.get_version())
+            link = bible_utils.get_lexicon(query, userObj.get_version())
 
             if link is not None:
                 telegram_utils.send_msg(
-                    user=userObj.get_uid(), text=passage, args=[
+                    user=userObj.get_uid(), text="{}", args=[
                         link,
                     ])
                 userObj.set_state(None)

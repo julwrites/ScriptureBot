@@ -69,7 +69,7 @@ def get_search(query, version="NASB"):
     return None
 
 
-def get_lex(query, version="NASB"):
+def get_lexicon(query, version="NASB"):
     debug.log("Fetching Lexicon: {}", [query])
 
     url, html, soup = fetch_blb(query, version)
@@ -80,7 +80,7 @@ def get_lex(query, version="NASB"):
     header = "\n".join([tag.text for tag in soup.select("h1")])
 
     if header.find("Lexicon") != -1:
-        return "{}", telegram_utils.link(header, url)
+        return telegram_utils.link(header, url)
     else:
         url, html, soup = fetch_blb(query, version, "#s=s_lexiconc")
 
@@ -89,7 +89,7 @@ def get_lex(query, version="NASB"):
 
         header = "\n".join([tag.text for tag in soup.select("h1")])
 
-        return "{}", telegram_utils.link(header, url)
+        return telegram_utils.link(header, url)
 
 
 def get_versions():
