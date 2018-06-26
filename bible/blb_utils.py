@@ -86,7 +86,9 @@ def get_lexicon(query, version="NASB"):
     if header.find("Lexicon") != -1:
         return telegram_utils.link(header, url)
     else:
-        return telegram_utils.link("Multiple Lexicon Entries - " + query, format_blb_url(query, version, "#s=s_lexiconc")
+        return telegram_utils.link(
+            "Lexicon Entries - " + query,
+            format_blb_url(query, version, "#s=s_lexiconc"))
 
 
 def get_versions():
