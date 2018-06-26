@@ -60,7 +60,7 @@ class BibleUser(database.Item):
     def get_reply_string(self, strings):
         choose = random.randint(0, len(strings) - 1)
         reply = text_utils.stringify(strings[choose]).format(
-            userObj.get_name_string())
+            self.get_name_string())
 
         return reply
 
