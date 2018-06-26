@@ -86,7 +86,7 @@ def get_lexicon(query, version="NASB"):
     if header.find("Lexicon") != -1:
         return telegram_utils.link(header, url)
     else:
-        url, html, soup = fetch_blb(query, version)
+        url, html, soup = fetch_blb(query, version, "#s=s_lexiconc")
 
         if soup is None:
             return None
