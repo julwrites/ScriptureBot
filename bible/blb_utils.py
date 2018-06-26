@@ -77,7 +77,7 @@ def get_strongs_link(soup):
     return "{}", telegram_utils.link(header, formatUrl)
 
 
-def get_passage_raw(soup, version="NASB"):
+def get_passage_raw(html, soup version="NASB"):
     debug.log("Parsing passage")
 
     # Prepare the title and header
@@ -86,15 +86,32 @@ def get_passage_raw(soup, version="NASB"):
     blocks = []
     lexicon = []
 
-    for verse in soup(class_=BLB_VERSE_CLASS):
-        for s in verse.stripped_strings:
-            debug.log(s)
+    # Parse raw html; bs4 ignores too much, we need the raw text
 
-        # debug.log(verse.text)
-        # blocks.append(verse.text)
-        # for link in verse.findAll("a", attrs={"href": re.compile("^http://")}):
-        #     debug.log(link.get("href"))
-        #     lexicon.append(link.get("href"))
+    # Break up the html into verses first
+    verse_pos = []
+    cache_pos = []
+    while True:
+        beg = html.find(BLB_VERSE_CLASS)
+        end = html[beg + 1:].find(BLB_VERSE_CLASS)
+        if end == -1:
+            break
+        cache_pos.append({"begin": beg, "end": end})
+    verse_pos = cache_pos
+
+    # Filter each position into more specific chunks containing only the verse data
+    for pos in verse_pos:
+        beg = html[pos.begin:pos.end].find('class="hide-for-tablet">')
+        end = html[beg + 1:pos.end].find("</div></div>")
+        if beg != -1 and end != -1:
+            cache_pos.append({"begin": beg, "end": end})
+    verse_pos = tmp
+
+    # Split up the verses into blocks of text and links
+    verse_blocks = []
+    for pos in verse_pos:
+        blocks = html[pos.begin:pos.end].split("sup")
+        verse_blocks.append(blocks)
 
     text = telegram_utils.join(blocks, "\n\n")
 
