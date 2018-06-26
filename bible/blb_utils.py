@@ -78,17 +78,24 @@ def get_lexicon(query, version="NASB"):
 
     url, html, soup = fetch_blb(query, version)
 
-    if soup is None:
-        return None
+    if soup is none:
+        return none
 
     header = "\n".join([tag.text for tag in soup.select("h1")])
 
     if header.find("Lexicon") != -1:
         return telegram_utils.link(header, url)
     else:
+        url, html, soup = fetch_blb(query, version)
+
+        if soup is none:
+            return none
+
+        header = "\n".join(
+            [tag.text for tag in soup.findAll("p", attrs={id: "lexlist"})])
+
         return telegram_utils.link(
-            "Lexicon Entries - " + query,
-            format_blb_url(query, version, "#s=s_lexiconc"))
+            header, format_blb_url(query, version, "#s=s_lexiconc"))
 
 
 def get_versions():
