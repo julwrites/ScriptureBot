@@ -29,5 +29,5 @@ def get_search(ref, version="NASB"):
     return blb_utils.get_search(query, version)
 
 
-def get_strongs(query, version="NASB"):
-    return blb_utils.get_strongs(query, version)
+def get_lexicon(query, version="NASB"):
+    return blb_utils.get_lexicon(query, version)
