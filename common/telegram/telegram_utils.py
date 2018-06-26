@@ -166,7 +166,7 @@ def send_msg(user, text, args=[]):
     debug.log("Preparing to send {}: {}", [user, text])
 
     fmt_msg = format_msg(text)
-    debug.log("fmt_msg: {}", [fmt_msg])
+
     if len(args) > 0:
         debug.log("Detected arguments: {}", [args])
         fmt_msg = fmt_msg.format(*args)

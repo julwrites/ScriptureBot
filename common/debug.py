@@ -27,42 +27,42 @@ def log(msg, args=[]):
     if not verbose():
         return
     if len(args) > 0:
-        msg = msg.format(*args)
+        msg = msg.format(*[text_utils.stringify(arg) for arg in args])
     logging.debug(msg)
 
 
 def err(e):
     if not debug():
         return
-    logging.debug("Error: " + text_utils.stringify(e))
+    log("Error: {}", [e])
 
 
 def log_cmd(cmd):
     if not debug():
         return
-    logging.debug("Command: " + cmd)
+    log("Command: {}", [cmd])
 
 
 def log_state(state):
     if not debug():
         return
-    logging.debug("State: " + state)
+    log("State: {}", [state])
 
 
 def log_action(action):
     if not debug():
         return
-    logging.debug("Action: " + action)
+    log("Action: {}", [action])
 
 
 def log_hook(hook):
     if not debug():
         return
-    logging.debug("Hook: " + hook)
+    log("Hook: {}", [hook])
 
 
 def datetime():
     if not debug():
         return
 
-    logging.debug(text_utils.stringify(chrono.now()))
+    log("Time: {}", [chrono.now()])
