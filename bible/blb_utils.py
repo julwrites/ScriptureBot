@@ -105,15 +105,15 @@ def get_passage_raw(html, soup, version="NASB"):
     verse_pos = cache_pos
     cache_pos = []
     for pos in verse_pos:
-        beg = html[pos.begin:pos.end].find('class="hide-for-tablet">')
-        end = html[beg + 1:pos.end].find("</div></div>")
+        beg = html[pos["begin"]:pos["end"]].find('class="hide-for-tablet">')
+        end = html[beg + 1:pos["end"]].find("</div></div>")
         if beg != -1 and end != -1:
             cache_pos.append({"begin": beg, "end": end})
 
     # Split up the verses into blocks of text and links
     verse_blocks = []
     for pos in verse_pos:
-        blocks = html[pos.begin:pos.end].split("sup")
+        blocks = html[pos["begin"]:pos["end"]].split("sup")
         debug.log("verse_block: {}", [blocks])
         verse_blocks.append(blocks)
 
