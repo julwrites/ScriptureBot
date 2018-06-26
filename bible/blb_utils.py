@@ -49,11 +49,13 @@ def get_search(query, version="NASB"):
 
     header = "\n".join([tag.text for tag in soup.select("h1")])
 
-    if header.find("Lexicon") != -1:
-        return telegram_utils.link(header, url)
-    elif header == "Search Results":
+    if header == "Search Results":
         theader = "\n".join([tag.text for tag in soup.select("th")])
         return telegram_utils.link(theader, url)
+    elif header.find("Lexicon") != -1:
+        return telegram_utils.link(header, url)
+    else:
+        return telegram_utils.link(header, url)
 
     return None
 
