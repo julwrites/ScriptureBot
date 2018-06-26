@@ -91,12 +91,14 @@ def get_passage_raw(html, soup, version="NASB"):
     # Break up the html into verses first
     verse_pos = []
     cache_pos = []
+    beg = 0
     while True:
-        beg = html.find(BLB_VERSE_CLASS)
-        end = html[beg + 1:].find(BLB_VERSE_CLASS)
+        beg = beg + html[beg:].find(BLB_VERSE_CLASS)
+        end = beg + html[beg + 1:].find(BLB_VERSE_CLASS) + 1
         if end == -1:
             break
         cache_pos.append({"begin": beg, "end": end})
+        beg = end
 
     # Filter each position into more specific chunks containing only the verse data
     verse_pos = cache_pos
