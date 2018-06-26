@@ -107,11 +107,12 @@ class BibleStrongsAction(action_classes.Action):
         query = telegram_utils.strip_command(msg, self.identifier())
 
         if text_utils.is_valid(query):
-            link = bible_utils.get_strongs(query, userObj.get_version())
+            passage, links = bible_utils.get_strongs(query,
+                                                     userObj.get_version())
 
             if link is not None:
                 telegram_utils.send_msg(
-                    user=userObj.get_uid(), text="{}", args=[
+                    user=userObj.get_uid(), text=passage, args=[
                         link,
                     ])
                 userObj.set_state(None)

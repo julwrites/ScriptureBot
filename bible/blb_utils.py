@@ -47,9 +47,8 @@ def fetch_blb(query, version="NASB"):
 def get_search_raw(soup, version="NASB"):
     debug.log("Parsing search results")
 
-    text = ""
-
-    return blb_classes.BLBPassage(reference, version, text, lexicon)
+    # We will need a BLBSearchResult for this
+    return None
 
 
 def get_search(query, version="NASB"):
@@ -63,16 +62,12 @@ def get_search(query, version="NASB"):
     header = "\n".join([tag.text for tag in soup.select("h1")])
 
     if header == "Search Results":
-        passage = get_search_raw(soup)
+        results = get_search_raw(soup)
 
-        if passage is None:
+        if results is None:
             return None
 
-        text = telegram_utils.bold(passage.get_reference())
-        text += " " + telegram_utils.bracket(passage.get_version())
-        text += "\n\n" + passage.get_text()
-
-        return text
+        return "\n\n".join(results.get_results())
 
     return None
 
@@ -80,20 +75,20 @@ def get_search(query, version="NASB"):
 def get_passage_raw(soup, version="NASB"):
     debug.log("Parsing passage")
 
+    # Prepare the title and header
+    reference = soup.select_one("h1").text.strip()
+
     blocks = []
+    lexicon = []
+
     for tag in soup(class_="tools row align-middle"):
         blocks.append(tag.text)
-
-    # Prepare the title and header
-    reference = soup.select_one(BLB_PASSAGE_TITLE).text.strip()
-
-    lexicon = []
 
     text = telegram_utils.join(blocks, "\n\n")
 
     debug.log("Finished parsing soup")
 
-    return {"text": text, "strongs": lexicon}
+    return blb_classes.BLBPassage(reference, version, text, lexicon)
 
 
 def get_strongs_link(soup):
@@ -101,7 +96,7 @@ def get_strongs_link(soup):
 
     header = "\n".join([tag.text for tag in soup.select("h1")])
 
-    return telegram_utils.link(header, formatUrl)
+    return "{}", telegram_utils.link(header, formatUrl)
 
 
 def get_strongs(query, version="NASB"):
@@ -117,18 +112,16 @@ def get_strongs(query, version="NASB"):
     if header.find("Lexicon") != -1:
         return telegram_utils.link(header, url)
     else:
-        passage = get_passage_raw(ref, version)
+        passage = get_passage_raw(soup, version)
 
         if passage is None:
             return None
 
         text = telegram_utils.bold(passage.get_reference())
-        text += " " + telegram_utils.bracket(passage.get_version())
-        text += "\n\n" + passage.get_text()
-        if len(passage.get_strongs()) > 0:
-            text.format(passage.get_strongs())
+        text += " " + telegram_utils.bracket(passage.get_version)
+        text += "\n\n" + passage..get_text()
 
-        return text
+        return text, passage.get_strongs()
 
 
 def get_versions():
