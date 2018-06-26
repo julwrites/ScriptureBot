@@ -87,8 +87,8 @@ def get_passage_raw(soup, version="NASB"):
     lexicon = []
 
     for verse in soup(class_=BLB_VERSE_CLASS):
-        html = verse.stripped_strings
-        debug.log(html)
+        for s in verse.stripped_strings:
+            debug.log(s)
 
         # debug.log(verse.text)
         # blocks.append(verse.text)
