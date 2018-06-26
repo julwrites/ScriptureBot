@@ -89,7 +89,8 @@ def get_passage_raw(soup, version="NASB"):
     blocks = []
     lexicon = []
 
-    for group in soup(class_="columns tablet-8 small-10 tablet-order-3 small-order-2"):
+    for group in soup(
+            class_="columns tablet-8 small-10 tablet-order-3 small-order-2"):
         debug.log(tag.text)
         blocks.append(tag.text)
         for link in group.findAll("a", attrs={"href": re.compile("^http://")}):
@@ -101,7 +102,6 @@ def get_passage_raw(soup, version="NASB"):
     debug.log("Finished parsing soup")
 
     return blb_classes.BLBPassage(reference, version, text, lexicon)
-
 
 
 def get_strongs(query, version="NASB"):
@@ -124,7 +124,7 @@ def get_strongs(query, version="NASB"):
 
         text = telegram_utils.bold(passage.get_reference())
         text += " " + telegram_utils.bracket(passage.get_version)
-        text += "\n\n" + passage..get_text()
+        text += "\n\n" + passage.get_text()
 
         return text, passage.get_strongs()
 
