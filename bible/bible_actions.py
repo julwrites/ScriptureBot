@@ -76,7 +76,7 @@ class BibleSearchAction(action_classes.Action):
             if result is not None:
                 telegram_utils.send_msg(
                     user=userObj.get_uid(), text="{}", args=[
-                        link,
+                        result,
                     ])
                 userObj.set_state(None)
             elif self.waiting(userObj):
