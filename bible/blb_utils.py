@@ -113,7 +113,7 @@ def get_passage_raw(html, soup version="NASB"):
         blocks = html[pos.begin:pos.end].split("sup")
         verse_blocks.append(blocks)
 
-    text = telegram_utils.join(blocks, "\n\n")
+    text = telegram_utils.join(verse_blocks, "\n\n")
 
     debug.log("Finished parsing soup")
 
