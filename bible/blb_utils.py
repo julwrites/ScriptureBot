@@ -11,14 +11,14 @@ from common.telegram import telegram_utils
 from bible import blb_classes
 
 # This URL will return search results
-BLB_SEARCH_URL = "https://www.blueletterbible.org/search/preSearch.cfm?Criteria={}&t={}&ss=1"
+BLB_SEARCH_URL = "https://www.blueletterbible.org/search/preSearch.cfm?Criteria={}&t={}{}"
 
 BLB_VERSIONS = ["NIV", "ESV", "KJV", "NASB", "RSV", "NKJV"]
 
 BLB_VERSE_CLASS = "columns tablet-8 small-10 tablet-order-3 small-order-2"
 
 
-def fetch_blb(query, version="NASB"):
+def fetch_blb(query, version="NASB", modifier=""):
     debug.log("Querying for {}", [query])
 
     query = query.lower().strip()
@@ -26,7 +26,7 @@ def fetch_blb(query, version="NASB"):
     if query is None:
         return None
 
-    formatUrl = BLB_SEARCH_URL.format(query, version)
+    formatUrl = BLB_SEARCH_URL.format(query, version, modifier)
 
     url, html = html_utils.fetch_html(formatUrl)
 
@@ -69,64 +69,16 @@ def get_search(query, version="NASB"):
     return None
 
 
-def get_strongs_link(soup):
-    debug.log("Fetching Strongs: {}", [query])
+def get_lex_link(soup):
+    debug.log("Fetching Lexicon: {}", [query])
 
     header = "\n".join([tag.text for tag in soup.select("h1")])
 
     return "{}", telegram_utils.link(header, formatUrl)
 
 
-def get_passage_raw(html, soup, version="NASB"):
-    debug.log("Parsing passage")
-
-    # Prepare the title and header
-    reference = soup.select_one("h1").text.strip()
-
-    blocks = []
-    lexicon = []
-
-    # Parse raw html; bs4 ignores too much, we need the raw text
-    debug.log("raw html: {}", [html])
-
-    # Break up the html into verses first
-    verse_pos = []
-    cache_pos = []
-    beg = 0
-    while True:
-        beg = beg + html[beg:].find(BLB_VERSE_CLASS)
-        end = beg + html[beg + 1:].find(BLB_VERSE_CLASS) + 1
-        if end == -1 or end >= len(html) or beg == end:
-            break
-        debug.log("beg: {}, end:{}", [beg, end])
-        cache_pos.append({"begin": beg, "end": end})
-        beg = end
-
-    # Filter each position into more specific chunks containing only the verse data
-    verse_pos = cache_pos
-    cache_pos = []
-    for pos in verse_pos:
-        beg = html[pos["begin"]:pos["end"]].find('class="hide-for-tablet">')
-        end = html[beg + 1:pos["end"]].find("</div></div>")
-        if beg != -1 and end != -1:
-            cache_pos.append({"begin": beg, "end": end})
-
-    # Split up the verses into blocks of text and links
-    verse_blocks = []
-    for pos in verse_pos:
-        blocks = html[pos["begin"]:pos["end"]].split("sup")
-        debug.log("verse_block: {}", [blocks])
-        verse_blocks.append(blocks)
-
-    text = telegram_utils.join(verse_blocks, "\n\n")
-
-    debug.log("Finished parsing soup")
-
-    return blb_classes.BLBPassage(reference, version, text, lexicon)
-
-
-def get_strongs(query, version="NASB"):
-    debug.log("Fetching Strongs: {}", [query])
+def get_lex(query, version="NASB"):
+    debug.log("Fetching Lexicon: {}", [query])
 
     url, html, soup = fetch_blb(query, version)
 
@@ -138,16 +90,14 @@ def get_strongs(query, version="NASB"):
     if header.find("Lexicon") != -1:
         return telegram_utils.link(header, url)
     else:
-        passage = get_passage_raw(html, soup, version)
+        url, html, soup = fetch_blb(query, version, "#s=s_lexiconc")
 
-        if passage is None:
+        if soup is None:
             return None
 
-        text = telegram_utils.bold(passage.get_reference())
-        text += " " + telegram_utils.bracket(passage.get_version())
-        text += "\n\n" + passage.get_text()
+        header = "\n".join([tag.text for tag in soup.select("h1")])
 
-        return text, passage.get_strongs()
+        return telegram_utils.link(header, url)
 
 
 def get_versions():
