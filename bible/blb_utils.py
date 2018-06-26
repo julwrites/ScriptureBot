@@ -91,8 +91,8 @@ def get_passage_raw(soup, version="NASB"):
 
     for group in soup(
             class_="columns tablet-8 small-10 tablet-order-3 small-order-2"):
-        debug.log(tag.text)
-        blocks.append(tag.text)
+        debug.log(group.text)
+        blocks.append(group.text)
         for link in group.findAll("a", attrs={"href": re.compile("^http://")}):
             debug.log(link.get("href"))
             lexicon.append(link.get("href"))
