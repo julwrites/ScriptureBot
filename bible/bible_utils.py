@@ -25,9 +25,5 @@ def get_versions():
     return bgw_utils.get_versions()
 
 
-def get_search(ref, version="NASB"):
+def get_search(query, version="NASB"):
     return blb_utils.get_search(query, version)
-
-
-def get_strongs(query, version="NASB"):
-    return blb_utils.get_strongs(query, version)
