@@ -18,6 +18,10 @@ BLB_VERSIONS = ["NIV", "ESV", "KJV", "NASB", "RSV", "NKJV"]
 BLB_VERSE_CLASS = "columns tablet-8 small-10 tablet-order-3 small-order-2"
 
 
+def format_blb_url(query, version, modifier=""):
+    return BLB_SEARCH_URL.format(query, version, modifier)
+
+
 def fetch_blb(query, version="NASB", modifier=""):
     debug.log("Querying for {}", [query])
 
@@ -26,7 +30,7 @@ def fetch_blb(query, version="NASB", modifier=""):
     if query is None:
         return None
 
-    formatUrl = BLB_SEARCH_URL.format(query, version, modifier)
+    formatUrl = format_blb_url(query, version, modifier)
 
     url, html = html_utils.fetch_html(formatUrl)
 
@@ -82,14 +86,7 @@ def get_lexicon(query, version="NASB"):
     if header.find("Lexicon") != -1:
         return telegram_utils.link(header, url)
     else:
-        url, html, soup = fetch_blb(query, version, "#s=s_lexiconc")
-
-        if soup is None:
-            return None
-
-        header = "\n".join([tag.text for tag in soup.select("h1")])
-
-        return telegram_utils.link(header, url)
+        return telegram_utils.link("Multiple Lexicon Entries - " + query, format_blb_url(query, version, "#s=s_lexiconc")
 
 
 def get_versions():
