@@ -77,7 +77,7 @@ def get_strongs_link(soup):
     return "{}", telegram_utils.link(header, formatUrl)
 
 
-def get_passage_raw(html, soup version="NASB"):
+def get_passage_raw(html, soup, version="NASB"):
     debug.log("Parsing passage")
 
     # Prepare the title and header
@@ -133,7 +133,7 @@ def get_strongs(query, version="NASB"):
     if header.find("Lexicon") != -1:
         return telegram_utils.link(header, url)
     else:
-        passage = get_passage_raw(soup, version)
+        passage = get_passage_raw(html, soup, version)
 
         if passage is None:
             return None
