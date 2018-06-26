@@ -15,10 +15,7 @@ BLB_SEARCH_URL = "https://www.blueletterbible.org/search/preSearch.cfm?Criteria=
 
 BLB_VERSIONS = ["NIV", "ESV", "KJV", "NASB", "RSV", "NKJV"]
 
-# We want to grab all <div> with this id, and pick only the last bit.
-BLB_VERSE_ID = "verse_{}{}"  # verse_<chapter num><3 digit verse num>
-BLB_VERSE_START = "</span>"
-BLB_VERS_END = " </div></div>"
+BLB_VERSE_CLASS = "columns tablet-8 small-10 tablet-order-3 small-order-2"
 
 
 def fetch_blb(query, version="NASB"):
@@ -67,7 +64,7 @@ def get_search(query, version="NASB"):
         if results is None:
             return None
 
-        return "\n\n".join(results.get_results())
+        return telegram_utils.join(results.get_results(), "\n\n")
 
     return None
 
@@ -89,13 +86,13 @@ def get_passage_raw(soup, version="NASB"):
     blocks = []
     lexicon = []
 
-    for group in soup(
-            class_="columns tablet-8 small-10 tablet-order-3 small-order-2"):
-        debug.log(group.text)
-        blocks.append(group.text)
-        for link in group.findAll("a", attrs={"href": re.compile("^http://")}):
-            debug.log(link.get("href"))
-            lexicon.append(link.get("href"))
+    for verse in soup(class_=BLB_VERSE_CLASS):
+        debug.log(verse.contents)
+        # debug.log(verse.text)
+        # blocks.append(verse.text)
+        # for link in verse.findAll("a", attrs={"href": re.compile("^http://")}):
+        #     debug.log(link.get("href"))
+        #     lexicon.append(link.get("href"))
 
     text = telegram_utils.join(blocks, "\n\n")
 
@@ -123,7 +120,7 @@ def get_strongs(query, version="NASB"):
             return None
 
         text = telegram_utils.bold(passage.get_reference())
-        text += " " + telegram_utils.bracket(passage.get_version)
+        text += " " + telegram_utils.bracket(passage.get_version())
         text += "\n\n" + passage.get_text()
 
         return text, passage.get_strongs()
