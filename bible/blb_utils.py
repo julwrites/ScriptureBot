@@ -11,7 +11,7 @@ from common.telegram import telegram_utils
 from bible import blb_classes
 
 # This URL will return search results
-BLB_SEARCH_URL = "https://www.blueletterbible.org/search/preSearch.cfm?Criteria={}&t={}"
+BLB_SEARCH_URL = "https://www.blueletterbible.org/search/preSearch.cfm?Criteria={}&t={}"  #&ss=1
 
 BLB_VERSIONS = ["NIV", "ESV", "KJV", "NASB", "RSV", "NKJV"]
 
