@@ -45,13 +45,6 @@ def fetch_blb(query, version="NASB", modifier=""):
     return url, html, soup
 
 
-def get_search_raw(soup, version="NASB"):
-    debug.log("Parsing search results")
-
-    # We will need a BLBSearchResult for this
-    return None
-
-
 def get_search(query, version="NASB"):
     debug.log("Word search: {}", [query])
 
@@ -63,12 +56,7 @@ def get_search(query, version="NASB"):
     header = "\n".join([tag.text for tag in soup.select("h1")])
 
     if header == "Search Results":
-        results = get_search_raw(soup)
-
-        if results is None:
-            return None
-
-        return telegram_utils.join(results.get_results(), "\n\n")
+        return telegram_utils.link(header, url)
 
     return None
 
