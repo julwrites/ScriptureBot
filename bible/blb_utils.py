@@ -78,8 +78,8 @@ def get_lexicon(query, version="NASB"):
 
     url, html, soup = fetch_blb(query, version)
 
-    if soup is none:
-        return none
+    if soup is None:
+        return None
 
     header = "\n".join([tag.text for tag in soup.select("h1")])
 
