@@ -49,7 +49,10 @@ def get_search(query, version="NASB"):
 
     header = "\n".join([tag.text for tag in soup.select("h1")])
 
-    return telegram_utils.link(header, url)
+    if header == "Search Results":
+        return telegram_utils.link("Search Results for \"" + query + "\"", url)
+    else:
+        return telegram_utils.link(header, url)
 
 
 def get_versions():
