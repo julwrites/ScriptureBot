@@ -181,16 +181,20 @@ def send_msg(user, text, args=[]):
 
 
 def send_reply(user, text, reply):
+    fmt_msg = format_msg(text)
+
     post = telegram_classes.Post()
     post.set_user(user)
-    post.set_text(format_msg(text))
+    post.set_text(fmt_msg)
     post.set_reply(reply)
     send_post(post)
 
 
 def make_reply_button(text="", contact=False, location=False):
+    fmt_msg = format_msg(text)
+
     button = telegram_classes.Markup()
-    button.set_text(format_msg(text))
+    button.set_text(fmt_msg)
     button.set_field("request_contact", contact)
     button.set_field("request_location", location)
     return button
@@ -213,8 +217,10 @@ def make_reply_keyboard(buttons=[],
 
 
 def make_inline_button(text="", url="", callback="", query=""):
+    fmt_msg = format_msg(text)
+
     button = telegram_classes.Markup()
-    button.set_text(format_msg(text))
+    button.set_text(fmt_msg)
     button.set_field("url", url)
     button.set_field("callback_data", callback)
     button.set_field("switch_inline_query", query)

@@ -29,6 +29,8 @@ class UserDoneAction(action_classes.Action):
         return "Done"
 
     def resolve(self, userObj, msg):
+        debug.log("Done action for {}", [userObj.get_uid()])
+
         telegram_utils.send_reply(
             user=userObj.get_uid(),
             text=userObj.get_reply_string(CONFIRM),

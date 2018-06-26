@@ -41,7 +41,7 @@ def fetch_blb(query, version="NASB"):
     if soup is None:
         return None
 
-    return html, soup
+    return url, html, soup
 
 
 def get_search_raw(soup, version="NASB"):
@@ -55,7 +55,7 @@ def get_search_raw(soup, version="NASB"):
 def get_search(query, version="NASB"):
     debug.log("Word search: {}", [query])
 
-    html, soup = fetch_blb(query, version)
+    url, html, soup = fetch_blb(query, version)
 
     if soup is None:
         return None
@@ -107,7 +107,7 @@ def get_strongs_link(soup):
 def get_strongs(query, version="NASB"):
     debug.log("Fetching Strongs: {}", [query])
 
-    html, soup = fetch_blb(query, version)
+    url, html, soup = fetch_blb(query, version)
 
     if soup is None:
         return None
@@ -115,8 +115,6 @@ def get_strongs(query, version="NASB"):
     header = "\n".join([tag.text for tag in soup.select("h1")])
 
     if header.find("Lexicon") != -1:
-        url = html_utils.get_url(html)
-
         return telegram_utils.link(header, url)
     else:
         passage = get_passage_raw(ref, version)

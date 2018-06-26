@@ -31,10 +31,6 @@ def html_p_tag():
     return ",".join(HTML_TEXT_TAGS)
 
 
-def get_url(html):
-    return html.URL
-
-
 def extract_html(html, top=None, bottom=None):
     if top is None or bottom is None:
         return html
