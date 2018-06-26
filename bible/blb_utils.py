@@ -72,6 +72,14 @@ def get_search(query, version="NASB"):
     return None
 
 
+def get_strongs_link(soup):
+    debug.log("Fetching Strongs: {}", [query])
+
+    header = "\n".join([tag.text for tag in soup.select("h1")])
+
+    return "{}", telegram_utils.link(header, formatUrl)
+
+
 def get_passage_raw(soup, version="NASB"):
     debug.log("Parsing passage")
 
@@ -81,8 +89,12 @@ def get_passage_raw(soup, version="NASB"):
     blocks = []
     lexicon = []
 
-    for tag in soup(class_="tools row align-middle"):
+    for group in soup(class_="columns tablet-8 small-10 tablet-order-3 small-order-2"):
+        debug.log(tag.text)
         blocks.append(tag.text)
+        for link in group.findAll("a", attrs={"href": re.compile("^http://")}):
+            debug.log(link.get("href"))
+            lexicon.append(link.get("href"))
 
     text = telegram_utils.join(blocks, "\n\n")
 
@@ -90,13 +102,6 @@ def get_passage_raw(soup, version="NASB"):
 
     return blb_classes.BLBPassage(reference, version, text, lexicon)
 
-
-def get_strongs_link(soup):
-    debug.log("Fetching Strongs: {}", [query])
-
-    header = "\n".join([tag.text for tag in soup.select("h1")])
-
-    return "{}", telegram_utils.link(header, formatUrl)
 
 
 def get_strongs(query, version="NASB"):
