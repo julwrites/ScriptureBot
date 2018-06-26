@@ -87,6 +87,7 @@ def get_passage_raw(html, soup, version="NASB"):
     lexicon = []
 
     # Parse raw html; bs4 ignores too much, we need the raw text
+    debug.log("raw html: {}", [html])
 
     # Break up the html into verses first
     verse_pos = []
