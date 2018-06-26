@@ -91,8 +91,11 @@ def get_lexicon(query, version="NASB"):
         if soup is None:
             return None
 
-        header = "\n".join(
-            [tag.text for tag in soup.findAll("p", attrs={id: "lexlist"})])
+        soup = soup.select_one("lexList")
+        if soup is None:
+            header = "Lexicon entries"
+        else:
+            header = "".join([tag.text for tag in soup])
 
         return telegram_utils.link(
             header, format_blb_url(query, version, "#s=s_lexiconc"))
