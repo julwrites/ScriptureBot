@@ -1,7 +1,7 @@
 # coding=utf-8
 
 # Python modules
-import re
+import urllib
 from bs4 import BeautifulSoup
 
 # Local modules
@@ -24,7 +24,7 @@ def fetch_blb(query, version="NASB", modifier=""):
     if query is None:
         return None
 
-    formatUrl = BLB_SEARCH_URL.format(query, version)
+    formatUrl = BLB_SEARCH_URL.format(urllib.quote(query), version)
 
     url, html = html_utils.fetch_html(formatUrl)
 
