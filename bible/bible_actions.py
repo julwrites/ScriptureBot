@@ -71,9 +71,10 @@ class BibleSearchAction(action_classes.Action):
         query = telegram_utils.strip_command(msg, self.identifier())
 
         if text_utils.is_valid(query):
-            link = bible_utils.get_search(query, userObj.get_version())
+            result = bible_utils.get_search(query, userObj.get_version())
 
-            if passage is not None:
+            if result is not None:
+                telegram_utils.send_msg(
                     user=userObj.get_uid(), text="{}", args=[
                         link,
                     ])
