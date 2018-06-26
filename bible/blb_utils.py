@@ -97,6 +97,7 @@ def get_passage_raw(html, soup, version="NASB"):
         end = beg + html[beg + 1:].find(BLB_VERSE_CLASS) + 1
         if end == -1:
             break
+        debug.log("beg: {}, end:{}", [beg, end])
         cache_pos.append({"begin": beg, "end": end})
         beg = end
 
