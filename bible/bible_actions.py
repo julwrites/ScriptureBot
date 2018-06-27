@@ -62,7 +62,7 @@ class BibleSearchAction(action_classes.Action):
         return "Bible Search"
 
     def description(self):
-        return "Search for a word or phrase in the Bible"
+        return "Search for a passage, lexicon entry, word or phrase"
 
     def is_command(self):
         return True
