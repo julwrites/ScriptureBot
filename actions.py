@@ -42,13 +42,14 @@ class StartAction(action_classes.Action):
         if userJson is not None:
             debug.log("Updating user info")
             user_utils.set_profile(
-                userJson.get("id"),
-                userJson.get("username"),
+                userJson.get("id"), userJson.get("username"),
                 userJson.get("first_name"), userJson.get("last_name"))
+            debug.log("Finished updating user info")
 
         # If this is the user"s first time registering
         if userObj is None:
             userObj = user_utils.get_user(userId)
+            debug.log("Sending user help")
 
             HelpAction().resolve(userObj, msg)
 
@@ -72,8 +73,8 @@ class HelpAction(action_classes.Action):
     def resolve(self, userObj, msg):
         telegram_utils.send_msg(
             user=userObj.get_uid(),
-            text=text_utils.stringify(HELP_MSG).format(
-                userObj.get_name_string()))
+            text=HELP_MSG,
+            args=[userObj.get_name_string()])
         return True
 
 
