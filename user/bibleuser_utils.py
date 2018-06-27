@@ -7,7 +7,7 @@ from user import bibleuser_classes
 
 # Functions for manipulation of user info
 def get_user(userId):
-    return database.retrieve("BibleUser", userId)
+    return database.retrieve("BibleUser", text_utils.stringify(userId))
 
 
 def get_uid(userIdObj):
@@ -24,9 +24,9 @@ def set_profile(userId, uname, fname, lname):
 
     existingUser = get_user(userId)
 
-    uname = str(uname)
-    fname = str(fname)
-    lname = str(lname)
+    uname = text_utils.stringify(uname)
+    fname = text_utils.stringify(fname)
+    lname = text_utils.stringify(lname)
 
     if existingUser:
         debug.log("Updating names... {} {} {}", [uname, fname, lname])
@@ -65,7 +65,8 @@ def for_each_user(fn):
 
 
 def migrate(userObj):
-    newUserObj = bibleuser_classes.BibleUser(key_name=userObj.get_uid())
+    newUserObj = bibleuser_classes.BibleUser(
+        key_name=text_utils.stringify(userObj.get_uid()))
 
     newUserObj.clone(userObj)
 
