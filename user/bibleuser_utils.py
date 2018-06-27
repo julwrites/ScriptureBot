@@ -35,7 +35,7 @@ def set_profile(userId, uname, fname, lname):
         existingUser.lastName = lname
 
         debug.log("Updating time...")
-        existingUser.update_last_received()
+        # existingUser.update_last_received()
         return existingUser
     else:
         debug.log("New user: {} {} {}", [uname, fname, lname])
