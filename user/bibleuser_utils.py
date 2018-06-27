@@ -34,7 +34,10 @@ def set_profile(userId, uname, fname, lname):
         existingUser.firstName = fname
         existingUser.lastName = lname
 
-        debug.log("Updating the user...")
+        debug.log("Updating the user... {} {} {}", [
+            existingUser.username, existingUser.firstName,
+            existingUser.lastName
+        ])
         existingUser.update_last_received()
 
         return existingUser
@@ -45,7 +48,7 @@ def set_profile(userId, uname, fname, lname):
             username=uname,
             firstName=fname,
             lastName=lname)
-        userObj.put()
+        userObj.update()
         return userObj
 
 
@@ -71,6 +74,6 @@ def migrate(userObj):
     newUserObj.clone(userObj)
 
     userObj.delete()
-    newUserObj.put()
+    newUserObj.update()
 
     return newUserObj
