@@ -5,7 +5,7 @@ from google.appengine.ext import db
 
 
 def retrieve(region, name):
-    key = db.Key.from_path(region, name)
+    key = db.Key.from_path(region, str(name))
     return db.get(key)
 
 
