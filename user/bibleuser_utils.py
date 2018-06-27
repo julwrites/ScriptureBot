@@ -29,15 +29,16 @@ def set_profile(userId, uname, fname, lname):
     lname = text_utils.stringify(lname)
 
     if existingUser:
-        debug.log("User exists, updating")
-
+        debug.log("Updating names... {} {} {}", [uname, fname, lname])
         existingUser.username = uname
         existingUser.firstName = fname
         existingUser.lastName = lname
+
+        debug.log("Updating time...")
         existingUser.update_last_received()
         return existingUser
     else:
-        debug.log("New user!")
+        debug.log("New user: {} {} {}", [uname, fname, lname])
         userObj = bibleuser_classes.BibleUser(
             key_name=text_utils.stringify(userId),
             username=uname,

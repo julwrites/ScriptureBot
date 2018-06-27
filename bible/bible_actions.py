@@ -9,7 +9,6 @@ from bible import bible_utils
 
 PASSAGE_PROMPT = "Give me a Bible reference"
 SEARCH_PROMPT = "Give me a word or phrase to search"
-STRONGS_PROMPT = "Give me a Strongs Lexicon reference"
 
 BADQUERY = [
     "Sorry {}, I can't find it", "I don't know what that is, {}",
