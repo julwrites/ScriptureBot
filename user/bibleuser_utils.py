@@ -24,9 +24,9 @@ def set_profile(userId, uname, fname, lname):
 
     existingUser = get_user(userId)
 
-    uname = text_utils.stringify(uname)
-    fname = text_utils.stringify(fname)
-    lname = text_utils.stringify(lname)
+    uname = unicode(uname)
+    fname = unicode(fname)
+    lname = unicode(lname)
 
     if existingUser:
         debug.log("Updating names... {} {} {}", [uname, fname, lname])
