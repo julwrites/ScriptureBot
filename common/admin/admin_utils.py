@@ -10,6 +10,6 @@ from secret import BOT_ADMIN
 def access(userId):
     debug.log("Admin Check for {}", [userId])
 
-    if text_utils.stringify(userId) == text_utils.stringify(BOT_ADMIN):
+    if text_utils.to_utf8(userId) == text_utils.to_utf8(BOT_ADMIN):
         return True
     return False

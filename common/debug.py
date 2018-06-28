@@ -27,7 +27,7 @@ def log(msg, args=[]):
     if not verbose():
         return
     if len(args) > 0:
-        msg = msg.format(*[text_utils.stringify(arg) for arg in args])
+        msg = msg.format(*[text_utils.to_utf8(arg) for arg in args])
     logging.debug(msg)
 
 

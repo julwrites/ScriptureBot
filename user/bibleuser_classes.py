@@ -39,19 +39,19 @@ class BibleUser(database.Item):
         return self.name()
 
     def get_name_string(self, verbose=False):
-        fname = text_utils.stringify(self.firstName)
-        lname = text_utils.stringify(self.lastName)
-        uname = text_utils.stringify(self.username)
+        fname = self.firstName
+        lname = self.lastName
+        uname = self.username
 
         name = fname
 
         if text_utils.is_valid(name):
-            name += text_utils.stringify(" ") + lname if verbose else ""
+            name += " " + lname if verbose else ""
         else:
             name = lname
 
         if text_utils.is_valid(name):
-            name += text_utils.stringify(" @") + uname if verbose else ""
+            name += " @" + uname if verbose else ""
         else:
             name = uname
 
@@ -59,15 +59,12 @@ class BibleUser(database.Item):
 
     def get_reply_string(self, strings):
         choose = random.randint(0, len(strings) - 1)
-        reply = text_utils.stringify(strings[choose]).format(
-            self.get_name_string())
+        reply = strings[choose].format(self.get_name_string())
 
         return reply
 
     def get_description(self):
-        userType = "Group " if self.is_group() else "User "
-        return text_utils.stringify(userType) + self.get_name_string(
-            verbose=True)
+        return self.get_name_string(verbose=True)
 
     def is_group(self):
         return int(self.get_uid()) < 0

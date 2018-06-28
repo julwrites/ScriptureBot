@@ -150,7 +150,7 @@ def stripmd_soup(soup):
     for tag in soup.select(soupify_tags(HTML_TEXT_TAGS)):
         badStrings = tag(text=re.compile("(\*|\_|\`|\[)"))
         for badString in badStrings:
-            strippedText = strip_md(text_utils.stringify(badString))
+            strippedText = strip_md(badString)
             badString.replace_with(strippedText)
 
     return soup
