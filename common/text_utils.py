@@ -5,21 +5,23 @@ import string
 import re
 
 
-def to_utf8(value):
-    return value.encode("utf-8")
-
-
-def stringify(value):
+def to_string(value):
     try:
         value = unicode(value)
     except UnicodeError:
         pass
 
+    return value
+
+
+def to_utf8(value):
+    value = to_string(value)
+
     try:
         value.decode("utf-8")
         return value
     except UnicodeError:
-        return to_utf8(value)
+        return value.encode("utf-8")
 
 
 def is_valid(s):

@@ -168,7 +168,7 @@ def send_msg(user, text, args=[]):
 
     if len(args) > 0:
         debug.log("Detected arguments: {}", [args])
-        fmt_msg = fmt_msg.format(*[text_utils.stringify(arg) for arg in args])
+        fmt_msg = fmt_msg.format(*[text_utils.to_utf8(arg) for arg in args])
 
     chunks = split_msg(fmt_msg)
 
@@ -277,7 +277,7 @@ def parse_payload(msg):
 
 
 def strip_command(msg, cmd):
-    return text_utils.stringify(msg.get("text")).replace(cmd, "").strip()
+    return msg.get("text").replace(cmd, "").strip()
 
 
 # Telegram message prettifying

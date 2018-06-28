@@ -13,16 +13,16 @@ logging.basicConfig(level=logging.DEBUG)
 
 
 class test_text_methods(unittest.TestCase):
-    def test_stringify(self):
-        debug.log("===\tTesting text_utils.stringify\t===")
+    def test_to_utf8(self):
+        debug.log("===\tTesting text_utils.to_utf8\t===")
         test_string = u"utf-8: 👍🏻\nObject:{}\n:: Pass"
         norm_string = test_string.format(["ListObject"])
 
         utf8_string = norm_string.encode("utf-8")
 
         try:
-            debug.log(text_utils.stringify(norm_string))
-            debug.log(text_utils.stringify(utf8_string))
+            debug.log(text_utils.to_utf8(norm_string))
+            debug.log(text_utils.to_utf8(utf8_string))
         except Exception as e:
             self.assertTrue(False, e)
 
@@ -46,7 +46,7 @@ class test_web_methods(unittest.TestCase):
 
         data = {
             "text": "Test <http post>\n:: Pass",
-            "chat_id": text_utils.stringify(secret.BOT_ADMIN),
+            "chat_id": text_utils.to_string(secret.BOT_ADMIN),
             "parse_mode": "Markdown"
         }
         data = json.dumps(data)

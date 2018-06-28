@@ -12,7 +12,7 @@ class Markup():
         self.formatData[key] = value
 
     def set_text(self, text):
-        self.set_field("text", text_utils.stringify(text))
+        self.set_field("text", text_utils.to_utf8(text))
 
     def data(self):
         return self.formatData
@@ -93,7 +93,7 @@ class Post(Markup):
         self.set_field("parse_mode", "Markdown")
 
     def set_user(self, user):
-        self.set_field("chat_id", text_utils.stringify(user))
+        self.set_field("chat_id", text_utils.to_utf8(user))
 
     def set_reply(self, reply):
         self.set_field("reply_markup", reply.data())
