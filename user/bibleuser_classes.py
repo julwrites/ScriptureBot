@@ -59,15 +59,12 @@ class BibleUser(database.Item):
 
     def get_reply_string(self, strings):
         choose = random.randint(0, len(strings) - 1)
-        reply = text_utils.stringify(strings[choose]).format(
-            self.get_name_string())
+        reply = strings[choose].format(self.get_name_string())
 
         return reply
 
     def get_description(self):
-        userType = "Group " if self.is_group() else "User "
-        return text_utils.stringify(userType) + self.get_name_string(
-            verbose=True)
+        return self.get_name_string(verbose=True)
 
     def is_group(self):
         return int(self.get_uid()) < 0
