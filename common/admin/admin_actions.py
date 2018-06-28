@@ -51,9 +51,8 @@ class AdminDumpAction(action_classes.Action):
             userList = []
             for dbUser in query.run(batch_size=10):
                 dbUserObj = user_utils.get_user(user_utils.get_uid(dbUser))
-                debug.log(dbUserObj.get_description())
-                userList.append(
-                    text_utils.stringify(dbUserObj.get_description()))
+                debug.log("User:\t{}", [dbUserObj.get_description()])
+                userList.append(dbUserObj.get_description())
             userListMsg = "\n".join(userList)
             telegram_utils.send_msg(user=userObj.get_uid(), text=userListMsg)
 
