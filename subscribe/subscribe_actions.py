@@ -46,8 +46,8 @@ class SubscribeAction(action_classes.Action):
                 max_fuzz = fuzz[0]
                 for i in fuzz[1:]:
                     if text_utils.overlap_compare(
-                            query, subs[i]) > text_utils.overlap_comare(
-                                query, subs[max_fuzz]):
+                            query, subs[i].name()) > text_utils.overlap_comare(
+                                query, subs[max_fuzz].name()):
                         max_fuzz = i
                 sub = subs[max_fuzz]
 
