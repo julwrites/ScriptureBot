@@ -44,11 +44,12 @@ def fuzzify(s):
 
 
 def overlap(lhsSub, rhsSub):
+    overlap = 0
     for lhs in lhsSub:
         for rhs in rhsSub:
             if lhs == rhs:
-                return True
-    return False
+                overlap = overlap + 1
+    return overlap
 
 
 def find_alpha(blocks):
@@ -64,7 +65,7 @@ def fuzzy_compare(lhs, rhs):
     lhs = fuzzify_join(lhsParts)
     rhs = fuzzify_join(rhsParts)
 
-    return (lhs == rhs or overlap(lhsParts, rhsParts))
+    return (lhs == rhs or overlap(lhsParts, rhsParts) > 0)
 
 
 def overlap_compare(lhs, rhs):

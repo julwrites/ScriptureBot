@@ -37,26 +37,35 @@ class SubscribeAction(action_classes.Action):
             return True
 
         if text_utils.is_valid(query):
-            for sub in subs:
-                if text_utils.text_compare(query, sub.name()):
-                    if userObj.has_subscription(sub.identifier()):
-                        userObj.remove_subscription(sub.identifier())
+            fuzz = [
+                i for i in range(len(subs))
+                if text_utils.fuzzy_compare(query, subs[i].name())
+            ]
 
-                        telegram_utils.send_reply(
-                            user=userObj.get_uid(),
-                            text=CONFIRM_UNSUBSCRIBE.format(sub.name()),
-                            reply=telegram_utils.make_close_keyboard())
+            if len(fuzz) > 0:
+                max_fuzz = fuzz[0]
+                for i in fuzz[1:]:
+                    max_fuzz = i if text_utils.overlap_compare(
+                        query, subs[i]) else max_fuzz
+                sub = subs[max_fuzz]
 
-                    else:
-                        userObj.add_subscription(sub.identifier())
+                if userObj.has_subscription(sub.identifier()):
+                    userObj.remove_subscription(sub.identifier())
 
-                        telegram_utils.send_reply(
-                            user=userObj.get_uid(),
-                            text=CONFIRM_SUBSCRIBE.format(sub.name()),
-                            reply=telegram_utils.make_close_keyboard())
+                    telegram_utils.send_reply(
+                        user=userObj.get_uid(),
+                        text=CONFIRM_UNSUBSCRIBE.format(sub.name()),
+                        reply=telegram_utils.make_close_keyboard())
 
-                    userObj.set_state(None)
-                    break
+                else:
+                    userObj.add_subscription(sub.identifier())
+
+                    telegram_utils.send_reply(
+                        user=userObj.get_uid(),
+                        text=CONFIRM_SUBSCRIBE.format(sub.name()),
+                        reply=telegram_utils.make_close_keyboard())
+
+                userObj.set_state(None)
             else:
                 telegram_utils.send_msg(user=userObj.get_uid(), text=BADQUERY)
 

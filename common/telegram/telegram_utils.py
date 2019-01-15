@@ -280,6 +280,10 @@ def strip_command(msg, cmd):
     return msg.get("text").replace(cmd, "").strip()
 
 
+def strip_symbol(msg, sym):
+    return msg.get("text").replace(sym, "").strip()
+
+
 # Telegram message prettifying
 def surround(text, front, back=None):
     if back is None:
