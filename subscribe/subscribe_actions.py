@@ -46,7 +46,8 @@ class SubscribeAction(action_classes.Action):
                 m = fuzz[0]
                 for i in fuzz[1:]:
                     if text_utils.overlap_compare(
-                            query, subs[i].name()) > text_utils.overlap_comare(
+                            query,
+                            subs[i].name()) > text_utils.overlap_compare(
                                 query, subs[m].name()):
                         m = i
                 sub = subs[m]
