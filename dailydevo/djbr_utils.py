@@ -21,7 +21,7 @@ def fetch_djbr():
     month = int(date[1])
     day = int(date[2])
 
-    if(day < month_length)
+    if day < month_length:
         passages = data[month * month_length + day]
 
         return passages
