@@ -38,15 +38,17 @@ class DJBRDailyHook(hook_classes.Hook):
 
         if refs is not None:
             refString = "\n".join(refs)
-            refs.append(user_actions.UserDoneAction().name())
-            options = [
-                telegram_utils.make_reply_button(text=ref) for ref in refs
-            ]
 
             if refs[0].find("Reflection") != -1:
                 prompt = userObj.get_reply_string(REFLECTION)
+                refs = [user_actions.UserDoneAction().name()]
             else:
                 prompt = PROMPT.format(refString)
+                refs.append(user_actions.UserDoneAction().name())
+
+            options = [
+                telegram_utils.make_reply_button(text=ref) for ref in refs
+            ]
 
             telegram_utils.send_reply(
                 user=userObj.get_uid(),

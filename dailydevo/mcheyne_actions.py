@@ -33,8 +33,8 @@ class McheyneDailyAction(action_classes.Action):
         if passage is not None:
             debug.log("Sending passage {}", [passage])
             telegram_utils.send_msg(user=userObj.get_uid(), text=passage)
-
-        mcheyne_hooks.McheyneDailyHook().resolve(userObj)
+        else:
+            mcheyne_hooks.McheyneDailyHook().resolve(userObj)
 
         return True
 

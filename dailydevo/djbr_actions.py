@@ -33,8 +33,8 @@ class DJBRDailyAction(action_classes.Action):
         if passage is not None:
             debug.log("Sending passage {}", [passage])
             telegram_utils.send_msg(user=userObj.get_uid(), text=passage)
-
-        djbr_hooks.DJBRDailyHook().resolve(userObj)
+        else:
+            djbr_hooks.DJBRDailyHook().resolve(userObj)
 
         return True
 
