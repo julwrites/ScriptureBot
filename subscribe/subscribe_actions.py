@@ -43,13 +43,13 @@ class SubscribeAction(action_classes.Action):
             ]
 
             if len(fuzz) > 0:
-                max_fuzz = fuzz[0]
+                m = fuzz[0]
                 for i in fuzz[1:]:
                     if text_utils.overlap_compare(
                             query, subs[i].name()) > text_utils.overlap_comare(
-                                query, subs[max_fuzz].name()):
-                        max_fuzz = i
-                sub = subs[max_fuzz]
+                                query, subs[m].name()):
+                        m = i
+                sub = subs[m]
 
                 if userObj.has_subscription(sub.identifier()):
                     userObj.remove_subscription(sub.identifier())
