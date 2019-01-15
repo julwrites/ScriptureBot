@@ -10,6 +10,16 @@ from user import user_actions
 
 PROMPT = "Here are today's Bible Reading passages!\n{}\nTap on any one to get the passage!"
 
+REFLECTION = [
+    "Take this time to reflect over the last few days. How has God been speaking to you, {}?",
+    "As you read this, slow down and take a few deep breaths. Meditate on the living Word that God has been giving you, {}.",
+    "{}! Stop right now and ask the Holy Spirit to remind you of what God has been speaking to your heart this week",
+    "He hears you, {}. The question now is whether you will listen to Him. Spend some time alone with Him today.",
+    "Jesus invites all to come to Him, and He promises to give rest for your soul. Yes, you, {}",
+    "We know He speaks, but do you listen? Open your heart to Him today, {}, and believe He will speak",
+    "{}, have faith that He will speak as you meditate; to come to Him you must have faith.",
+]
+
 
 class DJBRDailyHook(hook_classes.Hook):
     def identifier(self):
@@ -33,9 +43,14 @@ class DJBRDailyHook(hook_classes.Hook):
                 telegram_utils.make_reply_button(text=ref) for ref in refs
             ]
 
+            if refs[0].find("Reflection") != -1:
+                prompt = userObj.get_reply_string(REFLECTION)
+            else:
+                prompt = PROMPT.format(refString)
+
             telegram_utils.send_reply(
                 user=userObj.get_uid(),
-                text=PROMPT.format(refString),
+                text=prompt,
                 reply=telegram_utils.make_reply_keyboard(
                     buttons=options, width=1))
 

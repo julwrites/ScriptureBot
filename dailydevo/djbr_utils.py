@@ -40,8 +40,7 @@ def get_djbr_raw():
     # Steps through all the html types and mark these
     blocks = []
     for ref in passages:
-        if bible_utils.get_passage_raw(ref) is not None:
-            blocks.append(ref)
+        blocks.append(ref)
 
     return blocks
 
