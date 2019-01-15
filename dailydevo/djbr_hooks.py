@@ -5,26 +5,26 @@ from common import debug
 from common.telegram import telegram_utils
 from common.action import hook_classes
 
-from dailydevo import mcheyne_utils
+from dailydevo import djbr_utils
 from user import user_actions
 
-PROMPT = "Here are today's M'Cheyne passages!\n{}\nTap on any one to get the passage!"
+PROMPT = "Here are today's Bible Reading passages!\n{}\nTap on any one to get the passage!"
 
 
-class McheyneDailyHook(hook_classes.Hook):
+class DJBRDailyHook(hook_classes.Hook):
     def identifier(self):
-        return "/mcheyne"
+        return "/djbr"
 
     def name(self):
-        return "M'cheyne Bible Reading Plan"
+        return "Discipleship Journal Bible Reading Plan"
 
     def description(self):
-        return "M'cheyne Bible Reading Plan (1 Year)"
+        return "Discipleship Journal 1-Year Bible Reading Plan"
 
     def resolve(self, userObj):
-        debug.log("Resolving MCheyne hook")
+        debug.log("Resolving DJBR hook")
 
-        refs = mcheyne_utils.get_mcheyne()
+        refs = djbr_utils.get_djbr()
 
         if refs is not None:
             refString = "\n".join(refs)
@@ -43,4 +43,4 @@ class McheyneDailyHook(hook_classes.Hook):
 
 
 def get():
-    return [McheyneDailyHook()]
+    return [DJBRDailyHook()]
