@@ -10,4 +10,4 @@ jobs:
     - stage: install
       script: python -m pip install -r requirements.txt
     - stage: test
-      script: python -m unittest discover -s tests -p *_test.py
+      script: python -m unittest discover -s tests
