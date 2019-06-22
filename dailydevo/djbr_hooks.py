@@ -1,7 +1,7 @@
 # coding=utf-8
 
 # Local modules
-from common import debug
+from common.utils import debug
 from common.telegram import telegram_utils
 from common.action import hook_classes
 
@@ -32,7 +32,7 @@ class DJBRDailyHook(hook_classes.Hook):
         return "Discipleship Journal 1-Year Bible Reading Plan"
 
     def resolve(self, userObj):
-        debug.log("Resolving DJBR hook")
+        debug_utils.log("Resolving DJBR hook")
 
         refs = djbr_utils.get_djbr()
 

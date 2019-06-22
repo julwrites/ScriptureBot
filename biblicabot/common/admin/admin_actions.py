@@ -6,7 +6,7 @@ from common.telegram import telegram_utils
 from common.action import action_classes
 
 from user import user_utils
-import admin_utils
+from . import admin_utils
 
 
 class AdminNotifyAction(action_classes.Action):

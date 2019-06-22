@@ -1,7 +1,7 @@
 # coding=utf8
 
 # Local modules
-from common import debug
+from common.utils import debug_utils
 from common.action import action_classes
 from common.telegram import telegram_utils
 

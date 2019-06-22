@@ -5,7 +5,8 @@ import re
 from bs4 import BeautifulSoup
 
 # Local modules
-from common import debug, text_utils, web_utils, constants
+from common import constants
+from common.utils import debug_utils, text_utils, web_utils
 
 HTML_HEADER_TAGS = ["h1", "h2", "h3", "h4", "h5", "h6"]
 HTML_TEXT_TAGS = ["p"]
@@ -44,7 +45,7 @@ def extract_html(html, top=None, bottom=None):
 
 
 def fetch_html(url, start=None, end=None):
-    debug.log("Fetching html from: {}", [url])
+    debug_utils.log("Fetching html from: {}", [url])
 
     url, html = web_utils.fetch_url(url)
 
@@ -60,24 +61,24 @@ def replace_html(html, tag, rep):
 
 
 def html_to_soup(html, select=None):
-    debug.log("Parsing html to soup")
+    debug_utils.log("Parsing html to soup")
 
     soup = BeautifulSoup(html, "lxml")
 
     if text_utils.is_valid(select):
         soup = soup.select_one(".{}".format(select))
 
-    debug.log("Soup has been made")
+    debug_utils.log("Soup has been made")
 
     return soup
 
 
 def fetch_rss(url):
-    debug.log("Fetching rss: {}", [url])
+    debug_utils.log("Fetching rss: {}", [url])
 
     url, html = web_utils.fetch_url(url)
 
-    debug.log("rss: {}", [html])
+    debug_utils.log("rss: {}", [html])
 
     return url, html
 
@@ -88,7 +89,7 @@ def rss_to_soup(rss, select=None):
     if text_utils.is_valid(select):
         soup = soup.select_one(".{}".format(select))
 
-    debug.log("Soup has been made")
+    debug_utils.log("Soup has been made")
 
     return soup
 
@@ -135,7 +136,7 @@ def soup_tags(soup):
 
 
 def strip_soup(soup):
-    debug.log("Stripping soup: ")
+    debug_utils.log("Stripping soup: ")
 
     foreach_all(soup, text_utils.strip_whitespace)
 
@@ -143,7 +144,7 @@ def strip_soup(soup):
 
 
 def stripmd_soup(soup):
-    debug.log("Stripping soup markdown: ")
+    debug_utils.log("Stripping soup markdown: ")
 
     foreach_header(soup, strip_md)
 
@@ -158,10 +159,10 @@ def stripmd_soup(soup):
 
 def mark_soup(soup, mark, tags=[]):
     tags = soupify_tags(tags)
-    debug.log("Marking tags: {}", [tags])
+    debug_utils.log("Marking tags: {}", [tags])
 
     for tag in soup.select(tags):
-        # debug.log("Marking {}", [tag.text])
+        # debug_utils.log("Marking {}", [tag.text])
         tag["class"] = mark
 
     return soup
@@ -169,7 +170,7 @@ def mark_soup(soup, mark, tags=[]):
 
 def link_soup(soup, fn):
     for tag in soup.find_all(HTML_ITEM_TAG, href=True):
-        # debug.log("Converting link: {}", [tag.text])
+        # debug_utils.log("Converting link: {}", [tag.text])
         tag.string = fn(tag.text, tag["href"])
 
     return soup
@@ -177,5 +178,5 @@ def link_soup(soup, fn):
 
 def style_soup(soup, fn, find=True):
     for tag in soup.find_all(find, style=True):
-        # debug.log("Styling tag: {}", [tag.text])
+        # debug_utils.log("Styling tag: {}", [tag.text])
         tag.string = fn(tag.text)

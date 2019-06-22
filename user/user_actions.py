@@ -8,7 +8,7 @@ from user import bibleuser_actions
 
 from common.action import action_classes
 from common.telegram import telegram_utils
-from common import debug, text_utils
+from common.utils import debug_utils, text_utils
 
 CONFIRM = [
     "Alright {}~",

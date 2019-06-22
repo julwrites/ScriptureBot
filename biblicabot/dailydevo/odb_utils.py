@@ -1,7 +1,7 @@
 # coding=utf-8
 
 # Python modules
-import urllib
+import urllib.request, urllib.parse, urllib.error
 from bs4 import BeautifulSoup
 
 # Local Modules

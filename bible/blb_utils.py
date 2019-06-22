@@ -1,11 +1,12 @@
 # coding=utf-8
 
 # Python modules
-import urllib
+import urllib.request, urllib.parse, urllib.error
 from bs4 import BeautifulSoup
 
 # Local modules
-from common import debug, html_utils, constants, text_utils, web_utils
+from common import constants
+from common.utils import debug_utils, html_utils, text_utils, web_utils
 from common.telegram import telegram_utils
 
 from bible import blb_classes
@@ -17,14 +18,14 @@ BLB_VERSIONS = ["NIV", "ESV", "KJV", "NASB", "RSV", "NKJV"]
 
 
 def fetch_blb(query, version="NASB", modifier=""):
-    debug.log("Querying for {}", [query])
+    debug_utils.log("Querying for {}", [query])
 
     query = query.lower().strip()
 
     if query is None:
         return None
 
-    formatUrl = BLB_SEARCH_URL.format(urllib.quote(query), version)
+    formatUrl = BLB_SEARCH_URL.format(urllib.parse.quote(query), version)
 
     url, html = html_utils.fetch_html(formatUrl)
 
@@ -40,7 +41,7 @@ def fetch_blb(query, version="NASB", modifier=""):
 
 
 def get_search(query, version="NASB"):
-    debug.log("Word search: {}", [query])
+    debug_utils.log("Word search: {}", [query])
 
     url, html, soup = fetch_blb(query, version)
 

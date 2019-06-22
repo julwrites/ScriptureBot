@@ -1,10 +1,10 @@
 # coding=utf-8
 
 # Python modules
-import urllib
+import urllib.request, urllib.parse, urllib.error
 from bs4 import BeautifulSoup
 # Local modules
-from common import debug, html_utils, text_utils
+from common.utils import debug_utils, html_utils, text_utils
 from common.telegram import telegram_utils
 
 # Link to fetch html from
@@ -26,7 +26,7 @@ def fetch_desiringgod():
     if html is None:
         return None
 
-    # debug.log("Html: {}", [html])
+    # debug_utils.log("Html: {}", [html])
 
     soup = html_utils.html_to_soup(html)
 

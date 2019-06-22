@@ -5,12 +5,12 @@ import webapp2
 import json
 
 # Local modules
-from common.utils import debug_utils, text_utils
-from common.telegram import telegram_utils
-from common.action import action_utils
-from user import user_utils
+from .common.utils import debug_utils, text_utils
+from .common.telegram import telegram_utils
+from .common.action import action_utils
+from .user import user_utils
 
-import actions
+from . import actions
 
 from secret import BOT_ID
 APP_BOT_URL = "/" + BOT_ID

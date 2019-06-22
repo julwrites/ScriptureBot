@@ -1,7 +1,7 @@
 # coding=utf-8
 
 # Local modules
-from common import debug
+from common.utils import debug_utils
 from common.telegram import telegram_utils
 from common.action import hook_classes
 
@@ -17,7 +17,7 @@ class DailyVerseHook(hook_classes.Hook):
 
     def resolve(self, userObj):
         if userObj is not None:
-            debug.log("Sending verse: {}", [""])
+            debug_utils.log("Sending verse: {}", [""])
 
 
 def get():

@@ -318,21 +318,21 @@ def join(blocks, separator):
 
 # Telegram special symbols
 def tick():
-    return u"\u2714"
+    return "\u2714"
 
 
 def to_sup(text):
     sups = {
-        u"0": u"\u2070",
-        u"1": u"\xb9",
-        u"2": u"\xb2",
-        u"3": u"\xb3",
-        u"4": u"\u2074",
-        u"5": u"\u2075",
-        u"6": u"\u2076",
-        u"7": u"\u2077",
-        u"8": u"\u2078",
-        u"9": u"\u2079",
-        u"-": u"\u207b"
+        "0": "\u2070",
+        "1": "\xb9",
+        "2": "\xb2",
+        "3": "\xb3",
+        "4": "\u2074",
+        "5": "\u2075",
+        "6": "\u2076",
+        "7": "\u2077",
+        "8": "\u2078",
+        "9": "\u2079",
+        "-": "\u207b"
     }
     return "".join(sups.get(char, char) for char in text)

@@ -1,7 +1,7 @@
 # coding=utf8
 
 # Local modules
-from common import debug
+from common.utils import debug
 from common.action import action_classes
 from common.telegram import telegram_utils
 
@@ -21,7 +21,7 @@ class McheyneDailyAction(action_classes.Action):
         return "M'cheyne Bible Reading Plan (1 Year)"
 
     def resolve(self, userObj, msg):
-        debug.log("Handling MCheyne action")
+        debug_utils.log("Handling MCheyne action")
 
         query = telegram_utils.strip_command(msg, self.identifier())
 
@@ -31,7 +31,7 @@ class McheyneDailyAction(action_classes.Action):
 
         passage = bible_utils.get_passage(query, userObj.get_version())
         if passage is not None:
-            debug.log("Sending passage {}", [passage])
+            debug_utils.log("Sending passage {}", [passage])
             telegram_utils.send_msg(user=userObj.get_uid(), text=passage)
         else:
             mcheyne_hooks.McheyneDailyHook().resolve(userObj)

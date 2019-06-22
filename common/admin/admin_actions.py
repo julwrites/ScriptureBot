@@ -1,12 +1,12 @@
 # coding=utf-8
 
 # Local modules
-from common import debug, text_utils
+from common.utils import debug_utils, text_utils
 from common.telegram import telegram_utils
 from common.action import action_classes
 
 from user import user_utils
-import admin_utils
+from . import admin_utils
 
 
 class AdminNotifyAction(action_classes.Action):
@@ -51,7 +51,7 @@ class AdminDumpAction(action_classes.Action):
             userList = []
             for dbUser in query.run(batch_size=10):
                 dbUserObj = user_utils.get_user(user_utils.get_uid(dbUser))
-                debug.log("User:\t{}", [dbUserObj.get_description()])
+                debug_utils.log("User:\t{}", [dbUserObj.get_description()])
                 userList.append(dbUserObj.get_description())
             userListMsg = "\n".join(userList)
             telegram_utils.send_msg(user=userObj.get_uid(), text=userListMsg)
@@ -75,7 +75,7 @@ class AdminCleanAction(action_classes.Action):
             for dbUser in query.run():
                 dbUserObj = user_utils.get_user(user_utils.get_uid(dbUser))
                 if dbUserObj.get_name_string() == "-":
-                    debug.log("Deleting: {}", [dbUserObj.get_uid()])
+                    debug_utils.log("Deleting: {}", [dbUserObj.get_uid()])
                     dbUserObj.delete()
 
             for dbUser in query.run():
@@ -128,7 +128,7 @@ class AdminRagnarokAction(action_classes.Action):
 
             for dbUser in query.run(batch_size=500):
                 dbUserObj = user_utils.get_user(user_utils.get_uid(dbUser))
-                debug.log("Deleting: {}", [dbUserObj.get_uid()])
+                debug_utils.log("Deleting: {}", [dbUserObj.get_uid()])
                 dbUserObj.delete()
 
             telegram_utils.send_msg(user=userObj.get_uid(), text="Baboomz~")

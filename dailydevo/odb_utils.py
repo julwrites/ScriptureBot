@@ -1,11 +1,11 @@
 # coding=utf-8
 
 # Python modules
-import urllib
+import urllib.request, urllib.parse, urllib.error
 from bs4 import BeautifulSoup
 
 # Local Modules
-from common import debug, html_utils, text_utils
+from common.utils import debug_utils, html_utils, text_utils
 from common.telegram import telegram_utils
 from bible import bible_utils
 
@@ -29,7 +29,7 @@ def fetch_odb():
     if html is None:
         return None
 
-    # debug.log("Html: {}", [html])
+    # debug_utils.log("Html: {}", [html])
 
     soup = html_utils.html_to_soup(html)
 
@@ -67,7 +67,7 @@ def get_odb(version="NIV"):
         return None
 
     for block in blocks:
-        debug.log("Block: {}", [block])
+        debug_utils.log("Block: {}", [block])
 
     passage = telegram_utils.join(blocks, "\n\n")
 

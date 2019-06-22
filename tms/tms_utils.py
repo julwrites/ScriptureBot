@@ -4,7 +4,7 @@
 import random
 
 # Local modules
-from common import debug, text_utils
+from common.utils import debug_utils, text_utils
 from common.telegram import telegram_utils
 
 from tms import tms_data
@@ -116,7 +116,7 @@ def query_pack_by_alias(query):
 
 def query_verse_by_pack_pos(query):
     if text_utils.is_valid(query):
-        debug.log("Attempting to get by position: {}", [query])
+        debug_utils.log("Attempting to get by position: {}", [query])
         queryNum = text_utils.strip_alpha(query)
         queryText = text_utils.strip_numbers(query)
 
@@ -137,7 +137,7 @@ def query_verse_by_pack_pos(query):
 
 def query_verse_by_reference(query):
     if text_utils.is_valid(query):
-        debug.log("Attempting to get by reference {}", [query])
+        debug_utils.log("Attempting to get by reference {}", [query])
 
         for packKey in get_all_pack_keys():
             selectPack = get_pack(packKey)
@@ -153,7 +153,7 @@ def query_verse_by_reference(query):
 
 def query_verse_by_topic(query):
     if text_utils.is_valid(query):
-        debug.log("Attempting to get by topic {}", [query])
+        debug_utils.log("Attempting to get by topic {}", [query])
         query = text_utils.strip_numbers(query)
         shortlist = []
 
@@ -169,7 +169,7 @@ def query_verse_by_topic(query):
                     break
 
             if not addPack:
-                debug.log("Check verses for related topics")
+                debug_utils.log("Check verses for related topics")
                 for verse in pack:
 
                     if text_utils.fuzzy_compare(query, verse.get_title()):

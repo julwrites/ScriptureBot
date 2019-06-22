@@ -3,7 +3,8 @@
 import random
 
 # Local Modules
-from common import chrono, text_utils, debug, database
+from common import database, chrono
+from common.utils import text_utils, debug_utils
 
 
 class BibleUser(database.Item):

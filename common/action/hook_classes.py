@@ -1,7 +1,7 @@
 # coding=utf-8
 
 # Local modules
-from common import debug
+from common.utils import debug_utils
 from common.action import action_classes
 
 from user import user_utils
@@ -15,11 +15,11 @@ class Hook():
         try:
             if userObj is not None:
                 if self.match(userObj):
-                    debug.log_hook(self.identifier())
+                    debug_utils.log_hook(self.identifier())
                     self.resolve(userObj)
         except Exception as e:
-            debug.log("Hook failed! {}", [self.identifier()])
-            debug.err(e)
+            debug_utils.log("Hook failed! {}", [self.identifier()])
+            debug_utils.err(e)
 
     def dispatch(self):
         user_utils.for_each_user(self.try_execute)
@@ -28,7 +28,7 @@ class Hook():
     def match(self, userObj):
         subs = userObj.get_subscription()
         if subs.find(self.identifier()) != -1:
-            debug.log("Matched with {}", [self.identifier()])
+            debug_utils.log("Matched with {}", [self.identifier()])
             return True
         return False
 

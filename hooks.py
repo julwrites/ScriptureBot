@@ -5,9 +5,9 @@ import webapp2
 import json
 
 # Local modules
-from common import debug
+from .common import debug_utils
 
-import modules
+from . import modules
 
 APP_HOOKS_URL = "/hooks"
 APP_DAILY_HOOKS_URL = APP_HOOKS_URL + "/daily"

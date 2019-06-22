@@ -1,7 +1,7 @@
 # coding=utf-8
 
 # Local modules
-from common import debug
+from common.utils import debug
 from common.telegram import telegram_utils
 from common.action import hook_classes
 
@@ -22,7 +22,7 @@ class McheyneDailyHook(hook_classes.Hook):
         return "M'cheyne Bible Reading Plan (1 Year)"
 
     def resolve(self, userObj):
-        debug.log("Resolving MCheyne hook")
+        debug_utils.log("Resolving MCheyne hook")
 
         refs = mcheyne_utils.get_mcheyne()
 

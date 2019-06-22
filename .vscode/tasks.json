@@ -4,7 +4,23 @@
     "version": "2.0.0",
     "tasks": [
         {
-            "label": "run_test",
+            "label": "install",
+            "type": "process",
+            "command": "python",
+            "args": [
+                "-m",
+                "pip",
+                "install",
+                "-r",
+                "requirements.txt"
+            ],
+            "group": {
+                "kind": "build",
+                "isDefault": true
+            }
+        },
+        {
+            "label": "test",
             "type": "process",
             "command": "python",
             "args": [
@@ -12,9 +28,7 @@
                 "unittest",
                 "discover",
                 "-s",
-                "tests",
-                "-p",
-                "*_test.py"
+                "tests"
             ],
             "group": {
                 "kind": "test",

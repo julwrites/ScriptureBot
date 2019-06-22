@@ -4,7 +4,7 @@
 import json
 
 # Local modules
-from common import debug, text_utils
+from common.utils import debug_utils, text_utils
 
 
 # Defines an interface for all functionality that can be executed by the bot
@@ -13,7 +13,7 @@ class Action():
     def waiting(self, userObj):
         if userObj is not None:
             if userObj.get_state() == self.identifier():
-                debug.log("Waiting for {}", [self.identifier()])
+                debug_utils.log("Waiting for {}", [self.identifier()])
                 return True
         return False
 
@@ -25,7 +25,7 @@ class Action():
         if msg is not None:
             msgText = msg.get("text").strip()
             if text_utils.overlap_compare(msgText, self.identifier()):
-                debug.log("Matched with {}", [self.identifier()])
+                debug_utils.log("Matched with {}", [self.identifier()])
                 return True
         return False
 
@@ -33,7 +33,7 @@ class Action():
         if msg is not None:
             msgText = msg.get("text").strip()
             if text_utils.text_compare(msgText, self.name()):
-                debug.log("Matched with {}", [self.name()])
+                debug_utils.log("Matched with {}", [self.name()])
                 return True
         return False
 
@@ -42,8 +42,9 @@ class Action():
             if self.waiting(userObj) or self.match(msg):
                 return self.resolve(userObj, msg)
         except Exception as e:
-            debug.log("Tried, but failed to execute {}", [self.identifier()])
-            debug.err(e)
+            debug_utils.log("Tried, but failed to execute {}",
+                            [self.identifier()])
+            debug_utils.err(e)
         return False
 
     # To be inherited if this action is to be exposed as a command

@@ -4,13 +4,13 @@
 import json
 
 # Local modules
-from common.utils import debug_utils, text_utils
-from common.action import action_classes
-from common.telegram import telegram_utils
+from .common.utils import debug_utils, text_utils
+from .common.action import action_classes
+from .common.telegram import telegram_utils
 
-from user import user_utils
+from .user import user_utils
 
-import modules
+from . import modules
 
 INTRO_MSG = "Hello {}, I'm Biblica Bot! Give me a Bible reference and I'll give you the passage!"
 COMMAND_MSG = "Here are some other things I can do:"

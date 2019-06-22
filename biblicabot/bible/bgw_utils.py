@@ -1,7 +1,7 @@
 # coding=utf-8
 
 # Python modules
-import urllib
+import urllib.request, urllib.parse, urllib.error
 from bs4 import BeautifulSoup
 
 # Local modules
@@ -35,7 +35,7 @@ def fetch_bgw(query, version="NIV"):
     if query is None:
         return None
 
-    formatRef = urllib.quote(query)
+    formatRef = urllib.parse.quote(query)
     formatUrl = BGW_URL.format(formatRef, version)
 
     url, html = html_utils.fetch_html(formatUrl, BGW_PASSAGE_START,

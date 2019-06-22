@@ -1,7 +1,8 @@
 # coding=utf-8
 
 # Local Modules
-from common import debug, text_utils, database
+from common import database
+from common.utils import debug_utils, text_utils
 from user import bibleuser_classes
 
 
@@ -20,7 +21,7 @@ def get_uid(userIdObj):
 
 
 def set_profile(userId, uname, fname, lname):
-    debug.log("Setting profile of {}", [userId])
+    debug_utils.log("Setting profile of {}", [userId])
 
     existingUser = get_user(userId)
 
@@ -29,12 +30,12 @@ def set_profile(userId, uname, fname, lname):
     lname = text_utils.to_string(lname)
 
     if existingUser:
-        debug.log("Updating names... {} {} {}", [uname, fname, lname])
+        debug_utils.log("Updating names... {} {} {}", [uname, fname, lname])
         existingUser.username = uname
         existingUser.firstName = fname
         existingUser.lastName = lname
 
-        debug.log("Updating the user... {} {} {}", [
+        debug_utils.log("Updating the user... {} {} {}", [
             existingUser.username, existingUser.firstName,
             existingUser.lastName
         ])
@@ -42,7 +43,7 @@ def set_profile(userId, uname, fname, lname):
 
         return existingUser
     else:
-        debug.log("New user: {} {} {}", [uname, fname, lname])
+        debug_utils.log("New user: {} {} {}", [uname, fname, lname])
         userObj = bibleuser_classes.BibleUser(
             key_name=text_utils.to_string(userId),
             username=uname,
@@ -57,7 +58,7 @@ def get_user_query():
 
 
 def for_each_user(fn):
-    debug.log("Running {} for each user", [fn])
+    debug_utils.log("Running {} for each user", [fn])
 
     # Read user database
     query = get_user_query()

@@ -1,7 +1,7 @@
 # coding=utf-8
 
 # Local modules
-from common import debug
+from common.utils import debug
 from common.telegram import telegram_utils
 from common.action import hook_classes
 from user import user_utils
@@ -27,7 +27,7 @@ class DailyTMSHook(hook_classes.Hook):
                                                   userObj.get_version())
             verseMsg = tms_utils.format_verse(verse, passage)
 
-            debug.log("Sending verse: {}", [verseMsg])
+            debug_utils.log("Sending verse: {}", [verseMsg])
 
             telegram_utils.send_msg(user=userObj.get_uid(), text=verseMsg)
 

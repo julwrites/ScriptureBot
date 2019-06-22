@@ -4,13 +4,13 @@
 import json
 
 # Local modules
-from common import debug, text_utils
-from common.action import action_classes
-from common.telegram import telegram_utils
+from .common import debug_utils, text_utils
+from .common.action import action_classes
+from .common.telegram import telegram_utils
 
-from user import user_utils
+from .user import user_utils
 
-import modules
+from . import modules
 
 INTRO_MSG = "Hello {}, I'm Biblica Bot! Give me a Bible reference and I'll give you the passage!"
 COMMAND_MSG = "Here are some other things I can do:"
@@ -40,16 +40,16 @@ class StartAction(action_classes.Action):
 
         # This runs to update the user"s info, or register
         if userJson is not None:
-            debug.log("Updating user info")
+            debug_utils.log("Updating user info")
             user_utils.set_profile(
                 userJson.get("id"), userJson.get("username"),
                 userJson.get("first_name"), userJson.get("last_name"))
-            debug.log("Finished updating user info")
+            debug_utils.log("Finished updating user info")
 
         # If this is the user"s first time registering
         if userObj is None:
             userObj = user_utils.get_user(userId)
-            debug.log("Sending user help")
+            debug_utils.log("Sending user help")
 
             HelpAction().resolve(userObj, msg)
 

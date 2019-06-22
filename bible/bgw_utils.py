@@ -1,11 +1,12 @@
 # coding=utf-8
 
 # Python modules
-import urllib
+import urllib.request, urllib.parse, urllib.error
 from bs4 import BeautifulSoup
 
 # Local modules
-from common import debug, html_utils, constants, text_utils, web_utils
+from common import constants
+from common.utils import debug_utils, html_utils, text_utils, web_utils
 from common.telegram import telegram_utils
 
 from bible import bgw_classes
@@ -27,14 +28,14 @@ PASSAGE = "passage"
 
 
 def fetch_bgw(query, version="NIV"):
-    debug.log("Querying for {}", [query])
+    debug_utils.log("Querying for {}", [query])
 
     query = query.lower().strip()
 
     if query is None:
         return None
 
-    formatRef = urllib.quote(query)
+    formatRef = urllib.parse.quote(query)
     formatUrl = BGW_URL.format(formatRef, version)
 
     url, html = html_utils.fetch_html(formatUrl, BGW_PASSAGE_START,
@@ -49,7 +50,7 @@ def fetch_bgw(query, version="NIV"):
 
 
 def find_reference(ref):
-    debug.log("Parsing reference {}", [ref])
+    debug_utils.log("Parsing reference {}", [ref])
 
     parts = ref.split(" ")
     book = text_utils.find_alpha(parts)
@@ -63,13 +64,13 @@ def find_reference(ref):
         if (i == book) or not (parts[i].isalpha())
     ]
 
-    debug.log("Reference parts: {}", [parts])
+    debug_utils.log("Reference parts: {}", [parts])
 
     return "".join(parts)
 
 
 def get_passage_raw(ref, version="NIV"):
-    debug.log("Querying for passage {}", [ref])
+    debug_utils.log("Querying for passage {}", [ref])
 
     ref = find_reference(ref)
 
@@ -103,12 +104,12 @@ def get_passage_raw(ref, version="NIV"):
 
     blocks = []
     for tag in soup(class_=BGW_PASSAGE_SELECT):
-        debug.log("Joining {}", [tag.text])
+        debug_utils.log("Joining {}", [tag.text])
         blocks.append(tag.text)
 
     text = telegram_utils.join(blocks, "\n\n")
 
-    debug.log("Finished parsing soup")
+    debug_utils.log("Finished parsing soup")
 
     return bgw_classes.BGWPassage(reference, version, text)
 
@@ -127,7 +128,7 @@ def get_passage(ref, version="NIV"):
 
 
 def get_reference(query):
-    debug.log("Querying for reference {}", [query])
+    debug_utils.log("Querying for reference {}", [query])
 
     soup = fetch_bgw(query)
     if soup is None:
@@ -140,7 +141,7 @@ def get_reference(query):
 
 
 def get_link(query, version="NIV"):
-    debug.log("Querying for link {}", [query])
+    debug_utils.log("Querying for link {}", [query])
 
     url = BGW_URL.format(query, version)
 

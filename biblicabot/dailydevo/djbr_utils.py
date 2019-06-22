@@ -1,6 +1,6 @@
 # coding=utf-8
 
-import djbr_data
+from . import djbr_data
 import datetime
 
 # Local modules

@@ -5,12 +5,12 @@ import webapp2
 import json
 
 # Local modules
-from common import debug, text_utils
-from common.telegram import telegram_utils
-from common.action import action_utils
-from user import user_utils
+from .common import debug_utils, text_utils
+from .common.telegram import telegram_utils
+from .common.action import action_utils
+from .user import user_utils
 
-import actions
+from . import actions
 
 from secret import BOT_ID
 APP_BOT_URL = "/" + BOT_ID
@@ -22,7 +22,7 @@ class BotHandler(webapp2.RequestHandler):
 
     def post(self):
         data = json.loads(self.request.body)
-        debug.log(data)
+        debug_utils.log(data)
 
         if data.get("message"):
             msg = data.get("message")

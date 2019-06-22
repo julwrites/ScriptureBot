@@ -1,10 +1,11 @@
 # coding=utf-8
 
-import djbr_data
+from . import djbr_data
 import datetime
 
 # Local modules
-from common import debug, html_utils, text_utils, constants
+from common import constants
+from common.utils import debug_utils, html_utils, text_utils
 from common.telegram import telegram_utils
 
 from bible import bible_utils
@@ -22,7 +23,7 @@ def fetch_djbr():
     day = int(date[2])
 
     if day < month_length:
-        passages = data[( month - 1 ) * month_length + ( day - 1 )]
+        passages = data[(month - 1) * month_length + (day - 1)]
 
         return passages
 
@@ -30,7 +31,7 @@ def fetch_djbr():
 
 
 def get_djbr_raw():
-    debug.log("Getting DJBR")
+    debug_utils.log("Getting DJBR")
 
     passages = fetch_djbr()
 

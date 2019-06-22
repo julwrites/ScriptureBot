@@ -4,7 +4,7 @@
 import json
 
 # Local modules
-from common import debug, text_utils, web_utils
+from common.utils import debug_utils, text_utils, web_utils
 from common.telegram import telegram_classes
 
 from secret import BOT_ID
@@ -21,12 +21,12 @@ JSON_HEADER = {"Content-Type": "application/json;charset=utf-8"}
 def send_post(post):
     data = json.dumps(post.data())
 
-    debug.log("Performing send: {}", [data])
+    debug_utils.log("Performing send: {}", [data])
 
     try:
         web_utils.post_http(TELEGRAM_URL_SEND, data, JSON_HEADER)
     except Exception as e:
-        debug.err(e)
+        debug_utils.err(e)
 
 
 def set_intersect(lhs, rhs):
@@ -110,7 +110,7 @@ def fix_sentences(text):
 
 
 def format_msg(msg):
-    debug.log("Formatting message")
+    debug_utils.log("Formatting message")
 
     msg = fix_sentences(msg)
     symbols = find_symbols(msg, ["_", "*"])
@@ -124,7 +124,7 @@ def format_msg(msg):
 
 
 def split_msg(msg):
-    debug.log("Splitting up message if necessary")
+    debug_utils.log("Splitting up message if necessary")
 
     chunks = []
 
@@ -134,7 +134,7 @@ def split_msg(msg):
 
     seps = find_symbols(msg, ["\n"])
 
-    debug.log("Markdown pairs: {}", [md])
+    debug_utils.log("Markdown pairs: {}", [md])
 
     end_pos = 0
 
@@ -153,7 +153,7 @@ def split_msg(msg):
                 break
 
         chunk = msg[curr:end_pos]
-        debug.log("Chunk: {}", [chunk])
+        debug_utils.log("Chunk: {}", [chunk])
         chunks.append(chunk)
 
     chunks.append(msg[end_pos:])
@@ -162,12 +162,12 @@ def split_msg(msg):
 
 
 def send_msg(user, text, args=[]):
-    debug.log("Preparing to send {}: {}", [user, text])
+    debug_utils.log("Preparing to send {}: {}", [user, text])
 
     fmt_msg = format_msg(text)
 
     if len(args) > 0:
-        debug.log("Detected arguments: {}", [args])
+        debug_utils.log("Detected arguments: {}", [args])
         fmt_msg = fmt_msg.format(*[text_utils.to_utf8(arg) for arg in args])
 
     chunks = split_msg(fmt_msg)
@@ -318,21 +318,21 @@ def join(blocks, separator):
 
 # Telegram special symbols
 def tick():
-    return u"\u2714"
+    return "\u2714"
 
 
 def to_sup(text):
     sups = {
-        u"0": u"\u2070",
-        u"1": u"\xb9",
-        u"2": u"\xb2",
-        u"3": u"\xb3",
-        u"4": u"\u2074",
-        u"5": u"\u2075",
-        u"6": u"\u2076",
-        u"7": u"\u2077",
-        u"8": u"\u2078",
-        u"9": u"\u2079",
-        u"-": u"\u207b"
+        "0": "\u2070",
+        "1": "\xb9",
+        "2": "\xb2",
+        "3": "\xb3",
+        "4": "\u2074",
+        "5": "\u2075",
+        "6": "\u2076",
+        "7": "\u2077",
+        "8": "\u2078",
+        "9": "\u2079",
+        "-": "\u207b"
     }
     return "".join(sups.get(char, char) for char in text)

@@ -1,11 +1,12 @@
 # coding=utf-8
 
 # Python modules
-import urllib
+import urllib.request, urllib.parse, urllib.error
 from bs4 import BeautifulSoup
 
 # Local modules
-from common import debug, html_utils, text_utils, constants
+from common import constants
+from common.utils import debug_utils, html_utils, text_utils
 from common.telegram import telegram_utils
 
 from bible import bible_utils
@@ -24,7 +25,7 @@ def fetch_mcheyne():
     if rss is None:
         return None
 
-    debug.log("RSS: {}", [rss])
+    debug_utils.log("RSS: {}", [rss])
 
     soup = html_utils.rss_to_soup(rss)
 
@@ -32,7 +33,7 @@ def fetch_mcheyne():
 
 
 def get_mcheyne_raw():
-    debug.log("Getting MCheyne")
+    debug_utils.log("Getting MCheyne")
 
     soup = fetch_mcheyne()
     if soup is None:

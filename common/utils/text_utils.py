@@ -7,7 +7,7 @@ import re
 
 def to_string(value):
     try:
-        value = unicode(value)
+        value = str(value)
     except UnicodeError:
         pass
 
