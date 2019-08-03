@@ -7,4 +7,4 @@
 Flask
 beautifulsoup4
 lxml
-google-cloud-logging
+google-cloud-datastore==1.7.3
