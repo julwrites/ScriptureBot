@@ -21,13 +21,11 @@ app = Flask(__name__)
 
 @app.route(APP_BOT_URL, methods=["GET", "POST"])
 def main():
-    logging.warn("I warn you ah")
-
-    debug_utils.log("HEADERS", [request.headers])
-    debug_utils.log("REQ_path", [request.path])
-    debug_utils.log("ARGS", [request.args])
-    debug_utils.log("DATA", [request.data])
-    debug_utils.log("FORM", [request.form])
+    logging.debug("HEADERS", [request.headers])
+    logging.debug("REQ_path", [request.path])
+    logging.debug("ARGS", [request.args])
+    logging.debug("DATA", [request.data])
+    logging.debug("FORM", [request.form])
 
     data = request.get_json()
     debug_utils.log(data)
@@ -45,7 +43,7 @@ def main():
         telegram_utils.send_msg(
             user=msg.get("from").get("id"), text="Hello, I am bot")
 
-    return '', 400
+    return ''
 
 
 if __name__ == '__main__':
