@@ -13,6 +13,6 @@ handlers:
 - url: /.*
   script: auto
 - url: /hooks/.*
-  script: hooks.app
+  script: auto
 - url: /.*
-  script: bot.app
+  script: auto
