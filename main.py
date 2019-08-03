@@ -1,7 +1,7 @@
 # coding=utf-8
 
 # Python std modules
-import webapp2
+from flask import Flask, escape, request
 import json
 
 # Local modules
@@ -15,30 +15,27 @@ from . import actions
 from secret import BOT_ID
 APP_BOT_URL = "/" + BOT_ID
 
-
-class BotHandler(webapp2.RequestHandler):
-    def get(self):
-        self.post()
-
-    def post(self):
-        data = json.loads(self.request.body)
-        debug_utils.log(data)
-
-        if data.get("message"):
-            msg = data.get("message")
-
-            # Read the user to echo back
-            userId = user_utils.get_uid(msg.get("from").get("id"))
-            userObj = user_utils.get_user(userId)
-
-            if action_utils.execute(actions.get(), userObj, msg):
-                return
-
-            telegram_utils.send_msg(
-                user=msg.get("from").get("id"), text="Hello, I am bot")
+app = Flask(__name__)
 
 
-app = webapp2.WSGIApplication(
-    [
-        (APP_BOT_URL, BotHandler),
-    ], debug=True)
+@app.route(APP_BOT_URL, methods=["GET", "POST"])
+def main():
+    data = request.get_json()
+    debug_utils.log(data)
+
+    if data.get("message"):
+        msg = data.get("message")
+
+        # Read the user to echo back
+        userId = user_utils.get_uid(msg.get("from").get("id"))
+        userObj = user_utils.get_user(userId)
+
+        if action_utils.execute(actions.get(), userObj, msg):
+            return
+
+        telegram_utils.send_msg(
+            user=msg.get("from").get("id"), text="Hello, I am bot")
+
+
+if __name__ == '__main__':
+    app.run(debug=True)
