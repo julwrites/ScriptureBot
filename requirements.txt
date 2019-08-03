@@ -7,3 +7,4 @@
 Flask
 beautifulsoup4
 lxml
+firebase-admin
