@@ -24,7 +24,9 @@ def fetch_url(url):
     debug_utils.log("Fetching url: {}", [url])
 
     try:
-        response = urllib.request.urlopen(url)
+        headers = {'User-Agent': user_agent}
+        req = urllib.request.Request(url, None, headers)
+        response = urllib.request.urlopen(req)
         html = response.read()
         url = response.geturl()
     except urllib.error.URLError as e:
