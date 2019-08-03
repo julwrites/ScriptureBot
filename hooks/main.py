@@ -22,6 +22,8 @@ def main():
     for hook in hooks:
         hook.dispatch()
 
+    return ''
+
 
 if __name__ == '__main__':
     app.run(debug=True)

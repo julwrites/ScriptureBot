@@ -31,10 +31,12 @@ def main():
         userObj = user_utils.get_user(userId)
 
         if action_utils.execute(actions.get(), userObj, msg):
-            return
+            return ''
 
         telegram_utils.send_msg(
             user=msg.get("from").get("id"), text="Hello, I am bot")
+
+    return '', 400
 
 
 if __name__ == '__main__':
