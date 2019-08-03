@@ -8,4 +8,3 @@ Flask
 beautifulsoup4
 lxml
 google-cloud-logging
-google-cloud-datastore

@@ -1,16 +1,13 @@
 # coding=utf-8
 
 # Local modules
-from google.cloud import logging
+import logging
 
 from common import chrono
 from common.utils import text_utils
 
 DEBUG_MODE = True
 VERBOSE_MODE = True
-
-client = logging.Client()
-logger = client.logger('BiblicaBot')
 
 
 def debug():
@@ -28,11 +25,15 @@ def toggle():
 def log(msg, args=[]):
     if not debug():
         return
+
+    for handler in logging.getLogger().handlers:
+        handler.setLevel(logging.DEBUG)
+
     if not verbose():
         return
     if len(args) > 0:
         msg = msg.format(*[text_utils.to_utf8(arg) for arg in args])
-    logger.log_text(msg)
+    logging.debug(msg)
 
 
 def err(e):
