@@ -1,5 +1,3 @@
 dispatch: 
 - url: "*/hooks/.*"
   service: hooks
-- url: "*/.*"
-  service: bot
