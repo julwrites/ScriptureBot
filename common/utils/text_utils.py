@@ -17,11 +17,8 @@ def to_string(value):
 def to_utf8(value):
     value = to_string(value)
 
-    try:
-        value.decode("utf-8")
-        return value
-    except UnicodeError:
-        return value.encode("utf-8")
+    # By default Python3 uses utf8 encoding
+    return value
 
 
 def is_valid(s):
