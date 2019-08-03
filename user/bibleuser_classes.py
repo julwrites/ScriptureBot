@@ -8,18 +8,18 @@ from common.utils import text_utils, debug_utils
 
 
 class BibleUser(database.Item):
-    username = database.StringProperty(indexed=True)
-    firstName = database.StringProperty(multiline=True, indexed=True)
-    lastName = database.StringProperty(multiline=True, indexed=True)
-    created = database.DateTimeProperty(indexed=True)
-    lastReceived = database.DateTimeProperty(indexed=True)
-    lastSent = database.DateTimeProperty(indexed=True)
-    lastAuto = database.DateTimeProperty()
-    active = database.BooleanProperty(indexed=True, default=True)
-    state = database.StringProperty(indexed=True)
-    version = database.StringProperty(indexed=True, default="NIV")
-    subscriptions = database.StringListProperty(indexed=True)
-    subscriptionTime = database.DateTimeProperty(indexed=True)
+    # username = database.StringProperty(indexed=True)
+    # firstName = database.StringProperty(multiline=True, indexed=True)
+    # lastName = database.StringProperty(multiline=True, indexed=True)
+    # created = database.DateTimeProperty(indexed=True)
+    # lastReceived = database.DateTimeProperty(indexed=True)
+    # lastSent = database.DateTimeProperty(indexed=True)
+    # lastAuto = database.DateTimeProperty()
+    # active = database.BooleanProperty(indexed=True, default=True)
+    # state = database.StringProperty(indexed=True)
+    # version = database.StringProperty(indexed=True, default="NIV")
+    # subscriptions = database.StringListProperty(indexed=True)
+    # subscriptionTime = database.DateTimeProperty(indexed=True)
 
     def clone(self, obj):
         self.username = obj.username
@@ -75,21 +75,21 @@ class BibleUser(database.Item):
 
     def set_active(self, active):
         self.active = active
-        self.update()
+        self.update({'active': self.active})
 
     def get_state(self):
         return self.state
 
     def set_state(self, state):
         self.state = state
-        self.update()
+        self.update({'state': self.state})
 
     def get_version(self):
         return self.version
 
     def set_version(self, version):
         self.version = version
-        self.update()
+        self.update({'version': self.version})
 
     def get_subscription(self):
         return ",".join(self.subscriptions)
@@ -106,26 +106,23 @@ class BibleUser(database.Item):
             return
 
         self.subscriptions.append(subId)
-        self.update()
+        self.update({'subscriptions': self.subscriptions})
 
     def remove_subscription(self, subId):
         try:
             self.subscriptions.remove(subId)
-            self.update()
+            self.update({'subscriptions': self.subscriptions})
         except:
             return
 
     def update_last_received(self):
         self.lastReceived = chrono.now()
-        self.update()
+        self.update({'lastReceived': self.lastReceived})
 
     def update_last_sent(self):
         self.lastSent = chrono.now()
-        self.update()
+        self.update({'lastSent': self.lastSent})
 
     def update_last_auto(self):
         self.lastAuto = chrono.now()
-        self.update()
-
-    def refresh(self):
-        self.update()
+        self.update({'lastAuto': self.lastAuto})
