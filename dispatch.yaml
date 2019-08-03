@@ -1,0 +1,5 @@
+dispatch: 
+- url: /hooks/.*
+  service: hooks.app
+- url: /.*
+  service: bot.app
