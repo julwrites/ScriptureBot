@@ -1,5 +1,5 @@
 secret.py
 
 **/*.pyc
-__pycache__/
-**.*.bak
+**/__pycache__
+**/*.bak
