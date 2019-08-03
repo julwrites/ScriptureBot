@@ -1,3 +1,5 @@
 dispatch: 
-- url: "*/hooks/.*"
+- url: "*/*"
+  service: default
+- url: "*/hooks/*"
   service: hooks
