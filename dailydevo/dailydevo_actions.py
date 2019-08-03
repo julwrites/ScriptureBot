@@ -6,7 +6,7 @@ import random
 # Local modules
 from dailydevo import dailydevo_modules
 
-from common.utils import text_utils, debug
+from common.utils import text_utils, debug_utils
 from common.action import action_classes
 from common.telegram import telegram_utils
 
