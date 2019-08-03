@@ -9,9 +9,3 @@ handlers:
   script: hooks.app
 - url: /.*
   script: bot.app
-
-libraries:
-- name: webapp2
-  version: "2.5.2"
-- name: lxml
-  version: "2.3"
