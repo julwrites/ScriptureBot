@@ -2,7 +2,7 @@
 
 # Python std modules
 import flask
-from flask import Flask, escape, request
+from flask import Flask, request
 import json
 import logging
 
@@ -22,26 +22,28 @@ app = Flask(__name__)
 
 @app.route(APP_BOT_URL, methods=["POST"])
 def webhook():
-    if flask.request.headers.get('content-type') == 'application/json':
-        data = flask.request.get_data().decode('utf-8')
-    else:
-        flask.abort(400)
-
-    data = request.get_json()
+    logging.warn("Warning start hor")
+    data = request.get_json(force=True)
     debug_utils.log(data)
+    logging.warn("I warn you again ah")
 
     if data.get("message"):
+        logging.warn("Warn you about message")
         msg = data.get("message")
 
         # Read the user to echo back
         userId = user_utils.get_uid(msg.get("from").get("id"))
         userObj = user_utils.get_user(userId)
 
+        logging.warn("User is here, be warned")
         if action_utils.execute(actions.get(), userObj, msg):
             return ''
 
+        logging.warn("Warn you of failure")
         telegram_utils.send_msg(
             user=msg.get("from").get("id"), text="Hello, I am bot")
+
+    logging.warn("Warn you ah, exit is here")
 
     return ''
 
