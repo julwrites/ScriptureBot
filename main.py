@@ -21,11 +21,11 @@ app = Flask(__name__)
 
 @app.route(APP_BOT_URL, methods=["GET", "POST"])
 def main():
-    logging.debug("HEADERS", [request.headers])
-    logging.debug("REQ_path", [request.path])
-    logging.debug("ARGS", [request.args])
-    logging.debug("DATA", [request.data])
-    logging.debug("FORM", [request.form])
+    logging.info("HEADERS", [request.headers])
+    logging.info("REQ_path", [request.path])
+    logging.info("ARGS", [request.args])
+    logging.info("DATA", [request.data])
+    logging.info("FORM", [request.form])
 
     data = request.get_json()
     debug_utils.log(data)
