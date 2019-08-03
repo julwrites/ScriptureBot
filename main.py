@@ -3,6 +3,7 @@
 # Python std modules
 from flask import Flask, escape, request
 import json
+import logging
 
 # Local modules
 from common.utils import debug_utils, text_utils
@@ -20,6 +21,8 @@ app = Flask(__name__)
 
 @app.route(APP_BOT_URL, methods=["GET", "POST"])
 def main():
+    logging.warn("I warn you ah")
+
     debug_utils.log("HEADERS", [request.headers])
     debug_utils.log("REQ_path", [request.path])
     debug_utils.log("ARGS", [request.args])
