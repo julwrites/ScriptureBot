@@ -4,10 +4,12 @@ import firebase_admin
 from firebase_admin import credentials
 from firebase_admin import firestore
 
+from secret import PROJECT_ID
+
 # Use the application default credentials
 cred = credentials.ApplicationDefault()
 firebase_admin.initialize_app(cred, {
-    'projectId': project_id,
+    'projectId': PROJECT_ID,
 })
 
 db = firestore.client()
