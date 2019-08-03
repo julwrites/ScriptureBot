@@ -1,6 +1,7 @@
 # coding=utf-8
 
 # Python std modules
+import flask
 from flask import Flask, escape, request
 import json
 import logging
@@ -19,13 +20,12 @@ APP_BOT_URL = "/" + BOT_ID
 app = Flask(__name__)
 
 
-@app.route(APP_BOT_URL, methods=["GET", "POST"])
-def main():
-    logging.info("HEADERS", [request.headers])
-    logging.info("REQ_path", [request.path])
-    logging.info("ARGS", [request.args])
-    logging.info("DATA", [request.data])
-    logging.info("FORM", [request.form])
+@app.route(APP_BOT_URL, methods=["POST"])
+def webhook():
+    if flask.request.headers.get('content-type') == 'application/json':
+        data = flask.request.get_data().decode('utf-8')
+    else:
+        flask.abort(400)
 
     data = request.get_json()
     debug_utils.log(data)
