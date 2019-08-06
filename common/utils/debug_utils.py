@@ -23,17 +23,17 @@ def toggle():
 
 
 def log(msg, args=[]):
-    if not debug():
-        return
-
-    for handler in logging.getLogger().handlers:
-        handler.setLevel(logging.DEBUG)
+    if debug():
+        logging.getLogger().setLevel(logging.DEBUG)
+    else:
+        logging.getLogger().setLevel(logging.INFO)
 
     if not verbose():
         return
+
     if len(args) > 0:
         msg = msg.format(*[text_utils.to_utf8(arg) for arg in args])
-    logging.debug(msg)
+    logging.getLogger().debug(msg)
 
 
 def err(e):
