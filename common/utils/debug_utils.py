@@ -33,7 +33,7 @@ def log(msg, args=[]):
 
     if len(args) > 0:
         msg = msg.format(*[text_utils.to_utf8(arg) for arg in args])
-    logging.getLogger().debug(msg)
+    logging.getLogger().log(logging.DEBUG if debug() else logging.INFO, msg)
 
 
 def err(e):
