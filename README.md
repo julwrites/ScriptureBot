@@ -31,7 +31,7 @@ e.g. package admin can contain admin_classes, admin_utils, admin_actions, admin_
 Specialized functionality can be implemented within each package however the implementer likes, but external access to the package should be limited to the core files only. This means, for example, that although the admin package may contain other modules, external users should not assume these modules exist. 
 
 ### Code
-We are using Python27 for this version of the framework.
+We are using Go 1.12 for this version of the framework.
 
 Naming Convention:
 * Variables should be named using camelCase.

@@ -1,13 +1,18 @@
-language: python
+language: go
+
+go:
+- 1.12
 
 #Safelist
 branches:
   only: 
+    - develop
     - master
 
-jobs:
-  include:
-    - stage: install
-      script: python -m pip install -r requirements.txt
-    - stage: test
-      script: python -m unittest discover -s tests
+before_install:
+  - go get -v golang.org/x/lint/golint
+  - go get gopkg.in/yaml.v2
+
+script:
+  - ./pre-commit
+  - go test
