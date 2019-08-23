@@ -14,6 +14,8 @@ type Secrets struct {
 	TELEGRAM_ID string
 
 	ADMIN_ID string
+
+	PROJECT_ID string
 }
 
 func botHandler(res http.ResponseWriter, req *http.Request) {
