@@ -1,5 +1,6 @@
 package main
 
+// Translator methods
 import (
 	"gopkg.in/yaml.v2"
 
@@ -18,7 +19,7 @@ type Secrets struct {
 	PROJECT_ID string
 }
 
-func botHandler(res http.ResponseWriter, req *http.Request) {
+func TranslateToProps(req *http.Request) bool {
 	data, err := ioutil.ReadFile("secrets.yaml")
 	if err != nil {
 		log.Fatalf("Error reading secrets: %v", err)
@@ -33,9 +34,17 @@ func botHandler(res http.ResponseWriter, req *http.Request) {
 
 	if req.URL.Path == ("/" + env.TELEGRAM_ID) {
 		log.Printf("Telegram message")
-		return
+		return true
 	}
-	log.Printf("This message was not handled")
+
+	return false
+}
+
+// Bot methods
+func botHandler(res http.ResponseWriter, req *http.Request) {
+	if !TranslateToProps(req) {
+		log.Printf("This message was not handled")
+	}
 }
 
 func main() {
