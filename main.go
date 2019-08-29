@@ -19,7 +19,7 @@ type Secrets struct {
 	PROJECT_ID string
 }
 
-func TranslateToProps(req *http.Request) bool {
+func TranslateToProps(req *http.Request, props *map[string]string) bool {
 	data, err := ioutil.ReadFile("secrets.yaml")
 	if err != nil {
 		log.Fatalf("Error reading secrets: %v", err)
@@ -40,10 +40,31 @@ func TranslateToProps(req *http.Request) bool {
 	return false
 }
 
+func TranslateToHttp(props *map[string]string) bool {
+	return false
+}
+
 // Bot methods
+func HandleBotLogic(props *map[string]string) bool {
+	return false
+}
+
 func botHandler(res http.ResponseWriter, req *http.Request) {
-	if !TranslateToProps(req) {
-		log.Printf("This message was not handled")
+	props := map[string]string{}
+
+	if !TranslateToProps(req, &props) {
+		log.Printf("This message was not translatable to bot language")
+		return
+	}
+
+	if !HandleBotLogic(&props) {
+		log.Printf("This message was not handled by bot")
+		return
+	}
+
+	if !TranslateToHttp(&props) {
+		log.Printf("This message was not translatable from bot language")
+		return
 	}
 }
 
