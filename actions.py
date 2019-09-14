@@ -12,7 +12,7 @@ from user import user_utils
 
 import modules
 
-INTRO_MSG = "Hello {}, I'm Biblica Bot! Give me a Bible reference and I'll give you the passage!"
+INTRO_MSG = "Hello {}, I'm Scripture Bot! Give me a Bible reference and I'll give you the passage!"
 COMMAND_MSG = "Here are some other things I can do:"
 COMMAND_LIST = "\n".join([(action.identifier() + " - " + action.description())
                           for action in modules.get_actions()

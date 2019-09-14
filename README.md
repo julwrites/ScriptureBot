@@ -1,4 +1,4 @@
-## Biblica Bot
+## Scripture Bot
 
 ![status: active](https://img.shields.io/badge/status-active-green.svg)
 
@@ -15,7 +15,7 @@ feedback on this repo.
 See [LICENSE](LICENSE)
 
 ## Author
-Hi, I'm [Julwrites](http://www.tehj.org)
+Hi, I'm [Julwrites](http://www.tehj.io)
 
 ## Code Guidelines
 
