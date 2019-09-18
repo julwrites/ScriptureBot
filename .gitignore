@@ -1,4 +1,5 @@
 secret.py
+lib
 
 **/*.pyc
 __pycache__/
