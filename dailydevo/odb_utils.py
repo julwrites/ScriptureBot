@@ -6,7 +6,7 @@ import datetime
 from bs4 import BeautifulSoup
 
 # Local Modules
-from common import debug, html_utils, text_utils
+from common import debug, html_utils, text_utils, web_utils
 from common.telegram import telegram_utils
 from bible import bible_utils
 
