@@ -32,7 +32,7 @@ def fetch_odb():
     month = "0" + month if len(month) < 2 else month
     day = text_utils.to_string(now.day)
     day = "0" + day if len(day) < 2 else day
-    formatUrl = formatUrl + "/" + year + "/" + month + "/" + day
+    formatUrl = formatUrl + "/" + year + "/" + month + "/" + day + "/"
 
     url, html = html_utils.fetch_html(formatUrl, ODB_START, ODB_END)
     if html is None:
