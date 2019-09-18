@@ -2,6 +2,7 @@
 
 # Python modules
 import urllib
+import datetime
 from bs4 import BeautifulSoup
 
 # Local Modules
@@ -17,13 +18,18 @@ ODB_START = "<article"
 ODB_END = "</article>"
 
 # Which class to isolate?
-ODB_VERSE = "verse-box"
-ODB_SCRIPTURE_LINK = "scripture-link"
-ODB_PASSAGE = "post-content"
+ODB_VERSE = "verseArea"
+ODB_SCRIPTURE_LINK = "devo-scriptureinsight"
+ODB_PASSAGE = "content"
 
 
 def fetch_odb():
     formatUrl = ODB_URL
+
+    now = datetime.datetime.now()
+    formatUrl = formatUrl + "/" + text_utils.to_string(
+        now.year) + "/" + text_utils.to_string(
+            now.month) + "/" + text_utils.to_string(now.day)
 
     url, html = html_utils.fetch_html(formatUrl, ODB_START, ODB_END)
     if html is None:
@@ -46,10 +52,13 @@ def get_odb_raw(version="NIV"):
 
     blocks = []
     for tag in soup(class_=ODB_VERSE):
-        for link in tag(class_=ODB_SCRIPTURE_LINK):
-            if text_utils.is_valid(link.text):
-                passage = bible_utils.get_passage(link.text)
-                blocks.append(passage)
+        for p in tag.select(html_utils.html_p_tag()):
+            blocks.append(text_utils.strip_whitespace(p.text))
+
+    for link in tag(class_=ODB_SCRIPTURE_LINK):
+        if text_utils.is_valid(link.text):
+            passage = bible_utils.get_passage(link.text)
+            blocks.append(passage)
 
     blocks.append("---")
 
