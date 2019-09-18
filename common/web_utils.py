@@ -35,8 +35,9 @@ def fetch_url(url):
 
     try:
         req = urllib2.Request(url, headers=hdr)
-        html = urllib2.urlopen(req)
-        url = html.geturl()
+        res = urllib2.urlopen(req)
+        html = res.read()
+        url = res.geturl()
     except urllib2.URLError as e:
         debug.err(e)
         raise
