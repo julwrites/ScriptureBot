@@ -38,7 +38,6 @@ class BotHandler(webapp2.RequestHandler):
                 user=msg.get("from").get("id"), text="Hello, I am bot")
 
 
-app = webapp2.WSGIApplication(
-    [
-        (APP_BOT_URL, BotHandler),
-    ], debug=True)
+app = webapp2.WSGIApplication([
+    (APP_BOT_URL, BotHandler),
+], debug=True)
