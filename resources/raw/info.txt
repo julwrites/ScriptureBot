@@ -1,0 +1,14 @@
+
+Hope you enjoy your new logo, here are the people that
+made your beautiful logo happen :)
+font name: Courgette-Regular
+font link: https://fonts.google.com/specimen/Courgette
+font author: Karolina Lach
+font author site: http://karolinalach.com/
+
+
+icon designer: Dan Hetteix
+icon designer link: /DHETTEIX
+        
+{"bg-gradient-0":"#894B48","bg-gradient-1":"#D59F89","icon":"#ffffff","font":"#ffffff","slogan":"#ffffff"}
+      
