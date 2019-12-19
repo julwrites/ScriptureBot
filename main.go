@@ -10,7 +10,7 @@ func HandleBotLogic(props *SessionData) bool {
 	return false
 }
 
-func telegramHandler(res http.ResponseWriter, req *http.Request, secrets *SecretsData) {
+func TelegramHandler(res http.ResponseWriter, req *http.Request, secrets *SecretsData) {
 	env := SessionData{}
 
 	log.Printf("Loading session data...")
