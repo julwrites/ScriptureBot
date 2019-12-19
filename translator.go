@@ -1,4 +1,4 @@
-package ScriptureBot
+package scripturebot
 
 import (
 	"log"
