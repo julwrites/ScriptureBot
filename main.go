@@ -3,6 +3,8 @@ package scripturebot
 import (
 	"log"
 	"net/http"
+
+	botsecrets "github.com/julwrites/BotSecrets"
 )
 
 // Bot methods
@@ -10,7 +12,7 @@ func HandleBotLogic(props *SessionData) bool {
 	return false
 }
 
-func TelegramHandler(res http.ResponseWriter, req *http.Request, secrets *SecretsData) {
+func TelegramHandler(res http.ResponseWriter, req *http.Request, secrets *botsecrets.SecretsData) {
 	env := SessionData{}
 
 	log.Printf("Loading session data...")
