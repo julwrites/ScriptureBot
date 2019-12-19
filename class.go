@@ -1,4 +1,4 @@
-package bot
+package ScriptureBot
 
 // Struct definitions for bot
 

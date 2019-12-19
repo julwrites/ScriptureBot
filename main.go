@@ -1,4 +1,4 @@
-package main
+package ScriptureBot
 
 // Translator methods
 import (
@@ -9,7 +9,7 @@ import (
 )
 
 func main() {
-	http.HandleFunc("/", bot.botHandler)
+	http.HandleFunc("/", botHandler)
 
 	port := os.Getenv("PORT")
 	if port == "" {
