@@ -1,7 +1,7 @@
 package scripturebot
 
 type TelegramSender struct {
-	Id        string `json:"id"`
+	Id        int    `json:"id"`
 	Bot       bool   `json:"is_bot"`
 	Firstname string `json:"first_name"`
 	Lastname  string `json:"last_name"`
@@ -10,7 +10,7 @@ type TelegramSender struct {
 }
 
 type TelegramChat struct {
-	Id        string `json:"id"`
+	Id        int    `json:"id"`
 	Firstname string `json:"first_name"`
 	Lastname  string `json:"last_name"`
 	Username  string `json:"username"`

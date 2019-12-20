@@ -5,6 +5,7 @@ import (
 	"io/ioutil"
 	"log"
 	"net/http"
+	"strconv"
 	"strings"
 )
 
@@ -30,7 +31,7 @@ func TranslateToProps(req *http.Request, env *SessionData) bool {
 		env.Props.User.Firstname = data.Message.Sender.Firstname
 		env.Props.User.Lastname = data.Message.Sender.Lastname
 		env.Props.User.Username = data.Message.Sender.Username
-		env.Props.User.Id = data.Message.Sender.Id
+		env.Props.User.Id = strconv.Itoa(data.Message.Sender.Id)
 
 		log.Printf("User: %s %s | %s : %s", env.Props.User.Firstname, env.Props.User.Lastname, env.Props.User.Username, env.Props.User.Id)
 
