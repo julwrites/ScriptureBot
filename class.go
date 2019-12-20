@@ -4,12 +4,19 @@ import botsecrets "github.com/julwrites/BotSecrets"
 
 // Struct definitions for bot
 
+type UserConfig struct {
+	Version       string
+	Timezone      string
+	Subscriptions string
+}
+
 type UserData struct {
 	Firstname string
 	Lastname  string
 	Username  string
 	Id        string
-	Options   string
+	Type      string
+	Config    UserConfig
 }
 
 type MessageData struct {
