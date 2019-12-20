@@ -45,7 +45,7 @@ func UpdateUser(user *UserData, env *SessionData) bool {
 
 	key := datastore.NameKey("User", user.Id, nil)
 
-	_, err := client.Put(ctx, key, &user)
+	_, err := client.Put(ctx, key, user)
 
 	if err != nil {
 		log.Fatalf("Failed to put to datastore: %v", err)
