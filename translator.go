@@ -65,12 +65,17 @@ func TranslateToProps(req *http.Request, env *SessionData) bool {
 	}
 	log.Printf("Request body: %s", strings.ReplaceAll(string(reqBody), "\n", ""))
 
+	translated := false
+
 	switch env.Type {
 	case TYPE_TELEGRAM:
-		return TranslateTelegram(reqBody, env)
+		translated = TranslateTelegram(reqBody, env)
 	}
 
-	CompareAndUpdateUser(env)
+	if translated {
+		CompareAndUpdateUser(env)
+		return translated
+	}
 
 	return false
 }
