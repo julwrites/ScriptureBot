@@ -34,6 +34,8 @@ func QueryUser(env *SessionData) UserData {
 		return user
 	}
 
+	log.Printf("Found user %s", user.Username)
+
 	return user
 }
 
