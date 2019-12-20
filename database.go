@@ -7,12 +7,10 @@ import (
 	"cloud.google.com/go/datastore"
 )
 
-func OpenClient(env *SessionData) *datastore.Client {
-	ctx := context.Background()
-
+func OpenClient(ctx *context.Context, env *SessionData) *datastore.Client {
 	projectId := env.Secrets.PROJECT_ID
 
-	client, err := datastore.NewClient(ctx, projectId)
+	client, err := datastore.NewClient(*ctx, projectId)
 	if err != nil {
 		log.Fatalf("Failed to create Datastore client: %v", err)
 		return nil
@@ -22,7 +20,8 @@ func OpenClient(env *SessionData) *datastore.Client {
 }
 
 func QueryUser(env *SessionData) UserData {
-	client := OpenClient(env)
+	ctx := context.Background()
+	client := OpenClient(&ctx, env)
 
 	key := datastore.NameKey("User", env.Props.User.Id, nil)
 
@@ -39,7 +38,8 @@ func QueryUser(env *SessionData) UserData {
 }
 
 func UpdateUser(user *UserData, env *SessionData) bool {
-	client := OpenClient(env)
+	ctx := context.Background()
+	client := OpenClient(&ctx, env)
 
 	key := datastore.NameKey("User", user.Id, nil)
 

@@ -15,7 +15,7 @@ import (
 // consistent format, and to translate that format back into a HTTP payload
 // for posting
 
-func TranslateTelegram(body *string, env *SessionData) bool {
+func TranslateTelegram(body []byte, env *SessionData) bool {
 	log.Printf("Parsing Telegram message")
 
 	var data TelegramRequest
