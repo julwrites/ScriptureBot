@@ -7,7 +7,7 @@ import (
 	"cloud.google.com/go/datastore"
 )
 
-func OpenClient(env *SessionData) *Client {
+func OpenClient(env *SessionData) *datastore.Client {
 	ctx := context.Background()
 
 	projectId := env.Secrets.PROJECT_ID

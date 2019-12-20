@@ -7,6 +7,8 @@ import (
 	"net/http"
 	"strconv"
 	"strings"
+
+	"github.com/google/go-cmp/cmp"
 )
 
 // Translator component to handle translation of a HTTP payload into a
@@ -17,7 +19,7 @@ func TranslateTelegram(body *string, env *SessionData) bool {
 	log.Printf("Parsing Telegram message")
 
 	var data TelegramRequest
-	err := json.Unmarshal(reqBody, &data)
+	err := json.Unmarshal(body, &data)
 	if err != nil {
 		log.Fatalf("Failed to unmarshal request body: %v", err)
 		return false
