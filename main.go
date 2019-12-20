@@ -14,11 +14,11 @@ func HandleBotLogic(props *SessionData) bool {
 
 func TelegramHandler(res http.ResponseWriter, req *http.Request, secrets *botsecrets.SecretsData) {
 	env := SessionData{}
-
 	log.Printf("Loading session data...")
 
-	env.Secrets = *secrets
+	env.Type = TYPE_TELEGRAM
 
+	env.Secrets = *secrets
 	log.Printf("\tLoaded secrets...")
 
 	if !TranslateToProps(req, &env) {

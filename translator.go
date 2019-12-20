@@ -1,6 +1,7 @@
 package scripturebot
 
 import (
+	"io/ioutil"
 	"log"
 	"net/http"
 )
@@ -10,8 +11,17 @@ import (
 // for posting
 
 func TranslateToProps(req *http.Request, env *SessionData) bool {
-	if req.URL.Path == ("/" + env.Secrets.TELEGRAM_ID) {
-		log.Printf("Telegram message")
+	reqBody, err := ioutil.ReadAll(req.Body)
+	if err != nil {
+		log.Fatalf("Error occurred reading http request: %s", err)
+		return false
+	}
+	log.Printf("Request body: %s", reqBody)
+
+	switch env.Type {
+	case TYPE_TELEGRAM:
+		log.Printf("Parsing Telegram message")
+
 		return true
 	}
 
