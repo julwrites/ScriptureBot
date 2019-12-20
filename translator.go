@@ -51,7 +51,7 @@ func CompareAndUpdateUser(env *SessionData) {
 	if !cmp.Equal(storedUser, env.Props.User) {
 		env.Props.User.Config = storedUser.Config
 
-		UpdateUser(env.Props.User, env)
+		UpdateUser(&env.Props.User, env)
 	}
 }
 
