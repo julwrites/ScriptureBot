@@ -18,7 +18,7 @@ func TranslateToProps(req *http.Request, env *SessionData) bool {
 		log.Fatalf("Error occurred reading http request: %s", err)
 		return false
 	}
-	log.Printf("Request body: %s", reqBody)
+	log.Printf("Request body: %s", strings.ReplaceAll(string(reqBody), "\n", ""))
 
 	switch env.Type {
 	case TYPE_TELEGRAM:
