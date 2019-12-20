@@ -16,7 +16,7 @@ type UserData struct {
 	Username  string
 	Id        string
 	Type      string
-	Config    UserConfig
+	Config    UserConfig `datastore:",flatten"`
 }
 
 type MessageData struct {
