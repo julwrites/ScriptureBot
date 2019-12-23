@@ -23,7 +23,7 @@ func QueryUser(env *SessionData) UserData {
 	ctx := context.Background()
 	client := OpenClient(&ctx, env)
 
-	key := datastore.NameKey("User", env.Props.User.Id, nil)
+	key := datastore.NameKey("User", env.User.Id, nil)
 
 	var user UserData
 

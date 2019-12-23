@@ -20,13 +20,19 @@ type UserData struct {
 }
 
 type MessageData struct {
-	User    UserData
 	Command string
 	Message string
+}
+
+type ResponseData struct {
+	Message string
+	Options string
 }
 
 type SessionData struct {
 	Secrets botsecrets.SecretsData
 	Type    string
-	Props   MessageData
+	User    UserData
+	Msg     MessageData
+	Res     ResponseData
 }
