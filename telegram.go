@@ -115,7 +115,7 @@ func TelegramTranslate(body []byte, env *SessionData) bool {
 	return true
 }
 
-func TranslateTelegram(env *SessionData) bool {
+func PostTelegram(env *SessionData) bool {
 	endpoint := "https://api.telegram.org/bot" + env.Secrets.TELEGRAM_ID + "/sendMessage"
 	header := "application/json;charset=utf-8"
 

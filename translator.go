@@ -48,6 +48,11 @@ func TranslateToProps(req *http.Request, env *SessionData) bool {
 	return false
 }
 
-func TranslateToHttp(props *SessionData) bool {
+func PostFromProps(env *SessionData) bool {
+	switch env.Type {
+	case TYPE_TELEGRAM:
+		return PostTelegram(env)
+	}
+
 	return false
 }

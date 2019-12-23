@@ -7,11 +7,6 @@ import (
 	botsecrets "github.com/julwrites/BotSecrets"
 )
 
-// Bot methods
-func HandleBotLogic(props *SessionData) bool {
-	return false
-}
-
 func TelegramHandler(res http.ResponseWriter, req *http.Request, secrets *botsecrets.SecretsData) {
 	env := SessionData{}
 	log.Printf("Loading session data...")
@@ -33,7 +28,7 @@ func TelegramHandler(res http.ResponseWriter, req *http.Request, secrets *botsec
 		return
 	}
 
-	if !TranslateToHttp(&env) {
+	if !PostFromProps(&env) {
 		log.Printf("This message was not translatable from bot language")
 		return
 	}
