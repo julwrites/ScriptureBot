@@ -2,6 +2,7 @@ package scripturebot
 
 import (
 	"fmt"
+	"io/ioutil"
 	"log"
 	"net/http"
 )
@@ -14,7 +15,9 @@ func GetReference(ref string, env *SessionData) string {
 		log.Fatalf("Error getting reference: %v", err)
 	}
 
-	log.Printf("Got reference response: %s", res.Body)
+	body, err := ioutil.ReadAll(res.Body)
+
+	log.Printf("Got reference response: %s", string(body))
 
 	return ""
 }
