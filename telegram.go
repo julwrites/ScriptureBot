@@ -103,7 +103,7 @@ func TelegramTranslate(body []byte, env *SessionData) bool {
 
 	tokens := strings.Split(data.Message.Text, " ")
 	if strings.Index(tokens[0], "/") == 0 {
-		env.Msg.Command = tokens[0]
+		env.Msg.Command = string((tokens[0])[1:])
 	}
 	env.Msg.Message = strings.Replace(data.Message.Text, env.Msg.Command, "", 1)
 	env.Msg.Id = strconv.Itoa(data.Message.Id)
