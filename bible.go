@@ -1,25 +1,26 @@
 package scripturebot
 
 import (
-	"fmt"
-	"io/ioutil"
 	"log"
-	"net/http"
+	"net/url"
 )
 
-var url string = "http://www.biblegateway.com/passage/?search=%s&version=%sinterface=print"
+var formatQuery string = "http://www.biblegateway.com/passage/?search=%s&version=%sinterface=print"
 
 func GetReference(ref string, env *SessionData) string {
-	res, err := http.Get(fmt.Sprintf(url, ref, env.User.Config.Version))
-	if err != nil {
-		log.Fatalf("Error getting reference: %v", err)
+	query := formatQuery.Sprintf(url, ref, env.User.Config.Version)
+	query = url.QueryEscape(query)
+
+	doc := Get(query)
+
+	if doc == nil {
+		log.Fatalf("Error getting reference")
+		return ""
 	}
 
-	body, err := ioutil.ReadAll(res.Body)
+	ref := Filter(doc, "passage-display-bcv")
 
-	log.Printf("Got reference response: %s", string(body))
-
-	return ""
+	return ref.Data
 }
 
 func GetPassage(ref string, env *SessionData) string {
