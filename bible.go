@@ -11,7 +11,7 @@ import (
 	bmul "github.com/julwrites/BotMultiplexer"
 )
 
-var passageQuery string = "http://www.biblegateway.com/passage/?search=%s&version=%s"
+var passageQuery string = "https://www.biblegateway.com/passage/?search=%s&version=%s"
 
 func GetReference(ref string, env *bmul.SessionData) string {
 	query := fmt.Sprintf(passageQuery, ref, GetUserConfig(&env.User).Version)
