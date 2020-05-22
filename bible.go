@@ -11,12 +11,12 @@ import (
 	bmul "github.com/julwrites/BotMultiplexer"
 )
 
-var passageQuery string = "https://www.biblegateway.com/passage/?search=%s&version=%s"
+var passageQuery string = "www.biblegateway.com/passage/?search=%s&version=%s"
 
 func GetReference(ref string, env *bmul.SessionData) string {
 	query := fmt.Sprintf(passageQuery, ref, GetUserConfig(&env.User).Version)
 
-	log.Printf("Do Query %s", query)
+	log.Printf("Query String: %s", query)
 
 	doc := GetHtml(query)
 
