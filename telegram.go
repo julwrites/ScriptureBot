@@ -29,8 +29,6 @@ func TelegramHandler(res http.ResponseWriter, req *http.Request, secrets *botsec
 
 	CompareAndUpdateUser(&env)
 
-	log.Printf("\tLoaded message...")
-
 	if !HandleBotLogic(&env) {
 		log.Printf("This message was not handled by bot")
 		return
