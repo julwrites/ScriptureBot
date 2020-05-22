@@ -1,7 +1,7 @@
 // Brief: Handler for Telegram-specific messages
 // Primary responsibility: Receive and handle Telegram messages from Request to Response
 
-package scripturebot
+package main
 
 import (
 	"log"

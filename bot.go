@@ -1,7 +1,7 @@
 // Brief: Bot logic
 // Primary responsibility: Top level logic layer for bot
 
-package scripturebot
+package main
 
 import botmultiplexer "github.com/julwrites/BotMultiplexer"
 

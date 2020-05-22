@@ -1,7 +1,7 @@
 // Brief: Scripture API
 // Primary responsibility: Query calls for Scripture functionality
 
-package scripturebot
+package main
 
 import (
 	"fmt"

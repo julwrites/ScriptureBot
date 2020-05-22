@@ -1,7 +1,7 @@
 // Brief: HTML handling
 // Primary responsibility: Parsing of HTML
 
-package scripturebot
+package main
 
 import (
 	"errors"

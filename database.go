@@ -1,7 +1,7 @@
 // Brief: Database
 // Primary responsibility: Key functionality needed for database
 
-package scripturebot
+package main
 
 import (
 	"context"

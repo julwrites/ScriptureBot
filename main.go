@@ -1,7 +1,7 @@
 // Brief: Main entry point of the bot Web App
 // Primary responsibility: Receive and identify handler to delegate to
 
-package scripturebot
+package main
 
 import (
 	"fmt"
