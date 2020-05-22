@@ -17,7 +17,7 @@ func GetReference(ref string, env *botmultiplexer.SessionData) string {
 	query := fmt.Sprintf(formatQuery, ref, env.User.Config.Version)
 	query = url.QueryEscape(query)
 
-	doc := Get(query)
+	doc := GetHtml(query)
 
 	if doc == nil {
 		log.Fatalf("Error getting reference")
