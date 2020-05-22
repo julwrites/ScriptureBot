@@ -53,6 +53,7 @@ func GetPassage(ref string, env *bmul.SessionData) string {
 func GetBiblePassage(env *bmul.SessionData) bool {
 	if len(env.Msg.Message) > 0 {
 
+		log.Printf("Get Bible Passage %s", env.Msg.Message)
 		ref := GetReference(env.Msg.Message, env)
 
 		if len(ref) > 0 {
