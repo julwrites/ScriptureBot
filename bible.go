@@ -16,6 +16,8 @@ var passageQuery string = "https://www.biblegateway.com/passage/?search=%s&versi
 func GetReference(ref string, env *bmul.SessionData) string {
 	query := fmt.Sprintf(passageQuery, ref, GetUserConfig(&env.User).Version)
 
+	log.Printf("Do Query %s", query)
+
 	doc := GetHtml(query)
 
 	if doc == nil {
@@ -53,7 +55,6 @@ func GetPassage(ref string, env *bmul.SessionData) string {
 func GetBiblePassage(env *bmul.SessionData) bool {
 	if len(env.Msg.Message) > 0 {
 
-		log.Printf("Get Bible Passage %s", env.Msg.Message)
 		ref := GetReference(env.Msg.Message, env)
 
 		if len(ref) > 0 {
