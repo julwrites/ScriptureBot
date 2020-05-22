@@ -7,20 +7,20 @@ import (
 	"log"
 	"net/http"
 
-	botmultiplexer "github.com/julwrites/BotMultiplexer"
+	bmul "github.com/julwrites/BotMultiplexer"
 	botsecrets "github.com/julwrites/BotSecrets"
 )
 
 func TelegramHandler(res http.ResponseWriter, req *http.Request, secrets *botsecrets.SecretsData) {
-	env := botmultiplexer.SessionData{}
+	env := bmul.SessionData{}
 	log.Printf("Loading session data...")
 
-	env.Type = botmultiplexer.TYPE_TELEGRAM
+	env.Type = bmul.TYPE_TELEGRAM
 
 	env.Secrets = *secrets
 	log.Printf("\tLoaded secrets...")
 
-	if !botmultiplexer.TranslateToProps(req, &env) {
+	if !bmul.TranslateToProps(req, &env) {
 		log.Printf("This message was not translatable to bot language")
 		return
 	}
@@ -36,7 +36,7 @@ func TelegramHandler(res http.ResponseWriter, req *http.Request, secrets *botsec
 		return
 	}
 
-	if !botmultiplexer.PostFromProps(&env) {
+	if !bmul.PostFromProps(&env) {
 		log.Printf("This message was not translatable from bot language")
 		return
 	}

@@ -8,13 +8,13 @@ import (
 	"log"
 	"net/url"
 
-	botmultiplexer "github.com/julwrites/BotMultiplexer"
+	bmul "github.com/julwrites/BotMultiplexer"
 )
 
-var formatQuery string = "http://www.biblegateway.com/passage/?search=%s&version=%sinterface=print"
+var passageQuery string = "http://www.biblegateway.com/passage/?search=%s&version=%s"
 
-func GetReference(ref string, env *botmultiplexer.SessionData) string {
-	query := fmt.Sprintf(formatQuery, ref, env.User.Config.Version)
+func GetReference(ref string, env *bmul.SessionData) string {
+	query := fmt.Sprintf(passageQuery, ref, env.User.Config.Version)
 	query = url.QueryEscape(query)
 
 	doc := GetHtml(query)
@@ -32,11 +32,26 @@ func GetReference(ref string, env *botmultiplexer.SessionData) string {
 	return foundRef.Data
 }
 
-func GetPassage(ref string, env *botmultiplexer.SessionData) string {
-	return ""
+func GetPassage(ref string, env *bmul.SessionData) string {
+	query := fmt.Sprintf(passageQuery, ref, env.User.Config.Version)
+	query = url.QueryEscape(query)
+
+	doc := GetHtml(query)
+
+	if doc == nil {
+		log.Fatalf("Error getting reference")
+		return ""
+	}
+
+	foundRef, err := Find(doc, "passage-display-bcv")
+	if err != nil {
+		log.Fatalf("Error in Finding of Reference: %v", err)
+	}
+
+	return foundRef.Data
 }
 
-func GetBiblePassage(env *botmultiplexer.SessionData) bool {
+func GetBiblePassage(env *bmul.SessionData) bool {
 	if len(env.Msg.Message) > 0 {
 
 		ref := GetReference(env.Msg.Message, env)

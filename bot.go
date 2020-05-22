@@ -3,13 +3,13 @@
 
 package main
 
-import botmultiplexer "github.com/julwrites/BotMultiplexer"
+import bmul "github.com/julwrites/BotMultiplexer"
 
-func HelpMessage(env *botmultiplexer.SessionData) {
+func HelpMessage(env *bmul.SessionData) {
 	env.Res.Message = "Hi, this message comes from the bot"
 }
 
-func RunCommands(env *botmultiplexer.SessionData) {
+func RunCommands(env *bmul.SessionData) {
 	switch env.Msg.Command {
 	default:
 		if !GetBiblePassage(env) {
@@ -18,7 +18,7 @@ func RunCommands(env *botmultiplexer.SessionData) {
 	}
 }
 
-func HandleBotLogic(env *botmultiplexer.SessionData) bool {
+func HandleBotLogic(env *bmul.SessionData) bool {
 	RunCommands(env)
 
 	if len(env.Res.Message) > 0 {
