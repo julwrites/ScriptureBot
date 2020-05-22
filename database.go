@@ -5,12 +5,19 @@ package main
 
 import (
 	"context"
+	"encoding/json"
 	"log"
 
 	"cloud.google.com/go/datastore"
 	"github.com/google/go-cmp/cmp"
 	bmul "github.com/julwrites/BotMultiplexer"
 )
+
+type UserConfig struct {
+	Version       string `datastore:""`
+	Timezone      string `datastore:""`
+	Subscriptions string `datastore:""`
+}
 
 func OpenClient(ctx *context.Context, env *bmul.SessionData) *datastore.Client {
 	projectId := env.Secrets.PROJECT_ID
@@ -24,13 +31,17 @@ func OpenClient(ctx *context.Context, env *bmul.SessionData) *datastore.Client {
 	return client
 }
 
-func QueryUser(env *bmul.SessionData) bmul.UserData {
+func GetUser(env *bmul.SessionData) bmul.UserData {
 	ctx := context.Background()
 	client := OpenClient(&ctx, env)
 
 	key := datastore.NameKey("User", env.User.Id, nil)
 
 	var user bmul.UserData
+
+	var defaultConfig UserConfig
+	defaultConfig.Version = "NIV"
+	UpdateUserConfig(&user, defaultConfig)
 
 	err := client.Get(ctx, key, &user)
 	if err != nil {
@@ -60,8 +71,23 @@ func UpdateUser(user *bmul.UserData, env *bmul.SessionData) bool {
 	return true
 }
 
+func GetUserConfig(user *bmul.UserData) UserConfig {
+	var config UserConfig
+	json.Unmarshal([]byte(user.Config), &config)
+
+	return config
+}
+
+func UpdateUserConfig(user *bmul.UserData, config UserConfig) {
+	strConfig, err := json.Marshal(config)
+	if err != nil {
+		log.Fatalf("Failed to marshal User Config: %v", err)
+	}
+	user.Config = string(strConfig)
+}
+
 func CompareAndUpdateUser(env *bmul.SessionData) {
-	storedUser := QueryUser(env)
+	storedUser := GetUser(env)
 
 	if !cmp.Equal(storedUser, env.User) {
 		env.User.Config = storedUser.Config

@@ -14,7 +14,7 @@ import (
 var passageQuery string = "http://www.biblegateway.com/passage/?search=%s&version=%s"
 
 func GetReference(ref string, env *bmul.SessionData) string {
-	query := fmt.Sprintf(passageQuery, ref, env.User.Config.Version)
+	query := fmt.Sprintf(passageQuery, ref, GetUserConfig(&env.User).Version)
 	query = url.QueryEscape(query)
 
 	doc := GetHtml(query)
@@ -33,7 +33,7 @@ func GetReference(ref string, env *bmul.SessionData) string {
 }
 
 func GetPassage(ref string, env *bmul.SessionData) string {
-	query := fmt.Sprintf(passageQuery, ref, env.User.Config.Version)
+	query := fmt.Sprintf(passageQuery, ref, GetUserConfig(&env.User).Version)
 	query = url.QueryEscape(query)
 
 	doc := GetHtml(query)
