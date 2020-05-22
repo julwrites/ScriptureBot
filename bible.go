@@ -15,7 +15,6 @@ var passageQuery string = "https://www.biblegateway.com/passage/?search=%s&versi
 
 func GetReference(ref string, env *bmul.SessionData) string {
 	query := fmt.Sprintf(passageQuery, ref, GetUserConfig(&env.User).Version)
-	query = url.QueryEscape(query)
 
 	doc := GetHtml(query)
 
