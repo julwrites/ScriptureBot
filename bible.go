@@ -25,12 +25,12 @@ func GetReference(ref string, env *bmul.SessionData) string {
 		return ""
 	}
 
-	foundRef, err := Find(doc, "passage-display-bcv")
+	foundRef, err := FindByClass(doc, "bcv")
 	if err != nil {
 		log.Fatalf("Error in Finding of Reference: %v", err)
 	}
 
-	return foundRef.Data
+	return foundRef.FirstChild.Data
 }
 
 func GetPassage(ref string, env *bmul.SessionData) string {
@@ -44,7 +44,7 @@ func GetPassage(ref string, env *bmul.SessionData) string {
 		return ""
 	}
 
-	foundRef, err := Find(doc, "passage-display-bcv")
+	foundRef, err := FindByClass(doc, "passage-text")
 	if err != nil {
 		log.Fatalf("Error in Finding of Reference: %v", err)
 	}
