@@ -1,3 +1,6 @@
+// Brief: Database
+// Primary responsibility: Key functionality needed for database
+
 package scripturebot
 
 import (
@@ -5,9 +8,11 @@ import (
 	"log"
 
 	"cloud.google.com/go/datastore"
+	"github.com/google/go-cmp/cmp"
+	bmul "github.com/julwrites/BotMultiplexer"
 )
 
-func OpenClient(ctx *context.Context, env *SessionData) *datastore.Client {
+func OpenClient(ctx *context.Context, env *bmul.SessionData) *datastore.Client {
 	projectId := env.Secrets.PROJECT_ID
 
 	client, err := datastore.NewClient(*ctx, projectId)
@@ -19,13 +24,13 @@ func OpenClient(ctx *context.Context, env *SessionData) *datastore.Client {
 	return client
 }
 
-func QueryUser(env *SessionData) UserData {
+func QueryUser(env *bmul.SessionData) bmul.UserData {
 	ctx := context.Background()
 	client := OpenClient(&ctx, env)
 
 	key := datastore.NameKey("User", env.User.Id, nil)
 
-	var user UserData
+	var user bmul.UserData
 
 	err := client.Get(ctx, key, &user)
 	if err != nil {
@@ -39,7 +44,7 @@ func QueryUser(env *SessionData) UserData {
 	return user
 }
 
-func UpdateUser(user *UserData, env *SessionData) bool {
+func UpdateUser(user *bmul.UserData, env *bmul.SessionData) bool {
 	ctx := context.Background()
 	client := OpenClient(&ctx, env)
 
@@ -53,4 +58,16 @@ func UpdateUser(user *UserData, env *SessionData) bool {
 	}
 
 	return true
+}
+
+func CompareAndUpdateUser(env *bmul.SessionData) {
+	storedUser := QueryUser(env)
+
+	if !cmp.Equal(storedUser, env.User) {
+		env.User.Config = storedUser.Config
+
+		log.Printf("Updating user %s", env.User.Username)
+
+		UpdateUser(&env.User, env)
+	}
 }

@@ -1,14 +1,20 @@
+// Brief: Scripture API
+// Primary responsibility: Query calls for Scripture functionality
+
 package scripturebot
 
 import (
+	"fmt"
 	"log"
 	"net/url"
+
+	botmultiplexer "github.com/julwrites/BotMultiplexer"
 )
 
 var formatQuery string = "http://www.biblegateway.com/passage/?search=%s&version=%sinterface=print"
 
-func GetReference(ref string, env *SessionData) string {
-	query := formatQuery.Sprintf(url, ref, env.User.Config.Version)
+func GetReference(ref string, env *botmultiplexer.SessionData) string {
+	query := fmt.Sprintf(formatQuery, ref, env.User.Config.Version)
 	query = url.QueryEscape(query)
 
 	doc := Get(query)
@@ -18,16 +24,19 @@ func GetReference(ref string, env *SessionData) string {
 		return ""
 	}
 
-	ref := Filter(doc, "passage-display-bcv")
+	foundRef, err := Find(doc, "passage-display-bcv")
+	if err != nil {
+		log.Fatalf("Error in Finding of Reference: %v", err)
+	}
 
-	return ref.Data
+	return foundRef.Data
 }
 
-func GetPassage(ref string, env *SessionData) string {
+func GetPassage(ref string, env *botmultiplexer.SessionData) string {
 	return ""
 }
 
-func GetBiblePassage(env *SessionData) bool {
+func GetBiblePassage(env *botmultiplexer.SessionData) bool {
 	if len(env.Msg.Message) > 0 {
 
 		ref := GetReference(env.Msg.Message, env)

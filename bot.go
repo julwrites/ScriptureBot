@@ -1,10 +1,15 @@
+// Brief: Bot logic
+// Primary responsibility: Top level logic layer for bot
+
 package scripturebot
 
-func HelpMessage(env *SessionData) {
+import botmultiplexer "github.com/julwrites/BotMultiplexer"
+
+func HelpMessage(env *botmultiplexer.SessionData) {
 	env.Res.Message = "Hi, this message comes from the bot"
 }
 
-func RunCommands(env *SessionData) {
+func RunCommands(env *botmultiplexer.SessionData) {
 	switch env.Msg.Command {
 	default:
 		if !GetBiblePassage(env) {
@@ -13,7 +18,7 @@ func RunCommands(env *SessionData) {
 	}
 }
 
-func HandleBotLogic(env *SessionData) bool {
+func HandleBotLogic(env *botmultiplexer.SessionData) bool {
 	RunCommands(env)
 
 	if len(env.Res.Message) > 0 {

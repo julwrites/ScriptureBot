@@ -14,6 +14,18 @@ See [LICENSE](LICENSE)
 ## Author
 Hi, I'm [Julwrites](http://www.tehj.io)
 
+### Architecture
+ScriptureBot is built as a 5 layer service:
+1. Web App (GET)
+2. Incoming Translation Layer from Platform specific properties
+3. Logic Layer
+4. Outgoing Translation Layer to Platform specific properties
+5. Web App (POST)
+
+The Translation Layer is implemented in [BotMultiplexer](http://github.com/julwrites/BotMultiplexer), which abstracts all the translation tasks from the Logic layer. 
+
+Additionally there is a [BotSecrets](http://github.com/julwrites/BotSecrets) integration with the WebApp layer which provides all sensitive data to the bot on a as-needed basis.
+
 ## Code Guidelines
 
 ### Code
