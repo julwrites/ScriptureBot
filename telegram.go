@@ -29,10 +29,7 @@ func TelegramHandler(res http.ResponseWriter, req *http.Request, secrets *botsec
 
 	CompareAndUpdateUser(&env)
 
-	if !HandleBotLogic(&env) {
-		log.Printf("This message was not handled by bot")
-		return
-	}
+	HandleBotLogic(&env)
 
 	if !bmul.PostFromProps(&env) {
 		log.Printf("This message was not translatable from bot language")

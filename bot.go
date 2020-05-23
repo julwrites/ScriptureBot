@@ -3,7 +3,11 @@
 
 package main
 
-import bmul "github.com/julwrites/BotMultiplexer"
+import (
+	"log"
+
+	bmul "github.com/julwrites/BotMultiplexer"
+)
 
 func HelpMessage(env *bmul.SessionData) {
 	env.Res.Message = "Hi, this message comes from the bot"
@@ -18,12 +22,10 @@ func RunCommands(env *bmul.SessionData) {
 	}
 }
 
-func HandleBotLogic(env *bmul.SessionData) bool {
+func HandleBotLogic(env *bmul.SessionData) {
 	RunCommands(env)
 
-	if len(env.Res.Message) > 0 {
-		return true
+	if len(env.Res.Message) == 0 {
+		log.Printf("This message was not handled by bot")
 	}
-
-	return false
 }
