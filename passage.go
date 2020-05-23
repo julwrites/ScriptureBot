@@ -31,9 +31,10 @@ func ParseNodesForPassage(node *html.Node) string {
 
 		switch tag := child.Data; tag {
 		case "span":
-			parts = append(parts, "*")
-			parts = append(parts, ParseNodesForPassage(child))
-			parts = append(parts, "*")
+			childText := strings.Trim(ParseNodesForPassage(child), " ")
+			if len(childText) > 0 {
+				parts = append(parts, childText)
+			}
 		case "sup":
 			isFootnote := func(node *html.Node) bool {
 				for _, attr := range node.Attr {
@@ -46,9 +47,10 @@ func ParseNodesForPassage(node *html.Node) string {
 			if isFootnote(child) {
 				break
 			}
-			parts = append(parts, "^")
-			parts = append(parts, ParseNodesForPassage(child))
-			parts = append(parts, "^")
+			childText := strings.Trim(ParseNodesForPassage(child), " ")
+			if len(childText) > 0 {
+				parts = append(parts, fmt.Sprintf("^%s^", childText))
+			}
 			break
 		default:
 			parts = append(parts, child.Data)
@@ -56,6 +58,10 @@ func ParseNodesForPassage(node *html.Node) string {
 	}
 
 	text = strings.Join(parts, "")
+
+	if node.Data == "h1" || node.Data == "h2" || node.Data == "h3" {
+		text = fmt.Sprintf("*%s*", text)
+	}
 	return text
 }
 
@@ -88,7 +94,7 @@ func GetPassage(doc *html.Node, env *bmul.SessionData) string {
 
 	for _, block := range textBlocks {
 		passage.WriteString(block)
-		passage.WriteString("\n")
+		passage.WriteString("\n\n")
 	}
 
 	log.Printf("%s", passage.String())
