@@ -27,6 +27,8 @@ func GetHtml(url string) *html.Node {
 	return doc
 }
 
+// Find & Filter functions
+
 type NodePredicate func(*html.Node) bool
 
 func FindNode(node *html.Node, pred NodePredicate) *html.Node {
@@ -57,13 +59,13 @@ func FindAllNodes(node *html.Node, pred NodePredicate) []*html.Node {
 	return outNodes
 }
 
-func FilterNode(node *html.Node, pred NodePredicate) []*html.Node {
+func FilterTree(node *html.Node, pred NodePredicate) []*html.Node {
 	var outNodes []*html.Node
 	if pred(node) {
 		outNodes = append(outNodes, node)
 	}
 	for child := node.FirstChild; child != nil; child = child.NextSibling {
-		matchedNodes := FilterNode(child, pred)
+		matchedNodes := FilterTree(child, pred)
 		for _, match := range matchedNodes {
 			outNodes = append(outNodes, match)
 		}
@@ -81,7 +83,30 @@ func FilterNodeList(nodes []*html.Node, pred NodePredicate) []*html.Node {
 	return outNodes
 }
 
-// Parses a node and returns the first element with a particular string
+func FilterChildren(node *html.Node, pred NodePredicate) []*html.Node {
+	var outNodes []*html.Node
+	for child := node.FirstChild; child != nil; child = child.NextSibling {
+		if pred(child) {
+			outNodes = append(outNodes, child)
+		}
+	}
+	return outNodes
+}
+
+// Transform functions
+
+type NodeTransform func(*html.Node) string
+
+func MapNodeList(nodes []*html.Node, tran NodeTransform) []string {
+	var outNodes []string
+	for _, node := range nodes {
+		outNodes = append(outNodes, tran(node))
+	}
+	return outNodes
+}
+
+// Convenience functions
+
 func FindByClass(node *html.Node, tag string) (*html.Node, error) {
 	foundNode := FindNode(node, func(node *html.Node) bool {
 		for _, attr := range node.Attr {
@@ -100,5 +125,5 @@ func FindByClass(node *html.Node, tag string) (*html.Node, error) {
 }
 
 func FilterByNodeType(node *html.Node, nodeType html.NodeType) []*html.Node {
-	return FilterNode(node, func(node *html.Node) bool { return nodeType == node.Type })
+	return FilterTree(node, func(node *html.Node) bool { return nodeType == node.Type })
 }

@@ -22,6 +22,41 @@ func GetReference(doc *html.Node, env *bmul.SessionData) string {
 	return refNode.FirstChild.Data
 }
 
+func ParseNodesForPassage(node *html.Node) string {
+	var text string
+	var parts []string
+	for child := node.FirstChild; child != nil; child = child.NextSibling {
+		parts = append(parts, text)
+
+		switch tag := child.Data; tag {
+		case "span":
+			parts = append(parts, "*")
+			parts = append(parts, ParseNodesForPassage(child))
+			parts = append(parts, "*")
+		case "sup":
+			isFootnote := func(node *html.Node) bool {
+				for _, attr := range node.Attr {
+					if attr.Key == "class" && attr.Val == "footnote" {
+						return true
+					}
+				}
+				return false
+			}
+			if isFootnote(child) {
+				break
+			}
+			parts = append(parts, "^")
+			parts = append(parts, ParseNodesForPassage(child))
+			parts = append(parts, "^")
+			break
+		default:
+			parts = append(parts, child.Data)
+		}
+	}
+	text = strings.Join(parts, "")
+	return text
+}
+
 func GetPassage(doc *html.Node, env *bmul.SessionData) string {
 	passageNode, startErr := FindByClass(doc, fmt.Sprintf("version-%s result-text-style-normal text-html", GetUserConfig(&env.User).Version))
 	if startErr != nil {
@@ -29,34 +64,47 @@ func GetPassage(doc *html.Node, env *bmul.SessionData) string {
 		return ""
 	}
 
-	var candNodes []*html.Node
-	for child := passageNode.FirstChild; child != nil; child = child.NextSibling {
-		candNodes = append(candNodes, child)
-	}
-	log.Printf("Candidate notes number %d", len(candNodes))
-	filtNodes := FilterNodeList(candNodes, func(node *html.Node) bool {
-		for _, attr := range node.Attr {
-			if attr.Key == "class" && attr.Val == "footnotes" {
-				return false
-			}
+	filtNodes := FilterChildren(passageNode, func(child *html.Node) bool {
+		switch tag := child.Data; tag {
+		case "h1":
+			fallthrough
+		case "h2":
+			fallthrough
+		case "h3":
+			fallthrough
+		case "p":
+			return true
 		}
-		return true
+		return false
 	})
 
-	var textNodes []*html.Node
-	for _, node := range filtNodes {
-		for _, textNode := range FilterNode(node, func(node *html.Node) bool {
-			return node.Type == html.TextNode
-		}) {
-			textNodes = append(textNodes, textNode)
-		}
-	}
+	log.Printf("Candidate nodes number %d", len(filtNodes))
+
+	textBlocks := MapNodeList(filtNodes, ParseNodesForPassage)
+
+	// var spanNodes []*html.Node
+	// for _, node := range filtNodes {
+	// 	spanNodes = append(spanNodes, FilterChildren(node, func(node *html.Node) bool { return node.Data == "span" })...)
+	// }
+
+	// textBlocks := MapNodeList(spanNodes, func(node *html.Node) string {
+	// 	var text string
+	// 	for child := node.FirstChild; child != nil; child = child.NextSibling {
+	// 		text = child.Data
+	// 		if child.Data == "sup" || child.Data == "span" {
+	// 			text = "<sup>" + text + "<sup>"
+	// 		}
+	// 	}
+	// 	return text
+	// })
 
 	var passage strings.Builder
 
-	for _, node := range textNodes {
-		passage.WriteString(node.Data)
+	for _, block := range textBlocks {
+		passage.WriteString(block)
 	}
+
+	log.Printf("%s", passage.String())
 
 	return fmt.Sprintf("I currently can't parse a passage but here's what I got so far: %s", passage.String())
 }
@@ -81,6 +129,6 @@ func GetBiblePassage(env *bmul.SessionData) {
 // 	var config UserConfig
 // 	config.Version = "NIV"
 // 	UpdateUserConfig(&env.User, config)
-// 	env.Msg.Message = "rev 1"
+// 	env.Msg.Message = "gal 1"
 // 	GetBiblePassage(&env)
 // }

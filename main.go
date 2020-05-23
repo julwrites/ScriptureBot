@@ -22,6 +22,7 @@ func bothandler(res http.ResponseWriter, req *http.Request) {
 	case strings.Trim("/"+secrets.TELEGRAM_ID, "\n"):
 		log.Printf("Incoming telegram message")
 		TelegramHandler(res, req, &secrets)
+		break
 	default:
 		log.Printf("No appropriate handler")
 	}
