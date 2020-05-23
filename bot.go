@@ -23,6 +23,7 @@ func RunCommands(env *bmul.SessionData) {
 func HandleBotLogic(env *bmul.SessionData) {
 	RunCommands(env)
 
+	log.Printf("Commands run, resulting message: %s", env.Res.Message)
 	if len(env.Res.Message) == 0 {
 		log.Printf("This message was not handled by bot")
 		HelpMessage(env)
