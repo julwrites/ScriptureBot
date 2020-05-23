@@ -83,6 +83,7 @@ func GetBiblePassage(env *bmul.SessionData) {
 
 		doc := Query(env.Msg.Message, env)
 		ref := GetReference(doc, env)
+		log.Printf("Reference retrieved: %s", ref)
 
 		if len(ref) > 0 {
 			log.Printf("Getting passage")
