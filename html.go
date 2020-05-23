@@ -27,34 +27,76 @@ func GetHtml(url string) *html.Node {
 	return doc
 }
 
-// Parses a node and returns the first element with a particular string
-func FindByClass(node *html.Node, tag string) (*html.Node, error) {
-	for _, attr := range node.Attr {
-		if attr.Key == "class" && attr.Val == tag {
-			return node, nil
-		}
+type NodePredicate func(*html.Node) bool
+
+func FindNode(node *html.Node, pred NodePredicate) *html.Node {
+	if pred(node) {
+		return node
 	}
 	for child := node.FirstChild; child != nil; child = child.NextSibling {
-		findNode, err := FindByClass(child, tag)
-		if err == nil {
-			return findNode, nil
+		findNode := FindNode(child, pred)
+		if findNode != nil {
+			return findNode
 		}
 	}
-
-	return nil, errors.New(fmt.Sprintf("Missing %s in the node tree", tag))
+	return nil
 }
 
-func FindByNodeType(node *html.Node, nodeType html.NodeType) []*html.Node {
-	var nodes []*html.Node
-	if node.Type == nodeType {
-		nodes = append(nodes, node)
+func FindAllNodes(node *html.Node, pred NodePredicate) []*html.Node {
+	var outNodes []*html.Node
+	if pred(node) {
+		outNodes = append(outNodes, node)
 	}
 	for child := node.FirstChild; child != nil; child = child.NextSibling {
-		matchedNodes := FindByNodeType(child, nodeType)
-		for _, match := range matchedNodes {
-			nodes = append(nodes, match)
+		foundNodes := FindAllNodes(child, pred)
+		for _, match := range foundNodes {
+			outNodes = append(outNodes, match)
 		}
 	}
+	return outNodes
+}
 
-	return nodes
+func FilterNode(node *html.Node, pred NodePredicate) []*html.Node {
+	var outNodes []*html.Node
+	if pred(node) {
+		outNodes = append(outNodes, node)
+	}
+	for child := node.FirstChild; child != nil; child = child.NextSibling {
+		matchedNodes := FilterNode(child, pred)
+		for _, match := range matchedNodes {
+			outNodes = append(outNodes, match)
+		}
+	}
+	return outNodes
+}
+
+func FilterNodeList(nodes []*html.Node, pred NodePredicate) []*html.Node {
+	var outNodes []*html.Node
+	for _, node := range nodes {
+		if pred(node) {
+			outNodes = append(outNodes, node)
+		}
+	}
+	return outNodes
+}
+
+// Parses a node and returns the first element with a particular string
+func FindByClass(node *html.Node, tag string) (*html.Node, error) {
+	foundNode := FindNode(node, func(node *html.Node) bool {
+		for _, attr := range node.Attr {
+			if attr.Key == "class" && attr.Val == tag {
+				return true
+			}
+		}
+		return false
+	})
+	var err error
+	if foundNode == nil {
+		err = errors.New(fmt.Sprintf("Missing %s in the node tree", tag))
+	}
+	return nil, err
+}
+
+func FilterByNodeType(node *html.Node, nodeType html.NodeType) []*html.Node {
+	return FilterNode(node, func(node *html.Node) bool { return nodeType == node.Type })
 }

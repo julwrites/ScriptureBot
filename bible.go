@@ -40,18 +40,38 @@ func GetReference(doc *html.Node, env *bmul.SessionData) string {
 }
 
 func GetPassage(doc *html.Node, env *bmul.SessionData) string {
-	passageNode, passageErr := FindByClass(doc, "passage-text")
-	if passageErr != nil {
-		log.Fatalf("Error parsing for passage: %v", passageErr)
+	passageNode, startErr := FindByClass(doc, "passage-text")
+	if startErr != nil {
+		log.Fatalf("Error parsing for passage: %v", startErr)
 		return ""
 	}
 
-	textNodes := FindByNodeType(passageNode, html.TextNode)
+	var candNodes []*html.Node
+	for child := passageNode.FirstChild; child != nil; child = child.NextSibling {
+		candNodes = append(candNodes, child)
+	}
+	filtNodes := FilterNodeList(candNodes, func(node *html.Node) bool {
+		for _, attr := range node.Attr {
+			if attr.Key == "class" && attr.Val == "footnotes" {
+				return false
+			}
+		}
+		return true
+	})
+
+	var textNodes []*html.Node
+	for _, node := range filtNodes {
+		for _, textNode := range FilterNode(node, func(node *html.Node) bool {
+			return node.Type == html.TextNode
+		}) {
+			textNodes = append(textNodes, textNode)
+		}
+	}
 
 	var passage strings.Builder
 
 	for _, node := range textNodes {
-		passage.WriteString(node.Data + "\n")
+		passage.WriteString(node.Data)
 	}
 
 	return fmt.Sprintf("I currently can't parse a passage but here's what I got so far: %s", passage.String())
