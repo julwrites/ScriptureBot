@@ -23,7 +23,7 @@ func GetReference(doc *html.Node, env *bmul.SessionData) string {
 }
 
 func GetPassage(doc *html.Node, env *bmul.SessionData) string {
-	passageNode, startErr := FindByClass(doc, "passage-text")
+	passageNode, startErr := FindByClass(doc, fmt.Sprintf("version-%s result-text-style-normal text-html", GetUserConfig(&env.User).Version))
 	if startErr != nil {
 		log.Printf("Error parsing for passage: %v", startErr)
 		return ""
