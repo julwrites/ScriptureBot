@@ -97,9 +97,7 @@ func GetPassage(doc *html.Node, env *bmul.SessionData) string {
 		passage.WriteString("\n\n")
 	}
 
-	log.Printf("%s", passage.String())
-
-	return fmt.Sprintf("I currently can't parse a passage but here's what I got so far: %s", passage.String())
+	return passage.String()
 }
 
 func GetBiblePassage(env *bmul.SessionData) {
