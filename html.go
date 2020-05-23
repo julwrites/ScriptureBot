@@ -31,6 +31,7 @@ type NodePredicate func(*html.Node) bool
 
 func FindNode(node *html.Node, pred NodePredicate) *html.Node {
 	if pred(node) {
+		log.Printf("Found the node %v", node)
 		return node
 	}
 	for child := node.FirstChild; child != nil; child = child.NextSibling {
@@ -90,11 +91,12 @@ func FindByClass(node *html.Node, tag string) (*html.Node, error) {
 		}
 		return false
 	})
+
 	var err error
 	if foundNode == nil {
 		err = errors.New(fmt.Sprintf("Missing %s in the node tree", tag))
 	}
-	return nil, err
+	return foundNode, err
 }
 
 func FilterByNodeType(node *html.Node, nodeType html.NodeType) []*html.Node {

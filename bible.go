@@ -50,6 +50,7 @@ func GetPassage(doc *html.Node, env *bmul.SessionData) string {
 	for child := passageNode.FirstChild; child != nil; child = child.NextSibling {
 		candNodes = append(candNodes, child)
 	}
+	log.Printf("Candidate notes number %d", len(candNodes))
 	filtNodes := FilterNodeList(candNodes, func(node *html.Node) bool {
 		for _, attr := range node.Attr {
 			if attr.Key == "class" && attr.Val == "footnotes" {
@@ -84,7 +85,17 @@ func GetBiblePassage(env *bmul.SessionData) {
 		ref := GetReference(doc, env)
 
 		if len(ref) > 0 {
+			log.Printf("Getting passage")
 			env.Res.Message = GetPassage(doc, env)
 		}
 	}
 }
+
+// func main() {
+// 	var env bmul.SessionData
+// 	var config UserConfig
+// 	config.Version = "NIV"
+// 	UpdateUserConfig(&env.User, config)
+// 	env.Msg.Message = "rev 1"
+// 	GetBiblePassage(&env)
+// }
