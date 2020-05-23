@@ -80,23 +80,11 @@ func GetPassage(doc *html.Node, env *bmul.SessionData) string {
 
 	log.Printf("Candidate nodes number %d", len(filtNodes))
 
-	textBlocks := MapNodeList(filtNodes, ParseNodesForPassage)
-
-	// var spanNodes []*html.Node
-	// for _, node := range filtNodes {
-	// 	spanNodes = append(spanNodes, FilterChildren(node, func(node *html.Node) bool { return node.Data == "span" })...)
-	// }
-
-	// textBlocks := MapNodeList(spanNodes, func(node *html.Node) string {
-	// 	var text string
-	// 	for child := node.FirstChild; child != nil; child = child.NextSibling {
-	// 		text = child.Data
-	// 		if child.Data == "sup" || child.Data == "span" {
-	// 			text = "<sup>" + text + "<sup>"
-	// 		}
-	// 	}
-	// 	return text
-	// })
+	var textBlocks []string
+	for _, node := range filtNodes {
+		textBlocks = append(textBlocks, MapNodeList(node, ParseNodesForPassage)...)
+		textBlocks = append(textBlocks, "\n")
+	}
 
 	var passage strings.Builder
 
