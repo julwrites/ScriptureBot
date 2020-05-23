@@ -6,6 +6,7 @@ package main
 import (
 	"fmt"
 	"log"
+	"strings"
 
 	bmul "github.com/julwrites/BotMultiplexer"
 	"golang.org/x/net/html"
@@ -29,21 +30,31 @@ func Query(ref string, env *bmul.SessionData) *html.Node {
 }
 
 func GetReference(doc *html.Node, env *bmul.SessionData) string {
-	foundRef, err := FindByClass(doc, "bcv")
+	refNode, err := FindByClass(doc, "bcv")
 	if err != nil {
 		log.Fatalf("Error parsing for reference: %v", err)
+		return ""
 	}
 
-	return foundRef.FirstChild.Data
+	return refNode.FirstChild.Data
 }
 
 func GetPassage(doc *html.Node, env *bmul.SessionData) string {
-	passage, err := FindByClass(doc, "passage-text")
-	if err != nil {
-		log.Fatalf("Error parsing for passage: %v", err)
+	passageNode, passageErr := FindByClass(doc, "passage-text")
+	if passageErr != nil {
+		log.Fatalf("Error parsing for passage: %v", passageErr)
+		return ""
 	}
 
-	return fmt.Sprintf("I currently can't parse a passage but here's what I got so far: %s", passage.Data)
+	textNodes := FindByNodeType(passageNode, html.TextNode)
+
+	var passage strings.Builder
+
+	for _, node := range textNodes {
+		passage.WriteString(node.Data + "\n")
+	}
+
+	// return fmt.Sprintf("I currently can't parse a passage but here's what I got so far: %s", passage.String())
 }
 
 func GetBiblePassage(env *bmul.SessionData) bool {

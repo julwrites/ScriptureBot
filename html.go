@@ -43,3 +43,18 @@ func FindByClass(node *html.Node, tag string) (*html.Node, error) {
 
 	return nil, errors.New(fmt.Sprintf("Missing %s in the node tree", tag))
 }
+
+func FindByNodeType(node *html.Node, nodeType html.NodeType) []*html.Node {
+	var nodes []*html.Node
+	if node.Type == nodeType {
+		nodes = append(nodes, node)
+	}
+	for child := node.FirstChild; child != nil; child = child.NextSibling {
+		matchedNodes := FindByNodeType(child, nodeType)
+		for _, match := range matchedNodes {
+			nodes = append(nodes, match)
+		}
+	}
+
+	return nodes
+}
