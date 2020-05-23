@@ -51,10 +51,7 @@ func FindAllNodes(node *html.Node, pred NodePredicate) []*html.Node {
 		outNodes = append(outNodes, node)
 	}
 	for child := node.FirstChild; child != nil; child = child.NextSibling {
-		foundNodes := FindAllNodes(child, pred)
-		for _, match := range foundNodes {
-			outNodes = append(outNodes, match)
-		}
+		outNodes = append(outNodes, FindAllNodes(child, pred)...)
 	}
 	return outNodes
 }
@@ -65,10 +62,7 @@ func FilterTree(node *html.Node, pred NodePredicate) []*html.Node {
 		outNodes = append(outNodes, node)
 	}
 	for child := node.FirstChild; child != nil; child = child.NextSibling {
-		matchedNodes := FilterTree(child, pred)
-		for _, match := range matchedNodes {
-			outNodes = append(outNodes, match)
-		}
+		outNodes = append(outNodes, FilterTree(child, pred)...)
 	}
 	return outNodes
 }
@@ -97,12 +91,21 @@ func FilterChildren(node *html.Node, pred NodePredicate) []*html.Node {
 
 type NodeTransform func(*html.Node) string
 
-func MapNodeList(nodes []*html.Node, tran NodeTransform) []string {
-	var outNodes []string
-	for _, node := range nodes {
-		outNodes = append(outNodes, tran(node))
+func MapTree(node *html.Node, tran NodeTransform) []string {
+	var output []string
+	output = append(output, tran(node))
+	for child := node.FirstChild; child != nil; child = child.NextSibling {
+		output = append(output, MapTree(child, tran)...)
 	}
-	return outNodes
+	return output
+}
+
+func MapNodeList(nodes []*html.Node, tran NodeTransform) []string {
+	var output []string
+	for _, node := range nodes {
+		output = append(output, tran(node))
+	}
+	return output
 }
 
 // Convenience functions

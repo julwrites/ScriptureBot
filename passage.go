@@ -25,6 +25,7 @@ func GetReference(doc *html.Node, env *bmul.SessionData) string {
 func ParseNodesForPassage(node *html.Node) string {
 	var text string
 	var parts []string
+
 	for child := node.FirstChild; child != nil; child = child.NextSibling {
 		parts = append(parts, text)
 
@@ -53,6 +54,7 @@ func ParseNodesForPassage(node *html.Node) string {
 			parts = append(parts, child.Data)
 		}
 	}
+
 	text = strings.Join(parts, "")
 	return text
 }
@@ -80,16 +82,13 @@ func GetPassage(doc *html.Node, env *bmul.SessionData) string {
 
 	log.Printf("Candidate nodes number %d", len(filtNodes))
 
-	var textBlocks []string
-	for _, node := range filtNodes {
-		textBlocks = append(textBlocks, MapNodeList(node, ParseNodesForPassage)...)
-		textBlocks = append(textBlocks, "\n")
-	}
+	textBlocks := MapNodeList(filtNodes, ParseNodesForPassage)
 
 	var passage strings.Builder
 
 	for _, block := range textBlocks {
 		passage.WriteString(block)
+		passage.WriteString("\n")
 	}
 
 	log.Printf("%s", passage.String())
