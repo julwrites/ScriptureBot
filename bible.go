@@ -22,7 +22,7 @@ func Query(ref string, env *bmul.SessionData) *html.Node {
 	doc := GetHtml(query)
 
 	if doc == nil {
-		log.Fatalf("Error getting html")
+		log.Printf("Error getting html")
 		return nil
 	}
 
@@ -32,7 +32,7 @@ func Query(ref string, env *bmul.SessionData) *html.Node {
 func GetReference(doc *html.Node, env *bmul.SessionData) string {
 	refNode, err := FindByClass(doc, "bcv")
 	if err != nil {
-		log.Fatalf("Error parsing for reference: %v", err)
+		log.Printf("Error parsing for reference: %v", err)
 		return ""
 	}
 
@@ -42,7 +42,7 @@ func GetReference(doc *html.Node, env *bmul.SessionData) string {
 func GetPassage(doc *html.Node, env *bmul.SessionData) string {
 	passageNode, startErr := FindByClass(doc, "passage-text")
 	if startErr != nil {
-		log.Fatalf("Error parsing for passage: %v", startErr)
+		log.Printf("Error parsing for passage: %v", startErr)
 		return ""
 	}
 

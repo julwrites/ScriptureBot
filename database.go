@@ -24,7 +24,7 @@ func OpenClient(ctx *context.Context, env *bmul.SessionData) *datastore.Client {
 
 	client, err := datastore.NewClient(*ctx, projectId)
 	if err != nil {
-		log.Fatalf("Failed to create Datastore client: %v", err)
+		log.Printf("Failed to create Datastore client: %v", err)
 		return nil
 	}
 
@@ -64,7 +64,7 @@ func UpdateUser(user *bmul.UserData, env *bmul.SessionData) bool {
 	_, err := client.Put(ctx, key, user)
 
 	if err != nil {
-		log.Fatalf("Failed to put to datastore: %v", err)
+		log.Printf("Failed to put to datastore: %v", err)
 		return false
 	}
 
@@ -81,7 +81,7 @@ func GetUserConfig(user *bmul.UserData) UserConfig {
 func UpdateUserConfig(user *bmul.UserData, config UserConfig) {
 	strConfig, err := json.Marshal(config)
 	if err != nil {
-		log.Fatalf("Failed to marshal User Config: %v", err)
+		log.Printf("Failed to marshal User Config: %v", err)
 	}
 	user.Config = string(strConfig)
 }

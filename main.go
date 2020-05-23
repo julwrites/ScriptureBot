@@ -23,7 +23,7 @@ func bothandler(res http.ResponseWriter, req *http.Request) {
 		log.Printf("Incoming telegram message")
 		TelegramHandler(res, req, &secrets)
 	default:
-		log.Fatalf("No appropriate handler")
+		log.Printf("No appropriate handler")
 	}
 }
 
