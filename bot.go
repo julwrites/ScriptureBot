@@ -10,7 +10,7 @@ import (
 )
 
 func HelpMessage(env *bmul.SessionData) {
-	env.Res.Message = "Hi, this message comes from the bot"
+	env.Res.Message = "Hello %s! Give me a Bible reference and I'll give you the passage!" //\nHere are some other things I can do:\n/tms - Get a card from the Navigators' Topical Memory System\n/version - Choose your preferred Bible version\n/dailydevo - Get reading material right now\n/subscribe - Subscribe to / Unsubscribe from daily reading material\n/search - Search for a passage, lexicon entry, word or phrase\n"
 }
 
 func RunCommands(env *bmul.SessionData) {
