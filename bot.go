@@ -16,9 +16,7 @@ func HelpMessage(env *bmul.SessionData) {
 func RunCommands(env *bmul.SessionData) {
 	switch env.Msg.Command {
 	default:
-		if !GetBiblePassage(env) {
-			HelpMessage(env)
-		}
+		GetBiblePassage(env)
 	}
 }
 
@@ -27,5 +25,6 @@ func HandleBotLogic(env *bmul.SessionData) {
 
 	if len(env.Res.Message) == 0 {
 		log.Printf("This message was not handled by bot")
+		HelpMessage(env)
 	}
 }

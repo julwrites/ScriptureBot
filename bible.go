@@ -77,7 +77,7 @@ func GetPassage(doc *html.Node, env *bmul.SessionData) string {
 	return fmt.Sprintf("I currently can't parse a passage but here's what I got so far: %s", passage.String())
 }
 
-func GetBiblePassage(env *bmul.SessionData) bool {
+func GetBiblePassage(env *bmul.SessionData) {
 	if len(env.Msg.Message) > 0 {
 
 		doc := Query(env.Msg.Message, env)
@@ -85,10 +85,6 @@ func GetBiblePassage(env *bmul.SessionData) bool {
 
 		if len(ref) > 0 {
 			env.Res.Message = GetPassage(doc, env)
-
-			return true
 		}
 	}
-
-	return false
 }
