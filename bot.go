@@ -16,7 +16,22 @@ func HelpMessage(env *bmul.SessionData) {
 }
 
 func RunCommands(env *bmul.SessionData) {
+	if len(env.User.Action) > 0 {
+		env.Msg.Command = env.User.Action
+	}
+
 	switch env.Msg.Command {
+	case CMD_VERSION:
+		SetVersion(env)
+		break
+	case CMD_TMS:
+		break
+	case CMD_DEVO:
+		break
+	case CMD_SUBSCRIBE:
+		break
+	case CMD_LEXICON:
+		break
 	default:
 		GetBiblePassage(env)
 	}
