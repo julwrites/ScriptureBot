@@ -36,15 +36,3 @@ func TelegramHandler(res http.ResponseWriter, req *http.Request, secrets *botsec
 		return
 	}
 }
-
-// func main() {
-// 	var env bmul.SessionData
-// 	env.Type = bmul.TYPE_TELEGRAM
-// 	env.Res.Message = "*bold* _italics_ normal ^superscript123^"
-// 	var config UserConfig
-// 	config.Version = "NIV"
-// 	UpdateUserConfig(&env.User, config)
-// 	env.Msg.Message = "gal 1"
-// 	HandleBotLogic(&env)
-// 	bmul.PostFromProps(&env)
-// }
