@@ -11,8 +11,8 @@ import (
 )
 
 func HelpMessage(env *bmul.SessionData) string {
-	return fmt.Sprintf("Hello %s! Give me a Bible reference and I'll give you the passage!", env.User.Firstname)
-	//\nHere are some other things I can do:\n/tms - Get a card from the Navigators' Topical Memory System\n/version - Choose your preferred Bible version\n/dailydevo - Get reading material right now\n/subscribe - Subscribe to / Unsubscribe from daily reading material\n/search - Search for a passage, lexicon entry, word or phrase\n"
+	return fmt.Sprintf("Hello %s! Give me a Bible reference and I'll give you the passage!\nHere are some other things I can do:\n/version - Choose your preferred Bible version", env.User.Firstname)
+	//\n/tms - Get a card from the Navigators' Topical Memory System\n/dailydevo - Get reading material right now\n/subscribe - Subscribe to / Unsubscribe from daily reading material\n/search - Search for a passage, lexicon entry, word or phrase\n"
 }
 
 func RunCommands(env *bmul.SessionData) {
@@ -25,13 +25,13 @@ func RunCommands(env *bmul.SessionData) {
 		SetVersion(env)
 		break
 	case CMD_TMS:
-		break
+		fallthrough
 	case CMD_DEVO:
-		break
+		fallthrough
 	case CMD_SUBSCRIBE:
-		break
+		fallthrough
 	case CMD_LEXICON:
-		break
+		fallthrough
 	default:
 		GetBiblePassage(env)
 	}
