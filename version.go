@@ -40,8 +40,7 @@ func SetVersion(env *bmul.SessionData) {
 			log.Printf("Version is valid, setting to %s", version)
 
 			config.Version = version
-
-			UpdateUser(&env.User, env)
+			UpdateUserConfig(&env.User, config)
 
 			env.Res.Message = fmt.Sprintf("Got it, I've changed your version to %s", config.Version)
 			env.Res.Affordances.Remove = true
@@ -61,7 +60,6 @@ func SetVersion(env *bmul.SessionData) {
 		env.Res.Affordances.Options = options
 
 		env.User.Action = CMD_VERSION
-		UpdateUser(&env.User, env)
 
 		env.Res.Message = fmt.Sprintf("Your current version is %s, what would you like to change it to?", config.Version)
 	}
