@@ -17,6 +17,7 @@ func HelpMessage(env *bmul.SessionData) string {
 
 func RunCommands(env *bmul.SessionData) {
 	if len(env.User.Action) > 0 {
+		log.Printf("Detected user has active action %s", env.User.Action)
 		env.Msg.Command = env.User.Action
 	}
 
