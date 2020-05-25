@@ -9,7 +9,6 @@ import (
 	"log"
 
 	"cloud.google.com/go/datastore"
-	"github.com/google/go-cmp/cmp"
 	bmul "github.com/julwrites/BotMultiplexer"
 )
 
@@ -39,15 +38,11 @@ func GetUser(env *bmul.SessionData) bmul.UserData {
 
 	var user bmul.UserData
 
-	var defaultConfig UserConfig
-	defaultConfig.Version = "NIV"
-	UpdateUserConfig(&user, defaultConfig)
-
 	err := client.Get(ctx, key, &user)
 	if err != nil {
 		log.Printf("Failed to get user: %v", err)
 
-		return user
+		return env.User
 	}
 
 	log.Printf("Found user %s", user.Username)
@@ -56,6 +51,8 @@ func GetUser(env *bmul.SessionData) bmul.UserData {
 }
 
 func UpdateUser(user *bmul.UserData, env *bmul.SessionData) bool {
+	log.Printf("Updating user %v", env.User)
+
 	ctx := context.Background()
 	client := OpenClient(&ctx, env)
 
@@ -87,13 +84,14 @@ func UpdateUserConfig(user *bmul.UserData, config UserConfig) {
 }
 
 func CompareAndUpdateUser(env *bmul.SessionData) {
-	storedUser := GetUser(env)
+	// Get stored user if any, else default to what we currently have
+	env.User = GetUser(env)
 
-	if !cmp.Equal(storedUser, env.User) {
-		env.User.Config = storedUser.Config
-
-		log.Printf("Updating user %s", env.User.Username)
-
-		UpdateUser(&env.User, env)
+	// Read the stored config
+	config := GetUserConfig(&env.User)
+	// If stored config is not complete, set the default data
+	if len(config.Version) == 0 {
+		config.Version = "NIV"
 	}
+	UpdateUserConfig(&env.User, config)
 }

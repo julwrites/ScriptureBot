@@ -46,4 +46,6 @@ func HandleBotLogic(env *bmul.SessionData) {
 		log.Printf("This message was not handled by bot")
 		env.Res.Message = HelpMessage(env)
 	}
+
+	UpdateUser(&env.User, env) // Any change to the user throughout the commands should be put to database
 }
