@@ -33,8 +33,6 @@ func SetVersion(env *bmul.SessionData) {
 	if env.User.Action == CMD_VERSION {
 		log.Printf("Detected existing action /version")
 
-		env.User.Action = ""
-
 		version, err := SanitizeVersion(env.Msg.Message)
 		if err == nil {
 			log.Printf("Version is valid, setting to %s", version)
@@ -42,6 +40,7 @@ func SetVersion(env *bmul.SessionData) {
 			config.Version = version
 			UpdateUserConfig(&env.User, config)
 
+			env.User.Action = ""
 			env.Res.Message = fmt.Sprintf("Got it, I've changed your version to %s", config.Version)
 			env.Res.Affordances.Remove = true
 		} else {
