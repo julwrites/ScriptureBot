@@ -28,12 +28,12 @@ func SanitizeVersion(msg string) (string, error) {
 }
 
 func SetVersion(env *bmul.SessionData) {
+	config := GetUserConfig(&env.User)
+
 	if env.User.Action == CMD_VERSION {
 		log.Printf("Detected existing action /version")
 
 		env.User.Action = ""
-
-		config := GetUserConfig(&env.User)
 
 		version, err := SanitizeVersion(env.Msg.Message)
 		if err != nil {
@@ -57,14 +57,11 @@ func SetVersion(env *bmul.SessionData) {
 			options = append(options, bmul.Option{Text: v})
 		}
 
-		log.Printf("Serialized versions %v", options)
-
 		env.Res.Affordances.Options = options
-
-		log.Printf("Registered options %v", env.Res.Affordances.Options)
 
 		env.User.Action = CMD_VERSION
 		UpdateUser(&env.User, env)
-		log.Printf("Set user action to /version")
+
+		env.Res.Message = fmt.Sprintf("Your current version is %s, what would you like to change it to?", config.Version)
 	}
 }
