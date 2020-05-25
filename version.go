@@ -27,8 +27,8 @@ func SanitizeVersion(msg string) (string, error) {
 	return "", errors.New(fmt.Sprintf("Version could not be recognized %s", msg))
 }
 
-func SetVersion(env *bmul.SessionData) {
-	config := GetUserConfig(&env.User)
+func SetVersion(env bmul.SessionData) bmul.SessionData {
+	config := DeserializeUserConfig(env.User.Config)
 
 	if env.User.Action == CMD_VERSION {
 		log.Printf("Detected existing action /version")
@@ -38,7 +38,7 @@ func SetVersion(env *bmul.SessionData) {
 			log.Printf("Version is valid, setting to %s", version)
 
 			config.Version = version
-			UpdateUserConfig(&env.User, config)
+			env.User.Config = SerializeUserConfig(config)
 
 			env.User.Action = ""
 			env.Res.Message = fmt.Sprintf("Got it, I've changed your version to %s", config.Version)
@@ -62,4 +62,6 @@ func SetVersion(env *bmul.SessionData) {
 
 		env.Res.Message = fmt.Sprintf("Your current version is %s, what would you like to change it to?", config.Version)
 	}
+
+	return env
 }

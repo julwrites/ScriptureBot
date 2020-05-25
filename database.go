@@ -18,7 +18,7 @@ type UserConfig struct {
 	Subscriptions string `datastore:""`
 }
 
-func OpenClient(ctx *context.Context, env *bmul.SessionData) *datastore.Client {
+func OpenClient(ctx *context.Context, env bmul.SessionData) *datastore.Client {
 	projectId := env.Secrets.PROJECT_ID
 
 	client, err := datastore.NewClient(*ctx, projectId)
@@ -30,7 +30,7 @@ func OpenClient(ctx *context.Context, env *bmul.SessionData) *datastore.Client {
 	return client
 }
 
-func GetUser(env *bmul.SessionData) bmul.UserData {
+func GetUser(env bmul.SessionData) bmul.UserData {
 	ctx := context.Background()
 	client := OpenClient(&ctx, env)
 
@@ -50,15 +50,15 @@ func GetUser(env *bmul.SessionData) bmul.UserData {
 	return user
 }
 
-func UpdateUser(user *bmul.UserData, env *bmul.SessionData) bool {
+func PushUser(env bmul.SessionData) bool {
 	log.Printf("Updating user %v", env.User)
 
 	ctx := context.Background()
 	client := OpenClient(&ctx, env)
 
-	key := datastore.NameKey("User", user.Id, nil)
+	key := datastore.NameKey("User", env.User.Id, nil)
 
-	_, err := client.Put(ctx, key, user)
+	_, err := client.Put(ctx, key, env.User)
 
 	if err != nil {
 		log.Printf("Failed to put to datastore: %v", err)
@@ -68,30 +68,36 @@ func UpdateUser(user *bmul.UserData, env *bmul.SessionData) bool {
 	return true
 }
 
-func GetUserConfig(user *bmul.UserData) UserConfig {
-	var config UserConfig
-	json.Unmarshal([]byte(user.Config), &config)
-
-	return config
+func DeserializeUserConfig(config string) UserConfig {
+	var userConfig UserConfig
+	err := json.Unmarshal([]byte(config), &userConfig)
+	if err != nil {
+		log.Printf("Failed to unmarshal User Config: %v", err)
+	}
+	return userConfig
 }
 
-func UpdateUserConfig(user *bmul.UserData, config UserConfig) {
+func SerializeUserConfig(config UserConfig) string {
 	strConfig, err := json.Marshal(config)
 	if err != nil {
 		log.Printf("Failed to marshal User Config: %v", err)
 	}
-	user.Config = string(strConfig)
+
+	return string(strConfig)
 }
 
-func RegisterUser(env *bmul.SessionData) {
+func RegisterUser(env bmul.SessionData) bmul.SessionData {
 	// Get stored user if any, else default to what we currently have
 	env.User = GetUser(env)
 
 	// Read the stored config
-	config := GetUserConfig(&env.User)
+	config := DeserializeUserConfig(env.User.Config)
 	// If stored config is not complete, set the default data
 	if len(config.Version) == 0 {
 		config.Version = "NIV"
 	}
-	UpdateUserConfig(&env.User, config)
+
+	env.User.Config = SerializeUserConfig(config)
+
+	return env
 }

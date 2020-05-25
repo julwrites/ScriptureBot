@@ -66,7 +66,7 @@ func ParseNodesForPassage(node *html.Node) string {
 }
 
 func GetPassage(doc *html.Node, env *bmul.SessionData) string {
-	passageNode, startErr := FindByClass(doc, fmt.Sprintf("version-%s result-text-style-normal text-html", GetUserConfig(&env.User).Version))
+	passageNode, startErr := FindByClass(doc, fmt.Sprintf("version-%s result-text-style-normal text-html", DeserializeUserConfig(env.User.Config).Version))
 	if startErr != nil {
 		log.Printf("Error parsing for passage: %v", startErr)
 		return ""
@@ -98,19 +98,21 @@ func GetPassage(doc *html.Node, env *bmul.SessionData) string {
 	return passage.String()
 }
 
-func GetBiblePassage(env *bmul.SessionData) {
+func GetBiblePassage(env bmul.SessionData) bmul.SessionData {
 	if len(env.Msg.Message) > 0 {
 
-		doc := QueryBibleGateway(env.Msg.Message, env)
+		doc := QueryBibleGateway(env.Msg.Message, &env)
 
-		ref := GetReference(doc, env)
+		ref := GetReference(doc, &env)
 		log.Printf("Reference retrieved: %s", ref)
 
 		if len(ref) > 0 {
 			log.Printf("Getting passage")
-			env.Res.Message = GetPassage(doc, env)
+			env.Res.Message = GetPassage(doc, &env)
 		}
 	}
+
+	return env
 }
 
 // func main() {

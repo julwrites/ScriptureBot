@@ -12,27 +12,26 @@ import (
 )
 
 func TelegramHandler(res http.ResponseWriter, req *http.Request, secrets *botsecrets.SecretsData) {
-	env := bmul.SessionData{}
 	log.Printf("Loading session data...")
-
-	env.Type = bmul.TYPE_TELEGRAM
-
-	env.Secrets = *secrets
-	log.Printf("\tLoaded secrets...")
-
-	if !bmul.TranslateToProps(req, &env) {
+	env, ok := bmul.TranslateToProps(req, bmul.TYPE_TELEGRAM)
+	if !ok {
 		log.Printf("This message was not translatable to bot language")
 		return
 	}
 
+	env.Secrets = *secrets
+	log.Printf("\tLoaded secrets...")
+
 	log.Printf("Loading user...")
 
-	RegisterUser(&env)
+	env = RegisterUser(env)
 
-	HandleBotLogic(&env)
+	env = HandleBotLogic(env)
 
-	if !bmul.PostFromProps(&env) {
+	if !bmul.PostFromProps(env) {
 		log.Printf("This message was not translatable from bot language")
 		return
 	}
+
+	PushUser(env) // Any change to the user throughout the commands should be put to database
 }

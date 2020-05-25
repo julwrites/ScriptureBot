@@ -15,7 +15,7 @@ func HelpMessage(env *bmul.SessionData) string {
 	//\n/tms - Get a card from the Navigators' Topical Memory System\n/dailydevo - Get reading material right now\n/subscribe - Subscribe to / Unsubscribe from daily reading material\n/search - Search for a passage, lexicon entry, word or phrase\n"
 }
 
-func RunCommands(env *bmul.SessionData) {
+func RunCommands(env bmul.SessionData) bmul.SessionData {
 	if len(env.User.Action) > 0 {
 		log.Printf("Detected user has active action %s", env.User.Action)
 		env.Msg.Command = env.User.Action
@@ -23,7 +23,7 @@ func RunCommands(env *bmul.SessionData) {
 
 	switch env.Msg.Command {
 	case CMD_VERSION:
-		SetVersion(env)
+		env = SetVersion(env)
 		break
 	case CMD_TMS:
 		fallthrough
@@ -34,18 +34,20 @@ func RunCommands(env *bmul.SessionData) {
 	case CMD_LEXICON:
 		fallthrough
 	default:
-		GetBiblePassage(env)
+		env = GetBiblePassage(env)
 	}
+
+	return env
 }
 
-func HandleBotLogic(env *bmul.SessionData) {
-	RunCommands(env)
+func HandleBotLogic(env bmul.SessionData) bmul.SessionData {
+	env = RunCommands(env)
 
 	log.Printf("Commands run, resulting message: %s", env.Res.Message)
 	if len(env.Res.Message) == 0 {
 		log.Printf("This message was not handled by bot")
-		env.Res.Message = HelpMessage(env)
+		env.Res.Message = HelpMessage(&env)
 	}
 
-	UpdateUser(&env.User, env) // Any change to the user throughout the commands should be put to database
+	return env
 }
