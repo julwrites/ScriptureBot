@@ -27,7 +27,7 @@ func TelegramHandler(res http.ResponseWriter, req *http.Request, secrets *botsec
 
 	log.Printf("Loading user...")
 
-	CompareAndUpdateUser(&env)
+	RegisterUser(&env)
 
 	HandleBotLogic(&env)
 

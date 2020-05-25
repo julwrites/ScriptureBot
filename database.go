@@ -83,7 +83,7 @@ func UpdateUserConfig(user *bmul.UserData, config UserConfig) {
 	user.Config = string(strConfig)
 }
 
-func CompareAndUpdateUser(env *bmul.SessionData) {
+func RegisterUser(env *bmul.SessionData) {
 	// Get stored user if any, else default to what we currently have
 	env.User = GetUser(env)
 

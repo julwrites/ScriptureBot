@@ -19,7 +19,7 @@ var VERSIONS = map[string]string{
 }
 
 func SanitizeVersion(msg string) (string, error) {
-	msg = strings.ToUpper(msg)
+	msg = strings.ToUpper(strings.Trim(msg, " "))
 	_, ok := VERSIONS[msg]
 	if ok {
 		return msg, nil
@@ -36,7 +36,7 @@ func SetVersion(env *bmul.SessionData) {
 		env.User.Action = ""
 
 		version, err := SanitizeVersion(env.Msg.Message)
-		if err != nil {
+		if err == nil {
 			log.Printf("Version is valid, setting to %s", version)
 
 			config.Version = version
@@ -46,6 +46,7 @@ func SetVersion(env *bmul.SessionData) {
 			env.Res.Message = fmt.Sprintf("Got it, I've changed your version to %s", config.Version)
 			env.Res.Affordances.Remove = true
 		} else {
+			log.Printf("SanitizeVersion failed %v", err)
 			env.Res.Message = "I didn't recognize that version, please try again"
 		}
 	} else {
