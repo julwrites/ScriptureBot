@@ -86,15 +86,13 @@ func GetPassage(doc *html.Node, env *bmul.SessionData) string {
 		return false
 	})
 
-	log.Printf("Candidate nodes number %d", len(filtNodes))
-
 	textBlocks := MapNodeList(filtNodes, ParseNodesForPassage)
 
 	var passage strings.Builder
 
 	for _, block := range textBlocks {
 		passage.WriteString(block)
-		passage.WriteString("\n\n")
+		passage.WriteString("\n")
 	}
 
 	return passage.String()
