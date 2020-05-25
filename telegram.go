@@ -20,13 +20,13 @@ func TelegramHandler(res http.ResponseWriter, req *http.Request, secrets *botsec
 	}
 
 	env.Secrets = *secrets
-	log.Printf("\tLoaded secrets...")
-
-	log.Printf("Loading user...")
+	log.Printf("Loaded secrets...")
 
 	env = RegisterUser(env)
+	log.Printf("Loaded user...")
 
 	env = HandleBotLogic(env)
+	log.Printf("Handled bot logic...")
 
 	if !bmul.PostFromProps(env) {
 		log.Printf("This message was not translatable from bot language")

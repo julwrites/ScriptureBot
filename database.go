@@ -51,14 +51,14 @@ func GetUser(env bmul.SessionData) bmul.UserData {
 }
 
 func PushUser(env bmul.SessionData) bool {
-	log.Printf("Updating user %v", env.User)
+	log.Printf("Updating user data %v", env.User)
 
 	ctx := context.Background()
 	client := OpenClient(&ctx, env)
 
 	key := datastore.NameKey("User", env.User.Id, nil)
 
-	_, err := client.Put(ctx, key, env.User)
+	_, err := client.Put(ctx, key, &env.User)
 
 	if err != nil {
 		log.Printf("Failed to put to datastore: %v", err)
@@ -98,6 +98,8 @@ func RegisterUser(env bmul.SessionData) bmul.SessionData {
 	}
 
 	env.User.Config = SerializeUserConfig(config)
+
+	log.Printf("User's current state: %v", env.User)
 
 	return env
 }
