@@ -12,6 +12,7 @@ import (
 	"strings"
 
 	botsecrets "github.com/julwrites/BotSecrets"
+	bot "github.com/julwrites/ScriptureBot/pkg/bot"
 )
 
 func bothandler(res http.ResponseWriter, req *http.Request) {
@@ -21,7 +22,7 @@ func bothandler(res http.ResponseWriter, req *http.Request) {
 	switch strings.Trim(req.URL.EscapedPath(), "\n") {
 	case strings.Trim("/"+secrets.TELEGRAM_ID, "\n"):
 		log.Printf("Incoming telegram message")
-		TelegramHandler(res, req, &secrets)
+		bot.TelegramHandler(res, req, &secrets)
 		break
 	default:
 		log.Printf("No appropriate handler")

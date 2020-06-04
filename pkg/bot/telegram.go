@@ -1,7 +1,7 @@
 // Brief: Handler for Telegram-specific messages
 // Primary responsibility: Receive and handle Telegram messages from Request to Response
 
-package main
+package bot
 
 import (
 	"log"
@@ -9,6 +9,8 @@ import (
 
 	bmul "github.com/julwrites/BotMultiplexer"
 	botsecrets "github.com/julwrites/BotSecrets"
+
+	"github.com/julwrites/ScriptureBot/pkg/api"
 )
 
 func TelegramHandler(res http.ResponseWriter, req *http.Request, secrets *botsecrets.SecretsData) {
@@ -22,7 +24,7 @@ func TelegramHandler(res http.ResponseWriter, req *http.Request, secrets *botsec
 	env.Secrets = *secrets
 	log.Printf("Loaded secrets...")
 
-	env = RegisterUser(env)
+	env = api.RegisterUser(env)
 	log.Printf("Loaded user...")
 
 	env = HandleBotLogic(env)
@@ -33,5 +35,5 @@ func TelegramHandler(res http.ResponseWriter, req *http.Request, secrets *botsec
 		return
 	}
 
-	PushUser(env) // Any change to the user throughout the commands should be put to database
+	api.PushUser(env) // Any change to the user throughout the commands should be put to database
 }

@@ -1,7 +1,7 @@
-// Brief: Database
-// Primary responsibility: Key functionality needed for database
+// Brief: API for database handling
+// Primary responsibility: API layer between GCloud datastore and other functionality
 
-package main
+package api
 
 import (
 	"context"

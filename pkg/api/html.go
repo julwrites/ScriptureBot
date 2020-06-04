@@ -1,7 +1,7 @@
 // Brief: HTML handling
-// Primary responsibility: Parsing of HTML
+// Primary responsibility: API for HTML parsing
 
-package main
+package api
 
 import (
 	"errors"

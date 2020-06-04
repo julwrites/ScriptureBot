@@ -1,15 +1,16 @@
-// Brief: Scripture API
-// Primary responsibility: Query calls for Scripture functionality
+// Brief: Bible Passage handling
+// Primary responsibility: Parsing of Bible Passages from HTML
 
-package main
+package api
 
 import (
 	"fmt"
 	"log"
 	"strings"
 
-	bmul "github.com/julwrites/BotMultiplexer"
 	"golang.org/x/net/html"
+
+	bmul "github.com/julwrites/BotMultiplexer"
 )
 
 func GetReference(doc *html.Node, env *bmul.SessionData) string {
@@ -101,7 +102,7 @@ func GetPassage(doc *html.Node, env *bmul.SessionData) string {
 func GetBiblePassage(env bmul.SessionData) bmul.SessionData {
 	if len(env.Msg.Message) > 0 {
 
-		doc := QueryBibleGateway(env.Msg.Message, &env)
+		doc := QueryBiblePassage(env.Msg.Message, &env)
 
 		ref := GetReference(doc, &env)
 		log.Printf("Reference retrieved: %s", ref)
@@ -114,12 +115,3 @@ func GetBiblePassage(env bmul.SessionData) bmul.SessionData {
 
 	return env
 }
-
-// func main() {
-// 	var env bmul.SessionData
-// 	var config UserConfig
-// 	config.Version = "NIV"
-// 	UpdateUserConfig(&env.User, config)
-// 	env.Msg.Message = "gal 1"
-// 	GetBiblePassage(&env)
-// }

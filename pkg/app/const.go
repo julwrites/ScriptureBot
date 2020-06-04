@@ -1,4 +1,4 @@
-package main
+package app
 
 const CMD_VERSION = "version"
 const CMD_SUBSCRIBE = "subscribe"

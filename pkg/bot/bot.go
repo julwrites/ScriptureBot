@@ -1,13 +1,15 @@
 // Brief: Bot logic
 // Primary responsibility: Top level logic layer for bot
 
-package main
+package bot
 
 import (
 	"fmt"
 	"log"
 
 	bmul "github.com/julwrites/BotMultiplexer"
+
+	"github.com/julwrites/ScriptureBot/pkg/app"
 )
 
 func HelpMessage(env *bmul.SessionData) string {
@@ -21,21 +23,7 @@ func RunCommands(env bmul.SessionData) bmul.SessionData {
 		env.Msg.Command = env.User.Action
 	}
 
-	switch env.Msg.Command {
-	case CMD_VERSION:
-		env = SetVersion(env)
-		break
-	case CMD_TMS:
-		fallthrough
-	case CMD_DEVO:
-		fallthrough
-	case CMD_SUBSCRIBE:
-		fallthrough
-	case CMD_LEXICON:
-		fallthrough
-	default:
-		env = GetBiblePassage(env)
-	}
+	env = app.ProcessCommand(env)
 
 	return env
 }

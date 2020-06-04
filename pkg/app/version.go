@@ -1,4 +1,4 @@
-package main
+package app
 
 import (
 	"errors"
@@ -7,6 +7,8 @@ import (
 	"strings"
 
 	bmul "github.com/julwrites/BotMultiplexer"
+
+	"github.com/julwrites/ScriptureBot/pkg/api"
 )
 
 var VERSIONS = map[string]string{
@@ -28,7 +30,7 @@ func SanitizeVersion(msg string) (string, error) {
 }
 
 func SetVersion(env bmul.SessionData) bmul.SessionData {
-	config := DeserializeUserConfig(env.User.Config)
+	config := api.DeserializeUserConfig(env.User.Config)
 
 	if env.User.Action == CMD_VERSION {
 		log.Printf("Detected existing action /version")
@@ -38,7 +40,7 @@ func SetVersion(env bmul.SessionData) bmul.SessionData {
 			log.Printf("Version is valid, setting to %s", version)
 
 			config.Version = version
-			env.User.Config = SerializeUserConfig(config)
+			env.User.Config = api.SerializeUserConfig(config)
 
 			env.User.Action = ""
 			env.Res.Message = fmt.Sprintf("Got it, I've changed your version to %s", config.Version)
