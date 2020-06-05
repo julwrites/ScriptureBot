@@ -14,5 +14,4 @@ jobs:
           go get -v github.com/julwrites/BotSecrets
           go get -v github.com/julwrites/BotMultiplexer
           go get -v github.com/julwrites/ScriptureBot
-          go install
           cd tests && go test
