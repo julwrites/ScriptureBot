@@ -14,6 +14,6 @@ jobs:
           go get -v github.com/julwrites/BotSecrets
           go get -v github.com/julwrites/BotMultiplexer
           ls -al
-          cd pkg/api && go test && cd ../..
-          # cd pkg/app && go test && cd ../..
-          # cd pkg/bot && go test && cd ../..
+          go test github.com/julwrites/ScriptureBot/pkg/api \
+                  github.com/julwrites/ScriptureBot/pkg/app \
+                  github.com/julwrites/ScriptureBot/pkg/bot

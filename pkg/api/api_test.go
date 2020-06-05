@@ -1,9 +1,8 @@
-package test
+package api
 
 import (
 	"testing"
 
-	"github.com/julwrites/ScriptureBot/pkg/api"
 	"golang.org/x/net/html"
 )
 
@@ -47,13 +46,13 @@ func GetTestData() HtmlTestStruct {
 }
 
 func TestGetHtml(t *testing.T) {
-	pos := api.GetHtml("https://www.google.com")
+	pos := GetHtml("https://www.google.com")
 
 	if pos == nil {
 		t.Errorf("Failed GetHtml positive scenario")
 	}
 
-	neg := api.GetHtml("https://www.google.thiscannotbe")
+	neg := GetHtml("https://www.google.thiscannotbe")
 
 	if neg != nil {
 		t.Errorf("Failed GetHtml negative scenario")
@@ -63,13 +62,13 @@ func TestGetHtml(t *testing.T) {
 func TestFindNode(t *testing.T) {
 	root := GetTestData().Root
 
-	pos := api.FindNode(root, func(node *html.Node) bool { return node.Data == "positive" })
+	pos := FindNode(root, func(node *html.Node) bool { return node.Data == "positive" })
 
 	if pos == nil {
 		t.Errorf("Failed FindNode positive scenario")
 	}
 
-	neg := api.FindNode(root, func(node *html.Node) bool { return node.Data == "negative" })
+	neg := FindNode(root, func(node *html.Node) bool { return node.Data == "negative" })
 
 	if neg != nil {
 		t.Errorf("Failed FindNode negative scenario")
@@ -79,13 +78,13 @@ func TestFindNode(t *testing.T) {
 func TestFilterTree(t *testing.T) {
 	root := GetTestData().Root
 
-	pos := api.FilterTree(root, func(node *html.Node) bool { return node.Data == "positive" })
+	pos := FilterTree(root, func(node *html.Node) bool { return node.Data == "positive" })
 
 	if len(pos) != 3 {
 		t.Errorf("Failed TestFilterTree positive scenario")
 	}
 
-	neg := api.FilterTree(root, func(node *html.Node) bool { return node.Data == "negative" })
+	neg := FilterTree(root, func(node *html.Node) bool { return node.Data == "negative" })
 
 	if len(neg) != 0 {
 		t.Errorf("Failed TestFilterTree negative scenario")
@@ -95,13 +94,13 @@ func TestFilterTree(t *testing.T) {
 func TestFilterNodeList(t *testing.T) {
 	list := GetTestData().List
 
-	pos := api.FilterNodeList(list, func(node *html.Node) bool { return node.Data == "positive" })
+	pos := FilterNodeList(list, func(node *html.Node) bool { return node.Data == "positive" })
 
 	if len(pos) != 3 {
 		t.Errorf("Failed FilterNodeList positive scenario")
 	}
 
-	neg := api.FilterNodeList(list, func(node *html.Node) bool { return node.Data == "negative" })
+	neg := FilterNodeList(list, func(node *html.Node) bool { return node.Data == "negative" })
 
 	if len(neg) != 0 {
 		t.Errorf("Failed FilterNodeList negative scenario")
@@ -111,13 +110,13 @@ func TestFilterNodeList(t *testing.T) {
 func TestFilterChildren(t *testing.T) {
 	root := GetTestData().Root
 
-	pos := api.FilterChildren(root, func(node *html.Node) bool { return node.Data == "positive" })
+	pos := FilterChildren(root, func(node *html.Node) bool { return node.Data == "positive" })
 
 	if len(pos) != 2 {
 		t.Errorf("Failed FilterChildren positive scenario")
 	}
 
-	neg := api.FilterChildren(root, func(node *html.Node) bool { return node.Data == "negative" })
+	neg := FilterChildren(root, func(node *html.Node) bool { return node.Data == "negative" })
 
 	if len(neg) != 0 {
 		t.Errorf("Failed FilterChildren negative scenario")
@@ -127,7 +126,7 @@ func TestFilterChildren(t *testing.T) {
 func TestMapTree(t *testing.T) {
 	root := GetTestData().Root
 
-	output := api.MapTree(root, func(node *html.Node) string { return node.Data })
+	output := MapTree(root, func(node *html.Node) string { return node.Data })
 	if len(output) != 4 {
 		t.Errorf("Failed MapTree")
 	}
@@ -136,7 +135,7 @@ func TestMapTree(t *testing.T) {
 func TestMapNodeList(t *testing.T) {
 	list := GetTestData().List
 
-	output := api.MapNodeList(list, func(node *html.Node) string { return node.Data })
+	output := MapNodeList(list, func(node *html.Node) string { return node.Data })
 
 	if len(output) != 3 {
 		t.Errorf("Failed MapNodeList positive scenario")
@@ -146,13 +145,13 @@ func TestMapNodeList(t *testing.T) {
 func TestFindByClass(t *testing.T) {
 	root := GetTestData().Root
 
-	pos, perror := api.FindByClass(root, "positive")
+	pos, perror := FindByClass(root, "positive")
 
 	if pos == nil || perror != nil {
 		t.Errorf("Failed FindByClass positive scenario")
 	}
 
-	neg, nerror := api.FindByClass(root, "negative")
+	neg, nerror := FindByClass(root, "negative")
 
 	if neg != nil || nerror == nil {
 		t.Errorf("Failed FindByClass negative scenario")
@@ -162,7 +161,7 @@ func TestFindByClass(t *testing.T) {
 func TestFilterByNodeType(t *testing.T) {
 	root := GetTestData().Root
 
-	output := api.FilterByNodeType(root, html.ElementNode)
+	output := FilterByNodeType(root, html.ElementNode)
 
 	if len(output) != 2 {
 		t.Errorf("Failed FilterByNodeType")
@@ -171,7 +170,7 @@ func TestFilterByNodeType(t *testing.T) {
 
 // URL Query tests
 func TestQueryBiblePassage(t *testing.T) {
-	doc := api.QueryBiblePassage("gen 1", "NIV")
+	doc := QueryBiblePassage("gen 1", "NIV")
 
 	if doc == nil {
 		t.Errorf("Could not retrieve bible passage")
@@ -179,7 +178,7 @@ func TestQueryBiblePassage(t *testing.T) {
 }
 
 func TestQueryBibleLexicon(t *testing.T) {
-	doc := api.QueryBibleLexicon("beginning", "NIV")
+	doc := QueryBibleLexicon("beginning", "NIV")
 
 	if doc == nil {
 		t.Errorf("Could not retrieve bible passage")
@@ -192,7 +191,7 @@ func TestQueryBibleLexicon(t *testing.T) {
 // 	var data bmul.SessionData
 
 // 	ctx := context.Background()
-// 	client := api.OpenClient(&ctx, data)
+// 	client := OpenClient(&ctx, data)
 
 // 	if client == nil {
 // 		t.Errorf("Could not open client")
