@@ -14,4 +14,4 @@ jobs:
           go get -v github.com/julwrites/BotSecrets
           go get -v github.com/julwrites/BotMultiplexer
           go get -v github.com/julwrites/ScriptureBot
-          cd tests && go test
+          cd $GOPATH/pkg/github.com/julwrites/ScriptureBot/tests && go test
