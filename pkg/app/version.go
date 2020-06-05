@@ -6,8 +6,7 @@ import (
 	"log"
 	"strings"
 
-	bmul "github.com/julwrites/BotMultiplexer"
-
+	"github.com/julwrites/BotMultiplexer/pkg/def"
 	"github.com/julwrites/ScriptureBot/pkg/api"
 )
 
@@ -29,7 +28,7 @@ func SanitizeVersion(msg string) (string, error) {
 	return "", errors.New(fmt.Sprintf("Version could not be recognized %s", msg))
 }
 
-func SetVersion(env bmul.SessionData) bmul.SessionData {
+func SetVersion(env def.SessionData) def.SessionData {
 	config := api.DeserializeUserConfig(env.User.Config)
 
 	if env.User.Action == CMD_VERSION {
@@ -52,10 +51,10 @@ func SetVersion(env bmul.SessionData) bmul.SessionData {
 	} else {
 		log.Printf("Activating action /version")
 
-		var options []bmul.Option
+		var options []def.Option
 
 		for _, v := range VERSIONS {
-			options = append(options, bmul.Option{Text: v})
+			options = append(options, def.Option{Text: v})
 		}
 
 		env.Res.Affordances.Options = options

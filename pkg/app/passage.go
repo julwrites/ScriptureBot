@@ -10,11 +10,11 @@ import (
 
 	"golang.org/x/net/html"
 
-	bmul "github.com/julwrites/BotMultiplexer"
+	"github.com/julwrites/BotMultiplexer/pkg/def"
 	"github.com/julwrites/ScriptureBot/pkg/api"
 )
 
-func GetReference(doc *html.Node, env *bmul.SessionData) string {
+func GetReference(doc *html.Node, env *def.SessionData) string {
 	refNode, err := api.FindByClass(doc, "bcv")
 	if err != nil {
 		log.Printf("Error parsing for reference: %v", err)
@@ -67,7 +67,7 @@ func ParseNodesForPassage(node *html.Node) string {
 	return text
 }
 
-func GetPassage(doc *html.Node, env *bmul.SessionData) string {
+func GetPassage(doc *html.Node, env *def.SessionData) string {
 	passageNode, startErr := api.FindByClass(doc, fmt.Sprintf("version-%s result-text-style-normal text-html", api.DeserializeUserConfig(env.User.Config).Version))
 	if startErr != nil {
 		log.Printf("Error parsing for passage: %v", startErr)
@@ -100,7 +100,7 @@ func GetPassage(doc *html.Node, env *bmul.SessionData) string {
 	return passage.String()
 }
 
-func GetBiblePassage(env bmul.SessionData) bmul.SessionData {
+func GetBiblePassage(env def.SessionData) def.SessionData {
 	if len(env.Msg.Message) > 0 {
 
 		doc := api.QueryBiblePassage(env.Msg.Message, api.DeserializeUserConfig(env.User.Config).Version)

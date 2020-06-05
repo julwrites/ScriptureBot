@@ -1,12 +1,11 @@
 package app
 
 import (
-	bmul "github.com/julwrites/BotMultiplexer"
-
+	"github.com/julwrites/BotMultiplexer/pkg/def"
 	"github.com/julwrites/ScriptureBot/pkg/api"
 )
 
-func GetBibleWord(env *bmul.SessionData) {
+func GetBibleWord(env *def.SessionData) {
 	if len(env.Msg.Message) > 0 {
 		doc := api.QueryBibleLexicon(env.Msg.Message, api.DeserializeUserConfig(env.User.Config).Version)
 

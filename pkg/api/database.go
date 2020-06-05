@@ -9,7 +9,8 @@ import (
 	"log"
 
 	"cloud.google.com/go/datastore"
-	bmul "github.com/julwrites/BotMultiplexer"
+
+	"github.com/julwrites/BotMultiplexer/pkg/def"
 )
 
 type UserConfig struct {
@@ -18,10 +19,8 @@ type UserConfig struct {
 	Subscriptions string `datastore:""`
 }
 
-func OpenClient(ctx *context.Context, env bmul.SessionData) *datastore.Client {
-	projectId := env.Secrets.PROJECT_ID
-
-	client, err := datastore.NewClient(*ctx, projectId)
+func OpenClient(ctx *context.Context, proj string) *datastore.Client {
+	client, err := datastore.NewClient(*ctx, proj)
 	if err != nil {
 		log.Printf("Failed to create Datastore client: %v", err)
 		return nil
@@ -30,19 +29,17 @@ func OpenClient(ctx *context.Context, env bmul.SessionData) *datastore.Client {
 	return client
 }
 
-func GetUser(env bmul.SessionData) bmul.UserData {
+func GetUser(user def.UserData, proj string) def.UserData {
 	ctx := context.Background()
-	client := OpenClient(&ctx, env)
+	client := OpenClient(&ctx, proj)
 
-	key := datastore.NameKey("User", env.User.Id, nil)
-
-	var user bmul.UserData
+	key := datastore.NameKey("User", user.Id, nil)
 
 	err := client.Get(ctx, key, &user)
 	if err != nil {
 		log.Printf("Failed to get user: %v", err)
 
-		return env.User
+		return user
 	}
 
 	log.Printf("Found user %s", user.Username)
@@ -50,15 +47,15 @@ func GetUser(env bmul.SessionData) bmul.UserData {
 	return user
 }
 
-func PushUser(env bmul.SessionData) bool {
-	log.Printf("Updating user data %v", env.User)
+func PushUser(user def.UserData, proj string) bool {
+	log.Printf("Updating user data %v", user)
 
 	ctx := context.Background()
-	client := OpenClient(&ctx, env)
+	client := OpenClient(&ctx, proj)
 
-	key := datastore.NameKey("User", env.User.Id, nil)
+	key := datastore.NameKey("User", user.Id, nil)
 
-	_, err := client.Put(ctx, key, &env.User)
+	_, err := client.Put(ctx, key, &user)
 
 	if err != nil {
 		log.Printf("Failed to put to datastore: %v", err)
@@ -86,20 +83,20 @@ func SerializeUserConfig(config UserConfig) string {
 	return string(strConfig)
 }
 
-func RegisterUser(env bmul.SessionData) bmul.SessionData {
+func RegisterUser(user def.UserData, proj string) def.UserData {
 	// Get stored user if any, else default to what we currently have
-	env.User = GetUser(env)
+	user = GetUser(user, proj)
 
 	// Read the stored config
-	config := DeserializeUserConfig(env.User.Config)
+	config := DeserializeUserConfig(user.Config)
 	// If stored config is not complete, set the default data
 	if len(config.Version) == 0 {
 		config.Version = "NIV"
 	}
 
-	env.User.Config = SerializeUserConfig(config)
+	user.Config = SerializeUserConfig(config)
 
-	log.Printf("User's current state: %v", env.User)
+	log.Printf("User's current state: %v", user)
 
-	return env
+	return user
 }

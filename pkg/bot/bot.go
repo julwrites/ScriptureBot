@@ -7,17 +7,17 @@ import (
 	"fmt"
 	"log"
 
-	bmul "github.com/julwrites/BotMultiplexer"
+	"github.com/julwrites/BotMultiplexer/pkg/def"
 
 	"github.com/julwrites/ScriptureBot/pkg/app"
 )
 
-func HelpMessage(env *bmul.SessionData) string {
+func HelpMessage(env *def.SessionData) string {
 	return fmt.Sprintf("Hello %s! Give me a Bible reference and I'll give you the passage!\nHere are some other things I can do:\n/version - Choose your preferred Bible version", env.User.Firstname)
 	//\n/tms - Get a card from the Navigators' Topical Memory System\n/dailydevo - Get reading material right now\n/subscribe - Subscribe to / Unsubscribe from daily reading material\n/search - Search for a passage, lexicon entry, word or phrase\n"
 }
 
-func RunCommands(env bmul.SessionData) bmul.SessionData {
+func RunCommands(env def.SessionData) def.SessionData {
 	if len(env.User.Action) > 0 {
 		log.Printf("Detected user has active action %s", env.User.Action)
 		env.Msg.Command = env.User.Action
@@ -28,7 +28,7 @@ func RunCommands(env bmul.SessionData) bmul.SessionData {
 	return env
 }
 
-func HandleBotLogic(env bmul.SessionData) bmul.SessionData {
+func HandleBotLogic(env def.SessionData) def.SessionData {
 	env = RunCommands(env)
 
 	log.Printf("Commands run, resulting message: %s", env.Res.Message)

@@ -1,10 +1,8 @@
 package app
 
-import (
-	bmul "github.com/julwrites/BotMultiplexer"
-)
+import "github.com/julwrites/BotMultiplexer/pkg/def"
 
-func ProcessCommand(env bmul.SessionData) bmul.SessionData {
+func ProcessCommand(env def.SessionData) def.SessionData {
 	switch env.Msg.Command {
 	case CMD_VERSION:
 		env = SetVersion(env)
