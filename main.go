@@ -12,7 +12,7 @@ import (
 	"strings"
 
 	botsecrets "github.com/julwrites/BotSecrets"
-	bot "github.com/julwrites/ScriptureBot/pkg/bot"
+	"github.com/julwrites/ScriptureBot/pkg/bot"
 )
 
 func bothandler(res http.ResponseWriter, req *http.Request) {
