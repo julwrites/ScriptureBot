@@ -11,5 +11,7 @@ jobs:
 
       - name: Install, Build, Test 🔧 # This runs a series of commands as if building a live version of the project
         run: |
+          go get github.com/julwrites/BotSecrets
+          go get github.com/julwrites/BotMultiplexer
           go install
-          go test
+          cd tests && go test
