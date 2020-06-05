@@ -11,18 +11,18 @@ import (
 	"path/filepath"
 	"strings"
 
-	botsecrets "github.com/julwrites/BotSecrets"
+	"github.com/julwrites/BotSecrets/pkg/secrets"
 	"github.com/julwrites/ScriptureBot/pkg/bot"
 )
 
 func bothandler(res http.ResponseWriter, req *http.Request) {
 	secretsPath, _ := filepath.Abs("./secrets.yaml")
-	secrets := botsecrets.LoadSecrets(secretsPath)
+	secretsData := secrets.LoadSecrets(secretsPath)
 
 	switch strings.Trim(req.URL.EscapedPath(), "\n") {
-	case strings.Trim("/"+secrets.TELEGRAM_ID, "\n"):
+	case strings.Trim("/"+secretsData.TELEGRAM_ID, "\n"):
 		log.Printf("Incoming telegram message")
-		bot.TelegramHandler(res, req, &secrets)
+		bot.TelegramHandler(res, req, &secretsData)
 		break
 	default:
 		log.Printf("No appropriate handler")

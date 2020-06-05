@@ -7,15 +7,14 @@ import (
 	"log"
 	"net/http"
 
-	botsecrets "github.com/julwrites/BotSecrets"
-
+	"github.com/julwrites/BotSecrets/pkg/secrets"
 	"github.com/julwrites/ScriptureBot/pkg/utils"
 
 	"github.com/julwrites/BotMultiplexer/pkg/def"
 	"github.com/julwrites/BotMultiplexer/pkg/platform"
 )
 
-func TelegramHandler(res http.ResponseWriter, req *http.Request, secrets *botsecrets.SecretsData) {
+func TelegramHandler(res http.ResponseWriter, req *http.Request, secrets *secrets.SecretsData) {
 	log.Printf("Loading session data...")
 	env, ok := platform.TranslateToProps(req, def.TYPE_TELEGRAM)
 	if !ok {
