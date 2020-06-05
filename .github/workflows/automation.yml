@@ -13,5 +13,5 @@ jobs:
         run: |
           go get -v github.com/julwrites/BotSecrets
           go get -v github.com/julwrites/BotMultiplexer
-          go get -v github.com/julwrites/ScriptureBot
-          cd github.com/julwrites/ScriptureBot/tests && go test
+          ls -al
+          cd tests && go test
