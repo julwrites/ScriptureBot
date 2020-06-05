@@ -13,6 +13,7 @@ jobs:
         run: |
           go get -v github.com/julwrites/BotSecrets
           go get -v github.com/julwrites/BotMultiplexer
+          go get -v github.com/julwrites/ScriptureBot
           ls -al
           go test github.com/julwrites/ScriptureBot/pkg/api \
                   github.com/julwrites/ScriptureBot/pkg/app \
