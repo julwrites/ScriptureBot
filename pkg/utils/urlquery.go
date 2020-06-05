@@ -1,7 +1,7 @@
 // Brief: API for url querying
 // Primary responsibility: API layer between querying for URLs and other functionality
 
-package api
+package utils
 
 import (
 	"fmt"

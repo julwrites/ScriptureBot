@@ -1,7 +1,7 @@
 // Brief: API for database handling
 // Primary responsibility: API layer between GCloud datastore and other functionality
 
-package api
+package utils
 
 import (
 	"context"

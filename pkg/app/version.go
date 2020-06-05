@@ -7,7 +7,7 @@ import (
 	"strings"
 
 	"github.com/julwrites/BotMultiplexer/pkg/def"
-	"github.com/julwrites/ScriptureBot/pkg/api"
+	"github.com/julwrites/ScriptureBot/pkg/utils"
 )
 
 var VERSIONS = map[string]string{
@@ -29,7 +29,7 @@ func SanitizeVersion(msg string) (string, error) {
 }
 
 func SetVersion(env def.SessionData) def.SessionData {
-	config := api.DeserializeUserConfig(env.User.Config)
+	config := utils.DeserializeUserConfig(env.User.Config)
 
 	if env.User.Action == CMD_VERSION {
 		log.Printf("Detected existing action /version")
@@ -39,7 +39,7 @@ func SetVersion(env def.SessionData) def.SessionData {
 			log.Printf("Version is valid, setting to %s", version)
 
 			config.Version = version
-			env.User.Config = api.SerializeUserConfig(config)
+			env.User.Config = utils.SerializeUserConfig(config)
 
 			env.User.Action = ""
 			env.Res.Message = fmt.Sprintf("Got it, I've changed your version to %s", config.Version)
