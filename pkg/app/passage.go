@@ -1,7 +1,7 @@
 // Brief: Bible Passage handling
 // Primary responsibility: Parsing of Bible Passages from HTML
 
-package api
+package app
 
 import (
 	"fmt"
@@ -11,10 +11,11 @@ import (
 	"golang.org/x/net/html"
 
 	bmul "github.com/julwrites/BotMultiplexer"
+	"github.com/julwrites/ScriptureBot/pkg/api"
 )
 
 func GetReference(doc *html.Node, env *bmul.SessionData) string {
-	refNode, err := FindByClass(doc, "bcv")
+	refNode, err := api.FindByClass(doc, "bcv")
 	if err != nil {
 		log.Printf("Error parsing for reference: %v", err)
 		return ""
@@ -67,13 +68,13 @@ func ParseNodesForPassage(node *html.Node) string {
 }
 
 func GetPassage(doc *html.Node, env *bmul.SessionData) string {
-	passageNode, startErr := FindByClass(doc, fmt.Sprintf("version-%s result-text-style-normal text-html", DeserializeUserConfig(env.User.Config).Version))
+	passageNode, startErr := api.FindByClass(doc, fmt.Sprintf("version-%s result-text-style-normal text-html", api.DeserializeUserConfig(env.User.Config).Version))
 	if startErr != nil {
 		log.Printf("Error parsing for passage: %v", startErr)
 		return ""
 	}
 
-	filtNodes := FilterChildren(passageNode, func(child *html.Node) bool {
+	filtNodes := api.FilterChildren(passageNode, func(child *html.Node) bool {
 		switch tag := child.Data; tag {
 		case "h1":
 			fallthrough
@@ -87,7 +88,7 @@ func GetPassage(doc *html.Node, env *bmul.SessionData) string {
 		return false
 	})
 
-	textBlocks := MapNodeList(filtNodes, ParseNodesForPassage)
+	textBlocks := api.MapNodeList(filtNodes, ParseNodesForPassage)
 
 	var passage strings.Builder
 
@@ -102,7 +103,7 @@ func GetPassage(doc *html.Node, env *bmul.SessionData) string {
 func GetBiblePassage(env bmul.SessionData) bmul.SessionData {
 	if len(env.Msg.Message) > 0 {
 
-		doc := QueryBiblePassage(env.Msg.Message, &env)
+		doc := api.QueryBiblePassage(env.Msg.Message, api.DeserializeUserConfig(env.User.Config).Version)
 
 		ref := GetReference(doc, &env)
 		log.Printf("Reference retrieved: %s", ref)

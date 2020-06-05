@@ -2,7 +2,6 @@ package app
 
 import (
 	bmul "github.com/julwrites/BotMultiplexer"
-	"github.com/julwrites/ScriptureBot/pkg/api"
 )
 
 func ProcessCommand(env bmul.SessionData) bmul.SessionData {
@@ -19,7 +18,7 @@ func ProcessCommand(env bmul.SessionData) bmul.SessionData {
 	case CMD_LEXICON:
 		fallthrough
 	default:
-		env = api.GetBiblePassage(env)
+		env = GetBiblePassage(env)
 	}
 
 	return env

@@ -22,6 +22,7 @@ func GetHtml(url string) *html.Node {
 	doc, parseErr := html.Parse(res.Body)
 	if parseErr != nil {
 		log.Printf("Error parsing html: %v", parseErr)
+		return nil
 	}
 
 	return doc
@@ -43,17 +44,6 @@ func FindNode(node *html.Node, pred NodePredicate) *html.Node {
 		}
 	}
 	return nil
-}
-
-func FindAllNodes(node *html.Node, pred NodePredicate) []*html.Node {
-	var outNodes []*html.Node
-	if pred(node) {
-		outNodes = append(outNodes, node)
-	}
-	for child := node.FirstChild; child != nil; child = child.NextSibling {
-		outNodes = append(outNodes, FindAllNodes(child, pred)...)
-	}
-	return outNodes
 }
 
 func FilterTree(node *html.Node, pred NodePredicate) []*html.Node {
