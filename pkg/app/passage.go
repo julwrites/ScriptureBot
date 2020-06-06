@@ -54,6 +54,8 @@ func ParseNodesForPassage(node *html.Node) string {
 				parts = append(parts, fmt.Sprintf("^%s^", childText))
 			}
 			break
+		case "p":
+			return ParseNodesForPassage(child)
 		default:
 			parts = append(parts, child.Data)
 		}
@@ -82,8 +84,16 @@ func GetPassage(doc *html.Node, env *def.SessionData) string {
 			fallthrough
 		case "h3":
 			fallthrough
+		case "h4":
+			fallthrough
 		case "p":
 			return true
+		case "div":
+			for _, attr := range child.Attr {
+				if attr.Key == "class" && strings.Contains(attr.Val, "poetry") {
+					return true
+				}
+			}
 		}
 		return false
 	})
@@ -111,6 +121,7 @@ func GetBiblePassage(env def.SessionData) def.SessionData {
 		if len(ref) > 0 {
 			log.Printf("Getting passage")
 			env.Res.Message = GetPassage(doc, &env)
+			log.Printf("Passage retrieved %s", env.Res.Message)
 		}
 	}
 

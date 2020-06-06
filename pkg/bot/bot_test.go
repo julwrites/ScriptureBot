@@ -1,6 +1,7 @@
 package bot
 
 import (
+	"strings"
 	"testing"
 
 	"github.com/julwrites/BotMultiplexer/pkg/def"
@@ -16,7 +17,7 @@ func TestRunCommands(t *testing.T) {
 
 	env = RunCommands(env)
 
-	if len(env.Res.Message) < 100 {
+	if !strings.Contains(env.Res.Message, "Not so the wicked!") {
 		t.Errorf("Failed TestRunCommands Passage command")
 	}
 }
