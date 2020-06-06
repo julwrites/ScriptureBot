@@ -55,7 +55,11 @@ func ParseNodesForPassage(node *html.Node) string {
 			}
 			break
 		case "p":
-			return ParseNodesForPassage(child)
+			parts = append(parts, ParseNodesForPassage(child))
+			break
+		case "br":
+			parts = append(parts, " ")
+			break
 		default:
 			parts = append(parts, child.Data)
 		}
@@ -63,7 +67,7 @@ func ParseNodesForPassage(node *html.Node) string {
 
 	text = strings.Join(parts, "")
 
-	if node.Data == "h1" || node.Data == "h2" || node.Data == "h3" {
+	if node.Data == "h1" || node.Data == "h2" || node.Data == "h3" || node.Data == "h4" {
 		text = fmt.Sprintf("*%s*", text)
 	}
 	return text
