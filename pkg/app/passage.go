@@ -14,7 +14,7 @@ import (
 	"github.com/julwrites/ScriptureBot/pkg/utils"
 )
 
-func GetReference(doc *html.Node, env *def.SessionData) string {
+func GetReference(doc *html.Node) string {
 	refNode, err := utils.FindByClass(doc, "bcv")
 	if err != nil {
 		log.Printf("Error parsing for reference: %v", err)
@@ -105,7 +105,7 @@ func GetBiblePassage(env def.SessionData) def.SessionData {
 
 		doc := utils.QueryBiblePassage(env.Msg.Message, utils.DeserializeUserConfig(env.User.Config).Version)
 
-		ref := GetReference(doc, &env)
+		ref := GetReference(doc)
 		log.Printf("Reference retrieved: %s", ref)
 
 		if len(ref) > 0 {
