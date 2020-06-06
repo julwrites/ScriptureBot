@@ -16,6 +16,6 @@ jobs:
           go get -v github.com/julwrites/BotMultiplexer/pkg/platform
           go get -v github.com/julwrites/ScriptureBot
           ls -al
-          go test github.com/julwrites/ScriptureBot/pkg/api \
+          go test github.com/julwrites/ScriptureBot/pkg/utils \
                   github.com/julwrites/ScriptureBot/pkg/app \
                   github.com/julwrites/ScriptureBot/pkg/bot
