@@ -82,12 +82,27 @@ const (
 )
 
 func IdentifyQuery(db TMSDatabase, query string) TMSQueryType {
+	query = strings.Trim(query, " \t\n")
+
+	if strings.Contains(query, ":") {
+		parts := strings.Split(query, ":")
+		if len(parts) == 2 {
+			if strings.ContainsAny(parts[1], "1234567890") {
+				return Reference
+			}
+		}
+	}
+
 	for _, series := range db.Series {
 		for _, pack := range series.Packs {
 			if strings.Contains(strings.ToUpper(query), pack.ID) && strings.ContainsAny(query, "1234567890") {
 				return ID
 			}
 		}
+	}
+
+	if len(query) > 0 && !strings.ContainsAny(query, "1234567890") {
+		return Tag
 	}
 
 	return Null
