@@ -1,10 +1,14 @@
 package app
 
 import (
+	"errors"
+	"fmt"
 	"io/ioutil"
 	"log"
+	"strings"
 
 	"github.com/julwrites/BotMultiplexer/pkg/def"
+	"github.com/julwrites/ScriptureBot/pkg/utils"
 	"gopkg.in/yaml.v2"
 )
 
@@ -17,15 +21,44 @@ type TMSVerse struct {
 
 type TMSPack struct {
 	ID     string     `yaml:"ID"`
+	Title  string     `yaml:"Title"`
 	Verses []TMSVerse `yaml:"Verses"`
 }
 
-type TMSDatabase struct {
+type TMSSeries struct {
+	ID    string    `yaml:"ID"`
+	Title string    `yaml:"Title"`
 	Packs []TMSPack `yaml:"Packs"`
 }
 
+type TMSDatabase struct {
+	Series []TMSSeries `yaml:"Series"`
+}
+
+type SeriesSelector func(TMSSeries) bool
+type PackSelector func(TMSPack) bool
+type VerseSelector func(TMSVerse) bool
+
+func QueryTMSDatabase(db TMSDatabase, s SeriesSelector, p PackSelector, v VerseSelector) (TMSPack, TMSVerse, error) {
+	for _, series := range db.Series {
+		if s(series) {
+			for _, pack := range series.Packs {
+				if p(pack) {
+					for _, verse := range pack.Verses {
+						if v(verse) {
+							return pack, verse, nil
+						}
+					}
+				}
+			}
+		}
+	}
+
+	return TMSPack{}, TMSVerse{}, errors.New("Could not find any associated verse")
+}
+
 func GetTMSData() TMSDatabase {
-	data, readErr := ioutil.ReadFile("./tms/tms_data.yaml")
+	data, readErr := ioutil.ReadFile("./data/tms_data.yaml")
 	if readErr != nil {
 		log.Printf("Error reading TMS data file: %v", readErr)
 	}
@@ -39,25 +72,110 @@ func GetTMSData() TMSDatabase {
 	return tmsDB
 }
 
-func GetTMSVerse(env def.SessionData) def.SessionData {
-	if len(env.Msg.Message) > 0 {
-		tmsDB := GetTMSData()
+type TMSQueryType string
 
-		// Identify the type of query
+const (
+	ID        TMSQueryType = "ID"
+	Tag       TMSQueryType = "Tag"
+	Reference TMSQueryType = "Reference"
+	Null      TMSQueryType = "0"
+)
 
-		// Check in tmsDB
-		for _, pack := range tmsDB.Packs {
-			for _, verse := range pack.Verses {
-				if verse.ID == env.Msg.Message {
-					log.Printf("ID match with %v", verse)
-				}
+func IdentifyQuery(db TMSDatabase, query string) TMSQueryType {
+	for _, series := range db.Series {
+		for _, pack := range series.Packs {
+			if strings.Contains(strings.ToUpper(query), pack.ID) && strings.ContainsAny(query, "1234567890") {
+				return ID
 			}
 		}
+	}
 
-		// TODO: Unset action
+	return Null
+}
+
+func FormatQuery(query string, t TMSQueryType) string {
+	switch t {
+	case ID:
+		query = strings.ToUpper(query)
+		query = strings.ReplaceAll(query, " \t\n", "")
+		break
+	case Tag:
+		query = strings.ToUpper(query)
+		query = strings.ReplaceAll(query, " \t\n", "")
+		break
+	case Reference:
+		doc := utils.QueryBiblePassage(query, "NIV")
+		query = GetReference(doc)
+		break
+	}
+
+	return query
+}
+
+func GetTMSVerse(env def.SessionData) def.SessionData {
+	tmsDB := GetTMSData()
+
+	if len(env.Msg.Message) > 0 {
+
+		// Identify the type of query
+		queryType := IdentifyQuery(tmsDB, env.Msg.Message)
+
+		query := FormatQuery(env.Msg.Message, queryType)
+
+		var pack TMSPack
+		var verse TMSVerse
+		var err error
+
+		switch queryType {
+		case ID:
+			pack, verse, err = QueryTMSDatabase(tmsDB, func(TMSSeries) bool { return true },
+				func(pack TMSPack) bool { return strings.Contains(query, pack.ID) },
+				func(verse TMSVerse) bool { return strings.Compare(query, verse.ID) == 0 })
+			break
+		case Tag:
+			pack, verse, err = QueryTMSDatabase(tmsDB, func(TMSSeries) bool { return true },
+				func(TMSPack) bool { return true },
+				func(verse TMSVerse) bool {
+					for _, tag := range verse.Tags {
+						if strings.Contains(query, tag) {
+							return true
+						}
+					}
+					return false
+				})
+			break
+		case Reference:
+			pack, verse, err = QueryTMSDatabase(tmsDB, func(TMSSeries) bool { return true },
+				func(TMSPack) bool { return true },
+				func(verse TMSVerse) bool { return strings.Compare(query, verse.Reference) == 0 })
+			break
+		}
+
+		if err != nil {
+			log.Printf("Query TMS Database failed %v", err)
+		}
+
+		env.Msg.Message = verse.Reference
+		env = GetBiblePassage(env)
+
+		if len(env.Res.Message) != 0 {
+			env.Res.Message = fmt.Sprintf("_%s_\n*%s*\n%s\n*%s*", pack.Title, verse.Title, env.Res.Message, verse.Reference)
+			env.User.Action = ""
+
+			log.Printf("%s", env.Res.Message)
+		} else {
+			log.Printf("Failed to retrieve the verse")
+		}
 	} else {
-		// TODO: Set action
-		log.Printf("Could not find any message")
+		log.Printf("Activating action /tms")
+
+		var series []string
+		for _, s := range tmsDB.Series {
+			series = append(series, s.ID)
+		}
+
+		env.User.Action = CMD_TMS
+		env.Res.Message = fmt.Sprintf("Tell me which TMS verse you would like using the number (e.g. A1) the reference (e.g. 2 Corinthians 5 : 17)\nAlternatively, give me a topic and I'll try to find a suitable verse!\n\nSupported TMS Series':%s", strings.Join(series, "\n-"))
 	}
 
 	return env
