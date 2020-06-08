@@ -34,7 +34,7 @@ func TestGetTMSVerse(t *testing.T) {
 		t.Errorf("Failed TestGetTMSVerse word scenario")
 	}
 
-	env.Msg.Message = "1 John 3:16"
+	env.Msg.Message = "F5"
 	env = GetTMSVerse(env)
 
 	if len(env.Res.Message) == 0 {
