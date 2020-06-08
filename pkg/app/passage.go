@@ -73,8 +73,8 @@ func ParseNodesForPassage(node *html.Node) string {
 	return text
 }
 
-func GetPassage(doc *html.Node, env *def.SessionData) string {
-	passageNode, startErr := utils.FindByClass(doc, fmt.Sprintf("version-%s result-text-style-normal text-html", utils.DeserializeUserConfig(env.User.Config).Version))
+func GetPassage(doc *html.Node, version string) string {
+	passageNode, startErr := utils.FindByClass(doc, fmt.Sprintf("version-%s result-text-style-normal text-html", version))
 	if startErr != nil {
 		log.Printf("Error parsing for passage: %v", startErr)
 		return ""
@@ -102,7 +102,7 @@ func GetPassage(doc *html.Node, env *def.SessionData) string {
 		return false
 	})
 
-	textBlocks := utils.MapNodeList(filtNodes, ParseNodesForPassage)
+	textBlocks := utils.MapNodeListToString(filtNodes, ParseNodesForPassage)
 
 	var passage strings.Builder
 
@@ -124,7 +124,7 @@ func GetBiblePassage(env def.SessionData) def.SessionData {
 
 		if len(ref) > 0 {
 			log.Printf("Getting passage")
-			env.Res.Message = GetPassage(doc, &env)
+			env.Res.Message = GetPassage(doc, utils.DeserializeUserConfig(env.User.Config).Version)
 			log.Printf("Passage retrieved %s", env.Res.Message)
 		}
 	}

@@ -1,0 +1,243 @@
+Packs:
+  - ID: "TMS60"
+    Verses:
+      - ID: "A1"
+        Title: "Christ the Center"
+        Reference: "2 Corinthians 5 : 17"
+        Tags: ["Christ Jesus", "New Creation", "Old", "New"]
+      - ID: "A2"
+        Title: "Christ the Center"
+        Reference: "Galatians 2 : 20"
+        Tags: ["Christ Jesus", "Christ Crucified", "Faith", "Love"]
+      - ID: "A3"
+        Title: "Obedience to Christ"
+        Reference: "Romans 12 : 1"
+        Tags: ["Mercy", "Lord God", "Living Sacrifice", "Worship"]
+      - ID: "A4"
+        Title: "Obedience to Christ"
+        Reference: "John 14 : 21"
+        Tags: ["Obey", "Love", "Lord God", "Jesus Christ"]
+      - ID: "A5"
+        Title: "The Word"
+        Reference: "2 Timothy 3 : 16"
+        Tags: ["Lord God", "Scripture", "Teaching", "Righteousness"]
+      - ID: "A6"
+        Title: "The Word"
+        Reference: "Joshua 1 : 8"
+        Tags: ["Law", "Meditate", "Do", "Prosperous"]
+      - ID: "A7"
+        Title: "Prayer"
+        Reference: "John 15 : 7"
+        Tags: ["Remain", "Ask", "Given", "Pray"]
+      - ID: "A8"
+        Title: "Prayer"
+        Reference: "Philippians 4 : 6 - 7"
+        Tags: ["Pray", "Petition", "Request", "Peace"]
+      - ID: "A9"
+        Title: "Fellowship"
+        Reference: "Matthew 18 : 20"
+        Tags: ["Come", "Together", "Jesus Christ", "Name"]
+      - ID: "A10"
+        Title: "Fellowship"
+        Reference: "Hebrews 10 : 24 - 25"
+        Tags: ["One Another", "Love", "Good Deeds", "Encourage"]
+      - ID: "A11"
+        Title: "Witnessing"
+        Reference: "Matthew 4 : 19"
+        Tags: ["Follow", "Fishers", "Men", "Jesus Christ"]
+      - ID: "A12"
+        Title: "Witnessing"
+        Reference: "Romans 1 : 16"
+        Tags: ["Gospel", "Power", "Lord God", "Salvation"]
+      - ID: "B1"
+        Title: "All have Sinned"
+        Reference: "Romans 3 : 23"
+        Tags: ["Sin", "Fall", "Glory", "Lord God"]
+      - ID: "B2"
+        Title: "All have Sinned"
+        Reference: "Isaiah 53 : 6"
+        Tags: ["Astray", "Own Way", "Iniquity", "Jesus Christ"]
+      - ID: "B3"
+        Title: "Sin's Penalty"
+        Reference: "Romans 6 : 23"
+        Tags: ["Sin", "Death", "Gift", "Life"]
+      - ID: "B4"
+        Title: "Sin's Penalty"
+        Reference: "Hebrews 9 : 27"
+        Tags: ["Death", "Judgement", "Man", "Destiny"]
+      - ID: "B5"
+        Title: "Christ paid the Penalty"
+        Reference: "Romans 5 : 8"
+        Tags: ["Lord God", "Love", "Sinner", "Christ Jesus"]
+      - ID: "B6"
+        Title: "Christ paid the Penalty"
+        Reference: "1 Peter 3 : 18"
+        Tags: ["Christ Jesus", "Died", "Sins", "Reconcile"]
+      - ID: "B7"
+        Title: "Salvation not by Works"
+        Reference: "Ephesians 2 : 8 - 9"
+        Tags: ["Grace", "Salvation", "Faith", "Works"]
+      - ID: "B8"
+        Title: "Salvation not by Works"
+        Reference: "Titus 3 : 5"
+        Tags: ["Salvation", "Righteous", "Mercy", "Holy Spirit"]
+      - ID: "B9"
+        Title: "Must receive Christ"
+        Reference: "John 1 : 12"
+        Tags: ["Received", "Believe", "Children", "Lord God"]
+      - ID: "B10"
+        Title: "Must receive Christ"
+        Reference: "Revelation 3 : 20"
+        Tags: ["Here", "Knock", "Hears", "Opens"]
+      - ID: "B11"
+        Title: "Assurance of Salvation"
+        Reference: "1 John 5 : 13"
+        Tags: ["Believe", "Christ Jesus", "Eternal Life", "Know"]
+      - ID: "B12"
+        Title: "Assurance of Salvation"
+        Reference: "John 5 : 24"
+        Tags: ["Hears", "Believe", "Eternal Life", "Life"]
+      - ID: "C1"
+        Title: "His Spirit"
+        Reference: "1 Corinthians 3 : 16"
+        Tags: ["Temple", "Lord God", "Spirit", "Within"]
+      - ID: "C2"
+        Title: "His Spirit"
+        Reference: "1 Corinthians 2 : 12"
+        Tags: ["World", "Spirit", "Lord God", "Freely"]
+      - ID: "C3"
+        Title: "His Strength"
+        Reference: "Isaiah 41 : 10"
+        Tags: ["Fear", "Dismay", "Strengthen", "Help"]
+      - ID: "C4"
+        Title: "His Strength"
+        Reference: "Philippians 4 : 13"
+        Tags: ["Do", "Everything", "Strengthen", "Christ"]
+      - ID: "C5"
+        Title: "His Faithfulness"
+        Reference: "Lamentations 3 : 22 - 23"
+        Tags: ["Faithfulness", "Love", "Compassions", "Change"]
+      - ID: "C6"
+        Title: "His Faithfulness"
+        Reference: "Numbers 23 : 19"
+        Tags: ["Lie", "Change", "Say", "Act"]
+      - ID: "C7"
+        Title: "His Peace"
+        Reference: "Isaiah 26 : 3"
+        Tags: ["Peace", "Lord God", "Steadfast", "Trust"]
+      - ID: "C8"
+        Title: "His Peace"
+        Reference: "1 Peter 5 : 7"
+        Tags: ["Lord God", "Anxiety", "Care", "Worry"]
+      - ID: "C9"
+        Title: "His Provision"
+        Reference: "Romans 8 : 32"
+        Tags: ["Lord God", "Son", "Gracious", "Give"]
+      - ID: "C10"
+        Title: "His Provision"
+        Reference: "Philippians 4 : 19"
+        Tags: ["Need", "Riches", "Christ Jesus", "Lord God"]
+      - ID: "C11"
+        Title: "His Help in Temptation"
+        Reference: "Hebrews 2 : 18"
+        Tags: ["Suffered", "Tempted", "Help", "Temptation"]
+      - ID: "C12"
+        Title: "His Help in Temptation"
+        Reference: "Psalms 119 : 9, 11"
+        Tags: ["Pure", "Word", "Heart", "Sin"]
+      - ID: "D1"
+        Title: "Put Christ First"
+        Reference: "Matthew 6 : 33"
+        Tags: ["Christ Jesus", "First", "Kingdom", "Righteousness"]
+      - ID: "D2"
+        Title: "Put Christ First"
+        Reference: "Luke 9 : 23"
+        Tags: ["Christ Jesus", "Deny", "Cross", "Follow"]
+      - ID: "D3"
+        Title: "Separate from the World"
+        Reference: "1 John 2 : 15 - 16"
+        Tags: ["World", "Lust", "Pride", "Craving"]
+      - ID: "D4"
+        Title: "Separate from the World"
+        Reference: "Romans 12 : 2"
+        Tags: ["World", "Conform", "Transforme", "Renewing"]
+      - ID: "D5"
+        Title: "Be Steadfast"
+        Reference: "1 Corinthians 15 : 58"
+        Tags: ["Steadfast", "Labor", "Work", "Stand Firm"]
+      - ID: "D6"
+        Title: "Be Steadfast"
+        Reference: "Hebrews 12 : 3"
+        Tags: ["Endure", "Opposition", "Weary", "Lose Heart"]
+      - ID: "D7"
+        Title: "Serve Others"
+        Reference: "Mark 10 : 45"
+        Tags: ["Serve", "Ransom", "Give", "Christ Jesus"]
+      - ID: "D8"
+        Title: "Serve Others"
+        Reference: "2 Corinthians 4 : 5"
+        Tags: ["Serve", "Servants", "Christ Jesus", "Lord"]
+      - ID: "D9"
+        Title: "Give Generously"
+        Reference: "Proverbs 3 : 9 - 10"
+        Tags: ["Tithe", "First", "Filled", "Overflow"]
+      - ID: "D10"
+        Title: "Give Generously"
+        Reference: "2 Corinthians 9 : 6 - 7"
+        Tags: ["Tithe", "Give", "Generous", "Wealth"]
+      - ID: "D11"
+        Title: "Develop World Vision"
+        Reference: "Acts 1 : 8"
+        Tags: ["Power", "Holy Spirit", "Witness", "World"]
+      - ID: "D12"
+        Title: "Develop World Vision"
+        Reference: "Matthew 28 : 19 - 20"
+        Tags: ["Disciples", "Baptise", "End", "Teaching"]
+      - ID: "E1"
+        Title: "Love"
+        Reference: "John 13 : 34 - 35"
+        Tags: ["Jesus Christ", "Love", "Disciples", "One Another"]
+      - ID: "E2"
+        Title: "Love"
+        Reference: "1 John 3 : 18"
+        Tags: ["Love", "Words", "Actions", "Truth"]
+      - ID: "E3"
+        Title: "Humility"
+        Reference: "Philippians 2 : 3 - 4"
+        Tags: ["Selfish", "Conceit", "Humility", "Interests"]
+      - ID: "E4"
+        Title: "Humility"
+        Reference: "1 Peter 5 : 5 - 6"
+        Tags: ["Submission", "Humility", "Proud", "Humble"]
+      - ID: "E5"
+        Title: "Purity"
+        Reference: "Ephesians 5 : 3"
+        Tags: ["Sexual Immorality", "Impurity", "Greed", "Improper", "Holy"]
+      - ID: "E6"
+        Title: "Purity"
+        Reference: "1 Peter 2 : 11"
+        Tags: ["Aliens", "Strangers", "Abstain", "Sin"]
+      - ID: "E7"
+        Title: "Honesty"
+        Reference: "Leviticus 19 : 11"
+        Tags: ["Lie", "Cheat", "Steal", "Deception"]
+      - ID: "E8"
+        Title: "Honesty"
+        Reference: "Acts 24 : 16"
+        Tags: ["Conscience", "Honesty", "Integrity", "Lord God"]
+      - ID: "E9"
+        Title: "Faith"
+        Reference: "Hebrews 11 : 6"
+        Tags: ["Lord God", "Believe", "Seek", "Faith"]
+      - ID: "E10"
+        Title: "Faith"
+        Reference: "Romans 4 : 20 - 21"
+        Tags: ["Unbelief", "Faith", "Lord God", "Promise"]
+      - ID: "E11"
+        Title: "Good Works"
+        Reference: "Galatians 6 : 9 - 10"
+        Tags: ["Good", "Give Up", "Believers", "Do Good"]
+      - ID: "E12"
+        Title: "Good Works"
+        Reference: "Matthew 5 : 16"
+        Tags: ["Light", "Shine", "Good", "Praise"]

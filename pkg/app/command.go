@@ -8,13 +8,14 @@ func ProcessCommand(env def.SessionData) def.SessionData {
 		env = SetVersion(env)
 		break
 	case CMD_TMS:
-		fallthrough
+		break
 	case CMD_DEVO:
-		fallthrough
+		break
 	case CMD_SUBSCRIBE:
-		fallthrough
+		break
 	case CMD_LEXICON:
-		fallthrough
+		env = GetBibleWord(env)
+		break
 	default:
 		env = GetBiblePassage(env)
 	}

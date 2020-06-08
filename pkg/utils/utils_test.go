@@ -123,19 +123,19 @@ func TestFilterChildren(t *testing.T) {
 	}
 }
 
-func TestMapTree(t *testing.T) {
+func TestMapTreeToString(t *testing.T) {
 	root := GetTestData().Root
 
-	output := MapTree(root, func(node *html.Node) string { return node.Data })
+	output := MapTreeToString(root, func(node *html.Node) string { return node.Data })
 	if len(output) != 4 {
 		t.Errorf("Failed MapTree")
 	}
 }
 
-func TestMapNodeList(t *testing.T) {
+func TestMapNodeListToString(t *testing.T) {
 	list := GetTestData().List
 
-	output := MapNodeList(list, func(node *html.Node) string { return node.Data })
+	output := MapNodeListToString(list, func(node *html.Node) string { return node.Data })
 
 	if len(output) != 3 {
 		t.Errorf("Failed MapNodeList positive scenario")
@@ -184,16 +184,3 @@ func TestQueryBibleLexicon(t *testing.T) {
 		t.Errorf("Could not retrieve bible passage")
 	}
 }
-
-// Database tests
-
-// func TestOpenClient(t *testing.T) {
-// 	var data bmul.SessionData
-
-// 	ctx := context.Background()
-// 	client := OpenClient(&ctx, data)
-
-// 	if client == nil {
-// 		t.Errorf("Could not open client")
-// 	}
-// }

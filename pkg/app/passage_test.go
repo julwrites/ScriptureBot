@@ -18,6 +18,16 @@ func TestGetReference(t *testing.T) {
 	}
 }
 
+func TestGetPassage(t *testing.T) {
+	doc := utils.QueryBiblePassage("gen 1", "NIV")
+
+	passage := GetPassage(doc, "NIV")
+
+	if len(passage) == 0 {
+		t.Errorf("Failed TestGetPassage")
+	}
+}
+
 func TestGetBiblePassage(t *testing.T) {
 	var env def.SessionData
 	env.Msg.Message = "gen 1"

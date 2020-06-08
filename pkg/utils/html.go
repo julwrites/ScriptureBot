@@ -81,16 +81,16 @@ func FilterChildren(node *html.Node, pred NodePredicate) []*html.Node {
 
 type NodeTransform func(*html.Node) string
 
-func MapTree(node *html.Node, tran NodeTransform) []string {
+func MapTreeToString(node *html.Node, tran NodeTransform) []string {
 	var output []string
 	output = append(output, tran(node))
 	for child := node.FirstChild; child != nil; child = child.NextSibling {
-		output = append(output, MapTree(child, tran)...)
+		output = append(output, MapTreeToString(child, tran)...)
 	}
 	return output
 }
 
-func MapNodeList(nodes []*html.Node, tran NodeTransform) []string {
+func MapNodeListToString(nodes []*html.Node, tran NodeTransform) []string {
 	var output []string
 	for _, node := range nodes {
 		output = append(output, tran(node))
