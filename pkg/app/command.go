@@ -8,6 +8,7 @@ func ProcessCommand(env def.SessionData) def.SessionData {
 		env = SetVersion(env)
 		break
 	case CMD_TMS:
+		env = GetTMSVerse(env)
 		break
 	case CMD_DEVO:
 		break
