@@ -17,6 +17,7 @@ import (
 func GetReference(doc *html.Node) string {
 	refNode, err := utils.FindByClass(doc, "bcv")
 	if err != nil {
+		log.Printf("Received %v", strings.Join(utils.MapTreeToString(doc, func(node *html.Node) string { return node.Data }), "|||"))
 		log.Printf("Error parsing for reference: %v", err)
 		return ""
 	}

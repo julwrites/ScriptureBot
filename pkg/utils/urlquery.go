@@ -11,7 +11,7 @@ import (
 )
 
 func QueryBiblePassage(ref string, ver string) *html.Node {
-	query := fmt.Sprintf("https://www.biblegateway.com/passage/?search=%s&version=%s", ref, ver)
+	query := fmt.Sprintf("https://classic.biblegateway.com/passage/?search=%s&version=%s&interface=print", ref, ver)
 
 	log.Printf("Query String: %s", query)
 
