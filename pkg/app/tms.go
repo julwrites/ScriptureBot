@@ -130,8 +130,17 @@ func FormatQuery(query string, t TMSQueryType) string {
 func GetTMSVerse(env def.SessionData) def.SessionData {
 	tmsDB := GetTMSData()
 
-	if len(env.Msg.Message) > 0 {
+	if len(env.Msg.Message) == 0 {
+		log.Printf("Activating action /tms")
 
+		var series []string
+		for _, s := range tmsDB.Series {
+			series = append(series, s.ID)
+		}
+
+		env.User.Action = CMD_TMS
+		env.Res.Message = fmt.Sprintf("Tell me which TMS verse you would like using the number (e.g. A1) the reference (e.g. 2 Corinthians 5 : 17)\nAlternatively, give me a topic and I'll try to find a suitable verse!\n\nSupported TMS Series':%s", strings.Join(series, "\n-"))
+	} else {
 		// Identify the type of query
 		queryType := IdentifyQuery(tmsDB, env.Msg.Message)
 
@@ -170,27 +179,19 @@ func GetTMSVerse(env def.SessionData) def.SessionData {
 			log.Printf("Query TMS Database failed %v", err)
 		}
 
+		env.User.Action = ""
 		env.Msg.Message = verse.Reference
 		env = GetBiblePassage(env)
 
 		if len(env.Res.Message) != 0 {
 			env.Res.Message = fmt.Sprintf("_%s_\n*%s*\n%s\n*%s*", pack.Title, verse.Title, env.Res.Message, verse.Reference)
-			env.User.Action = ""
 
 			log.Printf("%s", env.Res.Message)
 		} else {
+			env.Res.Message = fmt.Sprintf("I couldn't find a relevant verse")
 			log.Printf("Failed to retrieve the verse")
 		}
-	} else {
-		log.Printf("Activating action /tms")
 
-		var series []string
-		for _, s := range tmsDB.Series {
-			series = append(series, s.ID)
-		}
-
-		env.User.Action = CMD_TMS
-		env.Res.Message = fmt.Sprintf("Tell me which TMS verse you would like using the number (e.g. A1) the reference (e.g. 2 Corinthians 5 : 17)\nAlternatively, give me a topic and I'll try to find a suitable verse!\n\nSupported TMS Series':%s", strings.Join(series, "\n-"))
 	}
 
 	return env
