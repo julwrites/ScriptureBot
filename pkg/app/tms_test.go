@@ -9,7 +9,7 @@ import (
 )
 
 func TestGetTMSData(t *testing.T) {
-	db := GetTMSData()
+	db := GetTMSData("../../resource")
 
 	if len(db.Series) == 0 {
 		t.Errorf("Failed to Get TMS Data Series")
@@ -62,7 +62,7 @@ func TestGetTMSData(t *testing.T) {
 }
 
 func TestQueryTMSDatabase(t *testing.T) {
-	db := GetTMSData()
+	db := GetTMSData("../../resource")
 
 	var pack TMSPack
 	var verse TMSVerse
@@ -118,7 +118,7 @@ func TestQueryTMSDatabase(t *testing.T) {
 }
 
 func TestIdentifyQuery(t *testing.T) {
-	db := GetTMSData()
+	db := GetTMSData("../../resource")
 
 	var queryType TMSQueryType
 
@@ -146,6 +146,7 @@ func TestGetTMSVerse(t *testing.T) {
 	var conf utils.UserConfig
 	conf.Version = "NIV"
 	env.User.Config = utils.SerializeUserConfig(conf)
+	env.ResourcePath = "../../resource"
 
 	env.Msg.Message = "A1"
 	env = GetTMSVerse(env)

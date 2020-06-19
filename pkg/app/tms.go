@@ -57,8 +57,12 @@ func QueryTMSDatabase(db TMSDatabase, s SeriesSelector, p PackSelector, v VerseS
 	return TMSPack{}, TMSVerse{}, errors.New("Could not find any associated verse")
 }
 
-func GetTMSData() TMSDatabase {
-	data, readErr := ioutil.ReadFile("./data/tms_data.yaml")
+func GetTMSData(dataPath string) TMSDatabase {
+	var path []string
+	path = append(path, dataPath)
+	path = append(path, "tms_data.yaml")
+
+	data, readErr := ioutil.ReadFile(strings.Join(path, "/"))
 	if readErr != nil {
 		log.Printf("Error reading TMS data file: %v", readErr)
 	}
@@ -128,7 +132,7 @@ func FormatQuery(query string, t TMSQueryType) string {
 }
 
 func GetTMSVerse(env def.SessionData) def.SessionData {
-	tmsDB := GetTMSData()
+	tmsDB := GetTMSData(env.ResourcePath)
 
 	if len(env.Msg.Message) == 0 {
 		log.Printf("Activating action /tms")
