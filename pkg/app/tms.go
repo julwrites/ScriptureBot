@@ -138,12 +138,13 @@ func GetTMSVerse(env def.SessionData) def.SessionData {
 		log.Printf("Activating action /tms")
 
 		var series []string
+		series = append(series, "")
 		for _, s := range tmsDB.Series {
 			series = append(series, s.ID)
 		}
 
 		env.User.Action = CMD_TMS
-		env.Res.Message = fmt.Sprintf("Tell me which TMS verse you would like using the number (e.g. A1) the reference (e.g. 2 Corinthians 5 : 17)\nAlternatively, give me a topic and I'll try to find a suitable verse!\n\nSupported TMS Series':%s", strings.Join(series, "\n-"))
+		env.Res.Message = fmt.Sprintf("Tell me which TMS verse you would like using the number (e.g. A1) the reference (e.g. 2 Corinthians 5 : 17)\nAlternatively, give me a topic and I'll try to find a suitable verse!\nSupported TMS Series:\n%s", strings.Join(series, "\n- "))
 	} else {
 		// Identify the type of query
 		queryType := IdentifyQuery(tmsDB, env.Msg.Message)
