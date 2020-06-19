@@ -22,7 +22,7 @@ ScriptureBot is built as a 5 layer service:
 4. Outgoing Translation Layer to Platform specific properties
 5. Web App (POST)
 
-The Translation Layer is implemented in [BotMultiplexer](http://github.com/julwrites/BotMultiplexer), which abstracts all the translation tasks from the Logic layer. 
+The Translation Layer is implemented in [BotPlatform](http://github.com/julwrites/BotPlatform), which abstracts all the translation tasks from the Logic layer. 
 
 Additionally there is a [BotSecrets](http://github.com/julwrites/BotSecrets) integration with the WebApp layer which provides all sensitive data to the bot on a as-needed basis.
 

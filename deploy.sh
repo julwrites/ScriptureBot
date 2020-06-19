@@ -11,13 +11,11 @@ git pull
 go install
 
 # Update and install the sub modules
-cd ../BotSecrets
+cd ../BotPlatform
 git pull
-go install github.com/julwrites/BotSecrets/pkg/secrets
-cd ../BotMultiplexer
-git pull
-go install github.com/julwrites/BotMultiplexer/pkg/def
-go install github.com/julwrites/BotMultiplexer/pkg/platform
+go install github.com/julwrites/BotPlatform/pkg/def
+go install github.com/julwrites/BotPlatform/pkg/secrets
+go install github.com/julwrites/BotPlatform/pkg/platform
 cd ../ScriptureBot
 
 echo Deploying app

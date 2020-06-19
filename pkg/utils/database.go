@@ -10,7 +10,7 @@ import (
 
 	"cloud.google.com/go/datastore"
 
-	"github.com/julwrites/BotMultiplexer/pkg/def"
+	"github.com/julwrites/BotPlatform/pkg/def"
 )
 
 type UserConfig struct {

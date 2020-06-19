@@ -11,9 +11,9 @@ jobs:
 
       - name: Install, Build, Test 🔧 # This runs a series of commands as if building a live version of the project
         run: |
-          go get -v github.com/julwrites/BotSecrets/pkg/secrets
-          go get -v github.com/julwrites/BotMultiplexer/pkg/def
-          go get -v github.com/julwrites/BotMultiplexer/pkg/platform
+          go get -v github.com/julwrites/BotPlatform/pkg/secrets
+          go get -v github.com/julwrites/BotPlatform/pkg/def
+          go get -v github.com/julwrites/BotPlatform/pkg/platform
           go get -v github.com/julwrites/ScriptureBot
           ls -al
           go test github.com/julwrites/ScriptureBot/pkg/utils \

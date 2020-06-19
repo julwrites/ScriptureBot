@@ -1,6 +1,6 @@
 package app
 
-import "github.com/julwrites/BotMultiplexer/pkg/def"
+import "github.com/julwrites/BotPlatform/pkg/def"
 
 func ProcessCommand(env def.SessionData) def.SessionData {
 	switch env.Msg.Command {

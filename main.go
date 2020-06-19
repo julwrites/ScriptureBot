@@ -11,7 +11,7 @@ import (
 	"path/filepath"
 	"strings"
 
-	"github.com/julwrites/BotSecrets/pkg/secrets"
+	"github.com/julwrites/BotPlatform/pkg/secrets"
 	"github.com/julwrites/ScriptureBot/pkg/bot"
 )
 

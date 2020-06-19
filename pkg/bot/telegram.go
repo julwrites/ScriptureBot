@@ -7,11 +7,11 @@ import (
 	"log"
 	"net/http"
 
-	"github.com/julwrites/BotSecrets/pkg/secrets"
+	"github.com/julwrites/BotPlatform/pkg/secrets"
 	"github.com/julwrites/ScriptureBot/pkg/utils"
 
-	"github.com/julwrites/BotMultiplexer/pkg/def"
-	"github.com/julwrites/BotMultiplexer/pkg/platform"
+	"github.com/julwrites/BotPlatform/pkg/def"
+	"github.com/julwrites/BotPlatform/pkg/platform"
 )
 
 func TelegramHandler(res http.ResponseWriter, req *http.Request, secrets *secrets.SecretsData) {

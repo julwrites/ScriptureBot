@@ -4,7 +4,7 @@ import (
 	"log"
 	"strings"
 
-	"github.com/julwrites/BotMultiplexer/pkg/def"
+	"github.com/julwrites/BotPlatform/pkg/def"
 	"github.com/julwrites/ScriptureBot/pkg/utils"
 	"golang.org/x/net/html"
 )

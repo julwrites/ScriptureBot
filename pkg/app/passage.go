@@ -10,7 +10,7 @@ import (
 
 	"golang.org/x/net/html"
 
-	"github.com/julwrites/BotMultiplexer/pkg/def"
+	"github.com/julwrites/BotPlatform/pkg/def"
 	"github.com/julwrites/ScriptureBot/pkg/utils"
 )
 
