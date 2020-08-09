@@ -35,21 +35,15 @@ func GetDesiringGodArticles() []def.Option {
 	})
 
 	for _, node := range itemNodes {
-		log.Printf("DesiringGod RSS itemtitle nodes %v", node)
-
 		titleNode := utils.FindNode(node, func(node *html.Node) bool {
 			return node.Data == "title"
 		})
 		linkNode := utils.FindNode(node, func(node *html.Node) bool {
-			return node.Data == "link"
+			return strings.Contains(node.Data, "http://rss.desiringgod.org/")
 		})
 
-		label := strings.Join(utils.MapTreeToString(titleNode, func(node *html.Node) string {
-			return node.Data
-		}), " ")
-		link := strings.Join(utils.MapTreeToString(linkNode, func(node *html.Node) string {
-			return node.Data
-		}), " ")
+		label := titleNode.FirstChild.Data
+		link := linkNode.Data
 
 		log.Printf("Label: %s, Link: %s", label, link)
 
