@@ -6,6 +6,8 @@ import (
 	"log"
 	"strings"
 
+	"github.com/julwrites/BotPlatform/pkg/platform"
+
 	"github.com/julwrites/BotPlatform/pkg/def"
 )
 
@@ -85,6 +87,11 @@ func GetDevo(env def.SessionData) def.SessionData {
 		devo, err := SanitizeDevo(env.Msg.Message)
 		if err == nil {
 			log.Printf("Devotional is valid, retrieving %s", devo)
+
+			env.Res.Affordances.Remove = true
+			env.Res.Message = "Just a moment..."
+
+			platform.PostFromProps(env)
 
 			// Retrieve devotional
 			env.Res = GetDevotionalData(env, devo)
