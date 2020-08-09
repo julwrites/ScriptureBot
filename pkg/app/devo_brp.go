@@ -1,6 +1,7 @@
 package app
 
 import (
+	"fmt"
 	"io/ioutil"
 	"log"
 	"strings"
@@ -12,10 +13,16 @@ import (
 	"gopkg.in/yaml.v2"
 )
 
+func GetMCheyneHtml() *html.Node {
+	query := fmt.Sprintf("http://www.edginet.org/mcheyne/rss_feed.php?type=rss_2.0&tz=0&cal=classic&bible=esv")
+
+	return utils.QueryHtml(query)
+}
+
 func GetMCheyneReferences() []def.Option {
 	var options []def.Option
 
-	doc := utils.QueryMCheyne()
+	doc := GetMCheyneHtml()
 
 	titleNodes := utils.FilterTree(doc, func(node *html.Node) bool {
 		if node.Data == "title" {

@@ -22,7 +22,7 @@ var DEVOS = map[string]string{
 }
 
 func SanitizeDevo(msg string) (string, error) {
-	msg = strings.ToUpper(strings.Trim(msg, " "))
+	msg = strings.Trim(msg, " ")
 	devo, ok := DEVOS[msg]
 	if ok {
 		return devo, nil
@@ -35,6 +35,7 @@ func GetDevotionalText(devo string) string {
 
 	switch devo {
 	case MCBRP:
+		fallthrough
 	case DJBRP:
 		text = "Here are today's Bible Reading passages, tap on any one to get the passage!"
 		break
@@ -67,6 +68,10 @@ func GetDevotionalData(env def.SessionData, devo string) def.ResponseData {
 	default:
 		response.Affordances.Remove = true
 		break
+	}
+
+	if len(response.Affordances.Options) > 0 {
+		response.Affordances.Options = append(response.Affordances.Options, def.Option{Text: CMD_CLOSE})
 	}
 
 	return response

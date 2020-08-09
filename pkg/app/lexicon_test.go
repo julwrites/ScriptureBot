@@ -7,6 +7,14 @@ import (
 	"github.com/julwrites/ScriptureBot/pkg/utils"
 )
 
+func TestGetBibleLexicon(t *testing.T) {
+	doc := GetBibleLexicon("beginning", "NIV")
+
+	if doc == nil {
+		t.Errorf("Could not retrieve bible lexicon")
+	}
+}
+
 func TestGetBibleWord(t *testing.T) {
 	var env def.SessionData
 	env.Msg.Message = "grace"

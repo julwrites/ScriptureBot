@@ -8,7 +8,6 @@ import (
 	"strings"
 
 	"github.com/julwrites/BotPlatform/pkg/def"
-	"github.com/julwrites/ScriptureBot/pkg/utils"
 	"gopkg.in/yaml.v2"
 )
 
@@ -123,7 +122,7 @@ func FormatQuery(query string, t TMSQueryType) string {
 		query = strings.ReplaceAll(query, " \t\n", "")
 		break
 	case Reference:
-		doc := utils.QueryBiblePassage(query, "NIV")
+		doc := GetPassageHtml(query, "NIV")
 		query = GetReference(doc)
 		break
 	}

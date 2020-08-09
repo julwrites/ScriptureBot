@@ -1,6 +1,7 @@
 package app
 
 import (
+	"fmt"
 	"log"
 	"strings"
 
@@ -9,10 +10,16 @@ import (
 	"golang.org/x/net/html"
 )
 
+func GetBibleLexicon(word string, ver string) *html.Node {
+	query := fmt.Sprintf("https://www.blueletterbible.org/search/search.cfm?Criteria=%s&t=%s#s=s_lexiconc", word, ver)
+
+	return utils.QueryHtml(query)
+}
+
 // TODO: How to retrieve a Javascript triggered change in site?
 func GetBibleWord(env def.SessionData) def.SessionData {
 	if len(env.Msg.Message) > 0 {
-		doc := utils.QueryBibleLexicon(env.Msg.Message, utils.DeserializeUserConfig(env.User.Config).Version)
+		doc := GetBibleLexicon(env.Msg.Message, utils.DeserializeUserConfig(env.User.Config).Version)
 
 		if doc != nil {
 			filtNodes := utils.FilterTree(doc, func(node *html.Node) bool {
