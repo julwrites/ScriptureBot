@@ -55,11 +55,14 @@ func GetDevotionalData(env def.SessionData, devo string) def.ResponseData {
 	switch devo {
 	case MCBRP:
 		response.Affordances.Options = GetMCheyneReferences()
+		response.Affordances.Options = append(response.Affordances.Options, def.Option{Text: CMD_CLOSE})
 		break
 	case DJBRP:
 		response.Affordances.Options = GetDiscipleshipJournalReferences(env)
 		if len(response.Affordances.Options) == 0 {
 			response.Message = "Take this time today to reflect over this week's devotions"
+		} else {
+			response.Affordances.Options = append(response.Affordances.Options, def.Option{Text: CMD_CLOSE})
 		}
 		break
 	case DGORG:
@@ -69,10 +72,6 @@ func GetDevotionalData(env def.SessionData, devo string) def.ResponseData {
 	default:
 		response.Affordances.Remove = true
 		break
-	}
-
-	if len(response.Affordances.Options) > 0 {
-		response.Affordances.Options = append(response.Affordances.Options, def.Option{Text: CMD_CLOSE})
 	}
 
 	return response
