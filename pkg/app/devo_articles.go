@@ -1,7 +1,11 @@
 package app
 
 import (
+	"bytes"
+	"fmt"
 	"log"
+	"net/http"
+	"strings"
 
 	"github.com/julwrites/BotPlatform/pkg/def"
 	"github.com/julwrites/ScriptureBot/pkg/utils"
@@ -10,6 +14,13 @@ import (
 
 func GetDesiringGodHtml() *html.Node {
 	query := "http://rss.desiringgod.org"
+
+	res, _ := http.Get(query)
+	buf := new(bytes.Buffer)
+	buf.ReadFrom(res.Body)
+	newStr := buf.String()
+
+	fmt.Printf(newStr)
 
 	return utils.QueryHtml(query)
 }
@@ -33,8 +44,12 @@ func GetDesiringGodArticles() []def.Option {
 			return node.Data == "link"
 		})
 
-		label := titleNode.Data
-		link := linkNode.Data
+		label := strings.Join(utils.MapTreeToString(titleNode, func(node *html.Node) string {
+			return node.Data
+		}), " ")
+		link := strings.Join(utils.MapTreeToString(linkNode, func(node *html.Node) string {
+			return node.Data
+		}), " ")
 
 		log.Printf("Label: %s, Link: %s", label, link)
 

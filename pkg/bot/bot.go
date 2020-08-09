@@ -21,10 +21,10 @@ func RunCommands(env def.SessionData) def.SessionData {
 	if len(env.User.Action) > 0 {
 		log.Printf("Detected user has active action %s", env.User.Action)
 		env.Msg.Command = env.User.Action
+	}
 
-		if env.Msg.Message == app.CMD_CLOSE {
-			env.Msg.Command = app.CMD_CLOSE
-		}
+	if env.Msg.Message == app.CMD_CLOSE {
+		env.Msg.Command = app.CMD_CLOSE
 	}
 
 	env = app.ProcessCommand(env)
