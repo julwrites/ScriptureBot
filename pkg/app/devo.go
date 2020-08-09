@@ -64,6 +64,7 @@ func GetDevotionalData(env def.SessionData, devo string) def.ResponseData {
 		break
 	case DGORG:
 		response.Affordances.Options = GetDesiringGodArticles()
+		response.Affordances.Inline = true
 		break
 	default:
 		response.Affordances.Remove = true
