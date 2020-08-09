@@ -22,7 +22,7 @@ var DEVOS = map[string]string{
 }
 
 func SanitizeDevo(msg string) (string, error) {
-	msg = strings.ToUpper(strings.Trim(msg, " "))
+	msg = strings.Trim(msg, " ")
 	devo, ok := DEVOS[msg]
 	if ok {
 		return devo, nil
