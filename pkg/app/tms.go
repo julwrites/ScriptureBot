@@ -189,7 +189,7 @@ func GetTMSVerse(env def.SessionData) def.SessionData {
 		env = GetBiblePassage(env)
 
 		if len(env.Res.Message) != 0 {
-			env.Res.Message = fmt.Sprintf("_%s_\n*%s*\n%s\n*%s*", pack.Title, verse.Title, env.Res.Message, verse.Reference)
+			env.Res.Message = fmt.Sprintf("_%s_\n*%s*\n%s*%s*", pack.Title, verse.Title, env.Res.Message, verse.Reference)
 
 			log.Printf("%s", env.Res.Message)
 		} else {
