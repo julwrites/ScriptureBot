@@ -181,6 +181,14 @@ func TestQueryBibleLexicon(t *testing.T) {
 	doc := QueryBibleLexicon("beginning", "NIV")
 
 	if doc == nil {
-		t.Errorf("Could not retrieve bible passage")
+		t.Errorf("Could not retrieve bible lexicon")
+	}
+}
+
+func TestQueryMCheyne(t *testing.T) {
+	doc := QueryMCheyne()
+
+	if doc == nil {
+		t.Errorf("Could not retrieve MCheyne RSS")
 	}
 }

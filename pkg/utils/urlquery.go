@@ -10,9 +10,7 @@ import (
 	"golang.org/x/net/html"
 )
 
-func QueryBiblePassage(ref string, ver string) *html.Node {
-	query := fmt.Sprintf("https://classic.biblegateway.com/passage/?search=%s&version=%s&interface=print", ref, ver)
-
+func QueryHtml(query string) *html.Node {
 	log.Printf("Query String: %s", query)
 
 	doc := GetHtml(query)
@@ -25,17 +23,20 @@ func QueryBiblePassage(ref string, ver string) *html.Node {
 	return doc
 }
 
+func QueryBiblePassage(ref string, ver string) *html.Node {
+	query := fmt.Sprintf("https://classic.biblegateway.com/passage/?search=%s&version=%s&interface=print", ref, ver)
+
+	return QueryHtml(query)
+}
+
 func QueryBibleLexicon(word string, ver string) *html.Node {
 	query := fmt.Sprintf("https://www.blueletterbible.org/search/search.cfm?Criteria=%s&t=%s#s=s_lexiconc", word, ver)
 
-	log.Printf("Query String: %s", query)
+	return QueryHtml(query)
+}
 
-	doc := GetHtml(query)
+func QueryMCheyne() *html.Node {
+	query := fmt.Sprintf("http://www.edginet.org/mcheyne/rss_feed.php?type=rss_2.0&tz=8&cal=classic&bible=esv&conf=no")
 
-	if doc == nil {
-		log.Printf("Error getting html")
-		return nil
-	}
-
-	return doc
+	return QueryHtml(query)
 }

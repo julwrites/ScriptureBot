@@ -39,31 +39,37 @@ func GetDevotionalText(devo string) string {
 		text = "Here are today's Bible Reading passages, tap on any one to get the passage!"
 		break
 	case DGORG:
+		text = "Here are today's DesiringGod.org articles, tap on any one to open the article!"
 		break
 	}
 
 	return text
 }
 
-func GetDevotionalAffordances(devo string) def.ResponseOptions {
-	var affordances def.ResponseOptions
+func GetDevotionalData(env def.SessionData, devo string) def.ResponseData {
+	var response def.ResponseData
+
+	response.Message = GetDevotionalText(devo)
 
 	switch devo {
 	case MCBRP:
-		var options []def.Option
+		response.Affordances.Options = GetMCheyneReferences()
 		break
 	case DJBRP:
-		var options []def.Option
+		response.Affordances.Options = GetDiscipleshipJournalReferences(env)
+		if len(response.Affordances.Options) == 0 {
+			response.Message = "Take this time today to reflect over this week's devotions"
+		}
 		break
 	case DGORG:
-		var options []def.Option
+		response.Affordances.Options = GetDesiringGodArticles()
 		break
 	default:
-		affordances.Remove = true
+		response.Affordances.Remove = true
 		break
 	}
 
-	return affordances
+	return response
 }
 
 func GetDevo(env def.SessionData) def.SessionData {
@@ -76,8 +82,7 @@ func GetDevo(env def.SessionData) def.SessionData {
 			log.Printf("Devotional is valid, retrieving %s", devo)
 
 			// Retrieve devotional
-			env.Res.Message = GetDevotionalText(devo)
-			env.Res.Affordances = GetDevotionalAffordances(devo)
+			env.Res = GetDevotionalData(env, devo)
 
 			env.User.Action = ""
 		} else {
