@@ -14,6 +14,12 @@ import (
 	"github.com/julwrites/ScriptureBot/pkg/utils"
 )
 
+func GetPassageHtml(ref string, ver string) *html.Node {
+	query := fmt.Sprintf("https://classic.biblegateway.com/passage/?search=%s&version=%s&interface=print", ref, ver)
+
+	return utils.QueryHtml(query)
+}
+
 func GetReference(doc *html.Node) string {
 	refNode, err := utils.FindByClass(doc, "bcv")
 	if err != nil {
@@ -117,7 +123,7 @@ func GetPassage(doc *html.Node, version string) string {
 func GetBiblePassage(env def.SessionData) def.SessionData {
 	if len(env.Msg.Message) > 0 {
 
-		doc := utils.QueryBiblePassage(env.Msg.Message, utils.DeserializeUserConfig(env.User.Config).Version)
+		doc := GetPassageHtml(env.Msg.Message, utils.DeserializeUserConfig(env.User.Config).Version)
 
 		ref := GetReference(doc)
 		log.Printf("Reference retrieved: %s", ref)
@@ -135,7 +141,7 @@ func GetBiblePassage(env def.SessionData) def.SessionData {
 func CheckBibleReference(ref string) bool {
 	log.Printf("Checking reference %s", ref)
 
-	doc := utils.QueryBiblePassage(ref, "NIV")
+	doc := GetPassageHtml(ref, "NIV")
 
 	ref = GetReference(doc)
 

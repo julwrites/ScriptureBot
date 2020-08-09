@@ -8,8 +8,16 @@ import (
 	"github.com/julwrites/ScriptureBot/pkg/utils"
 )
 
+func TestGetBiblePassageHtml(t *testing.T) {
+	doc := GetPassageHtml("gen 1", "NIV")
+
+	if doc == nil {
+		t.Errorf("Could not retrieve bible passage")
+	}
+}
+
 func TestGetReference(t *testing.T) {
-	doc := utils.QueryBiblePassage("gen 1", "NIV")
+	doc := GetPassageHtml("gen 1", "NIV")
 
 	ref := GetReference(doc)
 
@@ -19,7 +27,7 @@ func TestGetReference(t *testing.T) {
 }
 
 func TestGetPassage(t *testing.T) {
-	doc := utils.QueryBiblePassage("gen 1", "NIV")
+	doc := GetPassageHtml("gen 1", "NIV")
 
 	passage := GetPassage(doc, "NIV")
 

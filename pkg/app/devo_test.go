@@ -7,6 +7,14 @@ import (
 	"github.com/julwrites/BotPlatform/pkg/def"
 )
 
+func TestGetMCheyneHtml(t *testing.T) {
+	doc := GetMCheyneHtml()
+
+	if doc == nil {
+		t.Errorf("Failed TestGetMCheyneHtml, no RSS retrieved")
+	}
+}
+
 func TestGetMCheyneReferences(t *testing.T) {
 	options := GetMCheyneReferences()
 
@@ -43,5 +51,21 @@ func TestGetDiscipleshipJournalReferences(t *testing.T) {
 		if brp.Verses[0] != "Reflection" {
 			t.Errorf("Failed to get DiscipleshipJournal References")
 		}
+	}
+}
+
+func TestGetDesiringGodHtml(t *testing.T) {
+	doc := GetDesiringGodHtml()
+
+	if doc == nil {
+		t.Errorf("Failed TestGetDesiringGodHtml, no RSS retrieved")
+	}
+}
+
+func TestGetDesiringGodArticles(t *testing.T) {
+	articles := GetDesiringGodArticles()
+
+	if len(articles) == 0 {
+		t.Errorf("Failed TestGetDesiringGodArticles, no articles found")
 	}
 }
