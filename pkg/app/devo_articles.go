@@ -33,8 +33,8 @@ func GetDesiringGodArticles() []def.Option {
 			return node.Data == "link"
 		})
 
-		label := titleNode.Data
-		link := linkNode.Data
+		label := titleNode.FirstChild.Data
+		link := linkNode.FirstChild.Data
 
 		log.Printf("Label: %s, Link: %s", label, link)
 
