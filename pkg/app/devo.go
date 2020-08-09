@@ -69,6 +69,10 @@ func GetDevotionalData(env def.SessionData, devo string) def.ResponseData {
 		break
 	}
 
+	if len(response.Affordances.Options) > 0 {
+		response.Affordances.Options = append(response.Affordances.Options, CMD_CLOSE)
+	}
+
 	return response
 }
 
