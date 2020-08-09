@@ -35,6 +35,7 @@ func GetDevotionalText(devo string) string {
 
 	switch devo {
 	case MCBRP:
+		fallthrough
 	case DJBRP:
 		text = "Here are today's Bible Reading passages, tap on any one to get the passage!"
 		break

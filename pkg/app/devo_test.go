@@ -69,3 +69,18 @@ func TestGetDesiringGodArticles(t *testing.T) {
 		t.Errorf("Failed TestGetDesiringGodArticles, no articles found")
 	}
 }
+
+func TestGetDevo(t *testing.T) {
+	var env def.SessionData
+	env.User.Action = CMD_DEVO
+	env.Msg.Message = "M'Cheyne Bible Reading Plan"
+
+	env = GetDevo(env)
+	if len(env.Res.Message) == 0 {
+		t.Errorf("Failed TestGetDevo, no message")
+	}
+
+	if len(env.Res.Affordances.Options) == 0 {
+		t.Errorf("Failed TestGetDevo, no affordances")
+	}
+}
