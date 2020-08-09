@@ -36,7 +36,7 @@ func QueryBibleLexicon(word string, ver string) *html.Node {
 }
 
 func QueryMCheyne() *html.Node {
-	query := fmt.Sprintf("http://www.edginet.org/mcheyne/rss_feed.php?type=rss_2.0&tz=8&cal=classic&bible=esv&conf=no")
+	query := fmt.Sprintf("http://www.edginet.org/mcheyne/rss_feed.php?type=rss_2.0&tz=0&cal=classic&bible=esv")
 
 	return QueryHtml(query)
 }

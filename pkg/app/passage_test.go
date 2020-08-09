@@ -40,3 +40,13 @@ func TestGetBiblePassage(t *testing.T) {
 		t.Errorf("Failed TestGetBiblePassage")
 	}
 }
+
+func TestCheckBibleReference(t *testing.T) {
+	if CheckBibleReference("Genesis 1:1") == false {
+		t.Errorf("Failed CheckBibleReference positive test")
+	}
+
+	if CheckBibleReference("Some terrible other word") == true {
+		t.Errorf("Failed CheckBibleReference negative test")
+	}
+}

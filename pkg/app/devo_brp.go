@@ -18,26 +18,31 @@ func GetMCheyneReferences() []def.Option {
 	doc := utils.QueryMCheyne()
 
 	titleNodes := utils.FilterTree(doc, func(node *html.Node) bool {
-		for _, attr := range node.Attr {
-			if attr.Key == "class" && strings.Contains(attr.Val, "title") {
-				return true
-			}
+		if node.Data == "title" {
+			return true
 		}
 		return false
 	})
 
 	for _, node := range titleNodes {
-		ref := node.Data
-		ref = strings.ReplaceAll(ref, "(", "")
-		ref = strings.ReplaceAll(ref, ")", "")
-		options = append(options, def.Option{Text: ref})
+		for child := node.FirstChild; child != nil; child = child.NextSibling {
+			ref := child.Data
+			ref = strings.Split(ref, " (")[0]
+			if CheckBibleReference(ref) {
+				options = append(options, def.Option{Text: ref})
+			}
+		}
 	}
 
 	return options
 }
 
+type DiscipleshipJournalDevo struct {
+	Verses []string `yaml:"Verses,flow"`
+}
+
 type DiscipleshipJournalBRP struct {
-	BibleReadingPlan [][]string `yaml:"Tags,flow"`
+	BibleReadingPlan []DiscipleshipJournalDevo `yaml:"BibleReadingPlan"`
 }
 
 func GetDiscipleshipJournalDatabase(dataPath string) DiscipleshipJournalBRP {
@@ -72,7 +77,7 @@ func GetDiscipleshipJournalReferences(env def.SessionData) []def.Option {
 	brp := djBRP.BibleReadingPlan[(int(month)-1)*length+(day-1)]
 
 	if day < length {
-		for _, r := range brp {
+		for _, r := range brp.Verses {
 			if r == "Reflection" {
 				continue
 			}
