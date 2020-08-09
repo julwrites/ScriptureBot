@@ -68,7 +68,6 @@ func GetDevotionalData(env def.SessionData, devo string) def.ResponseData {
 	case DGORG:
 		response.Affordances.Options = GetDesiringGodArticles()
 		response.Affordances.Inline = true
-		response.Affordances.Remove = true
 		break
 	default:
 		response.Affordances.Remove = true
@@ -105,6 +104,7 @@ func GetDevo(env def.SessionData) def.SessionData {
 		for k, _ := range DEVOS {
 			options = append(options, def.Option{Text: k})
 		}
+		options = append(options, def.Option{Text: CMD_CLOSE})
 
 		env.Res.Affordances.Options = options
 
