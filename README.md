@@ -1,11 +1,8 @@
-## Biblica Bot
+## Scripture Bot
 
 ![status: active](https://img.shields.io/badge/status-active-green.svg)
 
 This Telegram bot hopes to make the Bible more accessible, and hopefully to give a timely answer to those looking for it. 
-
-### Installing Libraries
-Add new libraries either in app.yaml or add them to requirements.txt (Note that adding them to requirements.txt won't automatically import the libraries! You need to pip install them into a \lib folder still)
 
 ### Feedback
 Star this repo if you found it useful. Use the github issue tracker to give
@@ -15,23 +12,24 @@ feedback on this repo.
 See [LICENSE](LICENSE)
 
 ## Author
-Hi, I'm [Julwrites](http://www.tehj.org)
+Hi, I'm [Julwrites](http://www.tehj.io)
+
+### Architecture
+ScriptureBot is built as a 5 layer service:
+1. Web App (GET)
+2. Incoming Translation Layer from Platform specific properties
+3. Logic Layer
+4. Outgoing Translation Layer to Platform specific properties
+5. Web App (POST)
+
+The Translation Layer is implemented in [BotPlatform](http://github.com/julwrites/BotPlatform), which abstracts all the translation tasks from the Logic layer. 
+
+Additionally there is a [BotSecrets](http://github.com/julwrites/BotSecrets) integration with the WebApp layer which provides all sensitive data to the bot on a as-needed basis.
 
 ## Code Guidelines
 
-### Modules
-This framework aims to implement a lightweight and reusable set of packages. 
-
-The framework may be treated as a tree of packages, each of which contains at least one of the following core blocks:
-* Utilities - Utility functions, which are the main logic
-* Actions   - User-triggered functionalities, including states and interactions
-* Hooks     - System-triggered functionalities which occur by cron job
-e.g. package admin can contain admin_classes, admin_utils, admin_actions, admin_hooks
-
-Specialized functionality can be implemented within each package however the implementer likes, but external access to the package should be limited to the core files only. This means, for example, that although the admin package may contain other modules, external users should not assume these modules exist. 
-
 ### Code
-We are using Python27 for this version of the framework.
+We are using Go 1.12 for this version of the framework.
 
 Naming Convention:
 * Variables should be named using camelCase.

@@ -1,5 +1,0 @@
-dispatch: 
-- url: "*/*"
-  service: default
-- url: "*/hooks/*"
-  service: hooks
