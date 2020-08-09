@@ -11,12 +11,15 @@ func ProcessCommand(env def.SessionData) def.SessionData {
 		env = GetTMSVerse(env)
 		break
 	case CMD_DEVO:
+		env = GetDevo(env)
 		break
 	case CMD_SUBSCRIBE:
 		break
 	case CMD_LEXICON:
 		env = GetBibleWord(env)
 		break
+	case CMD_CLOSE:
+		env = CloseAction(env)
 	default:
 		env = GetBiblePassage(env)
 	}

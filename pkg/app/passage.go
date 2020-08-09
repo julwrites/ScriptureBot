@@ -17,7 +17,6 @@ import (
 func GetReference(doc *html.Node) string {
 	refNode, err := utils.FindByClass(doc, "bcv")
 	if err != nil {
-		log.Printf("Received %v", strings.Join(utils.MapTreeToString(doc, func(node *html.Node) string { return node.Data }), "|||"))
 		log.Printf("Error parsing for reference: %v", err)
 		return ""
 	}
@@ -131,4 +130,14 @@ func GetBiblePassage(env def.SessionData) def.SessionData {
 	}
 
 	return env
+}
+
+func CheckBibleReference(ref string) bool {
+	log.Printf("Checking reference %s", ref)
+
+	doc := utils.QueryBiblePassage(ref, "NIV")
+
+	ref = GetReference(doc)
+
+	return len(ref) > 0
 }
