@@ -18,7 +18,6 @@ jobs:
                   github.com/julwrites/ScriptureBot/pkg/bot
 
       - name: Dockerization
-        uses: actions-hub/gcloud@master
         env:
           TELEGRAM_ID: ${{secrets.TELEGRAM_ID}}
           ADMIN_ID: ${{secrets.TELEGRAM_ADMIN_ID}}
