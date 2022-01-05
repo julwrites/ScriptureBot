@@ -46,3 +46,20 @@ As much as possible, each file should contain one of 3 things:
 * Business logic/End point logic
 
 This is intended to facilitate separation of responsibility for loose coupling. 
+
+### Build instructions
+This repository uses go module to manage dependencies, and is hosted on gcloud cloud run. 
+
+As such it requires [gcloud CLI](https://cloud.google.com/sdk/docs/quickstart) to package the Dockerfile
+
+The artifact repository is set to `us-central1`
+
+As such the docker container can be built using the following command
+`docker build -f Dockerfile -t us-central1-docker.pkg.dev/${PROJECT_ID}/scripturebot/root:latest .`
+
+And then uploaded using
+
+`docker push docker build -f Dockerfile -t us-central1-docker.pkg.dev/${PROJECT_ID}/scripturebot/root:latest .`
+
+And finally deployed using
+`gcloud run deploy scripturebot --image us-central1-docker.pkg.dev/${PROJECT_ID}/scripturebot/root:latest --region us-central1`

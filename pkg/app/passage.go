@@ -27,7 +27,7 @@ func GetReference(doc *html.Node) string {
 		return ""
 	}
 
-	return refNode.FirstChild.Data
+	return utils.GetTextNode(refNode).Data
 }
 
 func ParseNodesForPassage(node *html.Node) string {
@@ -80,13 +80,13 @@ func ParseNodesForPassage(node *html.Node) string {
 }
 
 func GetPassage(doc *html.Node, version string) string {
-	passageNode, startErr := utils.FindByClass(doc, fmt.Sprintf("version-%s result-text-style-normal text-html", version))
+	passageNode, startErr := utils.FindByClass(doc, "passage-text")
 	if startErr != nil {
 		log.Printf("Error parsing for passage: %v", startErr)
 		return ""
 	}
 
-	filtNodes := utils.FilterChildren(passageNode, func(child *html.Node) bool {
+	filtNodes := utils.FilterTree(passageNode, func(child *html.Node) bool {
 		switch tag := child.Data; tag {
 		case "h1":
 			fallthrough

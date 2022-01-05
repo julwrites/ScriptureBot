@@ -28,6 +28,16 @@ func GetHtml(url string) *html.Node {
 	return doc
 }
 
+func GetTextNode(node *html.Node) *html.Node {
+	if node != nil {
+		if node.Type == html.TextNode {
+			return node
+		}
+		return GetTextNode(node.FirstChild)
+	}
+	return nil
+}
+
 // Find & Filter functions
 
 type NodePredicate func(*html.Node) bool

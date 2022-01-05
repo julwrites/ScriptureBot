@@ -8,7 +8,6 @@ import (
 	"log"
 	"net/http"
 	"os"
-	"path/filepath"
 	"strings"
 
 	"github.com/julwrites/BotPlatform/pkg/secrets"
@@ -16,8 +15,11 @@ import (
 )
 
 func bothandler(res http.ResponseWriter, req *http.Request) {
-	secretsPath, _ := filepath.Abs("./secrets.yaml")
-	secretsData := secrets.LoadSecrets(secretsPath)
+	secretsPath := "/go/bin/secrets.yaml"
+	secretsData, err := secrets.LoadSecrets(secretsPath)
+	if err != nil {
+		panic(err)
+	}
 
 	switch strings.Trim(req.URL.EscapedPath(), "\n") {
 	case strings.Trim("/"+secretsData.TELEGRAM_ID, "\n"):

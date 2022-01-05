@@ -1,11 +1,9 @@
 package app
 
 import (
-	"testing"
-
 	"github.com/julwrites/BotPlatform/pkg/def"
-
 	"github.com/julwrites/ScriptureBot/pkg/utils"
+	"testing"
 )
 
 func TestGetBiblePassageHtml(t *testing.T) {
