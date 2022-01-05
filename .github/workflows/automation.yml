@@ -1,4 +1,4 @@
-- name: Run Build and Test Automation
+name: Run Build and Test Automation
 on: [push]
 jobs:
   build-and-test:
