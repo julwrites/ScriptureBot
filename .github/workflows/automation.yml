@@ -47,7 +47,8 @@ jobs:
           ARTIFACT_ID: ${{secrets.GCLOUD_ARTIFACT_REPOSITORY_ID}}
           GCLOUD_SERVICE_KEY: ${{secrets.GOOGLE_APPLICATION_CREDENTIALS}}
         with:
-          image_name: us-central1-docker.pkg.dev/$ARTIFACT_ID/$GOOGLE_PROJECT_ID/root
+          gcr_host: us-central1-docker.pkg.dev
+          image_name: $ARTIFACT_ID/$GOOGLE_PROJECT_ID/root
           image_tag: latest
 
       - name: Deployment
