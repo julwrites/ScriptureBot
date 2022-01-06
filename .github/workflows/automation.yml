@@ -41,7 +41,7 @@ jobs:
           args: info
 
       - name: Artifact Push
-        uses: raccoondev/push-docker-gcr
+        uses: RaccoonDev/push-docker-gcr@v1
         env:
           GOOGLE_PROJECT_ID: ${{secrets.GCLOUD_PROJECT_ID}}
           ARTIFACT_ID: ${{secrets.GCLOUD_ARTIFACT_REPOSITORY_ID}}
