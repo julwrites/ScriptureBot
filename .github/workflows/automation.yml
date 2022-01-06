@@ -41,11 +41,15 @@ jobs:
           args: info
 
       - name: Artifact Push
+        uses: RafikFarhad/push-to-gcr-github-action@v3.0.2
         env:
           PROJECT_ID: ${{secrets.GCLOUD_PROJECT_ID}}
           ARTIFACT_ID: ${{secrets.GCLOUD_ARTIFACT_REPOSITORY_ID}}
-        run: |
-          docker push us-central1-docker.pkg.dev/$ARTIFACT_ID/$PROJECT_ID/root:latest
+          APPLICATION_CREDENTIALS: ${{secrets.GOOGLE_APPLICATION_CREDENTIALS}}
+        with:
+          gcloud_service_key: $APPLICATION_CREDENTIALS
+          project_id: $PROJECT_ID
+          image_name: us-central1-docker.pkg.dev/$ARTIFACT_ID/$PROJECT_ID/root
 
       - name: Deployment
         uses: actions-hub/gcloud@master
