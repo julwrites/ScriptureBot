@@ -22,7 +22,7 @@ jobs:
           ADMIN_ID: ${{secrets.TELEGRAM_ADMIN_ID}}
           PROJECT_ID: ${{secrets.GCLOUD_PROJECT_ID}}
         run: |
-          args: printf "TELEGRAM_ID=$TELEGRAM_ID\nADMIN_ID=$ADMIN_ID\nPROJECT_ID=$PROJECT_ID" >> secrets.yaml
+          printf "TELEGRAM_ID=$TELEGRAM_ID\nADMIN_ID=$ADMIN_ID\nPROJECT_ID=$PROJECT_ID" >> secrets.yaml
           cat secrets.yaml
           docker build -f Dockerfile -t us-central1-docker.pkg.dev/$PROJECT_ID/scripturebot/root:latest .
           docker push us-central1-docker.pkg.dev/$PROJECT_ID/scripturebot/root:latest
