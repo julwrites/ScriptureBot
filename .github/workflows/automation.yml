@@ -30,7 +30,15 @@ jobs:
         run: |
           printf "TELEGRAM_ID=$TELEGRAM_ID\nADMIN_ID=$ADMIN_ID\nPROJECT_ID=$PROJECT_ID" >> secrets.yaml
           cat secrets.yaml
-          docker build -f Dockerfile -t us-central1-docker.pkg.dev/scripturebot/$ARTIFACT_ID/root:latest .
+          docker build -f Dockerfile -t us-central1-docker.pkg.dev/$ARTIFACT_ID/$PROJECT_ID/root:latest .
+
+      - name: GCloud Check
+        uses: actions-hub/gcloud@master
+        env:
+          PROJECT_ID: ${{secrets.GCLOUD_PROJECT_ID}}
+          APPLICATION_CREDENTIALS: ${{secrets.GOOGLE_APPLICATION_CREDENTIALS}}
+        with:
+          args: info
 
       - name: Artifact Push
         uses: actions-hub/gcloud@master
@@ -39,7 +47,7 @@ jobs:
           APPLICATION_CREDENTIALS: ${{secrets.GOOGLE_APPLICATION_CREDENTIALS}}
           ARTIFACT_ID: ${{secrets.GCLOUD_ARTIFACT_REPOSITORY_ID}}
         with:
-          args: docker push us-central1-docker.pkg.dev/scripturebot/$ARTIFACT_ID/root:latest
+          args: docker push us-central1-docker.pkg.dev/$ARTIFACT_ID/$PROJECT_ID/root:latest
 
       - name: Deployment
         uses: actions-hub/gcloud@master
@@ -48,4 +56,4 @@ jobs:
           APPLICATION_CREDENTIALS: ${{secrets.GOOGLE_APPLICATION_CREDENTIALS}}
           ARTIFACT_ID: ${{secrets.GCLOUD_ARTIFACT_REPOSITORY_ID}}
         with:
-          args: gcloud run deploy scripturebot --image us-central1-docker.pkg.dev/scripturebot/$ARTIFACT_ID/root:latest --region us-central1
+          args: gcloud run deploy scripturebot --image us-central1-docker.pkg.dev/$ARTIFACT_ID/$PROJECT_ID/root:latest --region us-central1
