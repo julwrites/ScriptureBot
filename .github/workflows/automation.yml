@@ -48,7 +48,7 @@ jobs:
           GCLOUD_SERVICE_KEY: ${{secrets.GOOGLE_APPLICATION_CREDENTIALS}}
         with:
           gcr_host: us-central1-docker.pkg.dev
-          image_name: $ARTIFACT_ID/$GOOGLE_PROJECT_ID/root
+          image_name: "$ARTIFACT_ID/$GOOGLE_PROJECT_ID/root"
           image_tag: latest
 
       - name: Deployment
@@ -58,4 +58,4 @@ jobs:
           APPLICATION_CREDENTIALS: ${{secrets.GOOGLE_APPLICATION_CREDENTIALS}}
           ARTIFACT_ID: ${{secrets.GCLOUD_ARTIFACT_REPOSITORY_ID}}
         with:
-          args: run deploy scripturebot --image us-central1-docker.pkg.dev/$ARTIFACT_ID/$PROJECT_ID/root:latest --region us-central1
+          args: run deploy scripturebot --image "us-central1-docker.pkg.dev/$ARTIFACT_ID/$PROJECT_ID/root:latest" --region us-central1
