@@ -124,6 +124,9 @@ func GetBiblePassage(env def.SessionData) def.SessionData {
 	if len(env.Msg.Message) > 0 {
 
 		doc := GetPassageHtml(env.Msg.Message, utils.DeserializeUserConfig(env.User.Config).Version)
+		if doc == nil {
+			return env
+		}
 
 		ref := GetReference(doc)
 		log.Printf("Reference retrieved: %s", ref)

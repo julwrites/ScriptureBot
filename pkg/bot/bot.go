@@ -35,7 +35,7 @@ func RunCommands(env def.SessionData) def.SessionData {
 func HandleBotLogic(env def.SessionData) def.SessionData {
 	env = RunCommands(env)
 
-	log.Printf("Commands run, resulting message: %s", env.Res.Message)
+	// log.Printf("Commands run, resulting message: %s", env.Res.Message)
 	if len(env.Res.Message) == 0 {
 		log.Printf("This message was not handled by bot")
 		env.Res.Message = HelpMessage(&env)
