@@ -47,11 +47,10 @@ jobs:
           docker build -f Dockerfile -t us-central1-docker.pkg.dev/$ARTIFACT_ID/$PROJECT_ID/root:latest .
 
       - name: Artifact Push
-        run:
+        run: |
           docker push us-central1-docker.pkg.dev/${{secrets.GCLOUD_ARTIFACT_REPOSITORY_ID}}/${{secrets.GCLOUD_PROJECT_ID}}/root:latest
 
       - name: Deployment
-        uses: actions-hub/gcloud@master
         env:
           PROJECT_ID: ${{secrets.GCLOUD_PROJECT_ID}}
           ARTIFACT_ID: ${{secrets.GCLOUD_ARTIFACT_REPOSITORY_ID}}
