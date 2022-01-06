@@ -47,15 +47,14 @@ jobs:
           docker build -f Dockerfile -t us-central1-docker.pkg.dev/$ARTIFACT_ID/$PROJECT_ID/root:latest .
 
       - name: Artifact Push
-        env:
-          PROJECT_ID: ${{secrets.GCLOUD_PROJECT_ID}}
-          ARTIFACT_ID: ${{secrets.GCLOUD_ARTIFACT_REPOSITORY_ID}}
         run:
-          docker push us-central1-docker.pkg.dev/$ARTIFACT_ID/$PROJECT_ID/root:latest
+          docker push us-central1-docker.pkg.dev/${{secrets.GCLOUD_ARTIFACT_REPOSITORY_ID}}/${{secrets.GCLOUD_PROJECT_ID}}/root:latest
 
       - name: Deployment
+        uses: actions-hub/gcloud@master
         env:
           PROJECT_ID: ${{secrets.GCLOUD_PROJECT_ID}}
           ARTIFACT_ID: ${{secrets.GCLOUD_ARTIFACT_REPOSITORY_ID}}
+          APPLICATION_CREDENTIALS: ${{ secrets.GOOGLE_APPLICATION_CREDENTIALS }}
         run: |
           gcloud run deploy scripturebot --image us-central1-docker.pkg.dev/$ARTIFACT_ID/$PROJECT_ID/root:latest --region us-central1
