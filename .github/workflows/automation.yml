@@ -41,15 +41,14 @@ jobs:
           args: info
 
       - name: Artifact Push
-        uses: RafikFarhad/push-to-gcr-github-action@v3.0.2
+        uses: raccoondev/push-docker-gcr
         env:
-          PROJECT_ID: ${{secrets.GCLOUD_PROJECT_ID}}
+          GOOGLE_PROJECT_ID: ${{secrets.GCLOUD_PROJECT_ID}}
           ARTIFACT_ID: ${{secrets.GCLOUD_ARTIFACT_REPOSITORY_ID}}
-          APPLICATION_CREDENTIALS: ${{secrets.GOOGLE_APPLICATION_CREDENTIALS}}
+          GCLOUD_SERVICE_KEY: ${{secrets.GOOGLE_APPLICATION_CREDENTIALS}}
         with:
-          gcloud_service_key: $APPLICATION_CREDENTIALS
-          project_id: $PROJECT_ID
-          image_name: us-central1-docker.pkg.dev/$ARTIFACT_ID/$PROJECT_ID/root
+          image_name: us-central1-docker.pkg.dev/$ARTIFACT_ID/$GOOGLE_PROJECT_ID/root
+          image_tag: latest
 
       - name: Deployment
         uses: actions-hub/gcloud@master
@@ -58,4 +57,4 @@ jobs:
           APPLICATION_CREDENTIALS: ${{secrets.GOOGLE_APPLICATION_CREDENTIALS}}
           ARTIFACT_ID: ${{secrets.GCLOUD_ARTIFACT_REPOSITORY_ID}}
         with:
-          args: gcloud run deploy scripturebot --image us-central1-docker.pkg.dev/$ARTIFACT_ID/$PROJECT_ID/root:latest --region us-central1
+          args: run deploy scripturebot --image us-central1-docker.pkg.dev/$ARTIFACT_ID/$PROJECT_ID/root:latest --region us-central1
