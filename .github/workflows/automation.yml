@@ -42,7 +42,7 @@ jobs:
           PROJECT_ID: ${{secrets.GCLOUD_PROJECT_ID}}
           ARTIFACT_ID: ${{secrets.GCLOUD_ARTIFACT_REPOSITORY_ID}}
         run: |
-          printf "TELEGRAM_ID=$TELEGRAM_ID\nADMIN_ID=$ADMIN_ID\nPROJECT_ID=$PROJECT_ID" >> secrets.yaml
+          printf "TELEGRAM_ID: \"$TELEGRAM_ID\"\nADMIN_ID: \"$ADMIN_ID\"\nPROJECT_ID: \"$PROJECT_ID\"\n" >> secrets.yaml
           cat secrets.yaml
           docker build -f Dockerfile -t us-central1-docker.pkg.dev/$ARTIFACT_ID/$PROJECT_ID/root:latest .
 
