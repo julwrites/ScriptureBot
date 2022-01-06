@@ -40,19 +40,14 @@ jobs:
         with:
           args: info
 
-      - name: Service Key
-        env:
-          APPLICATION_CREDENTIALS: ${{secrets.GOOGLE_APPLICATION_CREDENTIALS}}
-        run: |
-          printf "$APPLICATION_CREDENTIALS" >> service_key.json
-
       - name: Artifact Push
         uses: RafikFarhad/push-to-gcr-github-action@v3.0.2
         env:
           PROJECT_ID: ${{secrets.GCLOUD_PROJECT_ID}}
           ARTIFACT_ID: ${{secrets.GCLOUD_ARTIFACT_REPOSITORY_ID}}
+          APPLICATION_CREDENTIALS: ${{secrets.GOOGLE_APPLICATION_CREDENTIALS}}
         with:
-          gcloud_service_key: service_key.json
+          gcloud_service_key: $APPLICATION_CREDENTIALS
           project_id: $PROJECT_ID
           image_name: us-central1-docker.pkg.dev/$ARTIFACT_ID/$PROJECT_ID/root
 
