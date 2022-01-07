@@ -38,6 +38,10 @@ jobs:
                   github.com/julwrites/ScriptureBot/pkg/app \
                   github.com/julwrites/ScriptureBot/pkg/bot
 
+      - name: Configure gcloud auth with Docker
+        run: |
+          gcloud auth configure-docker us-central1-docker.pkg.dev
+
       - name: Docker Build
         env:
           TELEGRAM_ID: ${{secrets.TELEGRAM_ID}}
