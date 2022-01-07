@@ -1,4 +1,4 @@
-name: Run Deployment Automation
+name: Deployment Automation
 on: 
   push:
     branches:

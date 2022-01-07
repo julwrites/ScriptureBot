@@ -1,4 +1,4 @@
-name: Run Build and Test Automation
+name: Build Test Staging Automation
 on: 
   pull_request:
     branches:
@@ -45,7 +45,7 @@ jobs:
         run: |
           gcloud auth configure-docker us-central1-docker.pkg.dev
 
-      - name: Docker Build
+      - name: Docker Build and Stage
         env:
           TELEGRAM_ID: ${{secrets.TELEGRAM_ID}}
           ADMIN_ID: ${{secrets.TELEGRAM_ADMIN_ID}}
