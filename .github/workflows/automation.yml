@@ -25,10 +25,6 @@ jobs:
         with:
           workload_identity_provider: ${{ secrets.GCLOUD_WORKLOAD_IDENTITY_PROVIDER }}
           service_account: ${{ secrets.GCLOUD_SERVICE_ACCOUNT }}
-
-      - name: Set up Cloud SDK
-        uses: google-github-actions/setup-gcloud@v0
-        with:
           project_id: ${{secrets.GCLOUD_PROJECT_ID}}
 
       - name: Test gcloud
@@ -52,10 +48,8 @@ jobs:
           printf "TELEGRAM_ID: \"$TELEGRAM_ID\"\nADMIN_ID: \"$ADMIN_ID\"\nPROJECT_ID: \"$PROJECT_ID\"\n" >> secrets.yaml
           cat secrets.yaml
           docker build -f Dockerfile -t us-central1-docker.pkg.dev/$ARTIFACT_ID/$PROJECT_ID/root:latest .
-
-      - name: Artifact Push
-        run: |
-          docker push us-central1-docker.pkg.dev/${{secrets.GCLOUD_ARTIFACT_REPOSITORY_ID}}/${{secrets.GCLOUD_PROJECT_ID}}/root:latest
+          docker push us-central1-docker.pkg.dev/$ARTIFACT_ID/$PROJECT_ID/root:latest
+                      us-central1-docker.pkg.dev/scripturebot/scripturebot/root
 
       - name: Deployment
         env:
