@@ -1,4 +1,4 @@
-name: Deployment Automation
+name: Stage and Deploy Automation
 on: 
   push:
     branches:
@@ -13,6 +13,16 @@ jobs:
       id-token: 'write'
 
     steps:
+      - name: Install Go
+        uses: actions/setup-go@v2
+        with:
+          go-version: 1.17.x
+
+      - name: Checkout 🛎️
+        uses: actions/checkout@v2 # If you're using actions/checkout@v2 you must set persist-credentials to false in most cases for the deployment to work correctly.
+        with:
+          persist-credentials: false
+
       - name: gcloud Auth
         uses: google-github-actions/auth@v0
         with:
@@ -23,6 +33,22 @@ jobs:
       - name: Test gcloud
         run: |
           gcloud info
+
+      - name: Configure gcloud auth with Docker
+        run: |
+          gcloud auth configure-docker us-central1-docker.pkg.dev
+
+      - name: Docker Build and Stage
+        env:
+          TELEGRAM_ID: ${{secrets.TELEGRAM_ID}}
+          ADMIN_ID: ${{secrets.TELEGRAM_ADMIN_ID}}
+          PROJECT_ID: ${{secrets.GCLOUD_PROJECT_ID}}
+          ARTIFACT_ID: ${{secrets.GCLOUD_ARTIFACT_REPOSITORY_ID}}
+        run: |
+          printf "TELEGRAM_ID: \"$TELEGRAM_ID\"\nADMIN_ID: \"$ADMIN_ID\"\nPROJECT_ID: \"$PROJECT_ID\"\n" >> secrets.yaml
+          cat secrets.yaml
+          docker build -f Dockerfile -t us-central1-docker.pkg.dev/$ARTIFACT_ID/$PROJECT_ID/root:latest .
+          docker push us-central1-docker.pkg.dev/$ARTIFACT_ID/$PROJECT_ID/root:latest
 
       - name: Deployment
         env:
