@@ -1,32 +1,58 @@
-- name: Run Build and Test Automation
-on: [push]
+name: Run Build and Test Automation
+on: 
+  pull_request:
+    branches:
+      - master
 jobs:
   build-and-test:
     runs-on: ubuntu-latest
+
+    # Add "id-token" with the intended permissions.
+    permissions:
+      contents: 'read'
+      id-token: 'write'
+
     steps:
+      - name: Install Go
+        uses: actions/setup-go@v2
+        with:
+          go-version: 1.17.x
+
       - name: Checkout 🛎️
         uses: actions/checkout@v2 # If you're using actions/checkout@v2 you must set persist-credentials to false in most cases for the deployment to work correctly.
         with:
           persist-credentials: false
 
+      - name: gcloud Auth
+        uses: google-github-actions/auth@v0
+        with:
+          workload_identity_provider: ${{ secrets.GCLOUD_WORKLOAD_IDENTITY_PROVIDER }}
+          service_account: ${{ secrets.GCLOUD_SERVICE_ACCOUNT }}
+          project_id: ${{secrets.GCLOUD_PROJECT_ID}}
+
+      - name: Test gcloud
+        run: |
+          gcloud info
+
       - name: Install, Build, Test 🔧 # This runs a series of commands as if building a live version of the project
         run: |
-          go mod init
           go mod tidy
           go test github.com/julwrites/ScriptureBot/pkg/utils \
                   github.com/julwrites/ScriptureBot/pkg/app \
                   github.com/julwrites/ScriptureBot/pkg/bot
 
-      - name: Deployment
-        uses: actions-hub/gcloud@master
+      - name: Configure gcloud auth with Docker
+        run: |
+          gcloud auth configure-docker us-central1-docker.pkg.dev
+
+      - name: Docker Build
         env:
           TELEGRAM_ID: ${{secrets.TELEGRAM_ID}}
           ADMIN_ID: ${{secrets.TELEGRAM_ADMIN_ID}}
           PROJECT_ID: ${{secrets.GCLOUD_PROJECT_ID}}
-          APPLICATION_CREDENTIALS: ${{secrets.GOOGLE_APPLICATION_CREDENTIALS}}
+          ARTIFACT_ID: ${{secrets.GCLOUD_ARTIFACT_REPOSITORY_ID}}
         run: |
-          printf "TELEGRAM_ID=$TELEGRAM_ID\nADMIN_ID=$ADMIN_ID\nPROJECT_ID=$PROJECT_ID" >> secrets.yaml
+          printf "TELEGRAM_ID: \"$TELEGRAM_ID\"\nADMIN_ID: \"$ADMIN_ID\"\nPROJECT_ID: \"$PROJECT_ID\"\n" >> secrets.yaml
           cat secrets.yaml
-          docker build -f Dockerfile -t us-central1-docker.pkg.dev/$PROJECT_ID/scripturebot/root:latest .
-          docker push us-central1-docker.pkg.dev/$PROJECT_ID/scripturebot/root:latest
-          gcloud run deploy scripturebot --image us-central1-docker.pkg.dev/$PROJECT_ID/scripturebot/root:latest --region us-central1
+          docker build -f Dockerfile -t us-central1-docker.pkg.dev/$ARTIFACT_ID/$PROJECT_ID/root:latest .
+          docker push us-central1-docker.pkg.dev/$ARTIFACT_ID/$PROJECT_ID/root:latest

@@ -112,9 +112,11 @@ func MapNodeListToString(nodes []*html.Node, tran NodeTransform) []string {
 
 func FindByClass(node *html.Node, tag string) (*html.Node, error) {
 	foundNode := FindNode(node, func(node *html.Node) bool {
-		for _, attr := range node.Attr {
-			if attr.Key == "class" && attr.Val == tag {
-				return true
+		if node != nil {
+			for _, attr := range node.Attr {
+				if attr.Key == "class" && attr.Val == tag {
+					return true
+				}
 			}
 		}
 		return false
