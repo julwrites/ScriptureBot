@@ -53,7 +53,6 @@ jobs:
           cat secrets.yaml
           docker build -f Dockerfile -t us-central1-docker.pkg.dev/$ARTIFACT_ID/$PROJECT_ID/root:latest .
           docker push us-central1-docker.pkg.dev/$ARTIFACT_ID/$PROJECT_ID/root:latest
-                      us-central1-docker.pkg.dev/scripturebot/scripturebot/root
 
       - name: Deployment
         env:
