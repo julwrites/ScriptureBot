@@ -1,5 +1,8 @@
 name: Run Build and Test Automation
-on: [push]
+on: 
+  pull_request:
+    branches:
+      - master
 jobs:
   build-and-test:
     runs-on: ubuntu-latest
@@ -53,11 +56,3 @@ jobs:
           cat secrets.yaml
           docker build -f Dockerfile -t us-central1-docker.pkg.dev/$ARTIFACT_ID/$PROJECT_ID/root:latest .
           docker push us-central1-docker.pkg.dev/$ARTIFACT_ID/$PROJECT_ID/root:latest
-
-      - name: Deployment
-        env:
-          PROJECT_ID: ${{secrets.GCLOUD_PROJECT_ID}}
-          ARTIFACT_ID: ${{secrets.GCLOUD_ARTIFACT_REPOSITORY_ID}}
-          APPLICATION_CREDENTIALS: ${{ secrets.GOOGLE_APPLICATION_CREDENTIALS }}
-        run: |
-          gcloud run deploy scripturebot --image us-central1-docker.pkg.dev/$ARTIFACT_ID/$PROJECT_ID/root:latest --region us-central1
