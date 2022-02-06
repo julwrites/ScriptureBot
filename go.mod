@@ -3,7 +3,7 @@ module github.com/julwrites/ScriptureBot
 go 1.17
 
 require (
-	cloud.google.com/go/datastore v1.6.0
+	cloud.google.com/go/storage v1.10.0
 	github.com/julwrites/BotPlatform v0.0.0-20220105093941-ca8e5a0b7afe
 	golang.org/x/net v0.0.0-20211216030914-fe4d6282115f
 	gopkg.in/yaml.v2 v2.4.0
@@ -13,7 +13,6 @@ require (
 	cloud.google.com/go v0.93.3 // indirect
 	github.com/golang/groupcache v0.0.0-20200121045136-8c9f03a8e57e // indirect
 	github.com/golang/protobuf v1.5.2 // indirect
-	github.com/google/go-cmp v0.5.6 // indirect
 	github.com/googleapis/gax-go/v2 v2.0.5 // indirect
 	go.opencensus.io v0.23.0 // indirect
 	golang.org/x/oauth2 v0.0.0-20210805134026-6f1e6394065a // indirect

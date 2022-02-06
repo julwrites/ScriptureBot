@@ -38,5 +38,5 @@ func TelegramHandler(res http.ResponseWriter, req *http.Request, secrets *secret
 		return
 	}
 
-	utils.PushUser(env.User, env.Secrets.PROJECT_ID) // Any change to the user throughout the commands should be put to database
+	utils.PushUser(env.User) // Any change to the user throughout the commands should be put to database
 }

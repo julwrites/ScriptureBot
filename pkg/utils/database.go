@@ -6,21 +6,59 @@ package utils
 import (
 	"context"
 	"encoding/json"
+	"io/ioutil"
 	"log"
+	"time"
 
-	"cloud.google.com/go/datastore"
-
+	"cloud.google.com/go/storage"
 	"github.com/julwrites/BotPlatform/pkg/def"
 )
 
 type UserConfig struct {
-	Version       string `datastore:""`
-	Timezone      string `datastore:""`
-	Subscriptions string `datastore:""`
+	Version       string
+	Timezone      string
+	Subscriptions string
 }
 
-func OpenClient(ctx *context.Context, proj string) *datastore.Client {
-	client, err := datastore.NewClient(*ctx, proj)
+func write(client *storage.Client, bucket, object string, data []byte) error {
+	// [START upload_file]
+	ctx := context.Background()
+
+	ctx, cancel := context.WithTimeout(ctx, time.Second*50)
+	defer cancel()
+	wc := client.Bucket(bucket).Object(object).NewWriter(ctx)
+	if _, err := wc.Write(data); err != nil {
+		return err
+	}
+	if err := wc.Close(); err != nil {
+		return err
+	}
+	// [END upload_file]
+	return nil
+}
+
+func read(client *storage.Client, bucket, object string) ([]byte, error) {
+	// [START download_file]
+	ctx := context.Background()
+
+	ctx, cancel := context.WithTimeout(ctx, time.Second*50)
+	defer cancel()
+	rc, err := client.Bucket(bucket).Object(object).NewReader(ctx)
+	if err != nil {
+		return nil, err
+	}
+	defer rc.Close()
+
+	data, err := ioutil.ReadAll(rc)
+	if err != nil {
+		return nil, err
+	}
+	return data, nil
+	// [END download_file]
+}
+
+func OpenClient(ctx *context.Context) *storage.Client {
+	client, err := storage.NewClient(*ctx)
 	if err != nil {
 		log.Printf("Failed to create Datastore client: %v", err)
 		return nil
@@ -29,33 +67,50 @@ func OpenClient(ctx *context.Context, proj string) *datastore.Client {
 	return client
 }
 
-func GetUser(user def.UserData, proj string) def.UserData {
+func GetUser(user def.UserData) def.UserData {
 	ctx := context.Background()
-	client := OpenClient(&ctx, proj)
+	client := OpenClient(&ctx)
+	key := "User"
+	object := user.Id
 
-	key := datastore.NameKey("User", user.Id, nil)
-
-	err := client.Get(ctx, key, &user)
+	data, err := read(client, key, object)
 	if err != nil {
-		log.Printf("Failed to get user: %v", err)
+		log.Printf("Failed to get user data: %v", err)
 
 		return user
 	}
+
+	var obj def.UserData
+	err = json.Unmarshal(data, &obj)
+
+	if err != nil {
+		log.Printf("Failed to unmarshal user data: %v", err)
+
+		return user
+	}
+
+	user = obj
 
 	log.Printf("Found user %s", user.Username)
 
 	return user
 }
 
-func PushUser(user def.UserData, proj string) bool {
+func PushUser(user def.UserData) bool {
 	log.Printf("Updating user data %v", user)
 
 	ctx := context.Background()
-	client := OpenClient(&ctx, proj)
+	client := OpenClient(&ctx)
+	key := "User"
+	object := user.Id
 
-	key := datastore.NameKey("User", user.Id, nil)
+	data, err := json.Marshal(user)
+	if err != nil {
+		log.Printf("Failed to marshal User Config: %v", err)
+		return false
+	}
 
-	_, err := client.Put(ctx, key, &user)
+	err = write(client, key, object, []byte(data))
 
 	if err != nil {
 		log.Printf("Failed to put to datastore: %v", err)
@@ -83,13 +138,13 @@ func SerializeUserConfig(config UserConfig) string {
 	return string(strConfig)
 }
 
-func RegisterUser(user def.UserData, proj string) def.UserData {
+func RegisterUser(user def.UserData) def.UserData {
 	// Get stored user if any, else default to what we currently have
-	user = GetUser(user, proj)
+	user = GetUser(user)
 
 	// Read the stored config
 	config := DeserializeUserConfig(user.Config)
-	// If stored config is not complete, set the default data
+	// If storedconfig is not complete, set the default data
 	if len(config.Version) == 0 {
 		config.Version = "NIV"
 	}
