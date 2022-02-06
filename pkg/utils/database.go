@@ -13,9 +13,9 @@ import (
 )
 
 type UserConfig struct {
-	Version       string
-	Timezone      string
-	Subscriptions string
+	Version       string `datastore:""`
+	Timezone      string `datastore:""`
+	Subscriptions string `datastore:""`
 }
 
 func OpenClient(ctx *context.Context, project string) *datastore.Client {
