@@ -50,9 +50,10 @@ jobs:
           TELEGRAM_ID: ${{secrets.TELEGRAM_ID}}
           ADMIN_ID: ${{secrets.TELEGRAM_ADMIN_ID}}
           PROJECT_ID: ${{secrets.GCLOUD_PROJECT_ID}}
+          BUCKET_ID: ${{secrets.GCLOUD_BUCKET_ID}}
           ARTIFACT_ID: ${{secrets.GCLOUD_ARTIFACT_REPOSITORY_ID}}
         run: |
-          printf "TELEGRAM_ID: \"$TELEGRAM_ID\"\nADMIN_ID: \"$ADMIN_ID\"\nPROJECT_ID: \"$PROJECT_ID\"\n" >> secrets.yaml
+          printf "TELEGRAM_ID: \"$TELEGRAM_ID\"\nADMIN_ID: \"$ADMIN_ID\"\nPROJECT_ID: \"$PROJECT_ID\"\nBUCKET_ID: \"$BUCKET_ID\"\n" >> secrets.yaml
           cat secrets.yaml
           docker build -f Dockerfile -t us-central1-docker.pkg.dev/$ARTIFACT_ID/$PROJECT_ID/root:latest .
           docker push us-central1-docker.pkg.dev/$ARTIFACT_ID/$PROJECT_ID/root:latest
