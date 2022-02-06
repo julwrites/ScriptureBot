@@ -6,11 +6,9 @@ package utils
 import (
 	"context"
 	"encoding/json"
-	"io/ioutil"
 	"log"
-	"time"
 
-	"cloud.google.com/go/storage"
+	"cloud.google.com/go/firestore"
 	"github.com/julwrites/BotPlatform/pkg/def"
 )
 
@@ -20,68 +18,29 @@ type UserConfig struct {
 	Subscriptions string
 }
 
-func write(client *storage.Client, bucket, object string, data []byte) error {
-	// [START upload_file]
-	ctx := context.Background()
-
-	ctx, cancel := context.WithTimeout(ctx, time.Second*50)
-	defer cancel()
-	wc := client.Bucket(bucket).Object(object).NewWriter(ctx)
-	if _, err := wc.Write(data); err != nil {
-		return err
-	}
-	if err := wc.Close(); err != nil {
-		return err
-	}
-	// [END upload_file]
-	return nil
-}
-
-func read(client *storage.Client, bucket, object string) ([]byte, error) {
-	// [START download_file]
-	ctx := context.Background()
-
-	ctx, cancel := context.WithTimeout(ctx, time.Second*50)
-	defer cancel()
-	rc, err := client.Bucket(bucket).Object(object).NewReader(ctx)
+func OpenClient(ctx *context.Context, project string) *firestore.Client {
+	client, err := firestore.NewClient(*ctx, project)
 	if err != nil {
-		return nil, err
-	}
-	defer rc.Close()
-
-	data, err := ioutil.ReadAll(rc)
-	if err != nil {
-		return nil, err
-	}
-	return data, nil
-	// [END download_file]
-}
-
-func OpenClient(ctx *context.Context) *storage.Client {
-	client, err := storage.NewClient(*ctx)
-	if err != nil {
-		log.Printf("Failed to create Datastore client: %v", err)
+		log.Printf("Failed to create Firestore client: %v", err)
 		return nil
 	}
 
 	return client
 }
 
-func GetUser(user def.UserData, bucket string) def.UserData {
+func GetUser(user def.UserData, project string) def.UserData {
 	ctx := context.Background()
-	client := OpenClient(&ctx)
-	key := bucket
-	object := user.Id
+	client := OpenClient(&ctx, project)
 
-	data, err := read(client, key, object)
+	doc, err := client.Collection("User").Doc(user.Id).Get(ctx)
 	if err != nil {
-		log.Printf("Failed to get user data: %v", err)
+		log.Printf("Failed to get user doc: %v", err)
 
 		return user
 	}
 
 	var obj def.UserData
-	err = json.Unmarshal(data, &obj)
+	err = doc.DataTo(&obj)
 
 	if err != nil {
 		log.Printf("Failed to unmarshal user data: %v", err)
@@ -96,21 +55,13 @@ func GetUser(user def.UserData, bucket string) def.UserData {
 	return user
 }
 
-func PushUser(user def.UserData, bucket string) bool {
+func PushUser(user def.UserData, project string) bool {
 	log.Printf("Updating user data %v", user)
 
 	ctx := context.Background()
-	client := OpenClient(&ctx)
-	key := bucket
-	object := user.Id
+	client := OpenClient(&ctx, project)
 
-	data, err := json.Marshal(user)
-	if err != nil {
-		log.Printf("Failed to marshal User Config: %v", err)
-		return false
-	}
-
-	err = write(client, key, object, []byte(data))
+	_, err := client.Collection("User").Doc(user.Id).Set(ctx, user)
 
 	if err != nil {
 		log.Printf("Failed to put to datastore: %v", err)
@@ -138,9 +89,9 @@ func SerializeUserConfig(config UserConfig) string {
 	return string(strConfig)
 }
 
-func RegisterUser(user def.UserData, bucket string) def.UserData {
+func RegisterUser(user def.UserData, project string) def.UserData {
 	// Get stored user if any, else default to what we currently have
-	user = GetUser(user, bucket)
+	user = GetUser(user, project)
 
 	// Read the stored config
 	config := DeserializeUserConfig(user.Config)

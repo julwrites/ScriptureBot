@@ -27,7 +27,8 @@ func TelegramHandler(res http.ResponseWriter, req *http.Request, secrets *secret
 
 	env.ResourcePath = "./resource"
 
-	env.User = utils.RegisterUser(env.User, env.Secrets.BUCKET_ID)
+	user := utils.RegisterUser(env.User, env.Secrets.PROJECT_ID)
+	env.User = user
 	log.Printf("Loaded user...")
 
 	env = HandleBotLogic(env)
@@ -38,5 +39,8 @@ func TelegramHandler(res http.ResponseWriter, req *http.Request, secrets *secret
 		return
 	}
 
-	utils.PushUser(env.User, env.Secrets.BUCKET_ID) // Any change to the user throughout the commands should be put to database
+	if env.User == user {
+		log.Printf("Updating user %v", env.User)
+		utils.PushUser(env.User, env.Secrets.PROJECT_ID) // Any change to the user throughout the commands should be put to database
+	}
 }
