@@ -47,7 +47,13 @@ As much as possible, each file should contain one of 3 things:
 
 This is intended to facilitate separation of responsibility for loose coupling. 
 
-### Build instructions
+### Build and Test
+
+On a fresh repository, run `go mod init` and `go mod tidy` to get all the necessary go modules for runtime
+
+To test, run `go test github.com/julwrites/ScriptureBot/pkg/<module>`, e.g `go test github.com/julwrites/ScriptureBot/pkg/app`
+
+### CI/CD Pipeline
 This repository uses go module to manage dependencies, and is hosted on gcloud cloud run. 
 
 As such it requires [gcloud CLI](https://cloud.google.com/sdk/docs/quickstart) to package the Dockerfile
