@@ -9,53 +9,54 @@ import (
 	"log"
 
 	"cloud.google.com/go/datastore"
-
 	"github.com/julwrites/BotPlatform/pkg/def"
 )
 
 type UserConfig struct {
-	Version       string `datastore:""`
-	Timezone      string `datastore:""`
-	Subscriptions string `datastore:""`
+	Version       string
+	Timezone      string
+	Subscriptions string
 }
 
-func OpenClient(ctx *context.Context, proj string) *datastore.Client {
-	client, err := datastore.NewClient(*ctx, proj)
+func OpenClient(ctx *context.Context, project string) *datastore.Client {
+	client, err := datastore.NewClient(*ctx, project)
 	if err != nil {
-		log.Printf("Failed to create Datastore client: %v", err)
+		log.Printf("Failed to create Firestore client: %v", err)
 		return nil
 	}
 
 	return client
 }
 
-func GetUser(user def.UserData, proj string) def.UserData {
+func GetUser(user def.UserData, project string) def.UserData {
 	ctx := context.Background()
-	client := OpenClient(&ctx, proj)
+	client := OpenClient(&ctx, project)
 
 	key := datastore.NameKey("User", user.Id, nil)
-
-	err := client.Get(ctx, key, &user)
+	var entity def.UserData
+	err := client.Get(ctx, key, &entity)
 	if err != nil {
-		log.Printf("Failed to get user: %v", err)
+		log.Printf("Failed to get user doc: %v", err)
 
 		return user
 	}
+
+	user = entity
 
 	log.Printf("Found user %s", user.Username)
 
 	return user
 }
 
-func PushUser(user def.UserData, proj string) bool {
+func PushUser(user def.UserData, project string) bool {
 	log.Printf("Updating user data %v", user)
 
 	ctx := context.Background()
-	client := OpenClient(&ctx, proj)
+	client := OpenClient(&ctx, project)
 
 	key := datastore.NameKey("User", user.Id, nil)
 
-	_, err := client.Put(ctx, key, &user)
+	_, err := client.Put(ctx, key, user)
 
 	if err != nil {
 		log.Printf("Failed to put to datastore: %v", err)
@@ -83,13 +84,13 @@ func SerializeUserConfig(config UserConfig) string {
 	return string(strConfig)
 }
 
-func RegisterUser(user def.UserData, proj string) def.UserData {
+func RegisterUser(user def.UserData, project string) def.UserData {
 	// Get stored user if any, else default to what we currently have
-	user = GetUser(user, proj)
+	user = GetUser(user, project)
 
 	// Read the stored config
 	config := DeserializeUserConfig(user.Config)
-	// If stored config is not complete, set the default data
+	// If storedconfig is not complete, set the default data
 	if len(config.Version) == 0 {
 		config.Version = "NIV"
 	}
