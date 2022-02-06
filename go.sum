@@ -153,8 +153,8 @@ github.com/ianlancetaylor/demangle v0.0.0-20181102032728-5e5cf60278f6/go.mod h1:
 github.com/ianlancetaylor/demangle v0.0.0-20200824232613-28f6c0f3b639/go.mod h1:aSSvb/t6k1mPoxDqO4vJh6VOCGPwU4O0C2/Eqndh1Sc=
 github.com/jstemmer/go-junit-report v0.0.0-20190106144839-af01ea7f8024/go.mod h1:6v2b51hI/fHJwM22ozAgKL4VKDeJcHhJFhtBdhmNjmU=
 github.com/jstemmer/go-junit-report v0.9.1/go.mod h1:Brl9GWCQeLvo8nXZwPNNblvFj/XSXhF0NWZEnDohbsk=
-github.com/julwrites/BotPlatform v0.0.0-20220206092833-4cddae4d2c56 h1:MAzhB94oECpeyE19+NiKH1cozuxJcCpmyNAywbvOwjw=
-github.com/julwrites/BotPlatform v0.0.0-20220206092833-4cddae4d2c56/go.mod h1:RAVF1PibRuRYv1Z7VxNapzrikBrjtF48aFPCoCVnLpM=
+github.com/julwrites/BotPlatform v0.0.0-20220206144002-60e1b8060734 h1:U/z8aO/8zMpOzdR7kK9hnHfXber1fHa7FWlXGeuG3Yc=
+github.com/julwrites/BotPlatform v0.0.0-20220206144002-60e1b8060734/go.mod h1:RAVF1PibRuRYv1Z7VxNapzrikBrjtF48aFPCoCVnLpM=
 github.com/kisielk/gotool v1.0.0/go.mod h1:XhKaO+MFFWcvkIS/tQcRk01m1F5IRFswLeQ+oQHNcck=
 github.com/kr/pretty v0.1.0 h1:L/CwN0zerZDmRFUapSPitk6f+Q3+0za1rQkzVuMiMFI=
 github.com/kr/pretty v0.1.0/go.mod h1:dAy3ld7l9f0ibDNOQOHHMYYIIbhfbHSm3C4ZsoJORNo=
