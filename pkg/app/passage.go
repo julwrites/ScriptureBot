@@ -98,12 +98,6 @@ func GetPassage(doc *html.Node, version string) string {
 			fallthrough
 		case "p":
 			return true
-		case "div":
-			for _, attr := range child.Attr {
-				if attr.Key == "class" && strings.Contains(attr.Val, "poetry") {
-					return true
-				}
-			}
 		}
 		return false
 	})
