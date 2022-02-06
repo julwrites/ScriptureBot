@@ -8,7 +8,7 @@ import (
 	"encoding/json"
 	"log"
 
-	"cloud.google.com/go/firestore"
+	"cloud.google.com/go/datastore"
 	"github.com/julwrites/BotPlatform/pkg/def"
 )
 
@@ -18,8 +18,8 @@ type UserConfig struct {
 	Subscriptions string
 }
 
-func OpenClient(ctx *context.Context, project string) *firestore.Client {
-	client, err := firestore.NewClient(*ctx, project)
+func OpenClient(ctx *context.Context, project string) *datastore.Client {
+	client, err := datastore.NewClient(*ctx, project)
 	if err != nil {
 		log.Printf("Failed to create Firestore client: %v", err)
 		return nil
@@ -32,23 +32,16 @@ func GetUser(user def.UserData, project string) def.UserData {
 	ctx := context.Background()
 	client := OpenClient(&ctx, project)
 
-	doc, err := client.Collection("User").Doc(user.Id).Get(ctx)
+	key := datastore.NameKey("User", user.Id, nil)
+	var entity def.UserData
+	err := client.Get(ctx, key, &entity)
 	if err != nil {
 		log.Printf("Failed to get user doc: %v", err)
 
 		return user
 	}
 
-	var obj def.UserData
-	err = doc.DataTo(&obj)
-
-	if err != nil {
-		log.Printf("Failed to unmarshal user data: %v", err)
-
-		return user
-	}
-
-	user = obj
+	user = entity
 
 	log.Printf("Found user %s", user.Username)
 
@@ -61,7 +54,9 @@ func PushUser(user def.UserData, project string) bool {
 	ctx := context.Background()
 	client := OpenClient(&ctx, project)
 
-	_, err := client.Collection("User").Doc(user.Id).Set(ctx, user)
+	key := datastore.NameKey("User", user.Id, nil)
+
+	_, err := client.Put(ctx, key, user)
 
 	if err != nil {
 		log.Printf("Failed to put to datastore: %v", err)

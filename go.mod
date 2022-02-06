@@ -3,7 +3,7 @@ module github.com/julwrites/ScriptureBot
 go 1.17
 
 require (
-	cloud.google.com/go/firestore v1.6.1
+	cloud.google.com/go/datastore v1.6.0
 	github.com/julwrites/BotPlatform v0.0.0-20220206092833-4cddae4d2c56
 	golang.org/x/net v0.0.0-20211216030914-fe4d6282115f
 	gopkg.in/yaml.v2 v2.4.0
