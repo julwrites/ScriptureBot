@@ -67,10 +67,10 @@ func OpenClient(ctx *context.Context) *storage.Client {
 	return client
 }
 
-func GetUser(user def.UserData) def.UserData {
+func GetUser(user def.UserData, bucket string) def.UserData {
 	ctx := context.Background()
 	client := OpenClient(&ctx)
-	key := "User"
+	key := bucket
 	object := user.Id
 
 	data, err := read(client, key, object)
@@ -96,12 +96,12 @@ func GetUser(user def.UserData) def.UserData {
 	return user
 }
 
-func PushUser(user def.UserData) bool {
+func PushUser(user def.UserData, bucket string) bool {
 	log.Printf("Updating user data %v", user)
 
 	ctx := context.Background()
 	client := OpenClient(&ctx)
-	key := "User"
+	key := bucket
 	object := user.Id
 
 	data, err := json.Marshal(user)
@@ -138,9 +138,9 @@ func SerializeUserConfig(config UserConfig) string {
 	return string(strConfig)
 }
 
-func RegisterUser(user def.UserData) def.UserData {
+func RegisterUser(user def.UserData, bucket string) def.UserData {
 	// Get stored user if any, else default to what we currently have
-	user = GetUser(user)
+	user = GetUser(user, bucket)
 
 	// Read the stored config
 	config := DeserializeUserConfig(user.Config)
