@@ -39,7 +39,7 @@ func TelegramHandler(res http.ResponseWriter, req *http.Request, secrets *secret
 		return
 	}
 
-	if env.User == user {
+	if env.User != user {
 		log.Printf("Updating user %v", env.User)
 		utils.PushUser(env.User, env.Secrets.PROJECT_ID) // Any change to the user throughout the commands should be put to database
 	}
