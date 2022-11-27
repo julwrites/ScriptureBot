@@ -4,6 +4,9 @@ import "github.com/julwrites/BotPlatform/pkg/def"
 
 func ProcessCommand(env def.SessionData) def.SessionData {
 	switch env.Msg.Command {
+	case ADM_CMD_DUMP:
+		env = DumpUserList(env)
+		break
 	case CMD_VERSION:
 		env = SetVersion(env)
 		break
