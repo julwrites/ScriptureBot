@@ -25,7 +25,7 @@ func TelegramHandler(res http.ResponseWriter, req *http.Request, secrets *secret
 	env.Secrets = *secrets
 	log.Printf("Loaded secrets...")
 
-	env.ResourcePath = "./resource"
+	env.ResourcePath = "."
 
 	user := utils.RegisterUser(env.User, env.Secrets.PROJECT_ID)
 	env.User = user
