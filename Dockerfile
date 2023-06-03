@@ -17,6 +17,7 @@ FROM scratch as runner
 COPY --from=builder /go/src/app/secrets.yaml /go/bin/secrets.yaml
 COPY --from=builder /go/bin/main /go/bin/main
 COPY --from=certificates /etc/ssl/certs/ca-certificates.crt /etc/ssl/certs/ca-certificates.crt
+COPY resource /go/bin/resource
 EXPOSE 8080
 
 ENTRYPOINT ["/go/bin/main"]
