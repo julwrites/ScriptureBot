@@ -14,10 +14,8 @@ RUN apk --no-cache add ca-certificates
 FROM scratch as runner
 # FROM ubuntu:latest as runner
 
-RUN mkdir /go/bin/resource
-
 COPY --from=builder /go/src/app/secrets.yaml /go/bin/secrets.yaml
-COPY --from=builder /go/src/app/resource/* /go/bin/resource/
+COPY --from=builder /go/src/app/resource/* /go/bin/
 COPY --from=builder /go/bin/main /go/bin/main
 COPY --from=certificates /etc/ssl/certs/ca-certificates.crt /etc/ssl/certs/ca-certificates.crt
 EXPOSE 8080
