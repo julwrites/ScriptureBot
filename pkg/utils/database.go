@@ -36,7 +36,7 @@ func GetUser(user def.UserData, project string) def.UserData {
 	var entity def.UserData
 	err := client.Get(ctx, key, &entity)
 	if err != nil {
-		log.Printf("Failed to get user doc: %v", err)
+		log.Printf("Failed to get user: %v", err)
 
 		return user
 	}
@@ -46,6 +46,36 @@ func GetUser(user def.UserData, project string) def.UserData {
 	log.Printf("Found user %s", user.Username)
 
 	return user
+}
+
+func GetAllUsers(project string) []def.UserData {
+	ctx := context.Background()
+	client := OpenClient(&ctx, project)
+
+	var users []def.UserData
+
+	keys, err := client.GetAll(ctx, datastore.NewQuery("User"), &users)
+
+	if err != nil {
+		log.Printf("Failed to get users: %v", err)
+
+		return []def.UserData{}
+	}
+
+	for _, k := range keys {
+		var entity def.UserData
+
+		err := client.Get(ctx, k, &entity)
+		if err != nil {
+			log.Printf("Failed to get user: %v", err)
+
+			continue
+		}
+
+		users = append(users, entity)
+	}
+
+	return users
 }
 
 func PushUser(user def.UserData, project string) bool {

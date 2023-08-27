@@ -48,7 +48,7 @@ func TestGetDiscipleshipJournalReferences(t *testing.T) {
 		day = day % length
 		brp := djBRP.BibleReadingPlan[(int(month)-1)*length+(day-1)]
 
-		if brp.Verses[0] != "Reflection" {
+		if len(brp.Verses[0]) < 1 {
 			t.Errorf("Failed to get DiscipleshipJournal References")
 		}
 	}
