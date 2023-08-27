@@ -57,14 +57,14 @@ func UpdateSubscription(env def.SessionData) def.SessionData {
 		var options []def.Option
 
 		for k, _ := range DEVOS {
-			name, err := AcronymizeDevo(k)
+			devo, err := AcronymizeDevo(k)
 			if err != nil {
 				log.Fatalf("ExpandDevo failed %v", err)
 			} else {
-				if strings.Contains(config.Subscriptions, k) {
-					options = append(options, def.Option{Text: name + " (Subscribed)"})
+				if strings.Contains(config.Subscriptions, devo) {
+					options = append(options, def.Option{Text: k + " (Subscribed)"})
 				} else {
-					options = append(options, def.Option{Text: name})
+					options = append(options, def.Option{Text: k})
 				}
 			}
 		}
