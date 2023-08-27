@@ -29,21 +29,24 @@ func UpdateSubscription(env def.SessionData) def.SessionData {
 					}
 				}
 			} else {
-				// Add selectively
-				for _, s := range strings.Split(config.Subscriptions, ",") {
-					// Only allow one bible reading plan
-					if GetDevotionalType(devo) == BibleReadingPlan && GetDevotionalType(s) == BibleReadingPlan {
-						subscriptions = append(subscriptions, devo)
+				// If user selected a bible reading plan
+				if GetDevotionalType(devo) == BibleReadingPlan {
+					// Remove all other bible reading plans
+					for _, s := range strings.Split(config.Subscriptions, ",") {
+						if GetDevotionalType(s) != BibleReadingPlan {
+							subscriptions = append(subscriptions, s)
+						}
 					}
+					// Add the new bible reading plan
+					subscriptions = append(subscriptions, devo)
 				}
 			}
-			config.Subscriptions = strings.Join(subscriptions, ",")
 
-			println(config.Subscriptions)
+			config.Subscriptions = strings.Join(subscriptions, ",")
 			env.User.Config = utils.SerializeUserConfig(config)
 
 			env.User.Action = ""
-			env.Res.Message = fmt.Sprintf("Got it, I've updated your subscriptions to include %s", devo)
+			env.Res.Message = fmt.Sprintf("Got it, I've updated your subscriptions to include %s", env.Msg.Message)
 			env.Res.Affordances.Remove = true
 		} else {
 			log.Printf("AcronymizeDevo failed %v", err)

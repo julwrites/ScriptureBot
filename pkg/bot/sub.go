@@ -23,8 +23,6 @@ func HandleSubscriptionLogic(env def.SessionData) def.SessionData {
 		subscriptions := strings.Split(config.Subscriptions, ",")
 
 		for _, devo := range subscriptions {
-			log.Printf("Devotional is valid, retrieving %s", devo)
-
 			env.Res.Affordances.Remove = true
 
 			// Retrieve devotional

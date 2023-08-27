@@ -23,16 +23,16 @@ func TelegramHandler(res http.ResponseWriter, req *http.Request, secrets *secret
 	}
 
 	env.Secrets = *secrets
-	log.Printf("Loaded secrets...")
+	// log.Printf("Loaded secrets...")
 
 	env.ResourcePath = "/go/bin/"
 
 	user := utils.RegisterUser(env.User, env.Secrets.PROJECT_ID)
 	env.User = user
-	log.Printf("Loaded user...")
+	// log.Printf("Loaded user...")
 
 	env = HandleBotLogic(env)
-	log.Printf("Handled bot logic...")
+	// log.Printf("Handled bot logic...")
 
 	if !platform.PostFromProps(env) {
 		log.Printf("This message was not translatable from bot language")
