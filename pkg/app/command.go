@@ -17,6 +17,7 @@ func ProcessCommand(env def.SessionData) def.SessionData {
 		env = GetDevo(env)
 		break
 	case CMD_SUBSCRIBE:
+		env = UpdateSubscription(env)
 		break
 	case CMD_LEXICON:
 		env = GetBibleWord(env)

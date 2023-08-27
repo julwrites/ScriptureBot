@@ -42,6 +42,8 @@ func ParseNodesForPassage(node *html.Node) string {
 			childText := strings.Trim(ParseNodesForPassage(child), " ")
 			if len(childText) > 0 {
 				parts = append(parts, childText)
+			} else {
+				parts = append(parts, child.Data)
 			}
 		case "sup":
 			isFootnote := func(node *html.Node) bool {
@@ -95,6 +97,9 @@ func GetPassage(doc *html.Node, version string) string {
 		case "h3":
 			fallthrough
 		case "h4":
+			if child.FirstChild.Data == "Footnotes" || child.FirstChild.Data == "Cross references" {
+				return false
+			}
 			fallthrough
 		case "p":
 			return true

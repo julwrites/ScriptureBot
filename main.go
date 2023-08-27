@@ -31,15 +31,31 @@ func bothandler(res http.ResponseWriter, req *http.Request) {
 	}
 }
 
-func main() {
-	http.HandleFunc("/", bothandler)
-
-	port := os.Getenv("PORT")
-	if port == "" {
-		port = "8080"
-		log.Printf("Defaulting to port %s", port)
+func subscriptionhandler() {
+	secretsPath := "/go/bin/secrets.yaml"
+	secretsData, err := secrets.LoadSecrets(secretsPath)
+	if err != nil {
+		panic(err)
 	}
 
-	log.Printf("Listening on port %s", port)
-	log.Fatal(http.ListenAndServe(fmt.Sprintf(":%s", port), nil))
+	bot.SubscriptionHandler(&secretsData)
+}
+
+func main() {
+	if len(os.Args) > 1 {
+		if os.Args[1] == "subscription" {
+			subscriptionhandler()
+		}
+	} else {
+		http.HandleFunc("/", bothandler)
+
+		port := os.Getenv("PORT")
+		if port == "" {
+			port = "8080"
+			log.Printf("Defaulting to port %s", port)
+		}
+
+		log.Printf("Listening on port %s", port)
+		log.Fatal(http.ListenAndServe(fmt.Sprintf(":%s", port), nil))
+	}
 }

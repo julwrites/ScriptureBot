@@ -17,13 +17,24 @@ const (
 	DGORG string = "DGORG"
 )
 
+const (
+	BibleReadingPlan string = "BRP"
+	DailyArticle     string = "DA"
+)
+
+var DEVO_NAMES = map[string]string{
+	MCBRP: "M'Cheyne Bible Reading Plan",
+	DJBRP: "Discipleship Journal Bible Reading Plan",
+	DGORG: "Desiring God Articles",
+}
+
 var DEVOS = map[string]string{
 	"M'Cheyne Bible Reading Plan":             MCBRP,
 	"Discipleship Journal Bible Reading Plan": DJBRP,
 	"Desiring God Articles":                   DGORG,
 }
 
-func SanitizeDevo(msg string) (string, error) {
+func AcronymizeDevo(msg string) (string, error) {
 	msg = strings.Trim(msg, " ")
 	devo, ok := DEVOS[msg]
 	if ok {
@@ -32,12 +43,34 @@ func SanitizeDevo(msg string) (string, error) {
 	return "", errors.New(fmt.Sprintf("Devo could not be recognized %s", msg))
 }
 
+func ExpandDevo(msg string) (string, error) {
+	msg = strings.Trim(msg, " ")
+	devo, ok := DEVO_NAMES[msg]
+	if ok {
+		return devo, nil
+	}
+	return "", errors.New(fmt.Sprintf("Devo could not be recognized %s", msg))
+}
+
+func GetDevotionalType(devo string) string {
+	switch devo {
+	case MCBRP:
+		fallthrough
+	case DJBRP:
+		return BibleReadingPlan
+	case DGORG:
+		return DailyArticle
+	}
+
+	return ""
+}
+
 func GetDevotionalText(devo string) string {
 	var text string
 
 	switch devo {
 	case MCBRP:
-		fallthrough
+		fallthrough // Same as DJBRP
 	case DJBRP:
 		text = "Here are today's Bible Reading passages, tap on any one to get the passage!"
 		break
@@ -84,7 +117,7 @@ func GetDevo(env def.SessionData) def.SessionData {
 	case CMD_DEVO:
 		log.Printf("Detected existing action /devo")
 
-		devo, err := SanitizeDevo(env.Msg.Message)
+		devo, err := AcronymizeDevo(env.Msg.Message)
 		if err == nil {
 			log.Printf("Devotional is valid, retrieving %s", devo)
 
@@ -98,7 +131,7 @@ func GetDevo(env def.SessionData) def.SessionData {
 
 			env.User.Action = ""
 		} else {
-			log.Printf("SanitizeDevo failed %v", err)
+			log.Printf("AcronymizeDevo failed %v", err)
 			env.Res.Message = "I didn't recognize that devo, please try again"
 		}
 
