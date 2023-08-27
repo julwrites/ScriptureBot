@@ -43,7 +43,7 @@ func UpdateSubscription(env def.SessionData) def.SessionData {
 			env.User.Config = utils.SerializeUserConfig(config)
 
 			env.User.Action = ""
-			env.Res.Message = fmt.Sprintf("Got it, I've updated your subscriptions to include %s", devo)
+			env.Res.Message = fmt.Sprintf("Got it, I've updated your subscriptions to include %s", env.Msg.Message)
 			env.Res.Affordances.Remove = true
 		} else {
 			log.Printf("AcronymizeDevo failed %v", err)
