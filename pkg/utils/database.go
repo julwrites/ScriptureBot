@@ -54,7 +54,7 @@ func GetAllUsers(project string) []def.UserData {
 
 	var users []def.UserData
 
-	keys, err := client.GetAll(ctx, datastore.NewQuery("User"), &users)
+	_, err := client.GetAll(ctx, datastore.NewQuery("User"), &users)
 
 	if err != nil {
 		log.Printf("Failed to get users: %v", err)
@@ -62,18 +62,18 @@ func GetAllUsers(project string) []def.UserData {
 		return []def.UserData{}
 	}
 
-	for _, k := range keys {
-		var entity def.UserData
+	// for _, k := range keys {
+	// 	var entity def.UserData
 
-		err := client.Get(ctx, k, &entity)
-		if err != nil {
-			log.Printf("Failed to get user: %v", err)
+	// 	err := client.Get(ctx, k, &entity)
+	// 	if err != nil {
+	// 		log.Printf("Failed to get user: %v", err)
 
-			continue
-		}
+	// 		continue
+	// 	}
 
-		users = append(users, entity)
-	}
+	// 	users = append(users, entity)
+	// }
 
 	return users
 }
