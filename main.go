@@ -42,10 +42,8 @@ func subscriptionhandler() {
 }
 
 func main() {
-	if len(os.Args) > 1 {
-		if os.Args[1] == "subscription" {
-			subscriptionhandler()
-		}
+	if os.Getenv("MODE") == "subscription" {
+		subscriptionhandler()
 	} else {
 		http.HandleFunc("/", bothandler)
 
