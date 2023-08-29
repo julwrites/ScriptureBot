@@ -36,7 +36,7 @@ func Migrate(env def.SessionData) def.SessionData {
 				migratedSubs := []string{}
 
 				for _, sub := range subs {
-					if sub == "N5XBRP" {
+					if sub == "NTBRP" {
 						migratedSubs = append(migratedSubs, "N5XBRP")
 					} else {
 						migratedSubs = append(migratedSubs, sub)
