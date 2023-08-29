@@ -21,9 +21,9 @@ func HandleSubscriptionLogic(env def.SessionData) def.SessionData {
 
 		config := utils.DeserializeUserConfig(user.Config)
 
-		subscriptions := strings.Split(config.Subscriptions, ",")
+		if len(config.Subscriptions) > 0 {
+			subscriptions := strings.Split(config.Subscriptions, ",")
 
-		if len(subscriptions) > 0 {
 			log.Printf("Found subscriptions for %s: %s", user.Firstname+user.Lastname, subscriptions)
 
 			for _, devo := range subscriptions {
@@ -32,6 +32,7 @@ func HandleSubscriptionLogic(env def.SessionData) def.SessionData {
 				// Retrieve devotional
 				log.Printf("Getting data for (%s)", devo)
 				env.Res = app.GetDevotionalData(env, devo)
+				env.Res.Message = "Here are today's devotions!"
 
 				env.User.Action = ""
 			}
