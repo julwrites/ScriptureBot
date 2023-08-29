@@ -23,19 +23,23 @@ func HandleSubscriptionLogic(env def.SessionData) def.SessionData {
 
 		subscriptions := strings.Split(config.Subscriptions, ",")
 
-		log.Printf("Retrieved subscriptions for %s: %s", user.Firstname+user.Lastname, subscriptions)
-		for _, devo := range subscriptions {
-			env.Res.Affordances.Remove = true
+		if len(subscriptions) > 0 {
+			log.Printf("Found subscriptions for %s: %s", user.Firstname+user.Lastname, subscriptions)
 
-			// Retrieve devotional
-			env.Res = app.GetDevotionalData(env, devo)
+			for _, devo := range subscriptions {
+				env.Res.Affordances.Remove = true
 
-			env.User.Action = ""
-		}
+				// Retrieve devotional
+				log.Printf("Getting data for (%s)", devo)
+				env.Res = app.GetDevotionalData(env, devo)
 
-		if !platform.PostFromProps(env) {
-			log.Printf("This message was not translatable from bot language")
-			continue
+				env.User.Action = ""
+			}
+
+			if !platform.PostFromProps(env) {
+				log.Printf("This message was not translatable from bot language")
+				continue
+			}
 		}
 	}
 
