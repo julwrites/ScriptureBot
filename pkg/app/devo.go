@@ -12,27 +12,31 @@ import (
 )
 
 const (
-	MCBRP string = "MCBRP"
-	DJBRP string = "DJBRP"
-	N5BRP string = "NTBRP"
-	DGORG string = "DGORG"
+	MCBRP  string = "MCBRP"
+	DJBRP  string = "DJBRP"
+	DNTBRP string = "DNTBRP"
+	N5BRP  string = "N5BRP"
+	DGORG  string = "DGORG"
 )
 
 const (
+	DailyChapterPlan string = "DCP"
 	BibleReadingPlan string = "BRP"
 	DailyArticle     string = "DA"
 )
 
 var DEVO_NAMES = map[string]string{
-	MCBRP: "M'Cheyne Bible Reading Plan",
-	DJBRP: "Discipleship Journal Bible Reading Plan",
-	N5BRP: "Navigators 5x5x5 New Testament Reading Plan",
-	DGORG: "Desiring God Articles",
+	MCBRP:  "M'Cheyne Bible Reading Plan",
+	DJBRP:  "Discipleship Journal Bible Reading Plan",
+	DNTBRP: "Daily New Testament Reading Plan",
+	N5BRP:  "Navigators 5x5x5 New Testament Reading Plan",
+	DGORG:  "Desiring God Articles",
 }
 
 var DEVOS = map[string]string{
 	"M'Cheyne Bible Reading Plan":                 MCBRP,
 	"Discipleship Journal Bible Reading Plan":     DJBRP,
+	"Daily New Testament Reading Plan":            DNTBRP,
 	"Navigators 5x5x5 New Testament Reading Plan": N5BRP,
 	"Desiring God Articles":                       DGORG,
 }
@@ -61,8 +65,10 @@ func GetDevotionalType(devo string) string {
 		fallthrough
 	case DJBRP:
 		return BibleReadingPlan
+	case DNTBRP:
+		return DailyChapterPlan
 	case N5BRP:
-		return BibleReadingPlan
+		return DailyChapterPlan
 	case DGORG:
 		return DailyArticle
 	}
@@ -78,10 +84,12 @@ func GetDevotionalText(devo string) string {
 		fallthrough // Same as DJBRP
 	case DJBRP:
 		text = "Here are today's Bible Reading passages, tap on any one to get the passage!"
+	case DNTBRP:
+		fallthrough
 	case N5BRP:
-		text = "Here is today's Bible Reading passage!"
+		fallthrough
 	case DGORG:
-		break
+		break // No text because we send the text directly
 	}
 
 	return text
@@ -104,16 +112,16 @@ func GetDevotionalData(env def.SessionData, devo string) def.ResponseData {
 		} else {
 			response.Affordances.Options = append(response.Affordances.Options, def.Option{Text: CMD_CLOSE})
 		}
+	case DNTBRP:
+		response.Message = GetDailyNewTestamentReadingReferences(env)
+		response.Affordances.Remove = true
 	case N5BRP:
-		response.Affordances.Options = GetNavigators5xReferences(env)
-		if len(response.Affordances.Options) == 0 {
-			response.Message = GetNavigators5xPrompt(env)
-		} else {
-			response.Affordances.Options = append(response.Affordances.Options, def.Option{Text: CMD_CLOSE})
-		}
+		response.Message = GetNavigators5xReferences(env)
+		response.Affordances.Remove = true
 	case DGORG:
 		response.Affordances.Options = GetDesiringGodArticles()
 		response.Affordances.Inline = true
+		return response
 	default:
 		response.Affordances.Remove = true
 	}

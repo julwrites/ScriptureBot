@@ -52,6 +52,14 @@ type DailyBRP struct {
 	BibleReadingPlan []BibleReadingPlanDevo `yaml:"BibleReadingPlan"`
 }
 
+type BibleReadingPlanChapter struct {
+	Verses string `yaml:"Verses,flow"`
+}
+
+type DailyChapterBRP struct {
+	BibleReadingPlan []BibleReadingPlanChapter `yaml:"BibleReadingPlan"`
+}
+
 func GetDiscipleshipJournalDatabase(dataPath string) DailyBRP {
 
 	var path []string
@@ -72,7 +80,7 @@ func GetDiscipleshipJournalDatabase(dataPath string) DailyBRP {
 	return djBRP
 }
 
-func GetDailyNewTestamentDatabase(dataPath string) DailyBRP {
+func GetDailyNewTestamentDatabase(dataPath string) DailyChapterBRP {
 
 	var path []string
 	path = append(path, dataPath)
@@ -83,7 +91,7 @@ func GetDailyNewTestamentDatabase(dataPath string) DailyBRP {
 		log.Printf("Error reading DNTBR data file: %v", readErr)
 	}
 
-	var dntBRP DailyBRP
+	var dntBRP DailyChapterBRP
 	yamlErr := yaml.Unmarshal(data, &dntBRP)
 	if yamlErr != nil {
 		log.Printf("Error reading DNTBR data from yaml: %v", yamlErr)
@@ -92,12 +100,7 @@ func GetDailyNewTestamentDatabase(dataPath string) DailyBRP {
 	return dntBRP
 }
 
-type DailyChapterNTBRP struct {
-	Prompt           string                 `yaml:"Prompt"`
-	BibleReadingPlan []BibleReadingPlanDevo `yaml:"BibleReadingPlan"`
-}
-
-func GetNavigators5xDatabase(dataPath string) DailyChapterNTBRP {
+func GetNavigators5xDatabase(dataPath string) DailyChapterBRP {
 
 	var path []string
 	path = append(path, dataPath)
@@ -108,7 +111,7 @@ func GetNavigators5xDatabase(dataPath string) DailyChapterNTBRP {
 		log.Printf("Error reading N5BR data file: %v", readErr)
 	}
 
-	var ntBRP DailyChapterNTBRP
+	var ntBRP DailyChapterBRP
 	yamlErr := yaml.Unmarshal(data, &ntBRP)
 	if yamlErr != nil {
 		log.Printf("Error reading N5BR data from yaml: %v", yamlErr)
@@ -135,9 +138,7 @@ func GetDiscipleshipJournalReferences(env def.SessionData) []def.Option {
 
 	return options
 }
-func GetDailyNewTestamentReadingReferences(env def.SessionData) []def.Option {
-	var options []def.Option
-
+func GetDailyNewTestamentReadingReferences(env def.SessionData) string {
 	dntBRP := GetDailyNewTestamentDatabase(env.ResourcePath)
 
 	// We will read the entry using the date, format: Year, Month, Day
@@ -146,11 +147,7 @@ func GetDailyNewTestamentReadingReferences(env def.SessionData) []def.Option {
 	day = day % 260
 	brp := dntBRP.BibleReadingPlan[day]
 
-	for _, r := range brp.Verses {
-		options = append(options, def.Option{Text: r})
-	}
-
-	return options
+	return brp.Verses
 }
 
 func GetNavigators5xPrompt(env def.SessionData) string {
@@ -178,25 +175,12 @@ This tool is meant to be shared. Download the 5 by 5 by 5 New Testament Bible Re
 `
 }
 
-func GetNavigators5xReferences(env def.SessionData) []def.Option {
-	var options []def.Option
-
+func GetNavigators5xReferences(env def.SessionData) string {
 	ntBRP := GetNavigators5xDatabase(env.ResourcePath)
 
-	length := len(ntBRP.BibleReadingPlan) / 12
-
 	// We will read the entry using the date, format: Year, Month, Day
-	_, month, day := time.Now().Date()
-	brp := ntBRP.BibleReadingPlan[(int(month)-1)*length+(day-1)]
+	day := time.Now().YearDay()
+	brp := ntBRP.BibleReadingPlan[day]
 
-	if day < length {
-		for _, r := range brp.Verses {
-			if r == "Reflection" {
-				continue
-			}
-			options = append(options, def.Option{Text: r})
-		}
-	}
-
-	return options
+	return brp.Verses
 }

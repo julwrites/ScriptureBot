@@ -1,261 +1,261 @@
 BibleReadingPlan:
-  - Verses: ["Mark 1"]
-  - Verses: ["Mark 2"]
-  - Verses: ["Mark 3"]
-  - Verses: ["Mark 4"]
-  - Verses: ["Mark 5"]
-  - Verses: ["Mark 6"]
-  - Verses: ["Mark 7"]
-  - Verses: ["Mark 8"]
-  - Verses: ["Mark 9"]
-  - Verses: ["Mark 10"]
-  - Verses: ["Mark 11"]
-  - Verses: ["Mark 12"]
-  - Verses: ["Mark 13"]
-  - Verses: ["Mark 14"]
-  - Verses: ["Mark 15"]
-  - Verses: ["Mark 16"]
-  - Verses: ["Acts 1"]
-  - Verses: ["Acts 2"]
-  - Verses: ["Acts 3"]
-  - Verses: ["Acts 4"]
-  - Verses: ["Acts 5"]
-  - Verses: ["Acts 6"]
-  - Verses: ["Acts 7"]
-  - Verses: ["Acts 8"]
-  - Verses: ["Acts 9"]
-  - Verses: ["Acts 10"]
-  - Verses: ["Acts 11"]
-  - Verses: ["Acts 12"]
-  - Verses: ["Acts 13"]
-  - Verses: ["Acts 14"]
-  - Verses: ["Acts 15"]
-  - Verses: ["Acts 16"]
-  - Verses: ["Acts 17"]
-  - Verses: ["Acts 18"]
-  - Verses: ["Acts 19"]
-  - Verses: ["Acts 20"]
-  - Verses: ["Acts 21"]
-  - Verses: ["Acts 22"]
-  - Verses: ["Acts 23"]
-  - Verses: ["Acts 24"]
-  - Verses: ["Acts 25"]
-  - Verses: ["Acts 26"]
-  - Verses: ["Acts 27"]
-  - Verses: ["Acts 28"]
-  - Verses: ["Hebrews 1"]
-  - Verses: ["Hebrews 2"]
-  - Verses: ["Hebrews 3"]
-  - Verses: ["Hebrews 4"]
-  - Verses: ["Hebrews 5"]
-  - Verses: ["Hebrews 6"]
-  - Verses: ["Hebrews 7"]
-  - Verses: ["Hebrews 8"]
-  - Verses: ["Hebrews 9"]
-  - Verses: ["Hebrews 10"]
-  - Verses: ["Hebrews 11"]
-  - Verses: ["Hebrews 12"]
-  - Verses: ["Hebrews 13"]
-  - Verses: ["Galatians 1"]
-  - Verses: ["Galatians 2"]
-  - Verses: ["Galatians 3"]
-  - Verses: ["Galatians 4"]
-  - Verses: ["Galatians 5"]
-  - Verses: ["Galatians 6"]
-  - Verses: ["James 1"]
-  - Verses: ["James 2"]
-  - Verses: ["James 3"]
-  - Verses: ["James 4"]
-  - Verses: ["James 5"]
-  - Verses: ["Matthew 1"]
-  - Verses: ["Matthew 2"]
-  - Verses: ["Matthew 3"]
-  - Verses: ["Matthew 4"]
-  - Verses: ["Matthew 5"]
-  - Verses: ["Matthew 6"]
-  - Verses: ["Matthew 7"]
-  - Verses: ["Matthew 8"]
-  - Verses: ["Matthew 9"]
-  - Verses: ["Matthew 10"]
-  - Verses: ["Matthew 11"]
-  - Verses: ["Matthew 12"]
-  - Verses: ["Matthew 13"]
-  - Verses: ["Matthew 14"]
-  - Verses: ["Matthew 15"]
-  - Verses: ["Matthew 16"]
-  - Verses: ["Matthew 17"]
-  - Verses: ["Matthew 18"]
-  - Verses: ["Matthew 19"]
-  - Verses: ["Matthew 20"]
-  - Verses: ["Matthew 21"]
-  - Verses: ["Matthew 22"]
-  - Verses: ["Matthew 23"]
-  - Verses: ["Matthew 24"]
-  - Verses: ["Matthew 25"]
-  - Verses: ["Matthew 26"]
-  - Verses: ["Matthew 27"]
-  - Verses: ["Matthew 28"]
-  - Verses: ["Romans 1"]
-  - Verses: ["Romans 2"]
-  - Verses: ["Romans 3"]
-  - Verses: ["Romans 4"]
-  - Verses: ["Romans 5"]
-  - Verses: ["Romans 6"]
-  - Verses: ["Romans 7"]
-  - Verses: ["Romans 8"]
-  - Verses: ["Romans 9"]
-  - Verses: ["Romans 10"]
-  - Verses: ["Romans 11"]
-  - Verses: ["Romans 12"]
-  - Verses: ["Romans 13"]
-  - Verses: ["Romans 14"]
-  - Verses: ["Romans 15"]
-  - Verses: ["Romans 16"]
-  - Verses: ["Ephesians 1"]
-  - Verses: ["Ephesians 2"]
-  - Verses: ["Ephesians 3"]
-  - Verses: ["Ephesians 4"]
-  - Verses: ["Ephesians 5"]
-  - Verses: ["Ephesians 6"]
-  - Verses: ["Philippians 1"]
-  - Verses: ["Philippians 2"]
-  - Verses: ["Philippians 3"]
-  - Verses: ["Philippians 4"]
-  - Verses: ["Colossians 1"]
-  - Verses: ["Colossians 2"]
-  - Verses: ["Colossians 3"]
-  - Verses: ["Colossians 4"]
-  - Verses: ["Philemon 1"]
-  - Verses: ["Luke 1"]
-  - Verses: ["Luke 2"]
-  - Verses: ["Luke 3"]
-  - Verses: ["Luke 4"]
-  - Verses: ["Luke 5"]
-  - Verses: ["Luke 6"]
-  - Verses: ["Luke 7"]
-  - Verses: ["Luke 8"]
-  - Verses: ["Luke 9"]
-  - Verses: ["Luke 10"]
-  - Verses: ["Luke 11"]
-  - Verses: ["Luke 12"]
-  - Verses: ["Luke 13"]
-  - Verses: ["Luke 14"]
-  - Verses: ["Luke 15"]
-  - Verses: ["Luke 16"]
-  - Verses: ["Luke 17"]
-  - Verses: ["Luke 18"]
-  - Verses: ["Luke 19"]
-  - Verses: ["Luke 20"]
-  - Verses: ["Luke 21"]
-  - Verses: ["Luke 22"]
-  - Verses: ["Luke 23"]
-  - Verses: ["Luke 24"]
-  - Verses: ["1 Corinthians 1"]
-  - Verses: ["1 Corinthians 2"]
-  - Verses: ["1 Corinthians 3"]
-  - Verses: ["1 Corinthians 4"]
-  - Verses: ["1 Corinthians 5"]
-  - Verses: ["1 Corinthians 6"]
-  - Verses: ["1 Corinthians 7"]
-  - Verses: ["1 Corinthians 8"]
-  - Verses: ["1 Corinthians 9"]
-  - Verses: ["1 Corinthians 10"]
-  - Verses: ["1 Corinthians 11"]
-  - Verses: ["1 Corinthians 12"]
-  - Verses: ["1 Corinthians 13"]
-  - Verses: ["1 Corinthians 14"]
-  - Verses: ["1 Corinthians 15"]
-  - Verses: ["1 Corinthians 16"]
-  - Verses: ["2 Corinthians 1"]
-  - Verses: ["2 Corinthians 2"]
-  - Verses: ["2 Corinthians 3"]
-  - Verses: ["2 Corinthians 4"]
-  - Verses: ["2 Corinthians 5"]
-  - Verses: ["2 Corinthians 6"]
-  - Verses: ["2 Corinthians 7"]
-  - Verses: ["2 Corinthians 8"]
-  - Verses: ["2 Corinthians 9"]
-  - Verses: ["2 Corinthians 10"]
-  - Verses: ["2 Corinthians 11"]
-  - Verses: ["2 Corinthians 12"]
-  - Verses: ["2 Corinthians 13"]
-  - Verses: ["1 Timothy 1"]
-  - Verses: ["1 Timothy 2"]
-  - Verses: ["1 Timothy 3"]
-  - Verses: ["1 Timothy 4"]
-  - Verses: ["1 Timothy 5"]
-  - Verses: ["1 Timothy 6"]
-  - Verses: ["2 Timothy 1"]
-  - Verses: ["2 Timothy 2"]
-  - Verses: ["2 Timothy 3"]
-  - Verses: ["2 Timothy 4"]
-  - Verses: ["Titus 1"]
-  - Verses: ["Titus 2"]
-  - Verses: ["Titus 3"]
-  - Verses: ["1 John 1"]
-  - Verses: ["1 John 2"]
-  - Verses: ["1 John 3"]
-  - Verses: ["1 John 4"]
-  - Verses: ["1 John 5"]
-  - Verses: ["2 John 1"]
-  - Verses: ["3 John 1"]
-  - Verses: ["1 Peter 1"]
-  - Verses: ["1 Peter 2"]
-  - Verses: ["1 Peter 3"]
-  - Verses: ["1 Peter 4"]
-  - Verses: ["1 Peter 5"]
-  - Verses: ["John 1"]
-  - Verses: ["John 2"]
-  - Verses: ["John 3"]
-  - Verses: ["John 4"]
-  - Verses: ["John 5"]
-  - Verses: ["John 6"]
-  - Verses: ["John 7"]
-  - Verses: ["John 8"]
-  - Verses: ["John 9"]
-  - Verses: ["John 10"]
-  - Verses: ["John 11"]
-  - Verses: ["John 12"]
-  - Verses: ["John 13"]
-  - Verses: ["John 14"]
-  - Verses: ["John 15"]
-  - Verses: ["John 16"]
-  - Verses: ["John 17"]
-  - Verses: ["John 18"]
-  - Verses: ["John 19"]
-  - Verses: ["John 20"]
-  - Verses: ["John 21"]
-  - Verses: ["1 Thessalonians 1"]
-  - Verses: ["1 Thessalonians 2"]
-  - Verses: ["1 Thessalonians 3"]
-  - Verses: ["1 Thessalonians 4"]
-  - Verses: ["1 Thessalonians 5"]
-  - Verses: ["2 Thessalonians 1"]
-  - Verses: ["2 Thessalonians 2"]
-  - Verses: ["2 Thessalonians 3"]
-  - Verses: ["2 Peter 1"]
-  - Verses: ["2 Peter 2"]
-  - Verses: ["2 Peter 3"]
-  - Verses: ["Jude 1"]
-  - Verses: ["Revelation 1"]
-  - Verses: ["Revelation 2"]
-  - Verses: ["Revelation 3"]
-  - Verses: ["Revelation 4"]
-  - Verses: ["Revelation 5"]
-  - Verses: ["Revelation 6"]
-  - Verses: ["Revelation 7"]
-  - Verses: ["Revelation 8"]
-  - Verses: ["Revelation 9"]
-  - Verses: ["Revelation 10"]
-  - Verses: ["Revelation 11"]
-  - Verses: ["Revelation 12"]
-  - Verses: ["Revelation 13"]
-  - Verses: ["Revelation 14"]
-  - Verses: ["Revelation 15"]
-  - Verses: ["Revelation 16"]
-  - Verses: ["Revelation 17"]
-  - Verses: ["Revelation 18"]
-  - Verses: ["Revelation 19"]
-  - Verses: ["Revelation 20"]
-  - Verses: ["Revelation 21"]
-  - Verses: ["Revelation 22"]]
+  - Verses: "Mark 1"
+  - Verses: "Mark 2"
+  - Verses: "Mark 3"
+  - Verses: "Mark 4"
+  - Verses: "Mark 5"
+  - Verses: "Mark 6"
+  - Verses: "Mark 7"
+  - Verses: "Mark 8"
+  - Verses: "Mark 9"
+  - Verses: "Mark 10"
+  - Verses: "Mark 11"
+  - Verses: "Mark 12"
+  - Verses: "Mark 13"
+  - Verses: "Mark 14"
+  - Verses: "Mark 15"
+  - Verses: "Mark 16"
+  - Verses: "Acts 1"
+  - Verses: "Acts 2"
+  - Verses: "Acts 3"
+  - Verses: "Acts 4"
+  - Verses: "Acts 5"
+  - Verses: "Acts 6"
+  - Verses: "Acts 7"
+  - Verses: "Acts 8"
+  - Verses: "Acts 9"
+  - Verses: "Acts 10"
+  - Verses: "Acts 11"
+  - Verses: "Acts 12"
+  - Verses: "Acts 13"
+  - Verses: "Acts 14"
+  - Verses: "Acts 15"
+  - Verses: "Acts 16"
+  - Verses: "Acts 17"
+  - Verses: "Acts 18"
+  - Verses: "Acts 19"
+  - Verses: "Acts 20"
+  - Verses: "Acts 21"
+  - Verses: "Acts 22"
+  - Verses: "Acts 23"
+  - Verses: "Acts 24"
+  - Verses: "Acts 25"
+  - Verses: "Acts 26"
+  - Verses: "Acts 27"
+  - Verses: "Acts 28"
+  - Verses: "Hebrews 1"
+  - Verses: "Hebrews 2"
+  - Verses: "Hebrews 3"
+  - Verses: "Hebrews 4"
+  - Verses: "Hebrews 5"
+  - Verses: "Hebrews 6"
+  - Verses: "Hebrews 7"
+  - Verses: "Hebrews 8"
+  - Verses: "Hebrews 9"
+  - Verses: "Hebrews 10"
+  - Verses: "Hebrews 11"
+  - Verses: "Hebrews 12"
+  - Verses: "Hebrews 13"
+  - Verses: "Galatians 1"
+  - Verses: "Galatians 2"
+  - Verses: "Galatians 3"
+  - Verses: "Galatians 4"
+  - Verses: "Galatians 5"
+  - Verses: "Galatians 6"
+  - Verses: "James 1"
+  - Verses: "James 2"
+  - Verses: "James 3"
+  - Verses: "James 4"
+  - Verses: "James 5"
+  - Verses: "Matthew 1"
+  - Verses: "Matthew 2"
+  - Verses: "Matthew 3"
+  - Verses: "Matthew 4"
+  - Verses: "Matthew 5"
+  - Verses: "Matthew 6"
+  - Verses: "Matthew 7"
+  - Verses: "Matthew 8"
+  - Verses: "Matthew 9"
+  - Verses: "Matthew 10"
+  - Verses: "Matthew 11"
+  - Verses: "Matthew 12"
+  - Verses: "Matthew 13"
+  - Verses: "Matthew 14"
+  - Verses: "Matthew 15"
+  - Verses: "Matthew 16"
+  - Verses: "Matthew 17"
+  - Verses: "Matthew 18"
+  - Verses: "Matthew 19"
+  - Verses: "Matthew 20"
+  - Verses: "Matthew 21"
+  - Verses: "Matthew 22"
+  - Verses: "Matthew 23"
+  - Verses: "Matthew 24"
+  - Verses: "Matthew 25"
+  - Verses: "Matthew 26"
+  - Verses: "Matthew 27"
+  - Verses: "Matthew 28"
+  - Verses: "Romans 1"
+  - Verses: "Romans 2"
+  - Verses: "Romans 3"
+  - Verses: "Romans 4"
+  - Verses: "Romans 5"
+  - Verses: "Romans 6"
+  - Verses: "Romans 7"
+  - Verses: "Romans 8"
+  - Verses: "Romans 9"
+  - Verses: "Romans 10"
+  - Verses: "Romans 11"
+  - Verses: "Romans 12"
+  - Verses: "Romans 13"
+  - Verses: "Romans 14"
+  - Verses: "Romans 15"
+  - Verses: "Romans 16"
+  - Verses: "Ephesians 1"
+  - Verses: "Ephesians 2"
+  - Verses: "Ephesians 3"
+  - Verses: "Ephesians 4"
+  - Verses: "Ephesians 5"
+  - Verses: "Ephesians 6"
+  - Verses: "Philippians 1"
+  - Verses: "Philippians 2"
+  - Verses: "Philippians 3"
+  - Verses: "Philippians 4"
+  - Verses: "Colossians 1"
+  - Verses: "Colossians 2"
+  - Verses: "Colossians 3"
+  - Verses: "Colossians 4"
+  - Verses: "Philemon 1"
+  - Verses: "Luke 1"
+  - Verses: "Luke 2"
+  - Verses: "Luke 3"
+  - Verses: "Luke 4"
+  - Verses: "Luke 5"
+  - Verses: "Luke 6"
+  - Verses: "Luke 7"
+  - Verses: "Luke 8"
+  - Verses: "Luke 9"
+  - Verses: "Luke 10"
+  - Verses: "Luke 11"
+  - Verses: "Luke 12"
+  - Verses: "Luke 13"
+  - Verses: "Luke 14"
+  - Verses: "Luke 15"
+  - Verses: "Luke 16"
+  - Verses: "Luke 17"
+  - Verses: "Luke 18"
+  - Verses: "Luke 19"
+  - Verses: "Luke 20"
+  - Verses: "Luke 21"
+  - Verses: "Luke 22"
+  - Verses: "Luke 23"
+  - Verses: "Luke 24"
+  - Verses: "1 Corinthians 1"
+  - Verses: "1 Corinthians 2"
+  - Verses: "1 Corinthians 3"
+  - Verses: "1 Corinthians 4"
+  - Verses: "1 Corinthians 5"
+  - Verses: "1 Corinthians 6"
+  - Verses: "1 Corinthians 7"
+  - Verses: "1 Corinthians 8"
+  - Verses: "1 Corinthians 9"
+  - Verses: "1 Corinthians 10"
+  - Verses: "1 Corinthians 11"
+  - Verses: "1 Corinthians 12"
+  - Verses: "1 Corinthians 13"
+  - Verses: "1 Corinthians 14"
+  - Verses: "1 Corinthians 15"
+  - Verses: "1 Corinthians 16"
+  - Verses: "2 Corinthians 1"
+  - Verses: "2 Corinthians 2"
+  - Verses: "2 Corinthians 3"
+  - Verses: "2 Corinthians 4"
+  - Verses: "2 Corinthians 5"
+  - Verses: "2 Corinthians 6"
+  - Verses: "2 Corinthians 7"
+  - Verses: "2 Corinthians 8"
+  - Verses: "2 Corinthians 9"
+  - Verses: "2 Corinthians 10"
+  - Verses: "2 Corinthians 11"
+  - Verses: "2 Corinthians 12"
+  - Verses: "2 Corinthians 13"
+  - Verses: "1 Timothy 1"
+  - Verses: "1 Timothy 2"
+  - Verses: "1 Timothy 3"
+  - Verses: "1 Timothy 4"
+  - Verses: "1 Timothy 5"
+  - Verses: "1 Timothy 6"
+  - Verses: "2 Timothy 1"
+  - Verses: "2 Timothy 2"
+  - Verses: "2 Timothy 3"
+  - Verses: "2 Timothy 4"
+  - Verses: "Titus 1"
+  - Verses: "Titus 2"
+  - Verses: "Titus 3"
+  - Verses: "1 John 1"
+  - Verses: "1 John 2"
+  - Verses: "1 John 3"
+  - Verses: "1 John 4"
+  - Verses: "1 John 5"
+  - Verses: "2 John 1"
+  - Verses: "3 John 1"
+  - Verses: "1 Peter 1"
+  - Verses: "1 Peter 2"
+  - Verses: "1 Peter 3"
+  - Verses: "1 Peter 4"
+  - Verses: "1 Peter 5"
+  - Verses: "John 1"
+  - Verses: "John 2"
+  - Verses: "John 3"
+  - Verses: "John 4"
+  - Verses: "John 5"
+  - Verses: "John 6"
+  - Verses: "John 7"
+  - Verses: "John 8"
+  - Verses: "John 9"
+  - Verses: "John 10"
+  - Verses: "John 11"
+  - Verses: "John 12"
+  - Verses: "John 13"
+  - Verses: "John 14"
+  - Verses: "John 15"
+  - Verses: "John 16"
+  - Verses: "John 17"
+  - Verses: "John 18"
+  - Verses: "John 19"
+  - Verses: "John 20"
+  - Verses: "John 21"
+  - Verses: "1 Thessalonians 1"
+  - Verses: "1 Thessalonians 2"
+  - Verses: "1 Thessalonians 3"
+  - Verses: "1 Thessalonians 4"
+  - Verses: "1 Thessalonians 5"
+  - Verses: "2 Thessalonians 1"
+  - Verses: "2 Thessalonians 2"
+  - Verses: "2 Thessalonians 3"
+  - Verses: "2 Peter 1"
+  - Verses: "2 Peter 2"
+  - Verses: "2 Peter 3"
+  - Verses: "Jude 1"
+  - Verses: "Revelation 1"
+  - Verses: "Revelation 2"
+  - Verses: "Revelation 3"
+  - Verses: "Revelation 4"
+  - Verses: "Revelation 5"
+  - Verses: "Revelation 6"
+  - Verses: "Revelation 7"
+  - Verses: "Revelation 8"
+  - Verses: "Revelation 9"
+  - Verses: "Revelation 10"
+  - Verses: "Revelation 11"
+  - Verses: "Revelation 12"
+  - Verses: "Revelation 13"
+  - Verses: "Revelation 14"
+  - Verses: "Revelation 15"
+  - Verses: "Revelation 16"
+  - Verses: "Revelation 17"
+  - Verses: "Revelation 18"
+  - Verses: "Revelation 19"
+  - Verses: "Revelation 20"
+  - Verses: "Revelation 21"
+  - Verses: "Revelation 22"
