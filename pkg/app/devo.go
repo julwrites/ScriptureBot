@@ -14,6 +14,7 @@ import (
 const (
 	MCBRP string = "MCBRP"
 	DJBRP string = "DJBRP"
+	N5BRP string = "NTBRP"
 	DGORG string = "DGORG"
 )
 
@@ -25,13 +26,15 @@ const (
 var DEVO_NAMES = map[string]string{
 	MCBRP: "M'Cheyne Bible Reading Plan",
 	DJBRP: "Discipleship Journal Bible Reading Plan",
+	N5BRP: "Navigators 5x5x55New Testament Reading Plan",
 	DGORG: "Desiring God Articles",
 }
 
 var DEVOS = map[string]string{
-	"M'Cheyne Bible Reading Plan":             MCBRP,
-	"Discipleship Journal Bible Reading Plan": DJBRP,
-	"Desiring God Articles":                   DGORG,
+	"M'Cheyne Bible Reading Plan":                 MCBRP,
+	"Discipleship Journal Bible Reading Plan":     DJBRP,
+	"Navigators 5x5x55New Testament Reading Plan": N5BRP,
+	"Desiring God Articles":                       DGORG,
 }
 
 func AcronymizeDevo(msg string) (string, error) {
@@ -58,6 +61,8 @@ func GetDevotionalType(devo string) string {
 		fallthrough
 	case DJBRP:
 		return BibleReadingPlan
+	case N5BRP:
+		return BibleReadingPlan
 	case DGORG:
 		return DailyArticle
 	}
@@ -73,9 +78,9 @@ func GetDevotionalText(devo string) string {
 		fallthrough // Same as DJBRP
 	case DJBRP:
 		text = "Here are today's Bible Reading passages, tap on any one to get the passage!"
-		break
+	case N5BRP:
+		text = "Here is today's Bible Reading passage!"
 	case DGORG:
-		text = "Here are today's DesiringGod.org articles, tap on any one to open the article!"
 		break
 	}
 
@@ -86,12 +91,12 @@ func GetDevotionalData(env def.SessionData, devo string) def.ResponseData {
 	var response def.ResponseData
 
 	response.Message = GetDevotionalText(devo)
+	log.Printf("Got devotional text: %s", response.Message)
 
 	switch devo {
 	case MCBRP:
 		response.Affordances.Options = GetMCheyneReferences()
 		response.Affordances.Options = append(response.Affordances.Options, def.Option{Text: CMD_CLOSE})
-		break
 	case DJBRP:
 		response.Affordances.Options = GetDiscipleshipJournalReferences(env)
 		if len(response.Affordances.Options) == 0 {
@@ -99,14 +104,18 @@ func GetDevotionalData(env def.SessionData, devo string) def.ResponseData {
 		} else {
 			response.Affordances.Options = append(response.Affordances.Options, def.Option{Text: CMD_CLOSE})
 		}
-		break
+	case N5BRP:
+		response.Affordances.Options = GetNavigators5xReferences(env)
+		if len(response.Affordances.Options) == 0 {
+			response.Message = GetNavigators5xPrompt(env)
+		} else {
+			response.Affordances.Options = append(response.Affordances.Options, def.Option{Text: CMD_CLOSE})
+		}
 	case DGORG:
 		response.Affordances.Options = GetDesiringGodArticles()
 		response.Affordances.Inline = true
-		break
 	default:
 		response.Affordances.Remove = true
-		break
 	}
 
 	return response
@@ -134,8 +143,6 @@ func GetDevo(env def.SessionData) def.SessionData {
 			log.Printf("AcronymizeDevo failed %v", err)
 			env.Res.Message = "I didn't recognize that devo, please try again"
 		}
-
-		break
 	default:
 		log.Printf("Activating action /devo")
 
@@ -151,8 +158,6 @@ func GetDevo(env def.SessionData) def.SessionData {
 		env.User.Action = CMD_DEVO
 
 		env.Res.Message = "Choose a Devotional to read!"
-
-		break
 	}
 
 	return env

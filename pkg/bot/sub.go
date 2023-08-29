@@ -27,16 +27,16 @@ func HandleSubscriptionLogic(env def.SessionData) def.SessionData {
 			log.Printf("Found subscriptions for %s: %s", user.Firstname+user.Lastname, subscriptions)
 
 			for _, devo := range subscriptions {
-				env.Res.Affordances.Remove = true
-
 				// Retrieve devotional
 				log.Printf("Getting data for (%s)", devo)
 				env.Res = app.GetDevotionalData(env, devo)
+
 				env.Res.Message = "Here are today's devotions!"
 
 				env.User.Action = ""
 			}
 
+			env.Type = def.TYPE_TELEGRAM
 			if !platform.PostFromProps(env) {
 				log.Printf("This message was not translatable from bot language")
 				continue
