@@ -26,14 +26,14 @@ const (
 var DEVO_NAMES = map[string]string{
 	MCBRP: "M'Cheyne Bible Reading Plan",
 	DJBRP: "Discipleship Journal Bible Reading Plan",
-	N5BRP: "Navigators 5x5x55New Testament Reading Plan",
+	N5BRP: "Navigators 5x5x5 New Testament Reading Plan",
 	DGORG: "Desiring God Articles",
 }
 
 var DEVOS = map[string]string{
 	"M'Cheyne Bible Reading Plan":                 MCBRP,
 	"Discipleship Journal Bible Reading Plan":     DJBRP,
-	"Navigators 5x5x55New Testament Reading Plan": N5BRP,
+	"Navigators 5x5x5 New Testament Reading Plan": N5BRP,
 	"Desiring God Articles":                       DGORG,
 }
 
