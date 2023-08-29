@@ -28,25 +28,25 @@ func UpdateSubscription(env def.SessionData) def.SessionData {
 						subscriptions = append(subscriptions, s)
 					}
 				}
+				env.Res.Message = fmt.Sprintf("Got it, I've updated your subscriptions to remove %s", env.Msg.Message)
 			} else {
 				// If user selected a bible reading plan
-				if GetDevotionalType(devo) == BibleReadingPlan {
-					// Remove all other bible reading plans
-					for _, s := range strings.Split(config.Subscriptions, ",") {
-						if GetDevotionalType(s) != BibleReadingPlan {
-							subscriptions = append(subscriptions, s)
-						}
+
+				// Remove all other bible reading plans
+				for _, s := range strings.Split(config.Subscriptions, ",") {
+					if GetDevotionalType(devo) == BibleReadingPlan && GetDevotionalType(s) != BibleReadingPlan {
+						subscriptions = append(subscriptions, s)
 					}
-					// Add the new bible reading plan
-					subscriptions = append(subscriptions, devo)
 				}
+				// Add the new bible reading plan
+				subscriptions = append(subscriptions, devo)
+				env.Res.Message = fmt.Sprintf("Got it, I've updated your subscriptions to include %s", env.Msg.Message)
 			}
 
 			config.Subscriptions = strings.Join(subscriptions, ",")
 			env.User.Config = utils.SerializeUserConfig(config)
 
 			env.User.Action = ""
-			env.Res.Message = fmt.Sprintf("Got it, I've updated your subscriptions to include %s", env.Msg.Message)
 			env.Res.Affordances.Remove = true
 		} else {
 			log.Printf("AcronymizeDevo failed %v", err)
