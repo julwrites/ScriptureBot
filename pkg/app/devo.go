@@ -15,7 +15,7 @@ const (
 	MCBRP  string = "MCBRP"
 	DJBRP  string = "DJBRP"
 	DNTBRP string = "DNTBRP"
-	N5BRP  string = "N5BRP"
+	N5XBRP string = "N5XBRP"
 	DGORG  string = "DGORG"
 )
 
@@ -29,7 +29,7 @@ var DEVO_NAMES = map[string]string{
 	MCBRP:  "M'Cheyne Bible Reading Plan",
 	DJBRP:  "Discipleship Journal Bible Reading Plan",
 	DNTBRP: "Daily New Testament Reading Plan",
-	N5BRP:  "Navigators 5x5x5 New Testament Reading Plan",
+	N5XBRP: "Navigators 5x5x5 New Testament Reading Plan",
 	DGORG:  "Desiring God Articles",
 }
 
@@ -37,7 +37,7 @@ var DEVOS = map[string]string{
 	"M'Cheyne Bible Reading Plan":                 MCBRP,
 	"Discipleship Journal Bible Reading Plan":     DJBRP,
 	"Daily New Testament Reading Plan":            DNTBRP,
-	"Navigators 5x5x5 New Testament Reading Plan": N5BRP,
+	"Navigators 5x5x5 New Testament Reading Plan": N5XBRP,
 	"Desiring God Articles":                       DGORG,
 }
 
@@ -67,7 +67,7 @@ func GetDevotionalType(devo string) string {
 		return BibleReadingPlan
 	case DNTBRP:
 		return DailyChapterPlan
-	case N5BRP:
+	case N5XBRP:
 		return DailyChapterPlan
 	case DGORG:
 		return DailyArticle
@@ -86,7 +86,7 @@ func GetDevotionalText(devo string) string {
 		text = "Here are today's Bible Reading passages, tap on any one to get the passage!"
 	case DNTBRP:
 		fallthrough
-	case N5BRP:
+	case N5XBRP:
 		fallthrough
 	case DGORG:
 		break // No text because we send the text directly
@@ -115,7 +115,7 @@ func GetDevotionalData(env def.SessionData, devo string) def.ResponseData {
 	case DNTBRP:
 		response.Message = GetDailyNewTestamentReadingReferences(env)
 		response.Affordances.Remove = true
-	case N5BRP:
+	case N5XBRP:
 		response.Message = GetNavigators5xReferences(env)
 		response.Affordances.Remove = true
 	case DGORG:
