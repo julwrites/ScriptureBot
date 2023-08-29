@@ -105,13 +105,13 @@ func GetNavigators5xDatabase(dataPath string) DailyChapterNTBRP {
 
 	data, readErr := ioutil.ReadFile(strings.Join(path, "/"))
 	if readErr != nil {
-		log.Printf("Error reading NTBR data file: %v", readErr)
+		log.Printf("Error reading N5BR data file: %v", readErr)
 	}
 
 	var ntBRP DailyChapterNTBRP
 	yamlErr := yaml.Unmarshal(data, &ntBRP)
 	if yamlErr != nil {
-		log.Printf("Error reading NTBR data from yaml: %v", yamlErr)
+		log.Printf("Error reading N5BR data from yaml: %v", yamlErr)
 	}
 
 	return ntBRP
@@ -154,9 +154,28 @@ func GetDailyNewTestamentReadingReferences(env def.SessionData) []def.Option {
 }
 
 func GetNavigators5xPrompt(env def.SessionData) string {
-	ntBRP := GetNavigators5xDatabase(env.ResourcePath)
+	return `
+If you're not used to reading the Bible daily, start with this easy to use tool to read a chapter of the New Testament in 5 minutes a day. This reading plan will take you through all 260 chapters of the New Testament, one chapter per day. The Gospels are read throughout the year to weave in the story of Christ all year long.
 
-	return ntBRP.Prompt
+5 days a week.
+
+Determine a time and location to spend 5 minutes a day for 5 days a week. It is best to have a consistent time and a quiet place where you can regularly meet with the Lord.
+
+5 ways to dig deeper:
+Pause in your reading to dig into the Bible. Below are 5 different ways to dig deeper each day. These exercises will encourage meditation. Try a single idea for a week to find what works best for you. Remember to keep a pen and paper ready to capture GodÕs insights.
+
+1. Underline or highlight key words or phrases in the Bible passage. Use a pen or highlighter to mark new discoveries from the text.
+
+2. Put it in your own words. Read the passage or verse slowly, then rewrite each phrase or sentence using your own words.
+
+3. Ask and answer questions. Questions unlock new discoveries and meanings. Ask questions about the passage using these words: who, what, why, when, where, or how. Jot down your answers to these questions.
+
+4. Capture the big idea. GodÕs Word communicates big ideas. Periodically ask: WhatÕs the big idea in this sentence, paragraph, or chapter?
+
+5. Personalize the meaning. Respond as God speaks to you through the Scriptures. Ask: How could my life be different today as I respond to what IÕm reading?
+
+This tool is meant to be shared. Download the 5 by 5 by 5 New Testament Bible Reading Plan at navlink.org/newtestament.
+`
 }
 
 func GetNavigators5xReferences(env def.SessionData) []def.Option {
