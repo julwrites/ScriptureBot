@@ -16,6 +16,8 @@ func UpdateSubscription(env def.SessionData) def.SessionData {
 	case CMD_SUBSCRIBE:
 		log.Printf("Detected existing action /subscribe")
 
+		env.Msg.Message = strings.ReplaceAll(env.Msg.Message, "(Subscribed)", "")
+
 		devo, err := AcronymizeDevo(env.Msg.Message)
 		if err == nil {
 			log.Printf("Devotional is valid, retrieving %s", devo)
