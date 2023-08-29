@@ -62,19 +62,6 @@ func GetAllUsers(project string) []def.UserData {
 		return []def.UserData{}
 	}
 
-	// for _, k := range keys {
-	// 	var entity def.UserData
-
-	// 	err := client.Get(ctx, k, &entity)
-	// 	if err != nil {
-	// 		log.Printf("Failed to get user: %v", err)
-
-	// 		continue
-	// 	}
-
-	// 	users = append(users, entity)
-	// }
-
 	return users
 }
 

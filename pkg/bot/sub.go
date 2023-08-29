@@ -14,6 +14,7 @@ import (
 func HandleSubscriptionLogic(env def.SessionData) def.SessionData {
 	// Check all users
 	users := utils.GetAllUsers(env.Secrets.PROJECT_ID)
+	log.Printf("Retrieved %d users", len(users))
 	for _, user := range users {
 		env.User = user
 		env.User.Action = app.CMD_DEVO
@@ -22,6 +23,7 @@ func HandleSubscriptionLogic(env def.SessionData) def.SessionData {
 
 		subscriptions := strings.Split(config.Subscriptions, ",")
 
+		log.Printf("Retrieved subscriptions for %s: %s", user.Firstname+user.Lastname, subscriptions)
 		for _, devo := range subscriptions {
 			env.Res.Affordances.Remove = true
 
