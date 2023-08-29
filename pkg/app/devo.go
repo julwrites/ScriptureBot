@@ -113,10 +113,12 @@ func GetDevotionalData(env def.SessionData, devo string) def.ResponseData {
 			response.Affordances.Options = append(response.Affordances.Options, def.Option{Text: CMD_CLOSE})
 		}
 	case DNTBRP:
-		response.Message = GetDailyNewTestamentReadingReferences(env)
+		env.Msg.Message = GetDailyNewTestamentReadingReferences(env)
+		env = GetBiblePassage(env)
 		response.Affordances.Remove = true
 	case N5XBRP:
-		response.Message = GetNavigators5xReferences(env)
+		env.Msg.Message = GetNavigators5xReferences(env)
+		env = GetBiblePassage(env)
 		response.Affordances.Remove = true
 	case DGORG:
 		response.Affordances.Options = GetDesiringGodArticles()
