@@ -42,7 +42,6 @@ var DEVOS = map[string]string{
 }
 
 func AcronymizeDevo(msg string) (string, error) {
-	msg = strings.ReplaceAll(msg, "(Subscribed)", "")
 	msg = strings.Trim(msg, " ")
 	devo, ok := DEVOS[msg]
 	if ok {
