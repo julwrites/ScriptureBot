@@ -7,6 +7,9 @@ func ProcessCommand(env def.SessionData) def.SessionData {
 	case ADM_CMD_DUMP:
 		env = DumpUserList(env)
 		break
+	case ADM_MIGRATE:
+		env = Migrate(env)
+		break
 	case CMD_VERSION:
 		env = SetVersion(env)
 		break

@@ -91,13 +91,13 @@ func GetDailyNewTestamentDatabase(dataPath string) DailyChapterBRP {
 		log.Printf("Error reading DNTBR data file: %v", readErr)
 	}
 
-	var dntBRP DailyChapterBRP
-	yamlErr := yaml.Unmarshal(data, &dntBRP)
+	var DNTBRP DailyChapterBRP
+	yamlErr := yaml.Unmarshal(data, &DNTBRP)
 	if yamlErr != nil {
 		log.Printf("Error reading DNTBR data from yaml: %v", yamlErr)
 	}
 
-	return dntBRP
+	return DNTBRP
 }
 
 func GetNavigators5xDatabase(dataPath string) DailyChapterBRP {
@@ -111,13 +111,13 @@ func GetNavigators5xDatabase(dataPath string) DailyChapterBRP {
 		log.Printf("Error reading N5BR data file: %v", readErr)
 	}
 
-	var ntBRP DailyChapterBRP
-	yamlErr := yaml.Unmarshal(data, &ntBRP)
+	var N5XBRP DailyChapterBRP
+	yamlErr := yaml.Unmarshal(data, &N5XBRP)
 	if yamlErr != nil {
 		log.Printf("Error reading N5BR data from yaml: %v", yamlErr)
 	}
 
-	return ntBRP
+	return N5XBRP
 }
 
 func GetDiscipleshipJournalReferences(env def.SessionData) []def.Option {
@@ -139,13 +139,13 @@ func GetDiscipleshipJournalReferences(env def.SessionData) []def.Option {
 	return options
 }
 func GetDailyNewTestamentReadingReferences(env def.SessionData) string {
-	dntBRP := GetDailyNewTestamentDatabase(env.ResourcePath)
+	DNTBRP := GetDailyNewTestamentDatabase(env.ResourcePath)
 
 	// We will read the entry using the date, format: Year, Month, Day
 	baseline := time.Date(2000, time.January, 1, 0, 0, 0, 0, time.UTC)
 	day := int64(time.Now().Sub(baseline).Hours() / 24)
 	day = day % 260
-	brp := dntBRP.BibleReadingPlan[day]
+	brp := DNTBRP.BibleReadingPlan[day]
 
 	return brp.Verses
 }
@@ -176,11 +176,11 @@ This tool is meant to be shared. Download the 5 by 5 by 5 New Testament Bible Re
 }
 
 func GetNavigators5xReferences(env def.SessionData) string {
-	ntBRP := GetNavigators5xDatabase(env.ResourcePath)
+	N5XBRP := GetNavigators5xDatabase(env.ResourcePath)
 
 	// We will read the entry using the date, format: Year, Month, Day
 	day := time.Now().YearDay()
-	brp := ntBRP.BibleReadingPlan[day]
+	brp := N5XBRP.BibleReadingPlan[day]
 
 	return brp.Verses
 }

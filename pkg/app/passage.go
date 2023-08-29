@@ -133,7 +133,7 @@ func GetBiblePassage(env def.SessionData) def.SessionData {
 		if len(ref) > 0 {
 			log.Printf("Getting passage")
 			env.Res.Message = GetPassage(doc, utils.DeserializeUserConfig(env.User.Config).Version)
-			log.Printf("Passage retrieved %s", env.Res.Message)
+			log.Printf("Passage retrieved length: %d", len(env.Res.Message))
 		}
 	}
 
