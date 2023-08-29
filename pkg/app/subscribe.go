@@ -30,11 +30,11 @@ func UpdateSubscription(env def.SessionData) def.SessionData {
 				}
 				env.Res.Message = fmt.Sprintf("Got it, I've updated your subscriptions to remove %s", env.Msg.Message)
 			} else {
-				// If user selected a bible reading plan
-
-				// Remove all other bible reading plans
 				for _, s := range strings.Split(config.Subscriptions, ",") {
-					if GetDevotionalType(devo) == BibleReadingPlan && GetDevotionalType(s) != BibleReadingPlan {
+					// If user selected a bible reading plan, we remove any existing bible reading plan
+					if GetDevotionalType(devo) == BibleReadingPlan && GetDevotionalType(s) == BibleReadingPlan {
+						continue
+					} else {
 						subscriptions = append(subscriptions, s)
 					}
 				}
