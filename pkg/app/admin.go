@@ -36,14 +36,17 @@ func Migrate(env def.SessionData) def.SessionData {
 				migratedSubs := []string{}
 
 				for _, sub := range subs {
-					if sub == "NTBRP" {
-						migratedSubs = append(migratedSubs, "N5XBRP")
-					} else {
+					_, err := AcronymizeDevo(sub)
+					if err == nil {
 						migratedSubs = append(migratedSubs, sub)
 					}
 				}
 
-				config.Subscriptions = strings.Join(migratedSubs, ",")
+				if len(migratedSubs) == 0 {
+					config.Subscriptions = ""
+				} else {
+					config.Subscriptions = strings.Join(migratedSubs, ",")
+				}
 
 				user.Config = utils.SerializeUserConfig(config)
 

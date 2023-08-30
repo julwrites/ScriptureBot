@@ -24,22 +24,21 @@ func HandleSubscriptionLogic(env def.SessionData) def.SessionData {
 		if len(config.Subscriptions) > 0 {
 			subscriptions := strings.Split(config.Subscriptions, ",")
 
-			log.Printf("Found subscriptions for %s: %s", user.Firstname+user.Lastname, subscriptions)
+			log.Printf("Found subscriptions for %s: %s", user.Firstname+" "+user.Lastname, subscriptions)
 
+			// Clear existing affordances and send a preliminary message
+			env.Res.Message = "Here are today's devotions!"
+			env.Res.Affordances.Remove = true
+
+			platform.PostFromProps(env)
+
+			// Send the devotional
 			for _, devo := range subscriptions {
 				// Retrieve devotional
 				log.Printf("Getting data for (%s)", devo)
 				env.Res = app.GetDevotionalData(env, devo)
 
-				env.Res.Message = "Here are today's devotions!"
-
-				env.User.Action = ""
-			}
-
-			env.Type = def.TYPE_TELEGRAM
-			if !platform.PostFromProps(env) {
-				log.Printf("This message was not translatable from bot language")
-				continue
+				platform.PostFromProps(env)
 			}
 		}
 	}
@@ -54,6 +53,9 @@ func SubscriptionHandler(secrets *secrets.SecretsData) {
 	log.Printf("Loaded secrets...")
 
 	env.ResourcePath = "/go/bin/"
+
+	// TODO: Iterate through types
+	env.Type = def.TYPE_TELEGRAM
 
 	env = HandleSubscriptionLogic(env)
 	log.Printf("Handled bot logic...")
