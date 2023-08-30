@@ -28,7 +28,7 @@ func TestGetReference(t *testing.T) {
 func TestGetPassage(t *testing.T) {
 	doc := GetPassageHtml("gen 1", "NIV")
 
-	passage := GetPassage(doc, "NIV")
+	passage := GetPassage("Genesis 1", doc, "NIV")
 
 	if len(passage) == 0 {
 		t.Errorf("Failed TestGetPassage")
