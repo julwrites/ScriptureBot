@@ -178,7 +178,7 @@ Pause in your reading to dig into the Bible. Below are 5 different ways to dig d
 
 3. Ask and answer questions. Questions unlock new discoveries and meanings. Ask questions about the passage using these words: who, what, why, when, where, or how. Jot down your answers to these questions.
 
-4. Capture the big idea. GodÕs Word communicates big ideas. Periodically ask: WhatÕs the big idea in this sentence, paragraph, or chapter?
+4. Capture the big idea. God's Word communicates big ideas. Periodically ask: What's the big idea in this sentence, paragraph, or chapter?
 
 5. Personalize the meaning. Respond as God speaks to you through the Scriptures. Ask: How could my life be different today as I respond to what I'm reading?
 
