@@ -121,7 +121,7 @@ func GetDevotionalData(env def.SessionData, devo string) def.ResponseData {
 		if len(env.Msg.Message) > 0 {
 			env = GetBiblePassage(env)
 		} else {
-			env.Res.Message = "Today's a break day! Do take some time to catch up on readings, or pray and reflect on the week~"
+			env.Res.Message = GetNavigators5xRestDayPrompt(env)
 		}
 		response = env.Res
 	case DGORG:
