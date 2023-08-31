@@ -166,7 +166,7 @@ func GetNavigators5xRestDayPrompt(env def.SessionData) (string, []def.Option) {
 		options = append(options, def.Option{Text: brp.Verses})
 	}
 	
-	return `Today is a rest day! Take some time today to dig deeper. 
+	prompt := `Today is a rest day! Take some time today to dig deeper. 
 
 As a reminder, here are 5 ways to dig deeper:
 Pause in your reading to dig into the Bible. Below are 5 different ways to dig deeper each day. These exercises will encourage meditation. Try a single idea for a week to find what works best for you. Remember to keep a pen and paper ready to capture God's insights.
@@ -183,6 +183,8 @@ Pause in your reading to dig into the Bible. Below are 5 different ways to dig d
 
 This week's passages:
 `
+
+  return (prompt, options)
 }
 
 func GetNavigators5xReferences(env def.SessionData) string {
