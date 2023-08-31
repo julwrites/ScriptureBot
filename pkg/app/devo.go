@@ -120,10 +120,12 @@ func GetDevotionalData(env def.SessionData, devo string) def.ResponseData {
 		env.Msg.Message = GetNavigators5xReferences(env)
 		if len(env.Msg.Message) > 0 {
 			env = GetBiblePassage(env)
+			response = env.Res
 		} else {
-			env.Res.Message = GetNavigators5xRestDayPrompt(env)
+			prompt, options :=  GetNavigators5xRestDayPrompt(env)
+			response.Message = prompt
+			response.Affordances.Options = options
 		}
-		response = env.Res
 	case DGORG:
 		response.Affordances.Options = GetDesiringGodArticles()
 		response.Affordances.Inline = true
