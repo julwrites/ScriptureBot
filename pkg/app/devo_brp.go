@@ -150,16 +150,27 @@ func GetDailyNewTestamentReadingReferences(env def.SessionData) string {
 	return brp.Verses
 }
 
-func GetNavigators5xPrompt(env def.SessionData) string {
-	return `
-If you're not used to reading the Bible daily, start with this easy to use tool to read a chapter of the New Testament in 5 minutes a day. This reading plan will take you through all 260 chapters of the New Testament, one chapter per day. The Gospels are read throughout the year to weave in the story of Christ all year long.
+func GetNavigators5xRestDayPrompt(env def.SessionData) string {
+	N5XBRP := GetNavigators5xDatabase(env.ResourcePath)
 
-5 days a week.
+	// We will read the entry using the date, format: Year, Month, Day
+	day := time.Now().YearDay()
+	// This prompt should only be called on the rest days, so we should get back 5 or 6
+	weekday := day % 7
+	weekstart := day - weekday
+	
+	var references strings.Builder
 
-Determine a time and location to spend 5 minutes a day for 5 days a week. It is best to have a consistent time and a quiet place where you can regularly meet with the Lord.
+	for i := 0; i <= weekday; i++ {
+		brp := N5XBRP.BibleReadingPlan[weekstart + i]
+		references.WriteString("\n")
+		references.WriteString(brp.Verses)
+	}
+	
+	return `Today is a rest day! Take some time today to dig deeper. 
 
-5 ways to dig deeper:
-Pause in your reading to dig into the Bible. Below are 5 different ways to dig deeper each day. These exercises will encourage meditation. Try a single idea for a week to find what works best for you. Remember to keep a pen and paper ready to capture GodÕs insights.
+As a reminder, here are 5 ways to dig deeper:
+Pause in your reading to dig into the Bible. Below are 5 different ways to dig deeper each day. These exercises will encourage meditation. Try a single idea for a week to find what works best for you. Remember to keep a pen and paper ready to capture God's insights.
 
 1. Underline or highlight key words or phrases in the Bible passage. Use a pen or highlighter to mark new discoveries from the text.
 
@@ -169,10 +180,10 @@ Pause in your reading to dig into the Bible. Below are 5 different ways to dig d
 
 4. Capture the big idea. GodÕs Word communicates big ideas. Periodically ask: WhatÕs the big idea in this sentence, paragraph, or chapter?
 
-5. Personalize the meaning. Respond as God speaks to you through the Scriptures. Ask: How could my life be different today as I respond to what IÕm reading?
+5. Personalize the meaning. Respond as God speaks to you through the Scriptures. Ask: How could my life be different today as I respond to what I'm reading?
 
-This tool is meant to be shared. Download the 5 by 5 by 5 New Testament Bible Reading Plan at navlink.org/newtestament.
-`
+This week's passages:
+` + references.String()
 }
 
 func GetNavigators5xReferences(env def.SessionData) string {
