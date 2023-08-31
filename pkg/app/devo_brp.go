@@ -152,7 +152,7 @@ func GetDailyNewTestamentReadingReferences(env def.SessionData) string {
 
 func GetNavigators5xRestDayPrompt(env def.SessionData) (string, []def.Option) {
 	var options []def.Option
-
+  
 	N5XBRP := GetNavigators5xDatabase(env.ResourcePath)
 
 	// We will read the entry using the date, format: Year, Month, Day
@@ -160,7 +160,6 @@ func GetNavigators5xRestDayPrompt(env def.SessionData) (string, []def.Option) {
 	// This prompt should only be called on the rest days, so we should get back 5 or 6
 	weekday := day % 7
 	weekstart := day - weekday
-
 	for i := 0; i <= weekday; i++ {
 		brp := N5XBRP.BibleReadingPlan[weekstart+i]
 		options = append(options, def.Option{Text: brp.Verses})
