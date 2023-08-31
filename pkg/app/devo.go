@@ -68,7 +68,7 @@ func GetDevotionalType(devo string) string {
 	case DNTBRP:
 		return DailyChapterPlan
 	case N5XBRP:
-		return DailyChapterPlan
+		return BibleReadingPlan
 	case DGORG:
 		return DailyArticle
 	}
