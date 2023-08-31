@@ -163,7 +163,7 @@ func GetNavigators5xRestDayPrompt(env def.SessionData) string {
 
 	for i := 0; i <= weekday; i++ {
 		brp := N5XBRP.BibleReadingPlan[weekstart + i]
-		references.WriteString("\n"
+		references.WriteString("\n")
 		references.WriteString(brp.Verses)
 	}
 	
