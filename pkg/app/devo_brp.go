@@ -150,7 +150,9 @@ func GetDailyNewTestamentReadingReferences(env def.SessionData) string {
 	return brp.Verses
 }
 
-func GetNavigators5xRestDayPrompt(env def.SessionData) string {
+func GetNavigators5xRestDayPrompt(env def.SessionData) (string, []def.Option) {
+	var options []def.Option
+	
 	N5XBRP := GetNavigators5xDatabase(env.ResourcePath)
 
 	// We will read the entry using the date, format: Year, Month, Day
@@ -159,12 +161,9 @@ func GetNavigators5xRestDayPrompt(env def.SessionData) string {
 	weekday := day % 7
 	weekstart := day - weekday
 	
-	var references strings.Builder
-
 	for i := 0; i <= weekday; i++ {
 		brp := N5XBRP.BibleReadingPlan[weekstart + i]
-		references.WriteString("\n")
-		references.WriteString(brp.Verses)
+		options = append(options, def.Option{Text: brp.Verses})
 	}
 	
 	return `Today is a rest day! Take some time today to dig deeper. 
@@ -183,7 +182,7 @@ Pause in your reading to dig into the Bible. Below are 5 different ways to dig d
 5. Personalize the meaning. Respond as God speaks to you through the Scriptures. Ask: How could my life be different today as I respond to what I'm reading?
 
 This week's passages:
-` + references.String()
+`
 }
 
 func GetNavigators5xReferences(env def.SessionData) string {
