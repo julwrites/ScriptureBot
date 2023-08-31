@@ -184,7 +184,7 @@ Pause in your reading to dig into the Bible. Below are 5 different ways to dig d
 This week's passages:
 `
 
-  return (prompt, options)
+  return prompt, options
 }
 
 func GetNavigators5xReferences(env def.SessionData) string {
