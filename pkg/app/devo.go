@@ -20,9 +20,8 @@ const (
 )
 
 const (
-	DailyChapterPlan string = "DCP"
-	BibleReadingPlan string = "BRP"
-	DailyArticle     string = "DA"
+	Keyboard string = "Keyboard"
+	Passage  string = "Passage"
 )
 
 var DEVO_NAMES = map[string]string{
@@ -59,18 +58,18 @@ func ExpandDevo(msg string) (string, error) {
 	return "", errors.New(fmt.Sprintf("Devo could not be recognized %s", msg))
 }
 
-func GetDevotionalType(devo string) string {
+func GetDevotionalDispatchMethod(devo string) string {
 	switch devo {
 	case MCBRP:
-		fallthrough
+		return Keyboard
 	case DJBRP:
-		return BibleReadingPlan
+		return Keyboard
 	case DNTBRP:
-		return DailyChapterPlan
+		return Passage
 	case N5XBRP:
-		return BibleReadingPlan
+		return Keyboard
 	case DGORG:
-		return DailyArticle
+		return Keyboard
 	}
 
 	return ""

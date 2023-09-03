@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"io/ioutil"
 	"log"
+	"math/rand"
 	"strings"
 
 	"github.com/julwrites/BotPlatform/pkg/def"
@@ -38,16 +39,39 @@ type SeriesSelector func(TMSSeries) bool
 type PackSelector func(TMSPack) bool
 type VerseSelector func(TMSVerse) bool
 
-func QueryTMSDatabase(db TMSDatabase, s SeriesSelector, p PackSelector, v VerseSelector) (TMSPack, TMSVerse, error) {
+func QueryTMSSeries(db TMSDatabase, s SeriesSelector) (TMSPack, TMSVerse, error) {
 	for _, series := range db.Series {
 		if s(series) {
-			for _, pack := range series.Packs {
-				if p(pack) {
-					for _, verse := range pack.Verses {
-						if v(verse) {
-							return pack, verse, nil
-						}
-					}
+			pack := series.Packs[rand.Int()%len(series.Packs)]
+			// TODO: Select one randomly from the series
+			verse := pack.Verses[rand.Int()%len(pack.Verses)]
+
+			return pack, verse, nil
+		}
+	}
+
+	return TMSPack{}, TMSVerse{}, errors.New("Could not find any associated verse")
+}
+
+func QueryTMSPack(db TMSDatabase, p PackSelector) (TMSPack, TMSVerse, error) {
+	for _, series := range db.Series {
+		for _, pack := range series.Packs {
+			if p(pack) {
+				verse := pack.Verses[rand.Int()%len(pack.Verses)]
+				return pack, verse, nil
+			}
+		}
+	}
+
+	return TMSPack{}, TMSVerse{}, errors.New("Could not find any associated verse")
+}
+
+func QueryTMSVerse(db TMSDatabase, v VerseSelector) (TMSPack, TMSVerse, error) {
+	for _, series := range db.Series {
+		for _, pack := range series.Packs {
+			for _, verse := range pack.Verses {
+				if v(verse) {
+					return pack, verse, nil
 				}
 			}
 		}
@@ -156,15 +180,13 @@ func GetTMSVerse(env def.SessionData) def.SessionData {
 
 		switch queryType {
 		case ID:
-			pack, verse, err = QueryTMSDatabase(tmsDB, func(TMSSeries) bool { return true },
-				func(pack TMSPack) bool { return strings.Contains(query, pack.ID) },
-				func(verse TMSVerse) bool { return strings.Compare(query, verse.ID) == 0 })
+			pack, verse, err = QueryTMSPack(tmsDB,
+				func(tPack TMSPack) bool { return strings.Contains(query, tPack.ID) })
 			break
 		case Tag:
-			pack, verse, err = QueryTMSDatabase(tmsDB, func(TMSSeries) bool { return true },
-				func(TMSPack) bool { return true },
-				func(verse TMSVerse) bool {
-					for _, tag := range verse.Tags {
+			pack, verse, err = QueryTMSVerse(tmsDB,
+				func(tVerse TMSVerse) bool {
+					for _, tag := range tVerse.Tags {
 						if strings.Contains(query, tag) {
 							return true
 						}
@@ -173,9 +195,8 @@ func GetTMSVerse(env def.SessionData) def.SessionData {
 				})
 			break
 		case Reference:
-			pack, verse, err = QueryTMSDatabase(tmsDB, func(TMSSeries) bool { return true },
-				func(TMSPack) bool { return true },
-				func(verse TMSVerse) bool { return strings.Compare(query, verse.Reference) == 0 })
+			pack, verse, err = QueryTMSVerse(tmsDB,
+				func(tVerse TMSVerse) bool { return strings.Compare(query, tVerse.Reference) == 0 })
 			break
 		}
 

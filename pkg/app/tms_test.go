@@ -68,29 +68,25 @@ func TestQueryTMSDatabase(t *testing.T) {
 	var verse TMSVerse
 	var err error
 
-	pack, verse, err = QueryTMSDatabase(db,
+	pack, verse, err = QueryTMSSeries(db,
 		func(s TMSSeries) bool {
 			if strings.Contains(s.Title, "A") {
 				return true
 			}
 			return false
-		},
-		func(p TMSPack) bool { return true },
-		func(v TMSVerse) bool { return true })
+		})
 
 	if err != nil {
 		t.Errorf("Failed TestQueryTMSDatabase series query")
 	}
 
-	pack, verse, err = QueryTMSDatabase(db,
-		func(s TMSSeries) bool { return true },
+	pack, verse, err = QueryTMSPack(db,
 		func(p TMSPack) bool {
 			if strings.Contains(p.Title, "A") {
 				return true
 			}
 			return false
-		},
-		func(v TMSVerse) bool { return true })
+		})
 
 	if err != nil {
 		t.Errorf("Failed TestQueryTMSDatabase pack query")
@@ -99,11 +95,9 @@ func TestQueryTMSDatabase(t *testing.T) {
 		t.Errorf("Failed TestQueryTMSDatabase pack query validity")
 	}
 
-	pack, verse, err = QueryTMSDatabase(db,
-		func(s TMSSeries) bool { return true },
-		func(p TMSPack) bool { return true },
+	pack, verse, err = QueryTMSVerse(db,
 		func(v TMSVerse) bool {
-			if strings.Contains(v.Title, "A") {
+			if strings.Contains(v.Reference, "2 Corinthians 5 : 17") {
 				return true
 			}
 			return false
@@ -112,8 +106,27 @@ func TestQueryTMSDatabase(t *testing.T) {
 	if err != nil {
 		t.Errorf("Failed TestQueryTMSDatabase verse query")
 	}
-	if !strings.Contains(verse.Title, "A") {
+	if !strings.Contains(verse.Reference, "Corinthians") {
 		t.Errorf("Failed TestQueryTMSDatabase verse query validity")
+	}
+
+	pack, verse, err = QueryTMSVerse(db,
+		func(v TMSVerse) bool {
+			for _, tag := range v.Tags {
+				t.Logf("%v", tag)
+				if strings.Contains(tag, "Prosperous") {
+					return true
+				}
+			}
+			return false
+		})
+
+	if err != nil {
+		t.Errorf("Failed TestQueryTMSDatabase tag query")
+	}
+	if !strings.Contains(verse.Reference, "Joshua") {
+		t.Logf("Verse: %v", verse)
+		t.Errorf("Failed TestQueryTMSDatabase tag query validity")
 	}
 }
 

@@ -34,7 +34,7 @@ func UpdateSubscription(env def.SessionData) def.SessionData {
 			} else {
 				for _, s := range strings.Split(config.Subscriptions, ",") {
 					// If user selected a bible reading plan, we remove any existing bible reading plan
-					if GetDevotionalType(devo) == BibleReadingPlan && GetDevotionalType(s) == BibleReadingPlan {
+					if GetDevotionalDispatchMethod(devo) == Keyboard && GetDevotionalDispatchMethod(s) == Keyboard {
 						continue
 					} else {
 						subscriptions = append(subscriptions, s)
