@@ -181,13 +181,15 @@ func GetTMSVerse(env def.SessionData) def.SessionData {
 		switch queryType {
 		case ID:
 			pack, verse, err = QueryTMSPack(tmsDB,
-				func(tPack TMSPack) bool { return strings.Contains(query, tPack.ID) })
+				func(tPack TMSPack) bool {
+					return strings.Contains(strings.ToLower(query), strings.ToLower(pack.ID))
+				})
 			break
 		case Tag:
 			pack, verse, err = QueryTMSVerse(tmsDB,
 				func(tVerse TMSVerse) bool {
 					for _, tag := range tVerse.Tags {
-						if strings.Contains(query, tag) {
+						if strings.Contains(strings.ToLower(query), strings.ToLower(tag)) {
 							return true
 						}
 					}
@@ -196,7 +198,11 @@ func GetTMSVerse(env def.SessionData) def.SessionData {
 			break
 		case Reference:
 			pack, verse, err = QueryTMSVerse(tmsDB,
-				func(tVerse TMSVerse) bool { return strings.Compare(query, tVerse.Reference) == 0 })
+				func(tVerse TMSVerse) bool {
+					qry := strings.ReplaceAll(strings.ToLower(query), " ", "")
+					ref := strings.ReplaceAll(strings.ToLower(tVerse.Reference), " ", "")
+					return strings.Compare(qry, ref) == 0
+				})
 			break
 		}
 
