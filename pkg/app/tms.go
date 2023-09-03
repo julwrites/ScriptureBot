@@ -181,7 +181,9 @@ func GetTMSVerse(env def.SessionData) def.SessionData {
 		switch queryType {
 		case ID:
 			pack, verse, err = QueryTMSPack(tmsDB,
-				func(tPack TMSPack) bool { return strings.Contains(query, tPack.ID) })
+				func(tPack TMSPack) bool {
+					return strings.Contains(strings.ToLower(query), strings.ToLower(pack.ID))
+				})
 			break
 		case Tag:
 			pack, verse, err = QueryTMSVerse(tmsDB,
