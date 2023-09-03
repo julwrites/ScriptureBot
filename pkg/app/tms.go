@@ -187,7 +187,7 @@ func GetTMSVerse(env def.SessionData) def.SessionData {
 			pack, verse, err = QueryTMSVerse(tmsDB,
 				func(tVerse TMSVerse) bool {
 					for _, tag := range tVerse.Tags {
-						if strings.Contains(query, tag) {
+						if strings.Contains(strings.ToLower(query), strings.ToLower(tag)) {
 							return true
 						}
 					}
