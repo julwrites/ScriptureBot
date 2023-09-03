@@ -97,7 +97,7 @@ func TestQueryTMSDatabase(t *testing.T) {
 
 	pack, verse, err = QueryTMSVerse(db,
 		func(v TMSVerse) bool {
-			if strings.Contains(v.Reference, "2 Corinthians 5:17") {
+			if strings.Contains(v.Reference, "2 Corinthians 5 : 17") {
 				return true
 			}
 			return false
@@ -113,7 +113,6 @@ func TestQueryTMSDatabase(t *testing.T) {
 	pack, verse, err = QueryTMSVerse(db,
 		func(v TMSVerse) bool {
 			for _, tag := range v.Tags {
-				t.Logf("%v", tag)
 				if strings.Contains(tag, "Prosperous") {
 					return true
 				}
@@ -125,7 +124,6 @@ func TestQueryTMSDatabase(t *testing.T) {
 		t.Errorf("Failed TestQueryTMSDatabase tag query")
 	}
 	if !strings.Contains(verse.Reference, "Joshua") {
-		t.Logf("Verse: %v", verse)
 		t.Errorf("Failed TestQueryTMSDatabase tag query validity")
 	}
 }
