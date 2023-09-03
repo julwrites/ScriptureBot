@@ -201,7 +201,7 @@ func GetTMSVerse(env def.SessionData) def.SessionData {
 				func(tVerse TMSVerse) bool {
 					qry := strings.ReplaceAll(strings.ToLower(query), " ", "")
 					ref := strings.ReplaceAll(strings.ToLower(tVerse.Reference), " ", "")
-					return strings.Compare(qry, ref) == 0
+					return strings.Contains(qry, ref)
 				})
 			break
 		}
