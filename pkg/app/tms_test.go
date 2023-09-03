@@ -97,7 +97,7 @@ func TestQueryTMSDatabase(t *testing.T) {
 
 	pack, verse, err = QueryTMSVerse(db,
 		func(v TMSVerse) bool {
-			if strings.Contains(v.Reference, "2 Corinthians 5 : 17") {
+			if strings.Contains(v.Reference, "2 Corinthians 5:17") {
 				return true
 			}
 			return false
@@ -166,6 +166,13 @@ func TestGetTMSVerse(t *testing.T) {
 
 	if len(env.Res.Message) == 0 {
 		t.Errorf("Failed TestGetTMSVerse basic scenario")
+	}
+
+	env.Msg.Message = "2 Corinthians 5:17"
+	env = GetTMSVerse(env)
+
+	if len(env.Res.Message) == 0 {
+		t.Errorf("Failed TestGetTMSVerse reference scenario")
 	}
 
 	env.Msg.Message = "John 13:34-35"

@@ -196,7 +196,11 @@ func GetTMSVerse(env def.SessionData) def.SessionData {
 			break
 		case Reference:
 			pack, verse, err = QueryTMSVerse(tmsDB,
-				func(tVerse TMSVerse) bool { return strings.Compare(query, tVerse.Reference) == 0 })
+				func(tVerse TMSVerse) bool {
+					qry := strings.ReplaceAll(strings.ToLower(query), " ", "")
+					ref := strings.ReplaceAll(strings.ToLower(tVerse.Reference), " ", "")
+					return strings.Compare(qry, ref) == 0
+				})
 			break
 		}
 
