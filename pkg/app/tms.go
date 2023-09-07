@@ -193,7 +193,7 @@ func GetTMSVerse(env def.SessionData) def.SessionData {
 					tags = append(tags, tVerse.Reference)
 					tags = append(tags, tVerse.ID)
 
-					for _, tag := range tVerse.Tags {
+					for _, tag := range tags {
 						if strings.Contains(strings.ToLower(tag), strings.ToLower(query)) {
 							return true
 						}
