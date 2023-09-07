@@ -97,7 +97,9 @@ func TestQueryTMSDatabase(t *testing.T) {
 
 	pack, verse, err = QueryTMSVerse(db,
 		func(v TMSVerse) bool {
-			if strings.Contains(v.Reference, "2 Corinthians 5 :17") {
+			qry := "2corinthians5:17"
+			ref := strings.ReplaceAll(strings.ToLower(v.Reference), " ", "")
+			if strings.Contains(ref, qry) {
 				return true
 			}
 			return false
