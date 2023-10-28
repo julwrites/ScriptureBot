@@ -63,6 +63,7 @@ func ParseNodesForPassage(node *html.Node) string {
 			}
 			break
 		case "p":
+		case "i":
 			parts = append(parts, ParseNodesForPassage(child))
 			break
 		case "br":

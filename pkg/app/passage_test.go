@@ -8,7 +8,7 @@ import (
 )
 
 func TestGetBiblePassageHtml(t *testing.T) {
-	doc := GetPassageHtml("gen 1", "NIV")
+	doc := GetPassageHtml("gen 8", "NIV")
 
 	if doc == nil {
 		t.Errorf("Could not retrieve bible passage")
@@ -26,9 +26,9 @@ func TestGetReference(t *testing.T) {
 }
 
 func TestGetPassage(t *testing.T) {
-	doc := GetPassageHtml("gen 1", "NIV")
+	doc := GetPassageHtml("john 8", "NIV")
 
-	passage := GetPassage("Genesis 1", doc, "NIV")
+	passage := GetPassage("John 8", doc, "NIV")
 
 	if len(passage) == 0 {
 		t.Errorf("Failed TestGetPassage")
