@@ -17,11 +17,13 @@ const (
 	DNTBRP string = "DNTBRP"
 	N5XBRP string = "N5XBRP"
 	DGORG  string = "DGORG"
+	DTMSV  string = "DTMSV"
 )
 
 const (
-	Keyboard string = "Keyboard"
-	Passage  string = "Passage"
+	Keyboard    string = "Keyboard"
+	Passage     string = "Passage"
+	MemoryVerse string = "MemoryVerse"
 )
 
 var DEVO_NAMES = map[string]string{
@@ -30,6 +32,7 @@ var DEVO_NAMES = map[string]string{
 	DNTBRP: "Daily New Testament Reading Plan",
 	N5XBRP: "Navigators 5x5x5 New Testament Reading Plan",
 	DGORG:  "Desiring God Articles",
+	DTMSV:  "Daily Topical Memory System Verse",
 }
 
 var DEVOS = map[string]string{
@@ -38,6 +41,7 @@ var DEVOS = map[string]string{
 	"Daily New Testament Reading Plan":            DNTBRP,
 	"Navigators 5x5x5 New Testament Reading Plan": N5XBRP,
 	"Desiring God Articles":                       DGORG,
+	"Daily Topical Memory System Verse":           DTMSV,
 }
 
 func AcronymizeDevo(msg string) (string, error) {
@@ -70,6 +74,8 @@ func GetDevotionalDispatchMethod(devo string) string {
 		return Keyboard
 	case DGORG:
 		return Keyboard
+	case DTMSV:
+		return MemoryVerse
 	}
 
 	return ""
@@ -88,6 +94,8 @@ func GetDevotionalText(devo string) string {
 	case N5XBRP:
 		fallthrough
 	case DGORG:
+		break // No text because we send the text directly
+	case DTMSV:
 		break // No text because we send the text directly
 	}
 
@@ -126,6 +134,10 @@ func GetDevotionalData(env def.SessionData, devo string) def.ResponseData {
 		response.Affordances.Options = GetDesiringGodArticles()
 		response.Affordances.Inline = true
 		return response
+	case DTMSV:
+		env.Msg.Message = GetRandomTMSVerse(env)
+		env = GetTMSVerse(env)
+		response = env.Res
 	default:
 		response.Affordances.Remove = true
 	}

@@ -127,7 +127,15 @@ func GetDiscipleshipJournalReferences(env def.SessionData) []def.Option {
 
 	// We will read the entry using the date, format: Year, Month, Day
 
-	brp := djBRP.BibleReadingPlan[time.Now().YearDay()]
+	dateIndex := time.Now().YearDay()
+
+	if dateIndex >= len(djBRP.BibleReadingPlan) {
+		log.Printf("No References found in DJBRP for date: %d", dateIndex)
+
+		return options
+	}
+
+	brp := djBRP.BibleReadingPlan[dateIndex]
 
 	for _, r := range brp.Verses {
 		if r == "Reflection" {
@@ -152,14 +160,15 @@ func GetDailyNewTestamentReadingReferences(env def.SessionData) string {
 
 func GetNavigators5xRestDayPrompt(env def.SessionData) (string, []def.Option) {
 	var options []def.Option
-  
+
 	N5XBRP := GetNavigators5xDatabase(env.ResourcePath)
 
 	// We will read the entry using the date, format: Year, Month, Day
-	day := time.Now().YearDay()
+	dateIndex := time.Now().YearDay()
+
 	// This prompt should only be called on the rest days, so we should get back 5 or 6
-	weekday := day % 7
-	weekstart := day - weekday
+	weekday := dateIndex % 7
+	weekstart := dateIndex - weekday
 	for i := 0; i <= weekday; i++ {
 		brp := N5XBRP.BibleReadingPlan[weekstart+i]
 		options = append(options, def.Option{Text: brp.Verses})

@@ -154,6 +154,24 @@ func FormatQuery(query string, t TMSQueryType) string {
 	return query
 }
 
+func GetRandomTMSVerse(env def.SessionData) string {
+	tmsDB := GetTMSData(env.ResourcePath)
+
+	seriesId := rand.Int() % len(tmsDB.Series)
+
+	series := tmsDB.Series[seriesId]
+
+	packId := rand.Int() % len(series.Packs)
+
+	pack := series.Packs[packId]
+
+	verseId := rand.Int() % len(pack.Verses)
+
+	verse := pack.Verses[verseId]
+
+	return verse.Reference
+}
+
 func GetTMSVerse(env def.SessionData) def.SessionData {
 	tmsDB := GetTMSData(env.ResourcePath)
 
