@@ -154,6 +154,22 @@ func TestIdentifyQuery(t *testing.T) {
 	}
 }
 
+func TestGetRandomTMSVerse(t *testing.T) {
+	var env def.SessionData
+	var conf utils.UserConfig
+	conf.Version = "NIV"
+	env.User.Config = utils.SerializeUserConfig(conf)
+	env.ResourcePath = "../../resource"
+
+	env.Msg.Message = GetRandomTMSVerse(env)
+
+	env = GetTMSVerse(env)
+
+	if len(env.Res.Message) == 0 {
+		t.Errorf("Failed TestGetRandomTMSVerse")
+	}
+}
+
 func TestGetTMSVerse(t *testing.T) {
 	var env def.SessionData
 	var conf utils.UserConfig
