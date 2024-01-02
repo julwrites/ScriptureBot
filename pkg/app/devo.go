@@ -21,9 +21,8 @@ const (
 )
 
 const (
-	Keyboard    string = "Keyboard"
-	Passage     string = "Passage"
-	MemoryVerse string = "MemoryVerse"
+	Keyboard string = "Keyboard"
+	Passage  string = "Passage"
 )
 
 var DEVO_NAMES = map[string]string{
@@ -75,7 +74,7 @@ func GetDevotionalDispatchMethod(devo string) string {
 	case DGORG:
 		return Keyboard
 	case DTMSV:
-		return MemoryVerse
+		return Passage
 	}
 
 	return ""
