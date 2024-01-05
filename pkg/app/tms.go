@@ -169,6 +169,8 @@ func GetRandomTMSVerse(env def.SessionData) string {
 
 	verse := pack.Verses[verseId]
 
+	log.Printf("Randomly selected verse: %s", verse.Reference)
+
 	return verse.Reference
 }
 
@@ -187,6 +189,8 @@ func GetTMSVerse(env def.SessionData) def.SessionData {
 		env.User.Action = CMD_TMS
 		env.Res.Message = fmt.Sprintf("Tell me which TMS verse you would like using the number (e.g. A1) the reference (e.g. 2 Corinthians 5 : 17)\nAlternatively, give me a topic and I'll try to find a suitable verse!\nSupported TMS Series:\n%s", strings.Join(series, "\n- "))
 	} else {
+		log.Printf("Retrieving verse with query: %s", env.Msg.Message)
+
 		// Identify the type of query
 		queryType := IdentifyQuery(tmsDB, env.Msg.Message)
 

@@ -106,21 +106,25 @@ func GetDevotionalData(env def.SessionData, devo string) def.ResponseData {
 	var response def.ResponseData
 
 	response.Message = GetDevotionalText(devo)
-	log.Printf("Got devotional text: %s", response.Message)
+	log.Printf("Devotional text: %s", response.Message)
 
 	switch devo {
 	case MCBRP:
+		log.Printf("Retrieving MCheyne Bible Reading Plan")
 		response.Affordances.Options = GetMCheyneReferences()
 	case DJBRP:
+		log.Printf("Retrieving Discipleship Journal Bible Reading Plan")
 		response.Affordances.Options = GetDiscipleshipJournalReferences(env)
 		if len(response.Affordances.Options) == 0 {
 			response.Message = "Take this time today to reflect over this week's devotions"
 		}
 	case DNTBRP:
+		log.Printf("Retrieving Daily New Testament Bible Reading Plan")
 		env.Msg.Message = GetDailyNewTestamentReadingReferences(env)
 		env = GetBiblePassage(env)
 		response = env.Res
 	case N5XBRP:
+		log.Printf("Retrieving Navigators 5x5x5 New Testament Bible Reading Plan")
 		env.Msg.Message = GetNavigators5xReferences(env)
 		if len(env.Msg.Message) > 0 {
 			env = GetBiblePassage(env)
@@ -131,10 +135,12 @@ func GetDevotionalData(env def.SessionData, devo string) def.ResponseData {
 			response.Affordances.Options = options
 		}
 	case DGORG:
+		log.Printf("Retrieving Desiring God Articles")
 		response.Affordances.Options = GetDesiringGodArticles()
 		response.Affordances.Inline = true
 		return response
 	case DTMSV:
+		log.Printf("Retrieving Daily Topical Memory System Verse")
 		env.Msg.Message = GetRandomTMSVerse(env)
 		env = GetTMSVerse(env)
 		response = env.Res
