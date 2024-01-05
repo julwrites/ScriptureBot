@@ -21,8 +21,9 @@ const (
 )
 
 const (
-	Keyboard string = "Keyboard"
-	Passage  string = "Passage"
+	Keyboard    string = "Keyboard"
+	Passage     string = "Passage"
+	MemoryVerse string = "MemoryVerse"
 )
 
 var DEVO_NAMES = map[string]string{
