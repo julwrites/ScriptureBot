@@ -70,6 +70,18 @@ func TestGetDesiringGodArticles(t *testing.T) {
 	}
 }
 
+func TestGetDevotionalData(t *testing.T) {
+	var env def.SessionData
+
+	env.ResourcePath = "../../resource"
+
+	env.Res = GetDevotionalData(env, "DTMSV")
+
+	if len(env.Res.Message) == 0 {
+		t.Errorf("Failed TestGetDevotionalData for DTMSV")
+	}
+}
+
 func TestGetDevo(t *testing.T) {
 	var env def.SessionData
 	env.User.Action = CMD_DEVO
