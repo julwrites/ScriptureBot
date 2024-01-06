@@ -94,7 +94,7 @@ func GetDevotionalText(devo string) string {
 	case N5XBRP:
 		fallthrough
 	case DGORG:
-		break // No text because we send the text directly
+		fallthrough
 	case DTMSV:
 		break // No text because we send the text directly
 	}
@@ -138,7 +138,6 @@ func GetDevotionalData(env def.SessionData, devo string) def.ResponseData {
 		log.Printf("Retrieving Desiring God Articles")
 		response.Affordances.Options = GetDesiringGodArticles()
 		response.Affordances.Inline = true
-		return response
 	case DTMSV:
 		log.Printf("Retrieving Daily Topical Memory System Verse")
 		env.Msg.Message = GetRandomTMSVerse(env)
@@ -151,6 +150,8 @@ func GetDevotionalData(env def.SessionData, devo string) def.ResponseData {
 	if len(response.Affordances.Options) > 0 {
 		response.Affordances.Options = append(response.Affordances.Options, def.Option{Text: CMD_CLOSE})
 	}
+
+	log.Printf("Devotional response: %+v", response)
 
 	return response
 }
