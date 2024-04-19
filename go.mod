@@ -5,7 +5,7 @@ go 1.17
 require (
 	cloud.google.com/go/datastore v1.11.0
 	github.com/julwrites/BotPlatform v0.0.0-20220206144002-60e1b8060734
-	golang.org/x/net v0.17.0
+	golang.org/x/net v0.23.0
 	gopkg.in/yaml.v2 v2.4.0
 )
 
@@ -22,8 +22,8 @@ require (
 	github.com/rogpeppe/go-internal v1.9.0 // indirect
 	go.opencensus.io v0.24.0 // indirect
 	golang.org/x/oauth2 v0.7.0 // indirect
-	golang.org/x/sys v0.13.0 // indirect
-	golang.org/x/text v0.13.0 // indirect
+	golang.org/x/sys v0.18.0 // indirect
+	golang.org/x/text v0.14.0 // indirect
 	golang.org/x/xerrors v0.0.0-20220907171357-04be3eba64a2 // indirect
 	google.golang.org/api v0.114.0 // indirect
 	google.golang.org/appengine v1.6.7 // indirect
