@@ -1,11 +1,11 @@
 module github.com/julwrites/ScriptureBot
 
-go 1.18
+go 1.17
 
 require (
 	cloud.google.com/go/datastore v1.11.0
 	github.com/julwrites/BotPlatform v0.0.0-20220206144002-60e1b8060734
-	golang.org/x/net v0.23.0
+	golang.org/x/net v0.17.0
 	gopkg.in/yaml.v2 v2.4.0
 )
 
