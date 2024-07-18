@@ -18,10 +18,14 @@ func TestGetBiblePassageHtml(t *testing.T) {
 func TestGetReference(t *testing.T) {
 	doc := GetPassageHtml("gen 1", "NIV")
 
+	if doc == nil {
+		t.Fatalf("Could not retrieve Bible passage for testing")
+	}
+
 	ref := GetReference(doc)
 
 	if ref != "Genesis 1" {
-		t.Errorf("Failed TestGetReference")
+		t.Errorf("Expected reference 'Genesis 1', but got '%s'", ref)
 	}
 }
 

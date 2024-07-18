@@ -13,9 +13,28 @@ import (
 )
 
 func GetHtml(url string) *html.Node {
-	res, getErr := http.Get(url)
+	// Create client and request
+	client := &http.Client{}
+	req, err := http.NewRequest("GET", url, nil)
+	if err != nil {
+		log.Printf("Error creating HTTP request: %v", err)
+		return nil
+	}
+
+	// Set a user agent header
+	req.Header.Set("User-Agent", "Mozilla/5.0")
+
+	// Perform the request
+	res, getErr := client.Do(req)
 	if getErr != nil {
 		log.Printf("Error in GET call: %v", getErr)
+		return nil
+	}
+	defer res.Body.Close()
+
+	// Check for non-200 status codes
+	if res.StatusCode != http.StatusOK {
+		log.Printf("Non-OK HTTP status: %s", res.Status)
 		return nil
 	}
 
