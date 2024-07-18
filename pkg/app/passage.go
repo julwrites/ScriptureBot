@@ -6,6 +6,7 @@ package app
 import (
 	"fmt"
 	"log"
+	"net/url"
 	"strings"
 
 	"golang.org/x/net/html"
@@ -14,7 +15,9 @@ import (
 	"github.com/julwrites/ScriptureBot/pkg/utils"
 )
 
-func GetPassageHtml(ref string, ver string) *html.Node {
+func GetPassageHtml(ref, ver string) *html.Node {
+	ref = url.QueryEscape(ref)
+	ver = url.QueryEscape(ver)
 	query := fmt.Sprintf("https://classic.biblegateway.com/passage/?search=%s&version=%s&interface=print", ref, ver)
 
 	return utils.QueryHtml(query)
