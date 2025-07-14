@@ -70,6 +70,22 @@ func TestGetDesiringGodArticles(t *testing.T) {
 	}
 }
 
+func TestGetUtmostForHisHighestHtml(t *testing.T) {
+	doc := GetUtmostForHisHighestHtml()
+
+	if doc == nil {
+		t.Errorf("Failed TestGetUtmostForHisHighestHtml, no RSS retrieved")
+	}
+}
+
+func TestGetUtmostForHisHighestArticles(t *testing.T) {
+	articles := GetUtmostForHisHighestArticles()
+
+	if len(articles) == 0 {
+		t.Errorf("Failed TestGetUtmostForHisHighestArticles, no articles found")
+	}
+}
+
 func TestGetDevotionalData(t *testing.T) {
 	var env def.SessionData
 
