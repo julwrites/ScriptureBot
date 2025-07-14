@@ -44,8 +44,6 @@ func GetDesiringGodArticles() []def.Option {
 		label := titleNode.FirstChild.Data
 		link := linkNode.Data
 
-		log.Printf("Label: %s, Link: %s", label, link)
-
 		if len(label) > 0 && len(link) > 0 {
 			options = append(options, def.Option{Text: label, Link: link})
 		}

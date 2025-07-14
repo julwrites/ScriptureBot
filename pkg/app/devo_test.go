@@ -68,6 +68,9 @@ func TestGetDesiringGodArticles(t *testing.T) {
 	if len(articles) == 0 {
 		t.Errorf("Failed TestGetDesiringGodArticles, no articles found")
 	}
+
+	
+
 }
 
 func TestGetUtmostForHisHighestHtml(t *testing.T) {
@@ -84,7 +87,14 @@ func TestGetUtmostForHisHighestArticles(t *testing.T) {
 	if len(articles) == 0 {
 		t.Errorf("Failed TestGetUtmostForHisHighestArticles, no articles found")
 	}
+
+	// Print the content of the first article for verification
+	if len(articles) > 0 {
+		t.Logf("First Utmost For His Highest Article Link: %s", articles[0].Link)
+	}
 }
+
+
 
 func TestGetDevotionalData(t *testing.T) {
 	var env def.SessionData
