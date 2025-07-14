@@ -92,6 +92,8 @@ func GetDevotionalText(devo string) string {
 	switch devo {
 	case MCBRP:
 		fallthrough // Same as DJBRP
+	case MUFHH:
+		fallthrough // Same as DJBRP
 	case DJBRP:
 		text = "Here are today's Bible Reading passages, tap on any one to get the passage!"
 	case DNTBRP:
@@ -101,8 +103,6 @@ func GetDevotionalText(devo string) string {
 	case DGORG:
 		fallthrough
 	case DTMSV:
-		fallthrough
-	case MUFHH:
 		break // No text because we send the text directly
 	}
 
