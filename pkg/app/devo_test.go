@@ -88,16 +88,46 @@ func TestGetDevotionalData(t *testing.T) {
 }
 
 func TestGetDevo(t *testing.T) {
+	// Test initial devo command (no specific devo chosen)
 	var env def.SessionData
-	env.User.Action = CMD_DEVO
-	env.Msg.Message = "M'Cheyne Bible Reading Plan"
+	env.User.Action = ""
+	env.Msg.Message = CMD_DEVO // Simulate user typing /devo
 
 	env = GetDevo(env)
 	if len(env.Res.Message) == 0 {
-		t.Errorf("Failed TestGetDevo, no message")
+		t.Errorf("Failed TestGetDevo initial, no message")
+	}
+	if len(env.Res.Affordances.Options) == 0 {
+		t.Errorf("Failed TestGetDevo initial, no affordances")
 	}
 
-	if len(env.Res.Affordances.Options) == 0 {
-		t.Errorf("Failed TestGetDevo, no affordances")
+	// Test each specific devotional option
+	for devoName, devoCode := range DEVOS {
+		t.Run(devoName, func(t *testing.T) {
+			var env def.SessionData
+			env.User.Action = CMD_DEVO
+			env.Msg.Message = devoName
+			env.ResourcePath = "../../resource" // Needed for some devo types
+
+			env = GetDevo(env)
+
+			// Check if a message or options are returned
+			if len(env.Res.Message) == 0 && len(env.Res.Affordances.Options) == 0 {
+				t.Errorf("Failed TestGetDevo for %s: no message or affordances", devoName)
+			}
+
+			// Specific checks based on dispatch method
+			switch GetDevotionalDispatchMethod(devoCode) {
+			case Passage:
+				if len(env.Res.Message) == 0 {
+					t.Errorf("Failed TestGetDevo for %s (Passage): no message returned", devoName)
+				}
+			case Keyboard:
+				// For Keyboard types, either options should be present or a message (e.g., for N5XBRP rest day)
+				if len(env.Res.Affordances.Options) == 0 && len(env.Res.Message) == 0 {
+					t.Errorf("Failed TestGetDevo for %s (Keyboard): no affordances or message returned", devoName)
+				}
+			}
+		})
 	}
 }
