@@ -18,6 +18,7 @@ const (
 	N5XBRP string = "N5XBRP"
 	DGORG  string = "DGORG"
 	DTMSV  string = "DTMSV"
+	MUFHH  string = "MUFHH"
 )
 
 const (
@@ -33,6 +34,7 @@ var DEVO_NAMES = map[string]string{
 	N5XBRP: "Navigators 5x5x5 New Testament Reading Plan",
 	DGORG:  "Desiring God Articles",
 	DTMSV:  "Daily Topical Memory System Verse",
+	MUFHH:  "My Utmost For His Highest Articles",
 }
 
 var DEVOS = map[string]string{
@@ -42,6 +44,7 @@ var DEVOS = map[string]string{
 	"Navigators 5x5x5 New Testament Reading Plan": N5XBRP,
 	"Desiring God Articles":                       DGORG,
 	"Daily Topical Memory System Verse":           DTMSV,
+	"My Utmost For His Highest Articles":          MUFHH,
 }
 
 func AcronymizeDevo(msg string) (string, error) {
@@ -76,6 +79,8 @@ func GetDevotionalDispatchMethod(devo string) string {
 		return Keyboard
 	case DTMSV:
 		return Passage
+	case MUFHH:
+		return Keyboard
 	}
 
 	return ""
@@ -96,6 +101,8 @@ func GetDevotionalText(devo string) string {
 	case DGORG:
 		fallthrough
 	case DTMSV:
+		fallthrough
+	case MUFHH:
 		break // No text because we send the text directly
 	}
 
@@ -143,6 +150,10 @@ func GetDevotionalData(env def.SessionData, devo string) def.ResponseData {
 		env.Msg.Message = GetRandomTMSVerse(env)
 		env = GetTMSVerse(env)
 		response = env.Res
+	case MUFHH:
+		log.Printf("Retrieving My Utmost For His Highest Articles")
+		response.Affordances.Options = GetUtmostForHisHighestArticles()
+		response.Affordances.Inline = true
 	default:
 		response.Affordances.Remove = true
 	}
