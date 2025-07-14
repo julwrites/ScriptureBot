@@ -1,11 +1,11 @@
 module github.com/julwrites/ScriptureBot
 
-go 1.17
+go 1.18
 
 require (
 	cloud.google.com/go/datastore v1.11.0
 	github.com/julwrites/BotPlatform v0.0.0-20220206144002-60e1b8060734
-	golang.org/x/net v0.38.0
+	golang.org/x/net v0.17.0
 	gopkg.in/yaml.v2 v2.4.0
 )
 
@@ -15,7 +15,7 @@ require (
 	cloud.google.com/go/compute/metadata v0.2.3 // indirect
 	github.com/golang/groupcache v0.0.0-20200121045136-8c9f03a8e57e // indirect
 	github.com/golang/protobuf v1.5.3 // indirect
-	github.com/google/go-cmp v0.5.9 // indirect
+	github.com/google/go-cmp v0.6.0 // indirect
 	github.com/googleapis/enterprise-certificate-proxy v0.2.3 // indirect
 	github.com/googleapis/gax-go/v2 v2.7.1 // indirect
 	github.com/kr/pretty v0.3.0 // indirect
