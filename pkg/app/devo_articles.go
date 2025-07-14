@@ -5,7 +5,6 @@ import (
 	"fmt"
 	"log"
 	"net/http"
-	"strings"
 
 	"github.com/julwrites/BotPlatform/pkg/def"
 	"github.com/julwrites/ScriptureBot/pkg/utils"
@@ -39,7 +38,7 @@ func GetDesiringGodArticles() []def.Option {
 			return node.Data == "title"
 		})
 		linkNode := utils.FindNode(node, func(node *html.Node) bool {
-			return strings.Contains(node.Data, "http://rss.desiringgod.org/")
+			return node.Data == "link"
 		})
 
 		label := titleNode.FirstChild.Data
@@ -82,7 +81,7 @@ func GetUtmostForHisHighestArticles() []def.Option {
 			return node.Data == "title"
 		})
 		linkNode := utils.FindNode(node, func(node *html.Node) bool {
-			return strings.Contains(node.Data, "http://utmost.org/feed/?post_type=modern-classic")
+			return node.Data == "link"
 		})
 
 		label := titleNode.FirstChild.Data
