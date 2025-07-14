@@ -2,7 +2,6 @@ package app
 
 import (
 	"bytes"
-	"fmt"
 	"log"
 	"net/http"
 
@@ -11,64 +10,35 @@ import (
 	"golang.org/x/net/html"
 )
 
-func GetDesiringGodHtml() *html.Node {
-	query := "http://rss.desiringgod.org"
-
-	res, _ := http.Get(query)
-	buf := new(bytes.Buffer)
-	buf.ReadFrom(res.Body)
-	newStr := buf.String()
-
-	fmt.Printf(newStr)
-
-	return utils.QueryHtml(query)
-}
-
-func GetDesiringGodArticles() []def.Option {
-	var options []def.Option
-
-	doc := GetDesiringGodHtml()
-
-	itemNodes := utils.FilterTree(doc, func(node *html.Node) bool {
-		return node.Data == "item"
-	})
-
-	for _, node := range itemNodes {
-		titleNode := utils.FindNode(node, func(node *html.Node) bool {
-			return node.Data == "title"
-		})
-		linkNode := utils.FindNode(node, func(node *html.Node) bool {
-			return node.Data == "link"
-		})
-
-		label := titleNode.FirstChild.Data
-		link := linkNode.Data
-
-		if len(label) > 0 && len(link) > 0 {
-			options = append(options, def.Option{Text: label, Link: link})
-		}
+// getTextFromNode extracts the text content from an HTML node.
+// fetchHTMLPage fetches an HTML page from the given URL and parses it into an *html.Node.
+func fetchHTMLPage(url string) *html.Node {
+	res, err := http.Get(url)
+	if err != nil {
+		log.Printf("Error fetching HTML from %s: %v", url, err)
+		return nil
 	}
+	defer res.Body.Close()
 
-	return options
-}
-
-func GetUtmostForHisHighestHtml() *html.Node {
-	query := "http://utmost.org/feed/?post_type=modern-classic"
-
-	res, _ := http.Get(query)
 	buf := new(bytes.Buffer)
-	buf.ReadFrom(res.Body)
-	newStr := buf.String()
+	_, err = buf.ReadFrom(res.Body)
+	if err != nil {
+		log.Printf("Error reading response body from %s: %v", url, err)
+		return nil
+	}
+	// fmt.Printf(buf.String()) // Removed debug print
 
-	fmt.Printf(newStr)
-
-	return utils.QueryHtml(query)
+	doc, err := html.Parse(buf)
+	if err != nil {
+		log.Printf("Error parsing HTML from %s: %v", url, err)
+		return nil
+	}
+	return doc
 }
 
-func GetUtmostForHisHighestArticles() []def.Option {
+// parseArticlesFromHTML parses an HTML document and extracts articles based on common patterns.
+func parseArticlesFromHTML(doc *html.Node) []def.Option {
 	var options []def.Option
-
-	doc := GetUtmostForHisHighestHtml()
 
 	itemNodes := utils.FilterTree(doc, func(node *html.Node) bool {
 		return node.Data == "item"
@@ -84,6 +54,11 @@ func GetUtmostForHisHighestArticles() []def.Option {
 
 		label := titleNode.FirstChild.Data
 		link := linkNode.Data
+		if linkNode.FirstChild != nil {
+			link = linkNode.FirstChild.Data
+		} else if linkNode.NextSibling != nil {
+			link = linkNode.NextSibling.Data
+		}
 
 		log.Printf("Label: %s, Link: %s", label, link)
 
@@ -93,4 +68,20 @@ func GetUtmostForHisHighestArticles() []def.Option {
 	}
 
 	return options
+}
+
+func GetDesiringGodArticles() []def.Option {
+	doc := fetchHTMLPage("http://rss.desiringgod.org")
+	if doc == nil {
+		return []def.Option{}
+	}
+	return parseArticlesFromHTML(doc)
+}
+
+func GetUtmostForHisHighestArticles() []def.Option {
+	doc := fetchHTMLPage("http://utmost.org/feed/?post_type=modern-classic")
+	if doc == nil {
+		return []def.Option{}
+	}
+	return parseArticlesFromHTML(doc)
 }

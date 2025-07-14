@@ -54,30 +54,11 @@ func TestGetDiscipleshipJournalReferences(t *testing.T) {
 	}
 }
 
-func TestGetDesiringGodHtml(t *testing.T) {
-	doc := GetDesiringGodHtml()
-
-	if doc == nil {
-		t.Errorf("Failed TestGetDesiringGodHtml, no RSS retrieved")
-	}
-}
-
 func TestGetDesiringGodArticles(t *testing.T) {
 	articles := GetDesiringGodArticles()
 
 	if len(articles) == 0 {
 		t.Errorf("Failed TestGetDesiringGodArticles, no articles found")
-	}
-
-	
-
-}
-
-func TestGetUtmostForHisHighestHtml(t *testing.T) {
-	doc := GetUtmostForHisHighestHtml()
-
-	if doc == nil {
-		t.Errorf("Failed TestGetUtmostForHisHighestHtml, no RSS retrieved")
 	}
 }
 
@@ -93,8 +74,6 @@ func TestGetUtmostForHisHighestArticles(t *testing.T) {
 		t.Logf("First Utmost For His Highest Article Link: %s", articles[0].Link)
 	}
 }
-
-
 
 func TestGetDevotionalData(t *testing.T) {
 	var env def.SessionData
