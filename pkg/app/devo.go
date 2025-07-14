@@ -144,7 +144,7 @@ func GetDevotionalData(env def.SessionData, devo string) def.ResponseData {
 	case DGORG:
 		log.Printf("Retrieving Desiring God Articles")
 		response.Affordances.Options = GetDesiringGodArticles()
-		response.Affordances.Inline = true
+		response.Affordances.Inline = false
 	case DTMSV:
 		log.Printf("Retrieving Daily Topical Memory System Verse")
 		env.Msg.Message = GetRandomTMSVerse(env)
@@ -153,7 +153,7 @@ func GetDevotionalData(env def.SessionData, devo string) def.ResponseData {
 	case MUFHH:
 		log.Printf("Retrieving My Utmost For His Highest Articles")
 		response.Affordances.Options = GetUtmostForHisHighestArticles()
-		response.Affordances.Inline = true
+		response.Affordances.Inline = false
 	default:
 		response.Affordances.Remove = true
 	}
