@@ -71,7 +71,7 @@ func TestGetUtmostForHisHighestArticles(t *testing.T) {
 
 	// Print the content of the first article for verification
 	if len(articles) > 0 {
-		t.Logf("First Utmost For His Highest Article Link: %s", articles[0].Link)
+		t.Logf("Utmost For His Highest Article data: %v", articles)
 	}
 }
 
