@@ -158,7 +158,7 @@ func GetDevotionalData(env def.SessionData, devo string) def.ResponseData {
 		response.Affordances.Remove = true
 	}
 
-	if len(response.Affordances.Options) > 0 {
+	if len(response.Affordances.Options) > 0 && response.Affordances.Inline == false {
 		response.Affordances.Options = append(response.Affordances.Options, def.Option{Text: CMD_CLOSE})
 	}
 
