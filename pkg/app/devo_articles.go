@@ -4,6 +4,7 @@ import (
 	"bytes"
 	"log"
 	"net/http"
+ "strings"
 
 	"github.com/julwrites/BotPlatform/pkg/def"
 	"github.com/julwrites/ScriptureBot/pkg/utils"
@@ -59,6 +60,7 @@ func parseArticlesFromHTML(doc *html.Node) []def.Option {
 		} else if linkNode.NextSibling != nil {
 			link = linkNode.NextSibling.Data
 		}
+  link = strings.TrimSpace(link)
 
 		log.Printf("Label: %s, Link: %s", label, link)
 
