@@ -81,5 +81,7 @@ func GetDesiringGodArticles() []def.Option {
 }
 
 func GetUtmostForHisHighestArticles() []def.Option {
-	return def.Option{Text: "Read today's devotional", Link: "http://utmost.org/modern-classic/today"}
+	var options []def.Option
+	options = append(options, def.Option{Text: "Read today's devotional", Link: "http://utmost.org/modern-classic/today"})
+	return options
 }
