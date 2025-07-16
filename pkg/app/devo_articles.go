@@ -81,9 +81,7 @@ func GetDesiringGodArticles() []def.Option {
 }
 
 func GetUtmostForHisHighestArticles() []def.Option {
-	doc := fetchHTMLPage("http://utmost.org/feed/?post_type=modern-classic")
-	if doc == nil {
-		return []def.Option{}
-	}
-	return parseArticlesFromHTML(doc)
+	var options []def.Option
+	options = append(options, def.Option{Text: "Read today's devotional", Link: "http://utmost.org/modern-classic/today"})
+	return options
 }
