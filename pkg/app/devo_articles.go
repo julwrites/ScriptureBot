@@ -4,7 +4,7 @@ import (
 	"bytes"
 	"log"
 	"net/http"
- "strings"
+	"strings"
 
 	"github.com/julwrites/BotPlatform/pkg/def"
 	"github.com/julwrites/ScriptureBot/pkg/utils"
@@ -60,7 +60,7 @@ func parseArticlesFromHTML(doc *html.Node) []def.Option {
 		} else if linkNode.NextSibling != nil {
 			link = linkNode.NextSibling.Data
 		}
-  link = strings.TrimSpace(link)
+		link = strings.TrimSpace(link)
 
 		log.Printf("Label: %s, Link: %s", label, link)
 
@@ -82,6 +82,8 @@ func GetDesiringGodArticles() []def.Option {
 
 func GetUtmostForHisHighestArticles() []def.Option {
 	var options []def.Option
-	options = append(options, def.Option{Text: "Read today's devotional", Link: "http://utmost.org/modern-classic/today"})
+	options = append(options, def.Option{Text: "Modern Classic", Link: "http://utmost.org/modern-classic/today"})
+	options = append(options, def.Option{Text: "Classic", Link: "http://utmost.org/classic/today"})
+	options = append(options, def.Option{Text: "Updated", Link: "http://utmost.org/updated/today"})
 	return options
 }
