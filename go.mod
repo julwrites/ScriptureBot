@@ -1,6 +1,6 @@
 module github.com/julwrites/ScriptureBot
 
-go 1.23.0
+go 1.23
 
 require (
 	cloud.google.com/go/datastore v1.11.0
