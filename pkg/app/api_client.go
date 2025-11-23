@@ -46,7 +46,7 @@ func getAPIConfig() (string, string) {
 
 	// If env vars are missing, try to fetch from Secret Manager
 	if url == "" || key == "" {
-		projectID := os.Getenv("GOOGLE_CLOUD_PROJECT")
+		projectID := os.Getenv("GCLOUD_PROJECT_ID")
 		if projectID != "" {
 			if url == "" {
 				var err error
@@ -63,7 +63,7 @@ func getAPIConfig() (string, string) {
 				}
 			}
 		} else {
-			log.Println("GOOGLE_CLOUD_PROJECT is not set, skipping Secret Manager lookup")
+			log.Println("GCLOUD_PROJECT_ID is not set, skipping Secret Manager lookup")
 		}
 	}
 
