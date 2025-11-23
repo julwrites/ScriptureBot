@@ -33,6 +33,16 @@ func resetAPIConfigCache() {
 	cachedAPIKey = ""
 }
 
+// SetAPIConfigOverride forces the configuration to use the provided values.
+// This is intended for testing or manual configuration.
+func SetAPIConfigOverride(url, key string) {
+	configMutex.Lock()
+	defer configMutex.Unlock()
+	cachedAPIURL = url
+	cachedAPIKey = key
+	configInitialized = true
+}
+
 func getAPIConfig() (string, string) {
 	configMutex.Lock()
 	defer configMutex.Unlock()
