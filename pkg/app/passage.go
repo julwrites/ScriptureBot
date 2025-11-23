@@ -15,6 +15,7 @@ import (
 	"github.com/julwrites/ScriptureBot/pkg/utils"
 )
 
+// Deprecated: Using new API service
 func GetPassageHtml(ref, ver string) *html.Node {
 	ref = url.QueryEscape(ref)
 	ver = url.QueryEscape(ver)
@@ -23,6 +24,7 @@ func GetPassageHtml(ref, ver string) *html.Node {
 	return utils.QueryHtml(query)
 }
 
+// Deprecated: Using new API service
 func GetReference(doc *html.Node) string {
 	refNode, err := utils.FindByClass(doc, "bcv")
 	if err != nil {
@@ -33,6 +35,7 @@ func GetReference(doc *html.Node) string {
 	return utils.GetTextNode(refNode).Data
 }
 
+// Deprecated: Using new API service
 func ParseNodesForPassage(node *html.Node) string {
 	var text string
 	var parts []string
@@ -85,6 +88,7 @@ func ParseNodesForPassage(node *html.Node) string {
 	return text
 }
 
+// Deprecated: Using new API service
 func GetPassage(ref string, doc *html.Node, version string) string {
 	passageNode, startErr := utils.FindByClass(doc, "passage-text")
 	if startErr != nil {
@@ -128,31 +132,57 @@ func GetPassage(ref string, doc *html.Node, version string) string {
 
 func GetBiblePassage(env def.SessionData) def.SessionData {
 	if len(env.Msg.Message) > 0 {
+		config := utils.DeserializeUserConfig(env.User.Config)
 
-		doc := GetPassageHtml(env.Msg.Message, utils.DeserializeUserConfig(env.User.Config).Version)
-		if doc == nil {
+		req := QueryRequest{
+			Query: QueryObject{
+				Verses: []string{env.Msg.Message},
+			},
+			Context: QueryContext{
+				User: UserContext{
+					Version: config.Version,
+				},
+			},
+		}
+
+		var resp VerseResponse
+		err := SubmitQuery(req, &resp)
+		if err != nil {
+			log.Printf("Error retrieving passage: %v", err)
+			// Fallback or error message?
+			// For now, let's just log it and potentially return a friendly error message to the user if critical
+			// But sticking to existing behavior, maybe just return env unmodified or empty message?
+			// The original code returned env if doc == nil.
+			// Let's inform the user.
+			env.Res.Message = "Sorry, I couldn't retrieve that passage. Please check the reference or try again later."
 			return env
 		}
 
-		ref := GetReference(doc)
-		log.Printf("Reference retrieved: %s", ref)
-
-		if len(ref) > 0 {
-			log.Printf("Getting passage")
-			env.Res.Message = GetPassage(ref, doc, utils.DeserializeUserConfig(env.User.Config).Version)
-			log.Printf("Passage retrieved length: %d", len(env.Res.Message))
+		if len(resp.Verse) > 0 {
+			env.Res.Message = resp.Verse
+		} else {
+			env.Res.Message = "No verses found."
 		}
 	}
 
 	return env
 }
 
+// Deprecated: Using new API service logic inside GetBiblePassage
 func CheckBibleReference(ref string) bool {
 	log.Printf("Checking reference %s", ref)
 
+	// We could update this to check if the API returns a result,
+	// but currently this function seems unused in the immediate flow or used for verification.
+	// For now, keeping the old implementation as it's deprecated but still functional if the site is up.
+	// If we want to fully migrate, we should check against the API.
+	// However, the task says "Replace Passage retrieval functionality", not necessarily every utility.
+	// Let's update it to be safe, or leave it deprecated.
+	// Given it makes a network call, better to leave it or update it.
+	// The prompt says "Please do not remove the original code, but mark it as 'to be deprecated'".
+	// So I will leave the logic as is for the deprecated parts.
+
 	doc := GetPassageHtml(ref, "NIV")
-
 	ref = GetReference(doc)
-
 	return len(ref) > 0
 }

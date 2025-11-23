@@ -25,6 +25,12 @@ func ProcessCommand(env def.SessionData) def.SessionData {
 	case CMD_LEXICON:
 		env = GetBibleWord(env)
 		break
+	case CMD_SEARCH:
+		env = GetBibleSearch(env)
+		break
+	case CMD_ASK:
+		env = GetBibleAsk(env)
+		break
 	case CMD_CLOSE:
 		env = CloseAction(env)
 	default:

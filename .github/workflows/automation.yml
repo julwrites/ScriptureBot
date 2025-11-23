@@ -3,6 +3,7 @@ on:
   pull_request:
     branches:
       - master
+      - staging
 jobs:
   build-and-test:
     runs-on: ubuntu-latest
@@ -19,6 +20,9 @@ jobs:
           persist-credentials: false
 
       - name: Install, Build, Test 🔧 # This runs a series of commands as if building a live version of the project
+        env:
+          BIBLE_API_URL: ${{ secrets.BIBLE_API_URL }}
+          BIBLE_API_KEY: ${{ secrets.BIBLE_API_KEY }}
         run: |
           go mod tidy
           go test github.com/julwrites/ScriptureBot/pkg/utils \
