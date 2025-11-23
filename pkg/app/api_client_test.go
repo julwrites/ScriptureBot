@@ -4,7 +4,6 @@ import (
 	"encoding/json"
 	"net/http"
 	"net/http/httptest"
-	"os"
 	"testing"
 )
 
@@ -43,8 +42,7 @@ func TestSubmitQuery(t *testing.T) {
 	defer ts.Close()
 
 	// Set env vars
-	os.Setenv("BIBLE_API_URL", ts.URL)
-	defer os.Unsetenv("BIBLE_API_URL")
+	defer setEnv("BIBLE_API_URL", ts.URL)()
 
 	// Test Case 1: Success
 	t.Run("Success", func(t *testing.T) {
@@ -85,14 +83,15 @@ func TestSubmitQuery(t *testing.T) {
 
 	// Test Case 4: No URL set
 	t.Run("No URL", func(t *testing.T) {
-		os.Unsetenv("BIBLE_API_URL")
+		// Temporarily unset/clear the env var
+		restore := setEnv("BIBLE_API_URL", "")
+		defer restore()
+
 		req := QueryRequest{}
 		var resp VerseResponse
 		err := SubmitQuery(req, &resp)
 		if err == nil {
 			t.Error("Expected error when BIBLE_API_URL is unset")
 		}
-		// Restore for other tests (though we are at end of function)
-		os.Setenv("BIBLE_API_URL", ts.URL)
 	})
 }

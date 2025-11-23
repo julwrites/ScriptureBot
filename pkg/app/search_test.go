@@ -4,7 +4,6 @@ import (
 	"encoding/json"
 	"net/http"
 	"net/http/httptest"
-	"os"
 	"strings"
 	"testing"
 
@@ -37,8 +36,7 @@ func TestGetBibleSearch(t *testing.T) {
 	}))
 	defer ts.Close()
 
-	os.Setenv("BIBLE_API_URL", ts.URL)
-	defer os.Unsetenv("BIBLE_API_URL")
+	defer setEnv("BIBLE_API_URL", ts.URL)()
 
 	t.Run("Success", func(t *testing.T) {
 		var env def.SessionData
