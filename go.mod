@@ -8,7 +8,7 @@ require (
 	cloud.google.com/go/datastore v1.20.0
 	cloud.google.com/go/secretmanager v1.16.0
 	github.com/julwrites/BotPlatform v0.0.0-20220206144002-60e1b8060734
-	golang.org/x/net v0.43.0
+	golang.org/x/net v0.47.0
 	gopkg.in/yaml.v2 v2.4.0
 )
 
@@ -30,11 +30,11 @@ require (
 	go.opentelemetry.io/otel v1.36.0 // indirect
 	go.opentelemetry.io/otel/metric v1.36.0 // indirect
 	go.opentelemetry.io/otel/trace v1.36.0 // indirect
-	golang.org/x/crypto v0.41.0 // indirect
+	golang.org/x/crypto v0.45.0 // indirect
 	golang.org/x/oauth2 v0.30.0 // indirect
-	golang.org/x/sync v0.16.0 // indirect
-	golang.org/x/sys v0.35.0 // indirect
-	golang.org/x/text v0.28.0 // indirect
+	golang.org/x/sync v0.18.0 // indirect
+	golang.org/x/sys v0.38.0 // indirect
+	golang.org/x/text v0.31.0 // indirect
 	golang.org/x/time v0.12.0 // indirect
 	google.golang.org/api v0.247.0 // indirect
 	google.golang.org/genproto v0.0.0-20250603155806-513f23925822 // indirect
