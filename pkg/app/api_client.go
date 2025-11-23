@@ -5,15 +5,82 @@ import (
 	"encoding/json"
 	"fmt"
 	"io"
+	"log"
 	"net/http"
 	"os"
+	"sync"
+
+	"github.com/julwrites/ScriptureBot/pkg/utils"
 )
 
+// getSecretFunc is a variable to allow mocking in tests
+var getSecretFunc = utils.GetSecret
+
+var (
+	cachedAPIURL      string
+	cachedAPIKey      string
+	configInitialized bool
+	configMutex       sync.Mutex
+)
+
+// resetAPIConfigCache invalidates the cache, forcing a reload on next call.
+// This is primarily for testing purposes.
+func resetAPIConfigCache() {
+	configMutex.Lock()
+	defer configMutex.Unlock()
+	configInitialized = false
+	cachedAPIURL = ""
+	cachedAPIKey = ""
+}
+
+// SetAPIConfigOverride forces the configuration to use the provided values.
+// This is intended for testing or manual configuration.
+func SetAPIConfigOverride(url, key string) {
+	configMutex.Lock()
+	defer configMutex.Unlock()
+	cachedAPIURL = url
+	cachedAPIKey = key
+	configInitialized = true
+}
+
 func getAPIConfig() (string, string) {
+	configMutex.Lock()
+	defer configMutex.Unlock()
+
+	if configInitialized {
+		return cachedAPIURL, cachedAPIKey
+	}
+
 	url := os.Getenv("BIBLE_API_URL")
 	key := os.Getenv("BIBLE_API_KEY")
-	// Fallback/Default for development if needed, but per plan we rely on env vars.
-	// Users should ensure these are set.
+
+	// If env vars are missing, try to fetch from Secret Manager
+	if url == "" || key == "" {
+		projectID := os.Getenv("GCLOUD_PROJECT_ID")
+		if projectID != "" {
+			if url == "" {
+				var err error
+				url, err = getSecretFunc(projectID, "BIBLE_API_URL")
+				if err != nil {
+					log.Printf("Failed to fetch BIBLE_API_URL from Secret Manager: %v", err)
+				}
+			}
+			if key == "" {
+				var err error
+				key, err = getSecretFunc(projectID, "BIBLE_API_KEY")
+				if err != nil {
+					log.Printf("Failed to fetch BIBLE_API_KEY from Secret Manager: %v", err)
+				}
+			}
+		} else {
+			log.Println("GCLOUD_PROJECT_ID is not set, skipping Secret Manager lookup")
+		}
+	}
+
+	cachedAPIURL = url
+	cachedAPIKey = key
+	configInitialized = true
+
 	return url, key
 }
 

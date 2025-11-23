@@ -2,6 +2,7 @@ package app
 
 import (
 	"encoding/json"
+	"fmt"
 	"net/http"
 	"net/http/httptest"
 	"testing"
@@ -86,6 +87,8 @@ func TestSubmitQuery(t *testing.T) {
 		// Temporarily unset/clear the env var
 		restore := setEnv("BIBLE_API_URL", "")
 		defer restore()
+		// Also unset PROJECT_ID to avoid Secret Manager lookup
+		defer setEnv("GCLOUD_PROJECT_ID", "")()
 
 		req := QueryRequest{}
 		var resp VerseResponse
@@ -94,4 +97,37 @@ func TestSubmitQuery(t *testing.T) {
 			t.Error("Expected error when BIBLE_API_URL is unset")
 		}
 	})
+}
+
+func TestGetAPIConfig_SecretManagerFallback(t *testing.T) {
+	// Ensure Env Vars are empty
+	defer setEnv("BIBLE_API_URL", "")()
+	defer setEnv("BIBLE_API_KEY", "")()
+	defer setEnv("GCLOUD_PROJECT_ID", "test-project")()
+
+	// Mock the secret function
+	oldGetSecret := getSecretFunc
+	defer func() { getSecretFunc = oldGetSecret }()
+
+	getSecretFunc = func(project, name string) (string, error) {
+		if project != "test-project" {
+			return "", fmt.Errorf("unexpected project: %s", project)
+		}
+		if name == "BIBLE_API_URL" {
+			return "http://secret-url.com", nil
+		}
+		if name == "BIBLE_API_KEY" {
+			return "secret-key", nil
+		}
+		return "", fmt.Errorf("unexpected secret: %s", name)
+	}
+
+	url, key := getAPIConfig()
+
+	if url != "http://secret-url.com" {
+		t.Errorf("Expected URL 'http://secret-url.com', got '%s'", url)
+	}
+	if key != "secret-key" {
+		t.Errorf("Expected Key 'secret-key', got '%s'", key)
+	}
 }
