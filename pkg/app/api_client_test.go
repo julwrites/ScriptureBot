@@ -88,7 +88,7 @@ func TestSubmitQuery(t *testing.T) {
 		restore := setEnv("BIBLE_API_URL", "")
 		defer restore()
 		// Also unset PROJECT_ID to avoid Secret Manager lookup
-		defer setEnv("GOOGLE_CLOUD_PROJECT", "")()
+		defer setEnv("GCLOUD_PROJECT_ID", "")()
 
 		req := QueryRequest{}
 		var resp VerseResponse
@@ -103,7 +103,7 @@ func TestGetAPIConfig_SecretManagerFallback(t *testing.T) {
 	// Ensure Env Vars are empty
 	defer setEnv("BIBLE_API_URL", "")()
 	defer setEnv("BIBLE_API_KEY", "")()
-	defer setEnv("GOOGLE_CLOUD_PROJECT", "test-project")()
+	defer setEnv("GCLOUD_PROJECT_ID", "test-project")()
 
 	// Mock the secret function
 	oldGetSecret := getSecretFunc
