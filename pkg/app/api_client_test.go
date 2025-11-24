@@ -49,7 +49,7 @@ func TestSubmitQuery(t *testing.T) {
 	t.Run("Success", func(t *testing.T) {
 		req := QueryRequest{Query: QueryObject{Prompt: "hello"}}
 		var resp VerseResponse
-		err := SubmitQuery(req, &resp)
+		err := SubmitQuery(req, &resp, "")
 		if err != nil {
 			t.Errorf("Unexpected error: %v", err)
 		}
@@ -62,7 +62,7 @@ func TestSubmitQuery(t *testing.T) {
 	t.Run("API Error", func(t *testing.T) {
 		req := QueryRequest{Query: QueryObject{Prompt: "error"}}
 		var resp VerseResponse
-		err := SubmitQuery(req, &resp)
+		err := SubmitQuery(req, &resp, "")
 		if err == nil {
 			t.Error("Expected error, got nil")
 		}
@@ -76,7 +76,7 @@ func TestSubmitQuery(t *testing.T) {
 	t.Run("Bad JSON", func(t *testing.T) {
 		req := QueryRequest{Query: QueryObject{Prompt: "badjson"}}
 		var resp VerseResponse
-		err := SubmitQuery(req, &resp)
+		err := SubmitQuery(req, &resp, "")
 		if err == nil {
 			t.Error("Expected error for bad JSON, got nil")
 		}
@@ -89,10 +89,11 @@ func TestSubmitQuery(t *testing.T) {
 		defer restore()
 		// Also unset PROJECT_ID to avoid Secret Manager lookup
 		defer setEnv("GCLOUD_PROJECT_ID", "")()
+		resetAPIConfigCache()
 
 		req := QueryRequest{}
 		var resp VerseResponse
-		err := SubmitQuery(req, &resp)
+		err := SubmitQuery(req, &resp, "")
 		if err == nil {
 			t.Error("Expected error when BIBLE_API_URL is unset")
 		}
@@ -104,6 +105,7 @@ func TestGetAPIConfig_SecretManagerFallback(t *testing.T) {
 	defer setEnv("BIBLE_API_URL", "")()
 	defer setEnv("BIBLE_API_KEY", "")()
 	defer setEnv("GCLOUD_PROJECT_ID", "test-project")()
+	resetAPIConfigCache()
 
 	// Mock the secret function
 	oldGetSecret := getSecretFunc
@@ -122,12 +124,40 @@ func TestGetAPIConfig_SecretManagerFallback(t *testing.T) {
 		return "", fmt.Errorf("unexpected secret: %s", name)
 	}
 
-	url, key := getAPIConfig()
+	url, key := getAPIConfig("")
 
 	if url != "http://secret-url.com" {
 		t.Errorf("Expected URL 'http://secret-url.com', got '%s'", url)
 	}
 	if key != "secret-key" {
 		t.Errorf("Expected Key 'secret-key', got '%s'", key)
+	}
+}
+
+func TestGetAPIConfig_PassedProjectID(t *testing.T) {
+	// Ensure Env Vars are empty, including GCLOUD_PROJECT_ID
+	defer setEnv("BIBLE_API_URL", "")()
+	defer setEnv("BIBLE_API_KEY", "")()
+	defer setEnv("GCLOUD_PROJECT_ID", "")()
+	resetAPIConfigCache()
+
+	// Mock the secret function
+	oldGetSecret := getSecretFunc
+	defer func() { getSecretFunc = oldGetSecret }()
+
+	getSecretFunc = func(project, name string) (string, error) {
+		if project != "passed-project" {
+			return "", fmt.Errorf("unexpected project: %s", project)
+		}
+		if name == "BIBLE_API_URL" {
+			return "http://secret-url-passed.com", nil
+		}
+		return "", fmt.Errorf("unexpected secret: %s", name)
+	}
+
+	url, _ := getAPIConfig("passed-project")
+
+	if url != "http://secret-url-passed.com" {
+		t.Errorf("Expected URL 'http://secret-url-passed.com', got '%s'", url)
 	}
 }
