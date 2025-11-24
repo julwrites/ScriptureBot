@@ -43,7 +43,7 @@ func SetAPIConfigOverride(url, key string) {
 	configInitialized = true
 }
 
-func getAPIConfig() (string, string) {
+func getAPIConfig(projectID string) (string, string) {
 	configMutex.Lock()
 	defer configMutex.Unlock()
 
@@ -56,7 +56,11 @@ func getAPIConfig() (string, string) {
 
 	// If env vars are missing, try to fetch from Secret Manager
 	if url == "" || key == "" {
-		projectID := os.Getenv("GCLOUD_PROJECT_ID")
+		envProjectID := os.Getenv("GCLOUD_PROJECT_ID")
+		if envProjectID != "" {
+			projectID = envProjectID
+		}
+
 		if projectID != "" {
 			if url == "" {
 				var err error
@@ -73,7 +77,7 @@ func getAPIConfig() (string, string) {
 				}
 			}
 		} else {
-			log.Println("GCLOUD_PROJECT_ID is not set, skipping Secret Manager lookup")
+			log.Println("GCLOUD_PROJECT_ID is not set and no project ID passed, skipping Secret Manager lookup")
 		}
 	}
 
@@ -86,8 +90,8 @@ func getAPIConfig() (string, string) {
 
 // SubmitQuery sends the QueryRequest to the Bible API and unmarshals the response into result.
 // result should be a pointer to the expected response struct.
-func SubmitQuery(req QueryRequest, result interface{}) error {
-	apiURL, apiKey := getAPIConfig()
+func SubmitQuery(req QueryRequest, result interface{}, projectID string) error {
+	apiURL, apiKey := getAPIConfig(projectID)
 	if apiURL == "" {
 		return fmt.Errorf("BIBLE_API_URL environment variable is not set")
 	}

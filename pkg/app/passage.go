@@ -146,7 +146,7 @@ func GetBiblePassage(env def.SessionData) def.SessionData {
 		}
 
 		var resp VerseResponse
-		err := SubmitQuery(req, &resp)
+		err := SubmitQuery(req, &resp, env.Secrets.PROJECT_ID)
 		if err != nil {
 			log.Printf("Error retrieving passage: %v", err)
 			// Fallback or error message?
