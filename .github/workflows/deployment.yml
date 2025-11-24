@@ -37,7 +37,7 @@ jobs:
 
       - name: Configure gcloud auth with Docker
         run: |
-          gcloud auth configure-docker asia-southeast1-docker.pkg.dev
+          gcloud auth configure-docker ${{ secrets.GCLOUD_REGION }}-docker.pkg.dev
 
       - name: Docker Build and Stage
         env:
@@ -48,8 +48,8 @@ jobs:
         run: |
           printf "TELEGRAM_ID: \"$TELEGRAM_ID\"\nADMIN_ID: \"$ADMIN_ID\"\nPROJECT_ID: \"$PROJECT_ID\"\n" >> secrets.yaml
           cat secrets.yaml
-          docker build -f Dockerfile -t asia-southeast1-docker.pkg.dev/$PROJECT_ID/$ARTIFACT_ID/root:latest .
-          docker push asia-southeast1-docker.pkg.dev/$PROJECT_ID/$ARTIFACT_ID/root:latest
+          docker build -f Dockerfile -t ${{ secrets.GCLOUD_REGION }}-docker.pkg.dev/$PROJECT_ID/$ARTIFACT_ID/root:latest .
+          docker push ${{ secrets.GCLOUD_REGION }}-docker.pkg.dev/$PROJECT_ID/$ARTIFACT_ID/root:latest
 
       - name: Deployment
         env:
@@ -57,5 +57,5 @@ jobs:
           ARTIFACT_ID: ${{secrets.GCLOUD_ARTIFACT_REPOSITORY_ID}}
           APPLICATION_CREDENTIALS: ${{ secrets.GOOGLE_APPLICATION_CREDENTIALS }}
         run: |
-          gcloud run deploy scripturebot --image asia-southeast1-docker.pkg.dev/$PROJECT_ID/$ARTIFACT_ID/root:latest --region asia-southeast1
+          gcloud run deploy scripturebot --image ${{ secrets.GCLOUD_REGION }}-docker.pkg.dev/$PROJECT_ID/$ARTIFACT_ID/root:latest --region ${{ secrets.GCLOUD_REGION }}
 

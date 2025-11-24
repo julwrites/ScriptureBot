@@ -10,6 +10,7 @@ import (
 
 	"cloud.google.com/go/datastore"
 	"github.com/julwrites/BotPlatform/pkg/def"
+	"github.com/julwrites/ScriptureBot/pkg/utils"
 )
 
 func main() {
@@ -40,15 +41,15 @@ func main() {
 func runExport(ctx context.Context, project, filename string) {
 	log.Printf("Starting export from project: %s", project)
 
-	client, err := datastore.NewClient(ctx, project)
-	if err != nil {
-		log.Fatalf("Failed to create datastore client: %v", err)
+	client := utils.OpenClient(&ctx, project)
+	if client == nil {
+		log.Fatalf("Failed to create datastore client")
 	}
 	defer client.Close()
 
 	var users []def.UserData
 	query := datastore.NewQuery("User")
-	_, err = client.GetAll(ctx, query, &users)
+	_, err := client.GetAll(ctx, query, &users)
 	if err != nil {
 		log.Fatalf("Failed to query users: %v", err)
 	}
@@ -89,9 +90,9 @@ func runImport(ctx context.Context, project, filename string) {
 
 	log.Printf("Found %d users in file. Starting upload...", len(users))
 
-	client, err := datastore.NewClient(ctx, project)
-	if err != nil {
-		log.Fatalf("Failed to create datastore client: %v", err)
+	client := utils.OpenClient(&ctx, project)
+	if client == nil {
+		log.Fatalf("Failed to create datastore client")
 	}
 	defer client.Close()
 
