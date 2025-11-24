@@ -38,7 +38,7 @@ func GetBibleSearch(env def.SessionData) def.SessionData {
 		}
 
 		var resp WordSearchResponse
-		err := SubmitQuery(req, &resp)
+		err := SubmitQuery(req, &resp, env.Secrets.PROJECT_ID)
 		if err != nil {
 			log.Printf("Error searching bible: %v", err)
 			env.Res.Message = "Sorry, I encountered an error while searching."
