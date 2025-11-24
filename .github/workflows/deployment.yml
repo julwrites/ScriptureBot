@@ -56,6 +56,10 @@ jobs:
           PROJECT_ID: ${{secrets.GCLOUD_PROJECT_ID}}
           ARTIFACT_ID: ${{secrets.GCLOUD_ARTIFACT_REPOSITORY_ID}}
           APPLICATION_CREDENTIALS: ${{ secrets.GOOGLE_APPLICATION_CREDENTIALS }}
+          TELEGRAM_ID: ${{secrets.TELEGRAM_ID}}
         run: |
           gcloud run deploy scripturebot --image ${{ secrets.GCLOUD_REGION }}-docker.pkg.dev/$PROJECT_ID/$ARTIFACT_ID/root:latest --region ${{ secrets.GCLOUD_REGION }}
+          SERVICE_URL=$(gcloud run services describe scripturebot --region ${{ secrets.GCLOUD_REGION }} --format 'value(status.url)')
+          echo "Setting webhook for $SERVICE_URL"
+          go run cmd/webhook/main.go -url "$SERVICE_URL"
 
