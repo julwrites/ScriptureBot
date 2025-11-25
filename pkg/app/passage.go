@@ -35,51 +35,105 @@ func GetReference(doc *html.Node) string {
 	return utils.GetTextNode(refNode).Data
 }
 
-func ParseNodesForPassage(node *html.Node) string {
-	var parts []string
+// Helper function to escape characters for Telegram MarkdownV2
+func escapeMarkdownV2(s string) string {
+	// According to Telegram API docs for MarkdownV2, characters to escape are:
+	// '_', '*', '[', ']', '(', ')', '~', '`', '>', '#', '+', '-', '=', '|', '{', '}', '.', '!'
+	// Note: '^' is not in this list. Let's assume it doesn't need escaping.
+	// The logic should be to escape these characters *only* when they are not part of a formatting tag.
+	// However, since we are processing raw text nodes, any special character should be escaped.
+	r := strings.NewReplacer(
+		"_", `\_`, "*", `\*`, "[", `\[`, "]", `\]`, "(", `\(`, ")", `\)`,
+		"~", `\~`, "`", "\\`", ">", `\>`, "#", `\#`, "+", `\+`, "-", `\-`,
+		"=", `\=`, "|", `\|`, "{", `\{`, "}", `\}`, ".", `\.`, "!", `\!`,
+	)
+	return r.Replace(s)
+}
 
-	for child := node.FirstChild; child != nil; child = child.NextSibling {
-		if child.Type == html.TextNode {
-			parts = append(parts, child.Data)
-		} else if child.Type == html.ElementNode {
-			var subParts string
-			switch child.Data {
-			case "sup":
-				isFootnote := func(node *html.Node) bool {
-					for _, attr := range node.Attr {
-						if attr.Key == "class" && attr.Val == "footnote" {
-							return true
-						}
-					}
-					return false
-				}
-				if isFootnote(child) {
-					continue
-				}
-				childText := ParseNodesForPassage(child)
-				if len(childText) > 0 {
-					subParts = fmt.Sprintf("<b>%s</b>", childText)
-				}
-			case "i":
-				childText := ParseNodesForPassage(child)
-				subParts = fmt.Sprintf("<i>%s</i>", childText)
-			case "p", "span", "body", "html":
-				subParts = ParseNodesForPassage(child)
-			case "br":
-				subParts = "\n"
-			default:
-				subParts = ParseNodesForPassage(child)
+// Helper functions for parsing
+func isFormattingTag(tag string) bool {
+	return tag == "sup" || tag == "i" || tag == "b"
+}
+
+func isHeaderTag(tag string) bool {
+	return tag == "h1" || tag == "h2" || tag == "h3" || tag == "h4"
+}
+
+func wrapText(text, tag string) string {
+	if strings.TrimSpace(text) == "" {
+		return text
+	}
+
+	if tag == "sup" {
+		// User-specified format for superscript
+		return fmt.Sprintf("^%s^", strings.Trim(text, " "))
+	}
+	if tag == "i" {
+		return fmt.Sprintf("_%s_", text)
+	}
+	if tag == "b" || isHeaderTag(tag) {
+		return fmt.Sprintf("*%s*", text)
+	}
+	return text
+}
+
+func parseNode(node *html.Node) string {
+	if node.Type == html.TextNode {
+		return escapeMarkdownV2(node.Data)
+	}
+
+	if node.Type != html.ElementNode {
+		var content strings.Builder
+		for c := node.FirstChild; c != nil; c = c.NextSibling {
+			content.WriteString(parseNode(c))
+		}
+		return content.String()
+	}
+
+	tag := node.Data
+
+	// Handle non-formatting tags first
+	if tag == "br" {
+		return "\n"
+	}
+	if !isFormattingTag(tag) && !isHeaderTag(tag) {
+		var content strings.Builder
+		for c := node.FirstChild; c != nil; c = c.NextSibling {
+			content.WriteString(parseNode(c))
+		}
+		return content.String()
+	}
+
+	// Handle formatting tags (b, i, sup, h1-h4)
+	if tag == "sup" {
+		for _, attr := range node.Attr {
+			if attr.Key == "class" && attr.Val == "footnote" {
+				return "" // Ignore footnote nodes
 			}
-			parts = append(parts, subParts)
 		}
 	}
 
-	text := strings.Join(parts, "")
+	var content strings.Builder
+	var textBuffer strings.Builder
 
-	if node.Data == "h1" || node.Data == "h2" || node.Data == "h3" || node.Data == "h4" {
-		text = fmt.Sprintf("<b>%s</b>", text)
+	flushTextBuffer := func() {
+		if textBuffer.Len() > 0 {
+			content.WriteString(wrapText(textBuffer.String(), tag))
+			textBuffer.Reset()
+		}
 	}
-	return text
+
+	for c := node.FirstChild; c != nil; c = c.NextSibling {
+		if c.Type == html.ElementNode && (isFormattingTag(c.Data) || isHeaderTag(c.Data)) {
+			flushTextBuffer()
+			content.WriteString(parseNode(c))
+		} else {
+			textBuffer.WriteString(parseNode(c))
+		}
+	}
+	flushTextBuffer()
+
+	return content.String()
 }
 
 func ParsePassageFromHtml(rawHtml string) string {
@@ -88,8 +142,7 @@ func ParsePassageFromHtml(rawHtml string) string {
 		log.Printf("Error parsing html: %v", err)
 		return rawHtml
 	}
-
-	return ParseNodesForPassage(doc)
+	return parseNode(doc)
 }
 
 // Deprecated: Using new API service
@@ -119,7 +172,7 @@ func GetPassage(ref string, doc *html.Node, version string) string {
 		return false
 	})
 
-	textBlocks := utils.MapNodeListToString(filtNodes, ParseNodesForPassage)
+	textBlocks := utils.MapNodeListToString(filtNodes, parseNode)
 
 	var passage strings.Builder
 
@@ -173,6 +226,7 @@ func GetBiblePassage(env def.SessionData) def.SessionData {
 }
 
 // Deprecated: Using new API service logic inside GetBiblePassage
+// Deprecated: Using new API service
 func CheckBibleReference(ref string) bool {
 	log.Printf("Checking reference %s", ref)
 
