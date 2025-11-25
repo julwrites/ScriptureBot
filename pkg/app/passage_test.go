@@ -62,7 +62,7 @@ func TestGetBiblePassage(t *testing.T) {
 		}
 
 		resp := VerseResponse{
-			Verse: "In the beginning God created the heavens and the earth.",
+			Verse: "<p>In the beginning God created the heavens and the earth.</p>",
 		}
 		json.NewEncoder(w).Encode(resp)
 	}))
@@ -100,6 +100,33 @@ func TestGetBiblePassage(t *testing.T) {
 
 		if env.Res.Message != "No verses found." {
 			t.Errorf("Expected empty message, got '%s'", env.Res.Message)
+		}
+	})
+}
+
+func TestParsePassageFromHtml(t *testing.T) {
+	t.Run("Valid HTML", func(t *testing.T) {
+		html := "<p><span><sup>12 </sup>But to all who did receive him, who believed in his name, he gave the right to become children of God,</span></p>"
+		expected := "<b>12 </b>But to all who did receive him, who believed in his name, he gave the right to become children of God,"
+		if got := ParsePassageFromHtml(html); got != expected {
+			t.Errorf("ParsePassageFromHtml() = %v, want %v", got, expected)
+		}
+	})
+
+	t.Run("HTML with italics", func(t *testing.T) {
+		html := "<p><i>This is italic.</i></p>"
+		expected := "<i>This is italic.</i>"
+		if got := ParsePassageFromHtml(html); got != expected {
+			t.Errorf("ParsePassageFromHtml() = %v, want %v", got, expected)
+		}
+	})
+
+	t.Run("Invalid HTML", func(t *testing.T) {
+		html := "<p>This is malformed HTML"
+		// The parser should still try its best. In this case, it should just return the text.
+		expected := "This is malformed HTML"
+		if got := ParsePassageFromHtml(html); got != expected {
+			t.Errorf("ParsePassageFromHtml() = %v, want %v", got, expected)
 		}
 	})
 }
