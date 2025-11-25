@@ -28,9 +28,6 @@ func RunCommands(env def.SessionData) def.SessionData {
 		env.Msg.Command = app.CMD_CLOSE
 	}
 
-	// Propagate secrets
-	env.Secrets.PROJECT_ID = os.Getenv("GCLOUD_PROJECT_ID")
-
 	env = app.ProcessCommand(env)
 
 	return env
