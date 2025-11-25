@@ -10,6 +10,11 @@ import (
 	"github.com/julwrites/ScriptureBot/pkg/utils"
 )
 
+func setEnv(key, value string) func() {
+	ResetAPIConfigCache()
+	return utils.SetEnv(key, value)
+}
+
 func TestGetBiblePassageHtml(t *testing.T) {
 	doc := GetPassageHtml("gen 8", "NIV")
 
