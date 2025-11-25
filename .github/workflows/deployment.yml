@@ -43,22 +43,22 @@ jobs:
         env:
           TELEGRAM_ID: ${{secrets.TELEGRAM_ID}}
           ADMIN_ID: ${{secrets.TELEGRAM_ADMIN_ID}}
-          PROJECT_ID: ${{secrets.GCLOUD_PROJECT_ID}}
+          GCLOUD_PROJECT_ID: ${{secrets.GCLOUD_PROJECT_ID}}
           ARTIFACT_ID: ${{secrets.GCLOUD_ARTIFACT_REPOSITORY_ID}}
         run: |
-          printf "TELEGRAM_ID: \"$TELEGRAM_ID\"\nADMIN_ID: \"$ADMIN_ID\"\nPROJECT_ID: \"$PROJECT_ID\"\n" >> secrets.yaml
+          printf "TELEGRAM_ID: \"$TELEGRAM_ID\"\nADMIN_ID: \"$ADMIN_ID\"\nGCLOUD_PROJECT_ID: \"$GCLOUD_PROJECT_ID\"\n" >> secrets.yaml
           cat secrets.yaml
-          docker build -f Dockerfile -t ${{ secrets.GCLOUD_REGION }}-docker.pkg.dev/$PROJECT_ID/$ARTIFACT_ID/root:latest .
-          docker push ${{ secrets.GCLOUD_REGION }}-docker.pkg.dev/$PROJECT_ID/$ARTIFACT_ID/root:latest
+          docker build -f Dockerfile -t ${{ secrets.GCLOUD_REGION }}-docker.pkg.dev/$GCLOUD_PROJECT_ID/$ARTIFACT_ID/root:latest .
+          docker push ${{ secrets.GCLOUD_REGION }}-docker.pkg.dev/$GCLOUD_PROJECT_ID/$ARTIFACT_ID/root:latest
 
       - name: Deployment
         env:
-          PROJECT_ID: ${{secrets.GCLOUD_PROJECT_ID}}
+          GCLOUD_PROJECT_ID: ${{secrets.GCLOUD_PROJECT_ID}}
           ARTIFACT_ID: ${{secrets.GCLOUD_ARTIFACT_REPOSITORY_ID}}
           APPLICATION_CREDENTIALS: ${{ secrets.GOOGLE_APPLICATION_CREDENTIALS }}
           TELEGRAM_ID: ${{secrets.TELEGRAM_ID}}
         run: |
-          gcloud run deploy scripturebot --image ${{ secrets.GCLOUD_REGION }}-docker.pkg.dev/$PROJECT_ID/$ARTIFACT_ID/root:latest --region ${{ secrets.GCLOUD_REGION }} --allow-unauthenticated
+          gcloud run deploy scripturebot --image ${{ secrets.GCLOUD_REGION }}-docker.pkg.dev/$GCLOUD_PROJECT_ID/$ARTIFACT_ID/root:latest --region ${{ secrets.GCLOUD_REGION }} --allow-unauthenticated
           SERVICE_URL=$(gcloud run services describe scripturebot --region ${{ secrets.GCLOUD_REGION }} --format 'value(status.url)')
           echo "Setting webhook for $SERVICE_URL"
           go run cmd/webhook/main.go -url "$SERVICE_URL"
