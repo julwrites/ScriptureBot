@@ -23,6 +23,7 @@ jobs:
         env:
           BIBLE_API_URL: ${{ secrets.BIBLE_API_URL }}
           BIBLE_API_KEY: ${{ secrets.BIBLE_API_KEY }}
+          GCLOUD_PROJECT_ID: ${{ secrets.GCLOUD_PROJECT_ID }}
         run: |
           go mod tidy
           go test github.com/julwrites/ScriptureBot/pkg/utils \
