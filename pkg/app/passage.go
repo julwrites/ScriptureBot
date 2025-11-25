@@ -36,48 +36,53 @@ func GetReference(doc *html.Node) string {
 }
 
 func ParseNodesForPassage(node *html.Node) string {
+	var text string
 	var parts []string
 
 	for child := node.FirstChild; child != nil; child = child.NextSibling {
-		if child.Type == html.TextNode {
-			parts = append(parts, child.Data)
-		} else if child.Type == html.ElementNode {
-			var subParts string
-			switch child.Data {
-			case "sup":
-				isFootnote := func(node *html.Node) bool {
-					for _, attr := range node.Attr {
-						if attr.Key == "class" && attr.Val == "footnote" {
-							return true
-						}
-					}
-					return false
-				}
-				if isFootnote(child) {
-					continue
-				}
-				childText := ParseNodesForPassage(child)
-				if len(childText) > 0 {
-					subParts = fmt.Sprintf("<b>%s</b>", childText)
-				}
-			case "i":
-				childText := ParseNodesForPassage(child)
-				subParts = fmt.Sprintf("<i>%s</i>", childText)
-			case "p", "span", "body", "html":
-				subParts = ParseNodesForPassage(child)
-			case "br":
-				subParts = "\n"
-			default:
-				subParts = ParseNodesForPassage(child)
+		parts = append(parts, text)
+
+		switch tag := child.Data; tag {
+		case "span":
+			childText := strings.Trim(ParseNodesForPassage(child), " ")
+			if len(childText) > 0 {
+				parts = append(parts, childText)
+			} else {
+				parts = append(parts, child.Data)
 			}
-			parts = append(parts, subParts)
+		case "sup":
+			isFootnote := func(node *html.Node) bool {
+				for _, attr := range node.Attr {
+					if attr.Key == "class" && attr.Val == "footnote" {
+						return true
+					}
+				}
+				return false
+			}
+			if isFootnote(child) {
+				break
+			}
+			childText := strings.Trim(ParseNodesForPassage(child), " ")
+			if len(childText) > 0 {
+				parts = append(parts, fmt.Sprintf("^%s^", childText))
+			}
+			break
+		case "p"
+		case "i":
+			parts = append(parts, ParseNodesForPassage(child))
+			break
+		case "br":
+			parts = append(parts, "\n")
+			break
+		default:
+			parts = append(parts, child.Data)
 		}
 	}
 
-	text := strings.Join(parts, "")
+	text = strings.Join(parts, "")
 
 	if node.Data == "h1" || node.Data == "h2" || node.Data == "h3" || node.Data == "h4" {
-		text = fmt.Sprintf("<b>%s</b>", text)
+		text = fmt.Sprintf("*%s*", text)
 	}
 	return text
 }
