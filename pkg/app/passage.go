@@ -67,8 +67,7 @@ func ParseNodesForPassage(node *html.Node) string {
 				parts = append(parts, fmt.Sprintf("^%s^", childText))
 			}
 			break
-		case "p"
-		case "i":
+		case "p", "i":
 			parts = append(parts, ParseNodesForPassage(child))
 			break
 		case "br":
