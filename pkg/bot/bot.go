@@ -6,7 +6,6 @@ package bot
 import (
 	"fmt"
 	"log"
-	"os"
 
 	"github.com/julwrites/BotPlatform/pkg/def"
 
@@ -27,9 +26,6 @@ func RunCommands(env def.SessionData) def.SessionData {
 	if env.Msg.Message == app.CMD_CLOSE {
 		env.Msg.Command = app.CMD_CLOSE
 	}
-
-	// Propagate secrets
-	env.Secrets.PROJECT_ID = os.Getenv("GCLOUD_PROJECT_ID")
 
 	env = app.ProcessCommand(env)
 
