@@ -48,7 +48,7 @@ gcloud auth application-default login
 Run the export command against the **Source Project**.
 
 ```bash
-go run cmd/migrate/main.go -mode export -project <SOURCE_PROJECT_ID> -file backup_users.json
+go run cmd/migrate/main.go -mode export -gcloud_project_id <SOURCE_GCLOUD_PROJECT_ID> -file backup_users.json
 ```
 *   This will fetch all users and save them to `backup_users.json`.
 *   Review the file to ensure data looks correct.
@@ -57,7 +57,7 @@ go run cmd/migrate/main.go -mode export -project <SOURCE_PROJECT_ID> -file backu
 Run the import command against the **Destination Project**.
 
 ```bash
-go run cmd/migrate/main.go -mode import -project <DESTINATION_PROJECT_ID> -file backup_users.json
+go run cmd/migrate/main.go -mode import -gcloud_project_id <DESTINATION_GCLOUD_PROJECT_ID> -file backup_users.json
 ```
 *   This will read `backup_users.json` and upload each user to the new Datastore.
 *   **Note**: Ensure the Destination Project has Datastore (Firestore in Datastore mode) enabled.

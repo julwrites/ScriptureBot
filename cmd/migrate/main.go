@@ -15,13 +15,13 @@ import (
 
 func main() {
 	mode := flag.String("mode", "", "Mode of operation: 'export' or 'import'")
-	project := flag.String("project", "", "Google Cloud Project ID")
+	project := flag.String("gcloud_project_id", "", "Google Cloud Project ID")
 	file := flag.String("file", "users.json", "Path to the JSON file for export/import")
 
 	flag.Parse()
 
 	if *mode == "" || *project == "" {
-		fmt.Println("Usage: go run cmd/migrate/main.go -mode [export|import] -project [PROJECT_ID] -file [FILENAME]")
+		fmt.Println("Usage: go run cmd/migrate/main.go -mode [export|import] -gcloud_project_id [GCLOUD_PROJECT_ID] -file [FILENAME]")
 		flag.PrintDefaults()
 		os.Exit(1)
 	}
