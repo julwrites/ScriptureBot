@@ -69,6 +69,7 @@ func TestGetBiblePassage(t *testing.T) {
 	defer ts.Close()
 
 	defer setEnv("BIBLE_API_URL", ts.URL)()
+	defer setEnv("BIBLE_API_KEY", "test_key")()
 
 	t.Run("Success", func(t *testing.T) {
 		var env def.SessionData
@@ -78,7 +79,7 @@ func TestGetBiblePassage(t *testing.T) {
 		env.User.Config = utils.SerializeUserConfig(conf)
 		env = GetBiblePassage(env)
 
-		if env.Res.Message != "In the beginning God created the heavens and the earth." {
+		if env.Res.Message != `In the beginning God created the heavens and the earth\.` {
 			t.Errorf("Expected passage text, got '%s'", env.Res.Message)
 		}
 	})
@@ -105,26 +106,57 @@ func TestGetBiblePassage(t *testing.T) {
 }
 
 func TestParsePassageFromHtml(t *testing.T) {
-	t.Run("Valid HTML", func(t *testing.T) {
-		html := "<p><span><sup>12 </sup>But to all who did receive him, who believed in his name, he gave the right to become children of God,</span></p>"
-		expected := "<b>12 </b>But to all who did receive him, who believed in his name, he gave the right to become children of God,"
+	t.Run("Valid HTML with superscript", func(t *testing.T) {
+		html := `<p><span><sup>12 </sup>But to all who did receive him, who believed in his name, he gave the right to become children of God,</span></p>`
+		expected := `^12^But to all who did receive him, who believed in his name, he gave the right to become children of God,`
 		if got := ParsePassageFromHtml(html); got != expected {
 			t.Errorf("ParsePassageFromHtml() = %v, want %v", got, expected)
 		}
 	})
 
 	t.Run("HTML with italics", func(t *testing.T) {
-		html := "<p><i>This is italic.</i></p>"
-		expected := "<i>This is italic.</i>"
+		html := `<p><i>This is italic.</i></p>`
+		expected := `_This is italic\._`
+		if got := ParsePassageFromHtml(html); got != expected {
+			t.Errorf("ParsePassageFromHtml() = %v, want %v", got, expected)
+		}
+	})
+
+	t.Run("HTML with bold", func(t *testing.T) {
+		html := `<p><b>This is bold.</b></p>`
+		expected := `*This is bold\.*`
+		if got := ParsePassageFromHtml(html); got != expected {
+			t.Errorf("ParsePassageFromHtml() = %v, want %v", got, expected)
+		}
+	})
+
+	t.Run("HTML with line breaks", func(t *testing.T) {
+		html := `<p>Line 1.<br>Line 2.</p>`
+		expected := "Line 1\\.\nLine 2\\."
 		if got := ParsePassageFromHtml(html); got != expected {
 			t.Errorf("ParsePassageFromHtml() = %v, want %v", got, expected)
 		}
 	})
 
 	t.Run("Invalid HTML", func(t *testing.T) {
-		html := "<p>This is malformed HTML"
-		// The parser should still try its best. In this case, it should just return the text.
-		expected := "This is malformed HTML"
+		html := `<p>This is malformed HTML`
+		expected := `This is malformed HTML`
+		if got := ParsePassageFromHtml(html); got != expected {
+			t.Errorf("ParsePassageFromHtml() = %v, want %v", got, expected)
+		}
+	})
+
+	t.Run("Nested HTML tags", func(t *testing.T) {
+		html := `<p><b>This is bold, <i>and this is italic.</i></b></p>`
+		expected := `*This is bold, *_and this is italic\._`
+		if got := ParsePassageFromHtml(html); got != expected {
+			t.Errorf("ParsePassageFromHtml() = %v, want %v", got, expected)
+		}
+	})
+
+	t.Run("MarkdownV2 escaping", func(t *testing.T) {
+		html := `<p>This has special characters: *_. [hello](world)!</p>`
+		expected := `This has special characters: \*\_\. \[hello\]\(world\)\!`
 		if got := ParsePassageFromHtml(html); got != expected {
 			t.Errorf("ParsePassageFromHtml() = %v, want %v", got, expected)
 		}
