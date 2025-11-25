@@ -35,57 +35,61 @@ func GetReference(doc *html.Node) string {
 	return utils.GetTextNode(refNode).Data
 }
 
-// Deprecated: Using new API service
 func ParseNodesForPassage(node *html.Node) string {
-	var text string
 	var parts []string
 
 	for child := node.FirstChild; child != nil; child = child.NextSibling {
-		parts = append(parts, text)
-
-		switch tag := child.Data; tag {
-		case "span":
-			childText := strings.Trim(ParseNodesForPassage(child), " ")
-			if len(childText) > 0 {
-				parts = append(parts, childText)
-			} else {
-				parts = append(parts, child.Data)
-			}
-		case "sup":
-			isFootnote := func(node *html.Node) bool {
-				for _, attr := range node.Attr {
-					if attr.Key == "class" && attr.Val == "footnote" {
-						return true
-					}
-				}
-				return false
-			}
-			if isFootnote(child) {
-				break
-			}
-			childText := strings.Trim(ParseNodesForPassage(child), " ")
-			if len(childText) > 0 {
-				parts = append(parts, fmt.Sprintf("^%s^", childText))
-			}
-			break
-		case "p":
-		case "i":
-			parts = append(parts, ParseNodesForPassage(child))
-			break
-		case "br":
-			parts = append(parts, "\n")
-			break
-		default:
+		if child.Type == html.TextNode {
 			parts = append(parts, child.Data)
+		} else if child.Type == html.ElementNode {
+			var subParts string
+			switch child.Data {
+			case "sup":
+				isFootnote := func(node *html.Node) bool {
+					for _, attr := range node.Attr {
+						if attr.Key == "class" && attr.Val == "footnote" {
+							return true
+						}
+					}
+					return false
+				}
+				if isFootnote(child) {
+					continue
+				}
+				childText := ParseNodesForPassage(child)
+				if len(childText) > 0 {
+					subParts = fmt.Sprintf("<b>%s</b>", childText)
+				}
+			case "i":
+				childText := ParseNodesForPassage(child)
+				subParts = fmt.Sprintf("<i>%s</i>", childText)
+			case "p", "span", "body", "html":
+				subParts = ParseNodesForPassage(child)
+			case "br":
+				subParts = "\n"
+			default:
+				subParts = ParseNodesForPassage(child)
+			}
+			parts = append(parts, subParts)
 		}
 	}
 
-	text = strings.Join(parts, "")
+	text := strings.Join(parts, "")
 
 	if node.Data == "h1" || node.Data == "h2" || node.Data == "h3" || node.Data == "h4" {
-		text = fmt.Sprintf("*%s*", text)
+		text = fmt.Sprintf("<b>%s</b>", text)
 	}
 	return text
+}
+
+func ParsePassageFromHtml(rawHtml string) string {
+	doc, err := html.Parse(strings.NewReader(rawHtml))
+	if err != nil {
+		log.Printf("Error parsing html: %v", err)
+		return rawHtml
+	}
+
+	return ParseNodesForPassage(doc)
 }
 
 // Deprecated: Using new API service
@@ -159,7 +163,7 @@ func GetBiblePassage(env def.SessionData) def.SessionData {
 		}
 
 		if len(resp.Verse) > 0 {
-			env.Res.Message = resp.Verse
+			env.Res.Message = ParsePassageFromHtml(resp.Verse)
 		} else {
 			env.Res.Message = "No verses found."
 		}
