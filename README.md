@@ -61,11 +61,11 @@ As such it requires [gcloud CLI](https://cloud.google.com/sdk/docs/quickstart) t
 The artifact repository is set to `us-central1`
 
 As such the docker container can be built using the following command
-`docker build -f Dockerfile -t us-central1-docker.pkg.dev/${PROJECT_ID}/scripturebot/root:latest .`
+`docker build -f Dockerfile -t us-central1-docker.pkg.dev/${GCLOUD_PROJECT_ID}/scripturebot/root:latest .`
 
 And then uploaded using
 
-`docker push docker build -f Dockerfile -t us-central1-docker.pkg.dev/${PROJECT_ID}/scripturebot/root:latest .`
+`docker push us-central1-docker.pkg.dev/${GCLOUD_PROJECT_ID}/scripturebot/root:latest`
 
 And finally deployed using
-`gcloud run deploy scripturebot --image us-central1-docker.pkg.dev/${PROJECT_ID}/scripturebot/root:latest --region us-central1`
+`gcloud run deploy scripturebot --image us-central1-docker.pkg.dev/${GCLOUD_PROJECT_ID}/scripturebot/root:latest --region us-central1`
