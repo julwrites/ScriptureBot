@@ -6,6 +6,8 @@ import (
 	"net/http"
 	"net/http/httptest"
 	"testing"
+
+	"github.com/julwrites/ScriptureBot/pkg/utils"
 )
 
 func TestSubmitQuery(t *testing.T) {
@@ -88,8 +90,8 @@ func TestSubmitQuery(t *testing.T) {
 		restore := setEnv("BIBLE_API_URL", "")
 		defer restore()
 		// Also unset PROJECT_ID to avoid Secret Manager lookup
-		defer setEnv("GCLOUD_PROJECT_ID", "")()
-		resetAPIConfigCache()
+		defer utils.SetEnv("GCLOUD_PROJECT_ID", "")()
+		ResetAPIConfigCache()
 
 		req := QueryRequest{}
 		var resp VerseResponse
@@ -102,10 +104,10 @@ func TestSubmitQuery(t *testing.T) {
 
 func TestGetAPIConfig_SecretManagerFallback(t *testing.T) {
 	// Ensure Env Vars are empty
-	defer setEnv("BIBLE_API_URL", "")()
-	defer setEnv("BIBLE_API_KEY", "")()
-	defer setEnv("GCLOUD_PROJECT_ID", "test-project")()
-	resetAPIConfigCache()
+	defer utils.SetEnv("BIBLE_API_URL", "")()
+	defer utils.SetEnv("BIBLE_API_KEY", "")()
+	defer utils.SetEnv("GCLOUD_PROJECT_ID", "test-project")()
+	ResetAPIConfigCache()
 
 	// Mock the secret function
 	oldGetSecret := getSecretFunc
@@ -136,10 +138,10 @@ func TestGetAPIConfig_SecretManagerFallback(t *testing.T) {
 
 func TestGetAPIConfig_PassedProjectID(t *testing.T) {
 	// Ensure Env Vars are empty, including GCLOUD_PROJECT_ID
-	defer setEnv("BIBLE_API_URL", "")()
-	defer setEnv("BIBLE_API_KEY", "")()
-	defer setEnv("GCLOUD_PROJECT_ID", "")()
-	resetAPIConfigCache()
+	defer utils.SetEnv("BIBLE_API_URL", "")()
+	defer utils.SetEnv("BIBLE_API_KEY", "")()
+	defer utils.SetEnv("GCLOUD_PROJECT_ID", "")()
+	ResetAPIConfigCache()
 
 	// Mock the secret function
 	oldGetSecret := getSecretFunc

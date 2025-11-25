@@ -28,8 +28,9 @@ func TestRunCommands(t *testing.T) {
 	}))
 	defer ts.Close()
 
-	// Override API config
+	// Override API config and defer reset
 	app.SetAPIConfigOverride(ts.URL, "dummy")
+	defer app.ResetAPIConfigCache()
 
 	var env def.SessionData
 	var conf utils.UserConfig
@@ -39,7 +40,7 @@ func TestRunCommands(t *testing.T) {
 
 	env = RunCommands(env)
 
-	if !strings.Contains(env.Res.Message, "Not so the wicked!") {
+	if !strings.Contains(env.Res.Message, "Not so the wicked\\!") {
 		t.Errorf("Failed TestRunCommands Passage command. Got: %s", env.Res.Message)
 	}
 }

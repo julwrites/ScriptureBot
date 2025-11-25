@@ -23,9 +23,9 @@ var (
 	configMutex       sync.Mutex
 )
 
-// resetAPIConfigCache invalidates the cache, forcing a reload on next call.
+// ResetAPIConfigCache invalidates the cache, forcing a reload on next call.
 // This is primarily for testing purposes.
-func resetAPIConfigCache() {
+func ResetAPIConfigCache() {
 	configMutex.Lock()
 	defer configMutex.Unlock()
 	configInitialized = false
