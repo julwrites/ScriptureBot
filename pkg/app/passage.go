@@ -15,8 +15,9 @@ import (
 	"github.com/julwrites/ScriptureBot/pkg/utils"
 )
 
+// GetPassageHTMLFunc is a variable to allow mocking in tests.
 // Deprecated: Using new API service
-func GetPassageHtml(ref, ver string) *html.Node {
+var GetPassageHTMLFunc = func(ref, ver string) *html.Node {
 	ref = url.QueryEscape(ref)
 	ver = url.QueryEscape(ver)
 	query := fmt.Sprintf("https://classic.biblegateway.com/passage/?search=%s&version=%s&interface=print", ref, ver)
@@ -205,13 +206,14 @@ func GetBiblePassage(env def.SessionData) def.SessionData {
 		var resp VerseResponse
 		err := SubmitQuery(req, &resp, env.Secrets.PROJECT_ID)
 		if err != nil {
-			log.Printf("Error retrieving passage: %v", err)
-			// Fallback or error message?
-			// For now, let's just log it and potentially return a friendly error message to the user if critical
-			// But sticking to existing behavior, maybe just return env unmodified or empty message?
-			// The original code returned env if doc == nil.
-			// Let's inform the user.
-			env.Res.Message = "Sorry, I couldn't retrieve that passage. Please check the reference or try again later."
+			log.Printf("Error retrieving passage from API: %v. Falling back to deprecated method.", err)
+			// Fallback to deprecated passage retrieval logic
+			doc := GetPassageHTMLFunc(env.Msg.Message, config.Version)
+			if doc == nil {
+				env.Res.Message = "Sorry, I couldn't retrieve that passage. Please check the reference or try again later."
+				return env
+			}
+			env.Res.Message = GetPassage(GetReference(doc), doc, config.Version)
 			return env
 		}
 
@@ -240,7 +242,7 @@ func CheckBibleReference(ref string) bool {
 	// The prompt says "Please do not remove the original code, but mark it as 'to be deprecated'".
 	// So I will leave the logic as is for the deprecated parts.
 
-	doc := GetPassageHtml(ref, "NIV")
+	doc := GetPassageHTMLFunc(ref, "NIV")
 	ref = GetReference(doc)
 	return len(ref) > 0
 }
