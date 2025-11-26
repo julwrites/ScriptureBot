@@ -14,6 +14,9 @@ RUN apk --no-cache add ca-certificates
 FROM scratch as runner
 # FROM ubuntu:latest as runner
 
+ARG GCLOUD_PROJECT_ID
+ENV GCLOUD_PROJECT_ID=$GCLOUD_PROJECT_ID
+
 COPY --from=builder /go/src/app/secrets.yaml /go/bin/secrets.yaml
 COPY --from=builder /go/src/app/resource/* /go/bin/
 COPY --from=builder /go/bin/main /go/bin/main
