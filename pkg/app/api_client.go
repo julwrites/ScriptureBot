@@ -56,14 +56,13 @@ func getAPIConfig(projectID string) (string, string) {
 
 	// If env vars are missing, try to fetch from Secret Manager
 	if url == "" || key == "" {
-		// Try to fetch project ID first from env
+		// Try to fetch project ID if not provided.
 		if projectID == "" {
-			projectID := os.Getenv("GCLOUD_PROJECT_ID")
+			projectID = os.Getenv("GCLOUD_PROJECT_ID")
 
-			// Then from secrets
 			if projectID == "" {
 				var err error
-				projectID, err = getSecretFunc(projectID, "GCLOUD_PROJECT_ID")
+				projectID, err = getSecretFunc("", "GCLOUD_PROJECT_ID")
 				if err != nil {
 					log.Printf("Failed to fetch GCLOUD_PROJECT_ID from Secret Manager: %v", err)
 				}

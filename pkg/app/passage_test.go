@@ -4,7 +4,10 @@ import (
 	"encoding/json"
 	"net/http"
 	"net/http/httptest"
+	"strings"
 	"testing"
+
+	"golang.org/x/net/html"
 
 	"github.com/julwrites/BotPlatform/pkg/def"
 	"github.com/julwrites/ScriptureBot/pkg/utils"
@@ -16,7 +19,7 @@ func setEnv(key, value string) func() {
 }
 
 func TestGetBiblePassageHtml(t *testing.T) {
-	doc := GetPassageHtml("gen 8", "NIV")
+	doc := GetPassageHTMLFunc("gen 8", "NIV")
 
 	if doc == nil {
 		t.Errorf("Could not retrieve bible passage")
@@ -24,7 +27,7 @@ func TestGetBiblePassageHtml(t *testing.T) {
 }
 
 func TestGetReference(t *testing.T) {
-	doc := GetPassageHtml("gen 1", "NIV")
+	doc := GetPassageHTMLFunc("gen 1", "NIV")
 
 	if doc == nil {
 		t.Fatalf("Could not retrieve Bible passage for testing")
@@ -38,7 +41,7 @@ func TestGetReference(t *testing.T) {
 }
 
 func TestGetPassage(t *testing.T) {
-	doc := GetPassageHtml("john 8", "NIV")
+	doc := GetPassageHTMLFunc("john 8", "NIV")
 
 	passage := GetPassage("John 8", doc, "NIV")
 
@@ -56,20 +59,22 @@ func TestGetBiblePassage(t *testing.T) {
 			return
 		}
 
-		if len(req.Query.Verses) > 0 && req.Query.Verses[0] == "error" {
-			w.WriteHeader(http.StatusInternalServerError)
-			return
+		verse := ""
+		if len(req.Query.Verses) > 0 {
+			verse = req.Query.Verses[0]
 		}
 
-		if len(req.Query.Verses) > 0 && req.Query.Verses[0] == "empty" {
+		switch verse {
+		case "gen 1":
+			resp := VerseResponse{
+				Verse: "<p>In the beginning God created the heavens and the earth.</p>",
+			}
+			json.NewEncoder(w).Encode(resp)
+		case "empty":
 			json.NewEncoder(w).Encode(VerseResponse{})
-			return
+		default: // Any other case will trigger an error, forcing fallback
+			w.WriteHeader(http.StatusInternalServerError)
 		}
-
-		resp := VerseResponse{
-			Verse: "<p>In the beginning God created the heavens and the earth.</p>",
-		}
-		json.NewEncoder(w).Encode(resp)
 	}))
 	defer ts.Close()
 
@@ -89,13 +94,29 @@ func TestGetBiblePassage(t *testing.T) {
 		}
 	})
 
-	t.Run("Error", func(t *testing.T) {
+	t.Run("Fallback on API error", func(t *testing.T) {
 		var env def.SessionData
-		env.Msg.Message = "error"
+		env.Msg.Message = "John 1:1" // Use a valid reference to test the fallback
+		var conf utils.UserConfig
+		conf.Version = "NIV"
+		env.User.Config = utils.SerializeUserConfig(conf)
+
+		// Mock the GetPassageHTMLFunc to avoid network calls.
+		originalGetPassageHTML := GetPassageHTMLFunc
+		defer func() { GetPassageHTMLFunc = originalGetPassageHTML }()
+		GetPassageHTMLFunc = func(ref, ver string) *html.Node {
+			// Return a mock HTML node.
+			// The structure should be minimal but sufficient for GetPassage to parse.
+			mockHTML := `<html><body><div class="passage-text"><div class="bcv">John 1:1</div><p>Mocked passage text.</p></div></body></html>`
+			doc, _ := html.Parse(strings.NewReader(mockHTML))
+			return doc
+		}
+
 		env = GetBiblePassage(env)
 
-		if env.Res.Message != "Sorry, I couldn't retrieve that passage. Please check the reference or try again later." {
-			t.Errorf("Expected error message, got '%s'", env.Res.Message)
+		// The fallback should now use the mocked function.
+		if !strings.Contains(env.Res.Message, "Mocked passage text\\.") {
+			t.Errorf("Expected fallback message to contain 'Mocked passage text.', got: '%s'", env.Res.Message)
 		}
 	})
 

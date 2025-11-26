@@ -146,7 +146,7 @@ func FormatQuery(query string, t TMSQueryType) string {
 		query = strings.ReplaceAll(query, " \t\n", "")
 		break
 	case Reference:
-		doc := GetPassageHtml(query, "NIV")
+		doc := GetPassageHTMLFunc(query, "NIV")
 		query = GetReference(doc)
 		break
 	}
