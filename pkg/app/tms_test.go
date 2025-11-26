@@ -1,6 +1,7 @@
 package app
 
 import (
+	"net/http/httptest"
 	"strings"
 	"testing"
 
@@ -155,6 +156,13 @@ func TestIdentifyQuery(t *testing.T) {
 }
 
 func TestGetRandomTMSVerse(t *testing.T) {
+	handler := newMockApiHandler()
+	ts := httptest.NewServer(handler)
+	defer ts.Close()
+
+	defer setEnv("BIBLE_API_URL", ts.URL)()
+	ResetAPIConfigCache()
+
 	var env def.SessionData
 	var conf utils.UserConfig
 	conf.Version = "NIV"
@@ -171,6 +179,13 @@ func TestGetRandomTMSVerse(t *testing.T) {
 }
 
 func TestGetTMSVerse(t *testing.T) {
+	handler := newMockApiHandler()
+	ts := httptest.NewServer(handler)
+	defer ts.Close()
+
+	defer setEnv("BIBLE_API_URL", ts.URL)()
+	ResetAPIConfigCache()
+
 	var env def.SessionData
 	var conf utils.UserConfig
 	conf.Version = "NIV"

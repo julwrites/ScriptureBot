@@ -1,7 +1,6 @@
 package app
 
 import (
-	"encoding/json"
 	"net/http"
 	"net/http/httptest"
 	"strings"
@@ -12,29 +11,14 @@ import (
 )
 
 func TestGetBibleAsk(t *testing.T) {
-	// Mock server
-	ts := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-		var req QueryRequest
-		json.NewDecoder(r.Body).Decode(&req)
-
-		if req.Query.Prompt == "error" {
-			w.WriteHeader(http.StatusInternalServerError)
-			return
-		}
-
-		resp := OQueryResponse{
-			Text: "Answer text",
-			References: []SearchResult{
-				{Verse: "Ref 1:1", URL: "http://ref1"},
-			},
-		}
-		json.NewEncoder(w).Encode(resp)
-	}))
+	handler := newMockApiHandler()
+	ts := httptest.NewServer(handler)
 	defer ts.Close()
 
-	defer setEnv("BIBLE_API_URL", ts.URL)()
-
 	t.Run("Success", func(t *testing.T) {
+		defer setEnv("BIBLE_API_URL", ts.URL)()
+		ResetAPIConfigCache()
+
 		var env def.SessionData
 		env.Msg.Message = "Question"
 		conf := utils.UserConfig{Version: "NIV"}
@@ -51,6 +35,12 @@ func TestGetBibleAsk(t *testing.T) {
 	})
 
 	t.Run("Error", func(t *testing.T) {
+		handler.statusCode = http.StatusInternalServerError
+		defer func() { handler.statusCode = http.StatusOK }()
+
+		defer setEnv("BIBLE_API_URL", ts.URL)()
+		ResetAPIConfigCache()
+
 		var env def.SessionData
 		env.Msg.Message = "error"
 		conf := utils.UserConfig{Version: "NIV"}

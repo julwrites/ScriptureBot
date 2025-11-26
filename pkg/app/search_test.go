@@ -1,7 +1,6 @@
 package app
 
 import (
-	"encoding/json"
 	"net/http"
 	"net/http/httptest"
 	"strings"
@@ -12,33 +11,14 @@ import (
 )
 
 func TestGetBibleSearch(t *testing.T) {
-	// Mock server
-	ts := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-		var req QueryRequest
-		json.NewDecoder(r.Body).Decode(&req)
-
-		// Check if words contains "error"
-		for _, word := range req.Query.Words {
-			if word == "error" {
-				http.Error(w, "Error", http.StatusInternalServerError)
-				return
-			}
-			if word == "empty" {
-				json.NewEncoder(w).Encode(WordSearchResponse{})
-				return
-			}
-		}
-
-		resp := WordSearchResponse{
-			{Verse: "Found 1:1", URL: "http://found1"},
-		}
-		json.NewEncoder(w).Encode(resp)
-	}))
+	handler := newMockApiHandler()
+	ts := httptest.NewServer(handler)
 	defer ts.Close()
 
-	defer setEnv("BIBLE_API_URL", ts.URL)()
-
 	t.Run("Success", func(t *testing.T) {
+		defer setEnv("BIBLE_API_URL", ts.URL)()
+		ResetAPIConfigCache()
+
 		var env def.SessionData
 		env.Msg.Message = "Found"
 		conf := utils.UserConfig{Version: "NIV"}
@@ -55,6 +35,16 @@ func TestGetBibleSearch(t *testing.T) {
 	})
 
 	t.Run("Empty", func(t *testing.T) {
+		handler.wordSearchResponse = WordSearchResponse{}
+		defer func() {
+			handler.wordSearchResponse = WordSearchResponse{
+				{Verse: "Found 1:1", URL: "http://found1"},
+			}
+		}()
+
+		defer setEnv("BIBLE_API_URL", ts.URL)()
+		ResetAPIConfigCache()
+
 		var env def.SessionData
 		env.Msg.Message = "empty"
 
@@ -66,6 +56,12 @@ func TestGetBibleSearch(t *testing.T) {
 	})
 
 	t.Run("Error", func(t *testing.T) {
+		handler.statusCode = http.StatusInternalServerError
+		defer func() { handler.statusCode = http.StatusOK }()
+
+		defer setEnv("BIBLE_API_URL", ts.URL)()
+		ResetAPIConfigCache()
+
 		var env def.SessionData
 		env.Msg.Message = "error"
 
