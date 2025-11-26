@@ -7,11 +7,11 @@ import (
 	"context"
 	"encoding/json"
 	"log"
-	"os"
 	"sync"
 
 	"cloud.google.com/go/datastore"
 	"github.com/julwrites/BotPlatform/pkg/def"
+	"github.com/julwrites/ScriptureBot/pkg/secrets"
 )
 
 var (
@@ -19,24 +19,15 @@ var (
 	cachedDatabaseIDOnce sync.Once
 )
 
-func GetDatabaseID(project string) string {
+func GetDatabaseID() string {
 	cachedDatabaseIDOnce.Do(func() {
-		// 1. Env Var
-		if id := os.Getenv("USER_DATABASE_ID"); id != "" {
+		id, err := secrets.Get("USER_DATABASE_ID")
+		if err == nil && id != "" {
 			cachedDatabaseID = id
 			return
 		}
 
-		// 2. Secret Manager
-		if id, err := GetSecret(project, "USER_DATABASE_ID"); err == nil && id != "" {
-			cachedDatabaseID = id
-			return
-		} else if err != nil {
-			log.Printf("Failed to fetch USER_DATABASE_ID from Secret Manager: %v", err)
-		}
-
-		// 3. Default
-		log.Println("Warning: USER_DATABASE_ID not found, defaulting to 'scripturebot-users'")
+		log.Printf("Warning: USER_DATABASE_ID not found, defaulting to 'scripturebot-users'. Error: %v", err)
 		cachedDatabaseID = "scripturebot-users"
 	})
 	return cachedDatabaseID
@@ -49,7 +40,7 @@ type UserConfig struct {
 }
 
 func OpenClient(ctx *context.Context, project string) *datastore.Client {
-	dbID := GetDatabaseID(project)
+	dbID := GetDatabaseID()
 	client, err := datastore.NewClientWithDatabase(*ctx, project, dbID)
 	if err != nil {
 		log.Printf("Failed to create Firestore client: %v", err)
