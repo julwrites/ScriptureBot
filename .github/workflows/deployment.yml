@@ -48,7 +48,7 @@ jobs:
         run: |
           printf "TELEGRAM_ID: \"$TELEGRAM_ID\"\nADMIN_ID: \"$ADMIN_ID\"\nGCLOUD_PROJECT_ID: \"$GCLOUD_PROJECT_ID\"\n" >> secrets.yaml
           cat secrets.yaml
-          docker build -f Dockerfile -t ${{ secrets.GCLOUD_REGION }}-docker.pkg.dev/$GCLOUD_PROJECT_ID/$ARTIFACT_ID/root:latest .
+          docker build --build-arg GCLOUD_PROJECT_ID=$GCLOUD_PROJECT_ID -f Dockerfile -t ${{ secrets.GCLOUD_REGION }}-docker.pkg.dev/$GCLOUD_PROJECT_ID/$ARTIFACT_ID/root:latest .
           docker push ${{ secrets.GCLOUD_REGION }}-docker.pkg.dev/$GCLOUD_PROJECT_ID/$ARTIFACT_ID/root:latest
 
       - name: Deployment
