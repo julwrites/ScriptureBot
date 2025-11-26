@@ -6,7 +6,6 @@ package bot
 import (
 	"fmt"
 	"log"
-	"os"
 
 	"github.com/julwrites/BotPlatform/pkg/def"
 
