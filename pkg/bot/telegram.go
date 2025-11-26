@@ -7,11 +7,11 @@ import (
 	"log"
 	"net/http"
 
-	"github.com/julwrites/BotPlatform/pkg/secrets"
-	"github.com/julwrites/ScriptureBot/pkg/utils"
-
 	"github.com/julwrites/BotPlatform/pkg/def"
 	"github.com/julwrites/BotPlatform/pkg/platform"
+	bpsecrets "github.com/julwrites/BotPlatform/pkg/secrets"
+	"github.com/julwrites/ScriptureBot/pkg/secrets"
+	"github.com/julwrites/ScriptureBot/pkg/utils"
 )
 
 func TelegramHandler(res http.ResponseWriter, req *http.Request, secrets *secrets.SecretsData) {
@@ -22,7 +22,12 @@ func TelegramHandler(res http.ResponseWriter, req *http.Request, secrets *secret
 		return
 	}
 
-	env.Secrets = *secrets
+	// Create a BotPlatform-compatible SecretsData struct using an import alias
+	platformSecrets := bpsecrets.SecretsData{
+		TELEGRAM_ID: secrets.TELEGRAM_ID,
+		PROJECT_ID:  secrets.PROJECT_ID,
+	}
+	env.Secrets = platformSecrets
 	// log.Printf("Loaded secrets...")
 
 	env.ResourcePath = "/go/bin/"
