@@ -1,6 +1,7 @@
 package app
 
 import (
+	"net/http/httptest"
 	"testing"
 	"time"
 
@@ -76,56 +77,72 @@ func TestGetUtmostForHisHighestArticles(t *testing.T) {
 }
 
 func TestGetDevotionalData(t *testing.T) {
-	var env def.SessionData
+	handler := newMockApiHandler()
+	ts := httptest.NewServer(handler)
+	defer ts.Close()
 
-	env.ResourcePath = "../../resource"
+	t.Run("DTMSV", func(t *testing.T) {
+		defer setEnv("BIBLE_API_URL", ts.URL)()
+		ResetAPIConfigCache()
 
-	env.Res = GetDevotionalData(env, "DTMSV")
+		var env def.SessionData
+		env.ResourcePath = "../../resource"
+		env.Res = GetDevotionalData(env, "DTMSV")
 
-	if len(env.Res.Message) == 0 {
-		t.Errorf("Failed TestGetDevotionalData for DTMSV")
-	}
+		if len(env.Res.Message) == 0 {
+			t.Errorf("Failed TestGetDevotionalData for DTMSV")
+		}
+	})
 }
 
 func TestGetDevo(t *testing.T) {
-	// Test initial devo command (no specific devo chosen)
-	var env def.SessionData
-	env.User.Action = ""
-	env.Msg.Message = CMD_DEVO // Simulate user typing /devo
+	handler := newMockApiHandler()
+	ts := httptest.NewServer(handler)
+	defer ts.Close()
 
-	env = GetDevo(env)
-	if len(env.Res.Message) == 0 {
-		t.Errorf("Failed TestGetDevo initial, no message")
-	}
-	if len(env.Res.Affordances.Options) == 0 {
-		t.Errorf("Failed TestGetDevo initial, no affordances")
-	}
+	t.Run("Initial Devo", func(t *testing.T) {
+		defer setEnv("BIBLE_API_URL", ts.URL)()
+		ResetAPIConfigCache()
 
-	// Test each specific devotional option
+		var env def.SessionData
+		env.User.Action = ""
+		env.Msg.Message = CMD_DEVO
+
+		env = GetDevo(env)
+		if len(env.Res.Message) == 0 {
+			t.Error("Failed TestGetDevo initial, no message")
+		}
+		if len(env.Res.Affordances.Options) == 0 {
+			t.Error("Failed TestGetDevo initial, no affordances")
+		}
+	})
+
 	for devoName, devoCode := range DEVOS {
+		devoName := devoName
+		devoCode := devoCode
 		t.Run(devoName, func(t *testing.T) {
+			defer setEnv("BIBLE_API_URL", ts.URL)()
+			ResetAPIConfigCache()
+
 			var env def.SessionData
 			env.User.Action = CMD_DEVO
 			env.Msg.Message = devoName
-			env.ResourcePath = "../../resource" // Needed for some devo types
+			env.ResourcePath = "../../resource"
 
 			env = GetDevo(env)
 
-			// Check if a message or options are returned
 			if len(env.Res.Message) == 0 && len(env.Res.Affordances.Options) == 0 {
-				t.Errorf("Failed TestGetDevo for %s: no message or affordances", devoName)
+				t.Fatalf("Failed TestGetDevo for %s: no message or affordances", devoName)
 			}
 
-			// Specific checks based on dispatch method
 			switch GetDevotionalDispatchMethod(devoCode) {
 			case Passage:
 				if len(env.Res.Message) == 0 {
-					t.Errorf("Failed TestGetDevo for %s (Passage): no message returned", devoName)
+					t.Errorf("Expected a message for Passage type devo, got none")
 				}
 			case Keyboard:
-				// For Keyboard types, either options should be present or a message (e.g., for N5XBRP rest day)
 				if len(env.Res.Affordances.Options) == 0 && len(env.Res.Message) == 0 {
-					t.Errorf("Failed TestGetDevo for %s (Keyboard): no affordances or message returned", devoName)
+					t.Errorf("Expected affordances or a message for Keyboard type devo, got none")
 				}
 			}
 		})

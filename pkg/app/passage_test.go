@@ -1,7 +1,6 @@
 package app
 
 import (
-	"encoding/json"
 	"net/http"
 	"net/http/httptest"
 	"testing"
@@ -9,11 +8,6 @@ import (
 	"github.com/julwrites/BotPlatform/pkg/def"
 	"github.com/julwrites/ScriptureBot/pkg/utils"
 )
-
-func setEnv(key, value string) func() {
-	ResetAPIConfigCache()
-	return utils.SetEnv(key, value)
-}
 
 func TestGetBiblePassageHtml(t *testing.T) {
 	doc := GetPassageHtml("gen 8", "NIV")
@@ -48,35 +42,15 @@ func TestGetPassage(t *testing.T) {
 }
 
 func TestGetBiblePassage(t *testing.T) {
-	// Mock server
-	ts := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-		var req QueryRequest
-		if err := json.NewDecoder(r.Body).Decode(&req); err != nil {
-			http.Error(w, "Bad Request", http.StatusBadRequest)
-			return
-		}
-
-		if len(req.Query.Verses) > 0 && req.Query.Verses[0] == "error" {
-			w.WriteHeader(http.StatusInternalServerError)
-			return
-		}
-
-		if len(req.Query.Verses) > 0 && req.Query.Verses[0] == "empty" {
-			json.NewEncoder(w).Encode(VerseResponse{})
-			return
-		}
-
-		resp := VerseResponse{
-			Verse: "<p>In the beginning God created the heavens and the earth.</p>",
-		}
-		json.NewEncoder(w).Encode(resp)
-	}))
+	handler := newMockApiHandler()
+	ts := httptest.NewServer(handler)
 	defer ts.Close()
 
-	defer setEnv("BIBLE_API_URL", ts.URL)()
-	defer setEnv("BIBLE_API_KEY", "test_key")()
-
 	t.Run("Success", func(t *testing.T) {
+		defer setEnv("BIBLE_API_URL", ts.URL)()
+		defer setEnv("BIBLE_API_KEY", "test_key")()
+		ResetAPIConfigCache()
+
 		var env def.SessionData
 		env.Msg.Message = "gen 1"
 		var conf utils.UserConfig
@@ -90,6 +64,13 @@ func TestGetBiblePassage(t *testing.T) {
 	})
 
 	t.Run("Error", func(t *testing.T) {
+		handler.statusCode = http.StatusInternalServerError
+		defer func() { handler.statusCode = http.StatusOK }()
+
+		defer setEnv("BIBLE_API_URL", ts.URL)()
+		defer setEnv("BIBLE_API_KEY", "test_key")()
+		ResetAPIConfigCache()
+
 		var env def.SessionData
 		env.Msg.Message = "error"
 		env = GetBiblePassage(env)
@@ -100,6 +81,17 @@ func TestGetBiblePassage(t *testing.T) {
 	})
 
 	t.Run("Empty", func(t *testing.T) {
+		handler.verseResponse = VerseResponse{}
+		defer func() {
+			handler.verseResponse = VerseResponse{
+				Verse: "<p>In the beginning God created the heavens and the earth.</p>",
+			}
+		}()
+
+		defer setEnv("BIBLE_API_URL", ts.URL)()
+		defer setEnv("BIBLE_API_KEY", "test_key")()
+		ResetAPIConfigCache()
+
 		var env def.SessionData
 		env.Msg.Message = "empty"
 		env = GetBiblePassage(env)

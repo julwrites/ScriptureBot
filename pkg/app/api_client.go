@@ -7,14 +7,10 @@ import (
 	"io"
 	"log"
 	"net/http"
-	"os"
 	"sync"
 
-	"github.com/julwrites/ScriptureBot/pkg/utils"
+	"github.com/julwrites/ScriptureBot/pkg/secrets"
 )
-
-// getSecretFunc is a variable to allow mocking in tests
-var getSecretFunc = utils.GetSecret
 
 var (
 	cachedAPIURL      string
@@ -43,7 +39,7 @@ func SetAPIConfigOverride(url, key string) {
 	configInitialized = true
 }
 
-func getAPIConfig(projectID string) (string, string) {
+func getAPIConfig() (string, string) {
 	configMutex.Lock()
 	defer configMutex.Unlock()
 
@@ -51,43 +47,14 @@ func getAPIConfig(projectID string) (string, string) {
 		return cachedAPIURL, cachedAPIKey
 	}
 
-	url := os.Getenv("BIBLE_API_URL")
-	key := os.Getenv("BIBLE_API_KEY")
+	url, err := secrets.Get("BIBLE_API_URL")
+	if err != nil {
+		log.Printf("Failed to get BIBLE_API_URL: %v", err)
+	}
 
-	// If env vars are missing, try to fetch from Secret Manager
-	if url == "" || key == "" {
-		// Try to fetch project ID first from env
-		if projectID == "" {
-			projectID := os.Getenv("GCLOUD_PROJECT_ID")
-
-			// Then from secrets
-			if projectID == "" {
-				var err error
-				projectID, err = getSecretFunc(projectID, "GCLOUD_PROJECT_ID")
-				if err != nil {
-					log.Printf("Failed to fetch GCLOUD_PROJECT_ID from Secret Manager: %v", err)
-				}
-			}
-		}
-
-		if projectID != "" {
-			if url == "" {
-				var err error
-				url, err = getSecretFunc(projectID, "BIBLE_API_URL")
-				if err != nil {
-					log.Printf("Failed to fetch BIBLE_API_URL from Secret Manager: %v", err)
-				}
-			}
-			if key == "" {
-				var err error
-				key, err = getSecretFunc(projectID, "BIBLE_API_KEY")
-				if err != nil {
-					log.Printf("Failed to fetch BIBLE_API_KEY from Secret Manager: %v", err)
-				}
-			}
-		} else {
-			log.Println("GCLOUD_PROJECT_ID is not set and no project ID passed, skipping Secret Manager lookup")
-		}
+	key, err := secrets.Get("BIBLE_API_KEY")
+	if err != nil {
+		log.Printf("Failed to get BIBLE_API_KEY: %v", err)
 	}
 
 	cachedAPIURL = url
@@ -100,7 +67,7 @@ func getAPIConfig(projectID string) (string, string) {
 // SubmitQuery sends the QueryRequest to the Bible API and unmarshals the response into result.
 // result should be a pointer to the expected response struct.
 func SubmitQuery(req QueryRequest, result interface{}, projectID string) error {
-	apiURL, apiKey := getAPIConfig(projectID)
+	apiURL, apiKey := getAPIConfig()
 	if apiURL == "" {
 		return fmt.Errorf("BIBLE_API_URL environment variable is not set")
 	}
