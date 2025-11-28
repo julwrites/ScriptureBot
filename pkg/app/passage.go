@@ -12,6 +12,7 @@ import (
 	"golang.org/x/net/html"
 
 	"github.com/julwrites/BotPlatform/pkg/def"
+	"github.com/julwrites/BotPlatform/pkg/platform"
 	"github.com/julwrites/ScriptureBot/pkg/utils"
 )
 
@@ -36,24 +37,6 @@ func GetReference(doc *html.Node) string {
 	return utils.GetTextNode(refNode).Data
 }
 
-// Helper function to escape characters for Telegram MarkdownV2
-func escapeMarkdownV2(s string) string {
-	// According to Telegram API docs for MarkdownV2, characters to escape are:
-	// '_', '*', '[', ']', '(', ')', '~', '`', '>', '#', '+', '-', '=', '|', '{', '}', '.', '!'
-	// Note: '^' is not in this list. Let's assume it doesn't need escaping.
-	// The logic should be to escape these characters *only* when they are not part of a formatting tag.
-	// However, since we are processing raw text nodes, any special character should be escaped.
-	var sb strings.Builder
-	for _, r := range s {
-		switch r {
-		case '_', '*', '[', ']', '(', ')', '~', '`', '>', '#', '+', '-', '=', '|', '{', '}', '.', '!', '\\':
-			sb.WriteRune('\\')
-		}
-		sb.WriteRune(r)
-	}
-	return sb.String()
-}
-
 // Helper functions for parsing
 func isFormattingTag(tag string) bool {
 	return tag == "sup" || tag == "i" || tag == "b"
@@ -69,21 +52,20 @@ func wrapText(text, tag string) string {
 	}
 
 	if tag == "sup" {
-		// User-specified format for superscript
-		return fmt.Sprintf("^%s^", strings.Trim(text, " "))
+		return platform.TelegramSuperscript(strings.Trim(text, " "))
 	}
 	if tag == "i" {
-		return fmt.Sprintf("_%s_", text)
+		return platform.TelegramItalics(text)
 	}
 	if tag == "b" || isHeaderTag(tag) {
-		return fmt.Sprintf("*%s*", text)
+		return platform.TelegramBold(text)
 	}
 	return text
 }
 
 func parseNode(node *html.Node) string {
 	if node.Type == html.TextNode {
-		return escapeMarkdownV2(node.Data)
+		return node.Data
 	}
 
 	if node.Type != html.ElementNode {
