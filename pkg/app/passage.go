@@ -43,13 +43,15 @@ func escapeMarkdownV2(s string) string {
 	// Note: '^' is not in this list. Let's assume it doesn't need escaping.
 	// The logic should be to escape these characters *only* when they are not part of a formatting tag.
 	// However, since we are processing raw text nodes, any special character should be escaped.
-	r := strings.NewReplacer(
-		"_", `\_`, "*", `\*`, "[", `\[`, "]", `\]`, "(", `\(`, ")", `\)`,
-		"~", `\~`, "`", "\\`", ">", `\>`, "#", `\#`, "+", `\+`, "-", `\-`,
-		"=", `\=`, "|", `\|`, "{", `\{`, "}", `\}`, ".", `\.`, "!", `\!`,
-		`\`, `\\`,
-	)
-	return r.Replace(s)
+	var sb strings.Builder
+	for _, r := range s {
+		switch r {
+		case '_', '*', '[', ']', '(', ')', '~', '`', '>', '#', '+', '-', '=', '|', '{', '}', '.', '!', '\\':
+			sb.WriteRune('\\')
+		}
+		sb.WriteRune(r)
+	}
+	return sb.String()
 }
 
 // Helper functions for parsing
