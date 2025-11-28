@@ -44,33 +44,6 @@ func GetReference(doc *html.Node) string {
 }
 
 
-
-// Helper functions for parsing
-func isFormattingTag(tag string) bool {
-	return tag == "sup" || tag == "i" || tag == "b"
-}
-
-func isHeaderTag(tag string) bool {
-	return tag == "h1" || tag == "h2" || tag == "h3" || tag == "h4"
-}
-
-func wrapText(text, tag string) string {
-	if strings.TrimSpace(text) == "" {
-		return text
-	}
-
-	if tag == "sup" {
-		return platform.TelegramSuperscript(strings.Trim(text, " "))
-	}
-	if tag == "i" {
-		return platform.TelegramItalics(text)
-	}
-	if tag == "b" || isHeaderTag(tag) {
-		return platform.TelegramBold(text)
-	}
-	return text
-}
-
 func ParseNodesForPassage(node *html.Node) string {
 	var text string
 	var parts []string
