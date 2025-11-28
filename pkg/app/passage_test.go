@@ -131,6 +131,14 @@ func TestParsePassageFromHtml(t *testing.T) {
 			t.Errorf("ParsePassageFromHtml() = %v, want %v", got, expected)
 		}
 	})
+
+	t.Run("Backslash escaping", func(t *testing.T) {
+		html := `added to you\.`
+		expected := `added to you\\\.`
+		if got := ParsePassageFromHtml(html); got != expected {
+			t.Errorf("ParsePassageFromHtml() = %v, want %v", got, expected)
+		}
+	})
 }
 
 func TestCheckBibleReference(t *testing.T) {
