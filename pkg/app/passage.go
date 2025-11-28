@@ -119,8 +119,10 @@ func GetPassage(ref string, doc *html.Node, version string) string {
 
 	var passage strings.Builder
 
-	refString := fmt.Sprintf("_%s_ (%s)", ref, version)
-	passage.WriteString(refString)
+	if len(ref) > 0 {
+		refString := fmt.Sprintf("_%s_ (%s)", ref, version)
+		passage.WriteString(refString)
+	}
 
 	for _, block := range textBlocks {
 		passage.WriteString("\n")
