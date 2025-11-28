@@ -12,7 +12,6 @@ import (
 	"golang.org/x/net/html"
 
 	"github.com/julwrites/BotPlatform/pkg/def"
-	"github.com/julwrites/BotPlatform/pkg/platform"
 	"github.com/julwrites/ScriptureBot/pkg/utils"
 )
 
@@ -97,7 +96,7 @@ func ParseNodesForPassage(node *html.Node) string {
 }
 
 func GetPassage(ref string, doc *html.Node, version string) string {
-	filtNodes := utils.FilterTree(passageNode, func(child *html.Node) bool {
+	filtNodes := utils.FilterTree(doc, func(child *html.Node) bool {
 		switch tag := child.Data; tag {
 		case "h1":
 			fallthrough
@@ -143,7 +142,11 @@ func ParsePassageFromHtml(rawHtml string) string {
 }
 
 func GetBiblePassageFallback(env def.SessionData) def.SessionData {
+	config := utils.DeserializeUserConfig(env.User.Config)
+
 	doc := GetPassageHTML(env.Msg.Message, config.Version)
+	ref := GetReference(doc)
+
 	if doc == nil {
 		env.Res.Message = "Sorry, I couldn't retrieve that passage. Please check the reference or try again later."
 		return env
