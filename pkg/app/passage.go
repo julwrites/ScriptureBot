@@ -46,7 +46,7 @@ func escapeMarkdownV2(s string) string {
 	var sb strings.Builder
 	for _, r := range s {
 		switch r {
-		case '_', '*', '[', ']', '(', ')', '~', '`', '>', '#', '+', '-', '=', '|', '{', '}', '.', '!', '\\':
+		case '_', '*', '[', ']', '(', ')', '~', '`', '>', '#', '+', '-', '=', '|', '{', '}', '.', '!':
 			sb.WriteRune('\\')
 		}
 		sb.WriteRune(r)
