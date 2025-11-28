@@ -182,6 +182,7 @@ func GetBiblePassage(env def.SessionData) def.SessionData {
 
 		// If indeed a reference, attempt to query
 		if len(ref) > 0 {
+			log.Printf("%s", ref);
 
 			// Attempt to retrieve from API
 			req := QueryRequest{
@@ -207,6 +208,7 @@ func GetBiblePassage(env def.SessionData) def.SessionData {
 
 			if len(resp.Verse) > 0 {
 				env.Res.Message = ParsePassageFromHtml(ref, resp.Verse, config.Version)
+				return env
 			}
 		}
 
