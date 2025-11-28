@@ -10,6 +10,7 @@ import (
 	secretmanager "cloud.google.com/go/secretmanager/apiv1"
 	"cloud.google.com/go/secretmanager/apiv1/secretmanagerpb"
 	"github.com/joho/godotenv"
+	"google.golang.org/api/option"
 )
 
 // SecretsData holds all the secrets for the application.
@@ -105,7 +106,18 @@ func Get(secretName string) (string, error) {
 
 func getFromSecretManager(projectID, secretName string) (string, error) {
 	ctx := context.Background()
-	client, err := secretmanager.NewClient(ctx)
+
+	var client *secretmanager.Client
+	var err error
+
+	if saKey, ok := os.LookupEnv("GCLOUD_SA_KEY"); ok && saKey != "" {
+		// Authenticate with the service account key if provided
+		client, err = secretmanager.NewClient(ctx, option.WithCredentialsJSON([]byte(saKey)))
+	} else {
+		// Fallback to Application Default Credentials (ADC)
+		client, err = secretmanager.NewClient(ctx)
+	}
+
 	if err != nil {
 		return "", fmt.Errorf("failed to create secret manager client: %v", err)
 	}
