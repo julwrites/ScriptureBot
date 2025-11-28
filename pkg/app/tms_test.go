@@ -1,7 +1,6 @@
 package app
 
 import (
-	"net/http/httptest"
 	"strings"
 	"testing"
 
@@ -156,11 +155,8 @@ func TestIdentifyQuery(t *testing.T) {
 }
 
 func TestGetRandomTMSVerse(t *testing.T) {
-	handler := newMockApiHandler()
-	ts := httptest.NewServer(handler)
-	defer ts.Close()
-
-	defer setEnv("BIBLE_API_URL", ts.URL)()
+	defer UnsetEnv("BIBLE_API_URL")()
+	defer UnsetEnv("BIBLE_API_KEY")()
 	ResetAPIConfigCache()
 
 	var env def.SessionData
@@ -179,11 +175,8 @@ func TestGetRandomTMSVerse(t *testing.T) {
 }
 
 func TestGetTMSVerse(t *testing.T) {
-	handler := newMockApiHandler()
-	ts := httptest.NewServer(handler)
-	defer ts.Close()
-
-	defer setEnv("BIBLE_API_URL", ts.URL)()
+	defer UnsetEnv("BIBLE_API_URL")()
+	defer UnsetEnv("BIBLE_API_KEY")()
 	ResetAPIConfigCache()
 
 	var env def.SessionData

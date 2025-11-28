@@ -81,24 +81,25 @@ func LoadSecrets() (SecretsData, error) {
 }
 
 // Get retrieves a secret.
-// If GCLOUD_PROJECT_ID is set, it exclusively fetches from Google Secret Manager.
-// Otherwise, it falls back to environment variables for local development.
+// It prioritizes environment variables. If not found, and GCLOUD_PROJECT_ID is set,
+// it fetches from Google Secret Manager.
 func Get(secretName string) (string, error) {
+	// Check environment variables first.
+	// This allows overriding secrets for local development or testing.
+	if value, ok := os.LookupEnv(secretName); ok {
+		log.Printf("Loaded '%s' from environment", secretName)
+		return value, nil
+	}
+
 	projectID, isCloudRun := os.LookupEnv("GCLOUD_PROJECT_ID")
 	if isCloudRun && projectID != "" {
-		// Cloud environment: Use Secret Manager exclusively.
+		// Cloud environment: Use Secret Manager if not found in environment.
 		secretValue, err := getFromSecretManager(projectID, secretName)
 		if err != nil {
 			return "", fmt.Errorf("failed to get secret '%s' from Secret Manager: %v", secretName, err)
 		}
 		log.Printf("Loaded '%s' from Secret Manager", secretName)
 		return secretValue, nil
-	}
-
-	// Local environment: Use environment variables.
-	if value, ok := os.LookupEnv(secretName); ok {
-		log.Printf("Loaded '%s' from environment", secretName)
-		return value, nil
 	}
 
 	return "", fmt.Errorf("secret '%s' not found in environment variables", secretName)
