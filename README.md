@@ -68,4 +68,4 @@ And then uploaded using
 `docker push us-central1-docker.pkg.dev/${GCLOUD_PROJECT_ID}/scripturebot/root:latest`
 
 And finally deployed using
-`gcloud run deploy scripturebot --image us-central1-docker.pkg.dev/${GCLOUD_PROJECT_ID}/scripturebot/root:latest --region us-central1`
+`gcloud run deploy scripturebot --image us-central1-docker.pkg.dev/${GCLOUD_PROJECT_ID}/scripturebot/root:latest --region us-central1 --service-account ${GCLOUD_SERVICE_ACCOUNT}`
