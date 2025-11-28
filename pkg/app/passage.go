@@ -199,6 +199,11 @@ func GetPassage(ref string, doc *html.Node, version string) string {
 
 func GetBiblePassage(env def.SessionData) def.SessionData {
 	if len(env.Msg.Message) > 0 {
+		// Identify and normalize bible reference
+		if ref, ok := ParseBibleReference(env.Msg.Message); ok {
+			env.Msg.Message = ref
+		}
+
 		config := utils.DeserializeUserConfig(env.User.Config)
 
 		req := QueryRequest{
