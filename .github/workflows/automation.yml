@@ -1,9 +1,5 @@
 name: Build Test Automation
 on: 
-  push:
-    branches:
-      - master
-      - staging
   pull_request:
     branches:
       - master

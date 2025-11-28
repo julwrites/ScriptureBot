@@ -6,8 +6,9 @@ import (
 
 	"github.com/julwrites/BotPlatform/pkg/def"
 	"github.com/julwrites/BotPlatform/pkg/platform"
-	"github.com/julwrites/BotPlatform/pkg/secrets"
+	bpsecrets "github.com/julwrites/BotPlatform/pkg/secrets"
 	"github.com/julwrites/ScriptureBot/pkg/app"
+	"github.com/julwrites/ScriptureBot/pkg/secrets"
 	"github.com/julwrites/ScriptureBot/pkg/utils"
 )
 
@@ -53,10 +54,15 @@ func HandleSubscriptionPublish(env def.SessionData) def.SessionData {
 	return env
 }
 
-func SubscriptionHandler(secrets *secrets.SecretsData) {
+func SubscriptionHandler(localSecrets *secrets.SecretsData) {
 	env := def.SessionData{}
 
-	env.Secrets = *secrets
+	platformSecrets := bpsecrets.SecretsData{
+		TELEGRAM_ID: localSecrets.TELEGRAM_ID,
+		PROJECT_ID:  localSecrets.PROJECT_ID,
+	}
+
+	env.Secrets = platformSecrets
 	log.Printf("Loaded secrets...")
 
 	env.ResourcePath = "/go/bin/"
