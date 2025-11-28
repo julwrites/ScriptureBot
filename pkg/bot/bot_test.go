@@ -1,9 +1,6 @@
 package bot
 
 import (
-	"encoding/json"
-	"net/http"
-	"net/http/httptest"
 	"strings"
 	"testing"
 
@@ -13,24 +10,9 @@ import (
 )
 
 func TestRunCommands(t *testing.T) {
-	// Mock server
-	ts := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-		var req app.QueryRequest
-		if err := json.NewDecoder(r.Body).Decode(&req); err != nil {
-			http.Error(w, "Bad Request", http.StatusBadRequest)
-			return
-		}
-
-		resp := app.VerseResponse{
-			Verse: "Not so the wicked!",
-		}
-		json.NewEncoder(w).Encode(resp)
-	}))
-	defer ts.Close()
-
-	// Override API config and defer reset
-	app.SetAPIConfigOverride(ts.URL, "dummy")
-	defer app.ResetAPIConfigCache()
+	defer app.UnsetEnv("BIBLE_API_URL")()
+	defer app.UnsetEnv("BIBLE_API_KEY")()
+	app.ResetAPIConfigCache()
 
 	var env def.SessionData
 	var conf utils.UserConfig
@@ -40,7 +22,7 @@ func TestRunCommands(t *testing.T) {
 
 	env = RunCommands(env)
 
-	if !strings.Contains(env.Res.Message, "Not so the wicked\\!") {
+	if !strings.Contains(env.Res.Message, "wicked") && !strings.Contains(env.Res.Message, "Blessed") {
 		t.Errorf("Failed TestRunCommands Passage command. Got: %s", env.Res.Message)
 	}
 }

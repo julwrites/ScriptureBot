@@ -10,15 +10,14 @@ import (
 	"os"
 	"strings"
 
-	"github.com/julwrites/BotPlatform/pkg/secrets"
 	"github.com/julwrites/ScriptureBot/pkg/bot"
+	"github.com/julwrites/ScriptureBot/pkg/secrets"
 )
 
 func bothandler(res http.ResponseWriter, req *http.Request) {
-	secretsPath := "/go/bin/secrets.yaml"
-	secretsData, err := secrets.LoadSecrets(secretsPath)
+	secretsData, err := secrets.LoadSecrets()
 	if err != nil {
-		panic(err)
+		log.Fatalf("Failed to load secrets: %v", err)
 	}
 
 	switch strings.Trim(req.URL.EscapedPath(), "\n") {
@@ -32,10 +31,9 @@ func bothandler(res http.ResponseWriter, req *http.Request) {
 }
 
 func subscriptionhandler() {
-	secretsPath := "/go/bin/secrets.yaml"
-	secretsData, err := secrets.LoadSecrets(secretsPath)
+	secretsData, err := secrets.LoadSecrets()
 	if err != nil {
-		panic(err)
+		log.Fatalf("Failed to load secrets: %v", err)
 	}
 
 	bot.SubscriptionHandler(&secretsData)
