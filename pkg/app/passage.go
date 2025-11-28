@@ -16,9 +16,16 @@ import (
 	"github.com/julwrites/ScriptureBot/pkg/utils"
 )
 
-// GetPassageHTMLFunc is a variable to allow mocking in tests.
-// Deprecated: Using new API service
-var GetPassageHTMLFunc = func(ref, ver string) *html.Node {
+// Direct Scraping, not using Bible AI API for intelligence, but fast for checking some simple things like references
+func CheckBibleReference(ref string) bool {
+	log.Printf("Checking reference %s", ref)
+
+	doc := GetPassageHTML(ref, "NIV")
+	ref = GetReference(doc)
+	return len(ref) > 0
+}
+
+var GetPassageHTML = func(ref, ver string) *html.Node {
 	ref = url.QueryEscape(ref)
 	ver = url.QueryEscape(ver)
 	query := fmt.Sprintf("https://classic.biblegateway.com/passage/?search=%s&version=%s&interface=print", ref, ver)
@@ -26,7 +33,6 @@ var GetPassageHTMLFunc = func(ref, ver string) *html.Node {
 	return utils.QueryHtml(query)
 }
 
-// Deprecated: Using new API service
 func GetReference(doc *html.Node) string {
 	refNode, err := utils.FindByClass(doc, "bcv")
 	if err != nil {
@@ -37,133 +43,65 @@ func GetReference(doc *html.Node) string {
 	return utils.GetTextNode(refNode).Data
 }
 
-// Helper functions for parsing
-func isFormattingTag(tag string) bool {
-	return tag == "sup" || tag == "i" || tag == "b"
-}
 
-func isHeaderTag(tag string) bool {
-	return tag == "h1" || tag == "h2" || tag == "h3" || tag == "h4"
-}
+func ParseNodesForPassage(node *html.Node) string {
+	var text string
+	var parts []string
 
-func wrapText(text, tag string) string {
-	if strings.TrimSpace(text) == "" {
-		return text
+	for child := node.FirstChild; child != nil; child = child.NextSibling {
+		parts = append(parts, text)
+
+		switch tag := child.Data; tag {
+		case "span":
+			childText := strings.Trim(ParseNodesForPassage(child), " ")
+			if len(childText) > 0 {
+				parts = append(parts, childText)
+			} else {
+				parts = append(parts, child.Data)
+			}
+		case "sup":
+			isFootnote := func(node *html.Node) bool {
+				for _, attr := range node.Attr {
+					if attr.Key == "class" && attr.Val == "footnote" {
+						return true
+					}
+				}
+				return false
+			}
+			if isFootnote(child) {
+				break
+			}
+			childText := strings.Trim(ParseNodesForPassage(child), " ")
+			if len(childText) > 0 {
+				parts = append(parts, fmt.Sprintf("^%s^", childText))
+			}
+			break
+		case "p":
+			parts = append(parts, ParseNodesForPassage(child))
+			break
+		case "b":
+			parts = append(parts, platform.TelegramBold(ParseNodesForPassage(child)))
+		case "i":
+			parts = append(parts, platform.TelegramItalics(ParseNodesForPassage(child)))
+			break
+		case "br":
+			parts = append(parts, "\n")
+			break
+		default:
+			parts = append(parts, child.Data)
+		}
 	}
 
-	if tag == "sup" {
-		return platform.TelegramSuperscript(strings.Trim(text, " "))
-	}
-	if tag == "i" {
-		return platform.TelegramItalics(text)
-	}
-	if tag == "b" || isHeaderTag(tag) {
-		return platform.TelegramBold(text)
+	text = strings.Join(parts, "")
+
+	if node.Data == "h1" || node.Data == "h2" || node.Data == "h3" || node.Data == "h4" {
+		text = fmt.Sprintf("*%s*", text)
 	}
 	return text
 }
 
-func parseNode(node *html.Node) string {
-	if node.Type == html.TextNode {
-		return node.Data
-	}
-
-	if node.Type != html.ElementNode {
-		var content strings.Builder
-		for c := node.FirstChild; c != nil; c = c.NextSibling {
-			content.WriteString(parseNode(c))
-		}
-		return content.String()
-	}
-
-	tag := node.Data
-
-	// Handle non-formatting tags first
-	if tag == "br" {
-		return "\n"
-	}
-
-	// Treat headers and paragraphs as block elements
-	if tag == "p" || isHeaderTag(tag) {
-		var content strings.Builder
-		content.WriteString("\n")
-
-		// Buffer to hold content of the block
-		var blockContent strings.Builder
-
-		for c := node.FirstChild; c != nil; c = c.NextSibling {
-			blockContent.WriteString(parseNode(c))
-		}
-
-		if isHeaderTag(tag) {
-			content.WriteString(platform.TelegramBold(blockContent.String()))
-		} else {
-			content.WriteString(blockContent.String())
-		}
-
-		content.WriteString("\n")
-		return content.String()
-	}
-
-	if !isFormattingTag(tag) {
-		var content strings.Builder
-		for c := node.FirstChild; c != nil; c = c.NextSibling {
-			content.WriteString(parseNode(c))
-		}
-		return content.String()
-	}
-
-	// Handle formatting tags (b, i, sup, h1-h4)
-	if tag == "sup" {
-		for _, attr := range node.Attr {
-			if attr.Key == "class" && attr.Val == "footnote" {
-				return "" // Ignore footnote nodes
-			}
-		}
-	}
-
-	var content strings.Builder
-	var textBuffer strings.Builder
-
-	flushTextBuffer := func() {
-		if textBuffer.Len() > 0 {
-			content.WriteString(wrapText(textBuffer.String(), tag))
-			textBuffer.Reset()
-		}
-	}
-
-	for c := node.FirstChild; c != nil; c = c.NextSibling {
-		// Note: isHeaderTag is removed here because it's handled above as a block element
-		if c.Type == html.ElementNode && isFormattingTag(c.Data) {
-			flushTextBuffer()
-			content.WriteString(parseNode(c))
-		} else {
-			textBuffer.WriteString(parseNode(c))
-		}
-	}
-	flushTextBuffer()
-
-	return content.String()
-}
-
-func ParsePassageFromHtml(rawHtml string) string {
-	doc, err := html.Parse(strings.NewReader(rawHtml))
-	if err != nil {
-		log.Printf("Error parsing html: %v", err)
-		return rawHtml
-	}
-	return strings.TrimSpace(parseNode(doc))
-}
-
-// Deprecated: Using new API service
 func GetPassage(ref string, doc *html.Node, version string) string {
-	passageNode, startErr := utils.FindByClass(doc, "passage-text")
-	if startErr != nil {
-		log.Printf("Error parsing for passage: %v", startErr)
-		return ""
-	}
-
-	filtNodes := utils.FilterTree(passageNode, func(child *html.Node) bool {
+	filtNodes := utils.FilterTree(doc, func(child *html.Node) bool {
 		switch tag := child.Data; tag {
 		case "h1":
 			fallthrough
@@ -182,12 +120,14 @@ func GetPassage(ref string, doc *html.Node, version string) string {
 		return false
 	})
 
-	textBlocks := utils.MapNodeListToString(filtNodes, parseNode)
+	textBlocks := utils.MapNodeListToString(filtNodes, ParseNodesForPassage)
 
 	var passage strings.Builder
 
-	refString := fmt.Sprintf("_%s_ (%s)", ref, version)
-	passage.WriteString(refString)
+	if len(ref) > 0 {
+		refString := fmt.Sprintf("_%s_ (%s)", ref, version)
+		passage.WriteString(refString)
+	}
 
 	for _, block := range textBlocks {
 		passage.WriteString("\n")
@@ -197,61 +137,84 @@ func GetPassage(ref string, doc *html.Node, version string) string {
 	return passage.String()
 }
 
-func GetBiblePassage(env def.SessionData) def.SessionData {
-	if len(env.Msg.Message) > 0 {
-		config := utils.DeserializeUserConfig(env.User.Config)
+func ParsePassageFromHtml(ref string, rawHtml string, version string) string {
+	doc, err := html.Parse(strings.NewReader(rawHtml))
 
-		req := QueryRequest{
-			Query: QueryObject{
-				Verses: []string{env.Msg.Message},
-			},
-			Context: QueryContext{
-				User: UserContext{
-					Version: config.Version,
-				},
-			},
-		}
-
-		var resp VerseResponse
-		err := SubmitQuery(req, &resp, env.Secrets.PROJECT_ID)
-		if err != nil {
-			log.Printf("Error retrieving passage from API: %v. Falling back to deprecated method.", err)
-			// Fallback to deprecated passage retrieval logic
-			doc := GetPassageHTMLFunc(env.Msg.Message, config.Version)
-			if doc == nil {
-				env.Res.Message = "Sorry, I couldn't retrieve that passage. Please check the reference or try again later."
-				return env
-			}
-			env.Res.Message = GetPassage(GetReference(doc), doc, config.Version)
-			return env
-		}
-
-		if len(resp.Verse) > 0 {
-			env.Res.Message = ParsePassageFromHtml(resp.Verse)
-		} else {
-			env.Res.Message = "No verses found."
-		}
+	if err != nil {
+		log.Printf("Error parsing html: %v", err)
+		return rawHtml
 	}
+
+	return strings.TrimSpace(GetPassage(ref, doc, version))
+}
+
+func GetBiblePassageFallback(env def.SessionData) def.SessionData {
+	config := utils.DeserializeUserConfig(env.User.Config)
+
+	doc := GetPassageHTML(env.Msg.Message, config.Version)
+	ref := GetReference(doc)
+
+	if doc == nil {
+		env.Res.Message = "Sorry, I couldn't retrieve that passage. Please check the reference or try again later."
+		return env
+	}
+
+	// Scrape the passage text
+	passageNode, startErr := utils.FindByClass(doc, "passage-text")
+	if startErr != nil {
+		log.Printf("Error parsing for passage: %v", startErr)
+		return env
+	}
+
+	// Attempt to get the passage
+	env.Res.Message = GetPassage(ref, passageNode, config.Version)
 
 	return env
 }
 
-// Deprecated: Using new API service logic inside GetBiblePassage
-// Deprecated: Using new API service
-func CheckBibleReference(ref string) bool {
-	log.Printf("Checking reference %s", ref)
+func GetBiblePassage(env def.SessionData) def.SessionData {
+	if len(env.Msg.Message) > 0 {
+		// Identify and normalize bible reference
+		ref, ok := ParseBibleReference(env.Msg.Message)
 
-	// We could update this to check if the API returns a result,
-	// but currently this function seems unused in the immediate flow or used for verification.
-	// For now, keeping the old implementation as it's deprecated but still functional if the site is up.
-	// If we want to fully migrate, we should check against the API.
-	// However, the task says "Replace Passage retrieval functionality", not necessarily every utility.
-	// Let's update it to be safe, or leave it deprecated.
-	// Given it makes a network call, better to leave it or update it.
-	// The prompt says "Please do not remove the original code, but mark it as 'to be deprecated'".
-	// So I will leave the logic as is for the deprecated parts.
+		if ok {
+			env.Msg.Message = ref
+		}
 
-	doc := GetPassageHTMLFunc(ref, "NIV")
-	ref = GetReference(doc)
-	return len(ref) > 0
+		config := utils.DeserializeUserConfig(env.User.Config)
+
+		// If indeed a reference, attempt to query
+		if len(ref) > 0 {
+			log.Printf("%s", ref);
+
+			// Attempt to retrieve from API
+			req := QueryRequest{
+				Query: QueryObject{
+					Verses: []string{env.Msg.Message},
+				},
+				Context: QueryContext{
+					User: UserContext{
+						Version: config.Version,
+					},
+				},
+			}
+
+			var resp VerseResponse
+			err := SubmitQuery(req, &resp, env.Secrets.PROJECT_ID)
+
+			// Fallback to direct passage retrieval logic
+			if err != nil {
+				log.Printf("Error retrieving passage from API: %v. Falling back to deprecated method.", err)
+
+				return GetBiblePassageFallback(env)
+			} 
+
+			if len(resp.Verse) > 0 {
+				env.Res.Message = ParsePassageFromHtml(env.Msg.Message, resp.Verse, config.Version)
+				return env
+			}
+		}
+	}
+
+	return env
 }

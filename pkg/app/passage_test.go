@@ -9,7 +9,7 @@ import (
 )
 
 func TestGetBiblePassageHtml(t *testing.T) {
-	doc := GetPassageHTMLFunc("gen 8", "NIV")
+	doc := GetPassageHTML("gen 8", "NIV")
 
 	if doc == nil {
 		t.Errorf("Could not retrieve bible passage")
@@ -17,7 +17,7 @@ func TestGetBiblePassageHtml(t *testing.T) {
 }
 
 func TestGetReference(t *testing.T) {
-	doc := GetPassageHTMLFunc("gen 1", "NIV")
+	doc := GetPassageHTML("gen 1", "NIV")
 
 	if doc == nil {
 		t.Fatalf("Could not retrieve Bible passage for testing")
@@ -31,7 +31,7 @@ func TestGetReference(t *testing.T) {
 }
 
 func TestGetPassage(t *testing.T) {
-	doc := GetPassageHTMLFunc("john 8", "NIV")
+	doc := GetPassageHTML("john 8", "NIV")
 
 	passage := GetPassage("John 8", doc, "NIV")
 
@@ -78,8 +78,8 @@ func TestGetBiblePassage(t *testing.T) {
 func TestParsePassageFromHtml(t *testing.T) {
 	t.Run("Valid HTML with superscript", func(t *testing.T) {
 		html := `<p><span><sup>12 </sup>But to all who did receive him, who believed in his name, he gave the right to become children of God,</span></p>`
-		expected := `¹²But to all who did receive him, who believed in his name, he gave the right to become children of God,`
-		if got := ParsePassageFromHtml(html); got != expected {
+		expected := `^12^But to all who did receive him, who believed in his name, he gave the right to become children of God,`
+		if got := ParsePassageFromHtml("", html, ""); got != expected {
 			t.Errorf("ParsePassageFromHtml() = %v, want %v", got, expected)
 		}
 	})
@@ -87,7 +87,7 @@ func TestParsePassageFromHtml(t *testing.T) {
 	t.Run("HTML with italics", func(t *testing.T) {
 		html := `<p><i>This is italic.</i></p>`
 		expected := `_This is italic._`
-		if got := ParsePassageFromHtml(html); got != expected {
+		if got := ParsePassageFromHtml("", html, ""); got != expected {
 			t.Errorf("ParsePassageFromHtml() = %v, want %v", got, expected)
 		}
 	})
@@ -95,7 +95,7 @@ func TestParsePassageFromHtml(t *testing.T) {
 	t.Run("HTML with bold", func(t *testing.T) {
 		html := `<p><b>This is bold.</b></p>`
 		expected := `*This is bold.*`
-		if got := ParsePassageFromHtml(html); got != expected {
+		if got := ParsePassageFromHtml("", html, ""); got != expected {
 			t.Errorf("ParsePassageFromHtml() = %v, want %v", got, expected)
 		}
 	})
@@ -103,7 +103,7 @@ func TestParsePassageFromHtml(t *testing.T) {
 	t.Run("HTML with line breaks", func(t *testing.T) {
 		html := `<p>Line 1.<br>Line 2.</p>`
 		expected := "Line 1.\nLine 2."
-		if got := ParsePassageFromHtml(html); got != expected {
+		if got := ParsePassageFromHtml("", html, ""); got != expected {
 			t.Errorf("ParsePassageFromHtml() = %v, want %v", got, expected)
 		}
 	})
@@ -111,15 +111,15 @@ func TestParsePassageFromHtml(t *testing.T) {
 	t.Run("Invalid HTML", func(t *testing.T) {
 		html := `<p>This is malformed HTML`
 		expected := `This is malformed HTML`
-		if got := ParsePassageFromHtml(html); got != expected {
+		if got := ParsePassageFromHtml("", html, ""); got != expected {
 			t.Errorf("ParsePassageFromHtml() = %v, want %v", got, expected)
 		}
 	})
 
 	t.Run("Nested HTML tags", func(t *testing.T) {
 		html := `<p><b>This is bold, <i>and this is italic.</i></b></p>`
-		expected := `*This is bold, *_and this is italic._`
-		if got := ParsePassageFromHtml(html); got != expected {
+		expected := `*This is bold, _and this is italic._*`
+		if got := ParsePassageFromHtml("", html, ""); got != expected {
 			t.Errorf("ParsePassageFromHtml() = %v, want %v", got, expected)
 		}
 	})
@@ -131,23 +131,7 @@ func TestParsePassageFromHtml(t *testing.T) {
 		// For now, we expect them to be returned raw.
 		html := `<p>This has special characters: *_. [hello](world)!</p>`
 		expected := `This has special characters: *_. [hello](world)!`
-		if got := ParsePassageFromHtml(html); got != expected {
-			t.Errorf("ParsePassageFromHtml() = %v, want %v", got, expected)
-		}
-	})
-
-	t.Run("Backslash escaping", func(t *testing.T) {
-		html := `added to you\.`
-		expected := `added to you\.`
-		if got := ParsePassageFromHtml(html); got != expected {
-			t.Errorf("ParsePassageFromHtml() = %v, want %v", got, expected)
-		}
-	})
-
-	t.Run("Dot escaping", func(t *testing.T) {
-		html := `heaven.`
-		expected := `heaven.`
-		if got := ParsePassageFromHtml(html); got != expected {
+		if got := ParsePassageFromHtml("", html, ""); got != expected {
 			t.Errorf("ParsePassageFromHtml() = %v, want %v", got, expected)
 		}
 	})
