@@ -100,6 +100,14 @@ func TestParsePassageFromHtml(t *testing.T) {
 		}
 	})
 
+	t.Run("HTML with spans", func(t *testing.T) {
+		html := `<span>Line 1.</span><br/><span>    </span><span>Line 2.</span>`
+		expected := "Line 1.\n    Line 2."
+		if got := ParsePassageFromHtml("", html, ""); got != expected {
+			t.Errorf("ParsePassageFromHtml() = %v, want %v", got, expected)
+		}
+	})
+
 	t.Run("HTML with line breaks", func(t *testing.T) {
 		html := `<p>Line 1.<br>Line 2.</p>`
 		expected := "Line 1.\nLine 2."
