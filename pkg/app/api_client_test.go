@@ -8,14 +8,17 @@ func TestSubmitQuery(t *testing.T) {
 	t.Run("Success", func(t *testing.T) {
 		// Force cleanup of environment to ensure we test Secret Manager fallback
 		// This handles cases where the runner might have lingering env vars
-		defer unsetEnv("BIBLE_API_URL")()
-		defer unsetEnv("BIBLE_API_KEY")()
+		defer UnsetEnv("BIBLE_API_URL")()
+		defer UnsetEnv("BIBLE_API_KEY")()
 
 		ResetAPIConfigCache()
 
 		// Use a simple Verse query to verify connectivity.
 		// Avoid using Prompt ("hello") as it triggers the LLM which might be unstable (500 errors).
-		req := QueryRequest{Query: QueryObject{Verses: []string{"John 3:16"}}}
+		req := QueryRequest{
+			Query:   QueryObject{Verses: []string{"John 3:16"}},
+			Context: QueryContext{User: UserContext{Version: "NIV"}},
+		}
 		var resp VerseResponse
 		err := SubmitQuery(req, &resp, "")
 		if err != nil {
@@ -28,7 +31,7 @@ func TestSubmitQuery(t *testing.T) {
 	})
 
 	t.Run("No URL", func(t *testing.T) {
-		defer setEnv("BIBLE_API_URL", "")()
+		defer SetEnv("BIBLE_API_URL", "")()
 		ResetAPIConfigCache()
 
 		req := QueryRequest{}

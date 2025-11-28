@@ -77,6 +77,8 @@ func TestGetUtmostForHisHighestArticles(t *testing.T) {
 
 func TestGetDevotionalData(t *testing.T) {
 	t.Run("DTMSV", func(t *testing.T) {
+		defer UnsetEnv("BIBLE_API_URL")()
+		defer UnsetEnv("BIBLE_API_KEY")()
 		ResetAPIConfigCache()
 
 		var env def.SessionData
@@ -91,6 +93,8 @@ func TestGetDevotionalData(t *testing.T) {
 
 func TestGetDevo(t *testing.T) {
 	t.Run("Initial Devo", func(t *testing.T) {
+		defer UnsetEnv("BIBLE_API_URL")()
+		defer UnsetEnv("BIBLE_API_KEY")()
 		ResetAPIConfigCache()
 
 		var env def.SessionData
@@ -110,6 +114,8 @@ func TestGetDevo(t *testing.T) {
 		devoName := devoName
 		devoCode := devoCode
 		t.Run(devoName, func(t *testing.T) {
+			defer UnsetEnv("BIBLE_API_URL")()
+			defer UnsetEnv("BIBLE_API_KEY")()
 			ResetAPIConfigCache()
 
 			var env def.SessionData

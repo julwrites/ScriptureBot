@@ -10,6 +10,8 @@ import (
 )
 
 func TestRunCommands(t *testing.T) {
+	defer app.UnsetEnv("BIBLE_API_URL")()
+	defer app.UnsetEnv("BIBLE_API_KEY")()
 	app.ResetAPIConfigCache()
 
 	var env def.SessionData

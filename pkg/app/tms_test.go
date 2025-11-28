@@ -155,6 +155,8 @@ func TestIdentifyQuery(t *testing.T) {
 }
 
 func TestGetRandomTMSVerse(t *testing.T) {
+	defer UnsetEnv("BIBLE_API_URL")()
+	defer UnsetEnv("BIBLE_API_KEY")()
 	ResetAPIConfigCache()
 
 	var env def.SessionData
@@ -173,6 +175,8 @@ func TestGetRandomTMSVerse(t *testing.T) {
 }
 
 func TestGetTMSVerse(t *testing.T) {
+	defer UnsetEnv("BIBLE_API_URL")()
+	defer UnsetEnv("BIBLE_API_KEY")()
 	ResetAPIConfigCache()
 
 	var env def.SessionData

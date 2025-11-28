@@ -42,6 +42,8 @@ func TestGetPassage(t *testing.T) {
 
 func TestGetBiblePassage(t *testing.T) {
 	t.Run("Success", func(t *testing.T) {
+		defer UnsetEnv("BIBLE_API_URL")()
+		defer UnsetEnv("BIBLE_API_KEY")()
 		ResetAPIConfigCache()
 
 		var env def.SessionData
@@ -57,6 +59,8 @@ func TestGetBiblePassage(t *testing.T) {
 	})
 
 	t.Run("Empty", func(t *testing.T) {
+		defer UnsetEnv("BIBLE_API_URL")()
+		defer UnsetEnv("BIBLE_API_KEY")()
 		ResetAPIConfigCache()
 
 		var env def.SessionData

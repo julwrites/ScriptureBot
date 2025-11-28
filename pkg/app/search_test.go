@@ -10,6 +10,8 @@ import (
 
 func TestGetBibleSearch(t *testing.T) {
 	t.Run("Success", func(t *testing.T) {
+		defer UnsetEnv("BIBLE_API_URL")()
+		defer UnsetEnv("BIBLE_API_KEY")()
 		ResetAPIConfigCache()
 
 		var env def.SessionData

@@ -4,8 +4,8 @@ import (
 	"os"
 )
 
-// setEnv is a helper function to temporarily set an environment variable and return a function to restore it.
-func setEnv(key, value string) func() {
+// SetEnv is a helper function to temporarily set an environment variable and return a function to restore it.
+func SetEnv(key, value string) func() {
 	originalValue, isSet := os.LookupEnv(key)
 	os.Setenv(key, value)
 	return func() {
@@ -17,8 +17,8 @@ func setEnv(key, value string) func() {
 	}
 }
 
-// unsetEnv is a helper function to temporarily unset an environment variable and return a function to restore it.
-func unsetEnv(key string) func() {
+// UnsetEnv is a helper function to temporarily unset an environment variable and return a function to restore it.
+func UnsetEnv(key string) func() {
 	originalValue, isSet := os.LookupEnv(key)
 	os.Unsetenv(key)
 	return func() {
