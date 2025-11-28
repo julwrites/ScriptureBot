@@ -174,11 +174,14 @@ func GetBiblePassageFallback(env def.SessionData) def.SessionData {
 
 func GetBiblePassage(env def.SessionData) def.SessionData {
 	if len(env.Msg.Message) > 0 {
-		config := utils.DeserializeUserConfig(env.User.Config)
+		// Identify and normalize bible reference
+		ref, ok := ParseBibleReference(env.Msg.Message)
 
-		// To be replaced with a simpler algorithm
-		doc := GetPassageHTML(env.Msg.Message, config.Version)
-		ref := GetReference(doc)
+		if ok {
+			env.Msg.Message = ref
+		}
+
+		config := utils.DeserializeUserConfig(env.User.Config)
 
 		// If indeed a reference, attempt to query
 		if len(ref) > 0 {
@@ -187,7 +190,7 @@ func GetBiblePassage(env def.SessionData) def.SessionData {
 			// Attempt to retrieve from API
 			req := QueryRequest{
 				Query: QueryObject{
-					Verses: []string{ref},
+					Verses: []string{env.Msg.Message},
 				},
 				Context: QueryContext{
 					User: UserContext{
@@ -207,12 +210,10 @@ func GetBiblePassage(env def.SessionData) def.SessionData {
 			} 
 
 			if len(resp.Verse) > 0 {
-				env.Res.Message = ParsePassageFromHtml(ref, resp.Verse, config.Version)
+				env.Res.Message = ParsePassageFromHtml(env.Msg.Message, resp.Verse, config.Version)
 				return env
 			}
 		}
-
-		env.Res.Message = "No verses found."
 	}
 
 	return env
