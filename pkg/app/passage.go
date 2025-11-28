@@ -44,33 +44,6 @@ func GetReference(doc *html.Node) string {
 }
 
 
-
-// Helper functions for parsing
-func isFormattingTag(tag string) bool {
-	return tag == "sup" || tag == "i" || tag == "b"
-}
-
-func isHeaderTag(tag string) bool {
-	return tag == "h1" || tag == "h2" || tag == "h3" || tag == "h4"
-}
-
-func wrapText(text, tag string) string {
-	if strings.TrimSpace(text) == "" {
-		return text
-	}
-
-	if tag == "sup" {
-		return platform.TelegramSuperscript(strings.Trim(text, " "))
-	}
-	if tag == "i" {
-		return platform.TelegramItalics(text)
-	}
-	if tag == "b" || isHeaderTag(tag) {
-		return platform.TelegramBold(text)
-	}
-	return text
-}
-
 func ParseNodesForPassage(node *html.Node) string {
 	var text string
 	var parts []string
@@ -104,8 +77,12 @@ func ParseNodesForPassage(node *html.Node) string {
 			}
 			break
 		case "p":
-		case "i":
 			parts = append(parts, ParseNodesForPassage(child))
+			break
+		case "b":
+			parts = append(parts, platform.TelegramBold(ParseNodesForPassage(child)))
+		case "i":
+			parts = append(parts, platform.TelegramItalics(ParseNodesForPassage(child)))
 			break
 		case "br":
 			parts = append(parts, "\n")
@@ -124,7 +101,7 @@ func ParseNodesForPassage(node *html.Node) string {
 }
 
 func GetPassage(ref string, doc *html.Node, version string) string {
-	filtNodes := utils.FilterTree(passageNode, func(child *html.Node) bool {
+	filtNodes := utils.FilterTree(doc, func(child *html.Node) bool {
 		switch tag := child.Data; tag {
 		case "h1":
 			fallthrough
@@ -147,8 +124,10 @@ func GetPassage(ref string, doc *html.Node, version string) string {
 
 	var passage strings.Builder
 
-	refString := fmt.Sprintf("_%s_ (%s)", ref, version)
-	passage.WriteString(refString)
+	if len(ref) > 0 {
+		refString := fmt.Sprintf("_%s_ (%s)", ref, version)
+		passage.WriteString(refString)
+	}
 
 	for _, block := range textBlocks {
 		passage.WriteString("\n")
@@ -158,7 +137,7 @@ func GetPassage(ref string, doc *html.Node, version string) string {
 	return passage.String()
 }
 
-func ParsePassageFromHtml(rawHtml string) string {
+func ParsePassageFromHtml(ref string, rawHtml string, version string) string {
 	doc, err := html.Parse(strings.NewReader(rawHtml))
 
 	if err != nil {
@@ -166,11 +145,15 @@ func ParsePassageFromHtml(rawHtml string) string {
 		return rawHtml
 	}
 
-	return strings.TrimSpace(GetPassage(doc))
+	return strings.TrimSpace(GetPassage(ref, doc, version))
 }
 
 func GetBiblePassageFallback(env def.SessionData) def.SessionData {
+	config := utils.DeserializeUserConfig(env.User.Config)
+
 	doc := GetPassageHTML(env.Msg.Message, config.Version)
+	ref := GetReference(doc)
+
 	if doc == nil {
 		env.Res.Message = "Sorry, I couldn't retrieve that passage. Please check the reference or try again later."
 		return env
@@ -180,7 +163,7 @@ func GetBiblePassageFallback(env def.SessionData) def.SessionData {
 	passageNode, startErr := utils.FindByClass(doc, "passage-text")
 	if startErr != nil {
 		log.Printf("Error parsing for passage: %v", startErr)
-		return ""
+		return env
 	}
 
 	// Attempt to get the passage
@@ -199,6 +182,7 @@ func GetBiblePassage(env def.SessionData) def.SessionData {
 
 		// If indeed a reference, attempt to query
 		if len(ref) > 0 {
+			log.Printf("%s", ref);
 
 			// Attempt to retrieve from API
 			req := QueryRequest{
@@ -223,7 +207,8 @@ func GetBiblePassage(env def.SessionData) def.SessionData {
 			} 
 
 			if len(resp.Verse) > 0 {
-				env.Res.Message = ParsePassageFromHtml(resp.Verse)
+				env.Res.Message = ParsePassageFromHtml(ref, resp.Verse, config.Version)
+				return env
 			}
 		}
 
