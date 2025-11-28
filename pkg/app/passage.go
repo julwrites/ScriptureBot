@@ -12,6 +12,7 @@ import (
 	"golang.org/x/net/html"
 
 	"github.com/julwrites/BotPlatform/pkg/def"
+	"github.com/julwrites/BotPlatform/pkg/platform"
 	"github.com/julwrites/ScriptureBot/pkg/utils"
 )
 
@@ -76,8 +77,12 @@ func ParseNodesForPassage(node *html.Node) string {
 			}
 			break
 		case "p":
-		case "i":
 			parts = append(parts, ParseNodesForPassage(child))
+			break
+		case "b":
+			parts = append(parts, platform.TelegramBold(ParseNodesForPassage(child)))
+		case "i":
+			parts = append(parts, platform.TelegramItalics(ParseNodesForPassage(child)))
 			break
 		case "br":
 			parts = append(parts, "\n")

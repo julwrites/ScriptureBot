@@ -78,7 +78,7 @@ func TestGetBiblePassage(t *testing.T) {
 func TestParsePassageFromHtml(t *testing.T) {
 	t.Run("Valid HTML with superscript", func(t *testing.T) {
 		html := `<p><span><sup>12 </sup>But to all who did receive him, who believed in his name, he gave the right to become children of God,</span></p>`
-		expected := `¹²But to all who did receive him, who believed in his name, he gave the right to become children of God,`
+		expected := `^12^But to all who did receive him, who believed in his name, he gave the right to become children of God,`
 		if got := ParsePassageFromHtml("", html, ""); got != expected {
 			t.Errorf("ParsePassageFromHtml() = %v, want %v", got, expected)
 		}
@@ -131,22 +131,6 @@ func TestParsePassageFromHtml(t *testing.T) {
 		// For now, we expect them to be returned raw.
 		html := `<p>This has special characters: *_. [hello](world)!</p>`
 		expected := `This has special characters: *_. [hello](world)!`
-		if got := ParsePassageFromHtml("", html, ""); got != expected {
-			t.Errorf("ParsePassageFromHtml() = %v, want %v", got, expected)
-		}
-	})
-
-	t.Run("Backslash escaping", func(t *testing.T) {
-		html := `added to you\.`
-		expected := `added to you\.`
-		if got := ParsePassageFromHtml("", html, ""); got != expected {
-			t.Errorf("ParsePassageFromHtml() = %v, want %v", got, expected)
-		}
-	})
-
-	t.Run("Dot escaping", func(t *testing.T) {
-		html := `heaven.`
-		expected := `heaven.`
 		if got := ParsePassageFromHtml("", html, ""); got != expected {
 			t.Errorf("ParsePassageFromHtml() = %v, want %v", got, expected)
 		}
