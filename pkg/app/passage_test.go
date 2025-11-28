@@ -9,7 +9,7 @@ import (
 )
 
 func TestGetBiblePassageHtml(t *testing.T) {
-	doc := GetPassageHTMLFunc("gen 8", "NIV")
+	doc := GetPassageHTML("gen 8", "NIV")
 
 	if doc == nil {
 		t.Errorf("Could not retrieve bible passage")
@@ -17,7 +17,7 @@ func TestGetBiblePassageHtml(t *testing.T) {
 }
 
 func TestGetReference(t *testing.T) {
-	doc := GetPassageHTMLFunc("gen 1", "NIV")
+	doc := GetPassageHTML("gen 1", "NIV")
 
 	if doc == nil {
 		t.Fatalf("Could not retrieve Bible passage for testing")
@@ -31,7 +31,7 @@ func TestGetReference(t *testing.T) {
 }
 
 func TestGetPassage(t *testing.T) {
-	doc := GetPassageHTMLFunc("john 8", "NIV")
+	doc := GetPassageHTML("john 8", "NIV")
 
 	passage := GetPassage("John 8", doc, "NIV")
 
