@@ -8,11 +8,28 @@ import (
 func SetEnv(key, value string) func() {
 	originalValue, isSet := os.LookupEnv(key)
 	os.Setenv(key, value)
+
+	// Unset GCLOUD_PROJECT_ID to prevent Secret Manager usage during tests,
+	// unless we are explicitly setting GCLOUD_PROJECT_ID itself.
+	var projectID string
+	var projectIDSet bool
+	if key != "GCLOUD_PROJECT_ID" {
+		projectID, projectIDSet = os.LookupEnv("GCLOUD_PROJECT_ID")
+		if projectIDSet {
+			os.Unsetenv("GCLOUD_PROJECT_ID")
+		}
+	}
+
 	return func() {
 		if isSet {
 			os.Setenv(key, originalValue)
 		} else {
 			os.Unsetenv(key)
+		}
+
+		// Restore GCLOUD_PROJECT_ID if we unset it as a side effect
+		if key != "GCLOUD_PROJECT_ID" && projectIDSet {
+			os.Setenv("GCLOUD_PROJECT_ID", projectID)
 		}
 	}
 }
