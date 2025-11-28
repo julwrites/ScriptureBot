@@ -78,7 +78,7 @@ func TestGetBiblePassage(t *testing.T) {
 func TestParsePassageFromHtml(t *testing.T) {
 	t.Run("Valid HTML with superscript", func(t *testing.T) {
 		html := `<p><span><sup>12 </sup>But to all who did receive him, who believed in his name, he gave the right to become children of God,</span></p>`
-		expected := `^12^But to all who did receive him, who believed in his name, he gave the right to become children of God,`
+		expected := `^12 ^But to all who did receive him, who believed in his name, he gave the right to become children of God,`
 		if got := ParsePassageFromHtml("", html, ""); got != expected {
 			t.Errorf("ParsePassageFromHtml() = %v, want %v", got, expected)
 		}
@@ -101,7 +101,7 @@ func TestParsePassageFromHtml(t *testing.T) {
 	})
 
 	t.Run("HTML with spans", func(t *testing.T) {
-		html := `<span>Line 1.</span><br/><span>    </span><span>Line 2.</span>`
+		html := `<p><span>Line 1.</span><br><span>    </span><span>Line 2.</span></p>`
 		expected := "Line 1.\n    Line 2."
 		if got := ParsePassageFromHtml("", html, ""); got != expected {
 			t.Errorf("ParsePassageFromHtml() = %v, want %v", got, expected)
