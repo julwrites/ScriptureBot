@@ -118,7 +118,7 @@ func TestParsePassageFromHtml(t *testing.T) {
 
 	t.Run("Nested HTML tags", func(t *testing.T) {
 		html := `<p><b>This is bold, <i>and this is italic.</i></b></p>`
-		expected := `*This is bold, *_and this is italic._`
+		expected := `*This is bold, _and this is italic._*`
 		if got := ParsePassageFromHtml("", html, ""); got != expected {
 			t.Errorf("ParsePassageFromHtml() = %v, want %v", got, expected)
 		}
