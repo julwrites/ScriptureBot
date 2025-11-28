@@ -78,7 +78,7 @@ func TestGetBiblePassage(t *testing.T) {
 func TestParsePassageFromHtml(t *testing.T) {
 	t.Run("Valid HTML with superscript", func(t *testing.T) {
 		html := `<p><span><sup>12 </sup>But to all who did receive him, who believed in his name, he gave the right to become children of God,</span></p>`
-		expected := `¹²But to all who did receive him, who believed in his name, he gave the right to become children of God,`
+		expected := `__ ()\n¹²But to all who did receive him, who believed in his name, he gave the right to become children of God,`
 		if got := ParsePassageFromHtml("", html, ""); got != expected {
 			t.Errorf("ParsePassageFromHtml() = %v, want %v", got, expected)
 		}
@@ -86,7 +86,7 @@ func TestParsePassageFromHtml(t *testing.T) {
 
 	t.Run("HTML with italics", func(t *testing.T) {
 		html := `<p><i>This is italic.</i></p>`
-		expected := `_This is italic._`
+		expected := `__ ()\n_This is italic._`
 		if got := ParsePassageFromHtml("", html, ""); got != expected {
 			t.Errorf("ParsePassageFromHtml() = %v, want %v", got, expected)
 		}
@@ -94,7 +94,7 @@ func TestParsePassageFromHtml(t *testing.T) {
 
 	t.Run("HTML with bold", func(t *testing.T) {
 		html := `<p><b>This is bold.</b></p>`
-		expected := `*This is bold.*`
+		expected := `__ ()\n*This is bold.*`
 		if got := ParsePassageFromHtml("", html, ""); got != expected {
 			t.Errorf("ParsePassageFromHtml() = %v, want %v", got, expected)
 		}
@@ -102,7 +102,7 @@ func TestParsePassageFromHtml(t *testing.T) {
 
 	t.Run("HTML with line breaks", func(t *testing.T) {
 		html := `<p>Line 1.<br>Line 2.</p>`
-		expected := "Line 1.\nLine 2."
+		expected := "__ ()\nLine 1.\nLine 2."
 		if got := ParsePassageFromHtml("", html, ""); got != expected {
 			t.Errorf("ParsePassageFromHtml() = %v, want %v", got, expected)
 		}
@@ -110,7 +110,7 @@ func TestParsePassageFromHtml(t *testing.T) {
 
 	t.Run("Invalid HTML", func(t *testing.T) {
 		html := `<p>This is malformed HTML`
-		expected := `This is malformed HTML`
+		expected := `__ ()\nThis is malformed HTML`
 		if got := ParsePassageFromHtml("", html, ""); got != expected {
 			t.Errorf("ParsePassageFromHtml() = %v, want %v", got, expected)
 		}
@@ -118,7 +118,7 @@ func TestParsePassageFromHtml(t *testing.T) {
 
 	t.Run("Nested HTML tags", func(t *testing.T) {
 		html := `<p><b>This is bold, <i>and this is italic.</i></b></p>`
-		expected := `*This is bold, *_and this is italic._`
+		expected := `__ ()\n*This is bold, *_and this is italic._`
 		if got := ParsePassageFromHtml("", html, ""); got != expected {
 			t.Errorf("ParsePassageFromHtml() = %v, want %v", got, expected)
 		}
@@ -130,7 +130,7 @@ func TestParsePassageFromHtml(t *testing.T) {
 		// However, returning raw characters like * might cause issues if not handled by platform.
 		// For now, we expect them to be returned raw.
 		html := `<p>This has special characters: *_. [hello](world)!</p>`
-		expected := `This has special characters: *_. [hello](world)!`
+		expected := `__ ()\nThis has special characters: *_. [hello](world)!`
 		if got := ParsePassageFromHtml("", html, ""); got != expected {
 			t.Errorf("ParsePassageFromHtml() = %v, want %v", got, expected)
 		}
@@ -138,7 +138,7 @@ func TestParsePassageFromHtml(t *testing.T) {
 
 	t.Run("Backslash escaping", func(t *testing.T) {
 		html := `added to you\.`
-		expected := `added to you\.`
+		expected := `__ ()\nadded to you\.`
 		if got := ParsePassageFromHtml("", html, ""); got != expected {
 			t.Errorf("ParsePassageFromHtml() = %v, want %v", got, expected)
 		}
@@ -146,7 +146,7 @@ func TestParsePassageFromHtml(t *testing.T) {
 
 	t.Run("Dot escaping", func(t *testing.T) {
 		html := `heaven.`
-		expected := `heaven.`
+		expected := `__ ()\nheaven.`
 		if got := ParsePassageFromHtml("", html, ""); got != expected {
 			t.Errorf("ParsePassageFromHtml() = %v, want %v", got, expected)
 		}
