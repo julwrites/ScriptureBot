@@ -199,7 +199,7 @@ func GetBiblePassage(env def.SessionData) def.SessionData {
 			} 
 
 			if len(resp.Verse) > 0 {
-				env.Res.Message = ParsePassageFromHtml(ref. resp.Verse, config.Version)
+				env.Res.Message = ParsePassageFromHtml(ref, resp.Verse, config.Version)
 			}
 		}
 
