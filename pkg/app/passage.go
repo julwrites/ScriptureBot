@@ -82,6 +82,17 @@ func parseNode(node *html.Node) string {
 	if tag == "br" {
 		return "\n"
 	}
+
+	if tag == "p" {
+		var content strings.Builder
+		content.WriteString("\n")
+		for c := node.FirstChild; c != nil; c = c.NextSibling {
+			content.WriteString(parseNode(c))
+		}
+		content.WriteString("\n")
+		return content.String()
+	}
+
 	if !isFormattingTag(tag) && !isHeaderTag(tag) {
 		var content strings.Builder
 		for c := node.FirstChild; c != nil; c = c.NextSibling {
@@ -128,7 +139,7 @@ func ParsePassageFromHtml(rawHtml string) string {
 		log.Printf("Error parsing html: %v", err)
 		return rawHtml
 	}
-	return parseNode(doc)
+	return strings.TrimSpace(parseNode(doc))
 }
 
 // Deprecated: Using new API service
