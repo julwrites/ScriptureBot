@@ -53,7 +53,7 @@ func ParseNodesForPassage(node *html.Node) string {
 
 		switch tag := child.Data; tag {
 		case "span":
-			childText := strings.Trim(ParseNodesForPassage(child), " ")
+			childText := ParseNodesForPassage(child)
 			if len(childText) > 0 {
 				parts = append(parts, childText)
 			} else {
@@ -71,7 +71,7 @@ func ParseNodesForPassage(node *html.Node) string {
 			if isFootnote(child) {
 				break
 			}
-			childText := strings.Trim(ParseNodesForPassage(child), " ")
+			childText := ParseNodesForPassage(child)
 			if len(childText) > 0 {
 				parts = append(parts, fmt.Sprintf("^%s^", childText))
 			}
