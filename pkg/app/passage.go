@@ -130,7 +130,7 @@ func GetPassage(ref string, doc *html.Node, version string) string {
 	return passage.String()
 }
 
-func ParsePassageFromHtml(rawHtml string) string {
+func ParsePassageFromHtml(ref string, rawHtml string, version string) string {
 	doc, err := html.Parse(strings.NewReader(rawHtml))
 
 	if err != nil {
@@ -138,7 +138,7 @@ func ParsePassageFromHtml(rawHtml string) string {
 		return rawHtml
 	}
 
-	return strings.TrimSpace(GetPassage(doc))
+	return strings.TrimSpace(GetPassage(ref, doc, version))
 }
 
 func GetBiblePassageFallback(env def.SessionData) def.SessionData {
@@ -156,7 +156,7 @@ func GetBiblePassageFallback(env def.SessionData) def.SessionData {
 	passageNode, startErr := utils.FindByClass(doc, "passage-text")
 	if startErr != nil {
 		log.Printf("Error parsing for passage: %v", startErr)
-		return ""
+		return env
 	}
 
 	// Attempt to get the passage
@@ -199,7 +199,7 @@ func GetBiblePassage(env def.SessionData) def.SessionData {
 			} 
 
 			if len(resp.Verse) > 0 {
-				env.Res.Message = ParsePassageFromHtml(resp.Verse)
+				env.Res.Message = ParsePassageFromHtml(ref. resp.Verse, config.Version)
 			}
 		}
 
