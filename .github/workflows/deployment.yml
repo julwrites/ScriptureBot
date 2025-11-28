@@ -6,6 +6,13 @@ on:
 jobs:
   build-and-deploy:
     runs-on: ubuntu-latest
+    env:
+      GCLOUD_PROJECT_ID: ${{secrets.GCLOUD_PROJECT_ID}}
+      GCLOUD_REGION: ${{secrets.GCLOUD_REGION}}
+      ARTIFACT_ID: ${{secrets.GCLOUD_ARTIFACT_REPOSITORY_ID}}
+      TELEGRAM_ID: ${{secrets.TELEGRAM_ID}}
+      ADMIN_ID: ${{secrets.TELEGRAM_ADMIN_ID}}
+      GCLOUD_SERVICE_ACCOUNT: ${{secrets.GCLOUD_SERVICE_ACCOUNT}}
 
     steps:
       - name: Install Go
@@ -26,27 +33,18 @@ jobs:
 
       - name: Configure gcloud auth with Docker
         run: |
-          gcloud auth configure-docker ${{ secrets.GCLOUD_REGION }}-docker.pkg.dev
+          gcloud auth configure-docker $GCLOUD_REGION-docker.pkg.dev
 
       - name: Docker Build and Stage
-        env:
-          TELEGRAM_ID: ${{secrets.TELEGRAM_ID}}
-          ADMIN_ID: ${{secrets.TELEGRAM_ADMIN_ID}}
-          GCLOUD_PROJECT_ID: ${{secrets.GCLOUD_PROJECT_ID}}
-          ARTIFACT_ID: ${{secrets.GCLOUD_ARTIFACT_REPOSITORY_ID}}
         run: |
           printf "TELEGRAM_ID: \"$TELEGRAM_ID\"\nADMIN_ID: \"$ADMIN_ID\"\nGCLOUD_PROJECT_ID: \"$GCLOUD_PROJECT_ID\"\n" >> secrets.yaml
           cat secrets.yaml
-          docker build --build-arg GCLOUD_PROJECT_ID=$GCLOUD_PROJECT_ID -f Dockerfile -t ${{ secrets.GCLOUD_REGION }}-docker.pkg.dev/$GCLOUD_PROJECT_ID/$ARTIFACT_ID/root:latest .
-          docker push ${{ secrets.GCLOUD_REGION }}-docker.pkg.dev/$GCLOUD_PROJECT_ID/$ARTIFACT_ID/root:latest
+          docker build --build-arg GCLOUD_PROJECT_ID=$GCLOUD_PROJECT_ID -f Dockerfile -t $GCLOUD_REGION-docker.pkg.dev/$GCLOUD_PROJECT_ID/$ARTIFACT_ID/root:latest .
+          docker push $GCLOUD_REGION-docker.pkg.dev/$GCLOUD_PROJECT_ID/$ARTIFACT_ID/root:latest
 
       - name: Deployment
-        env:
-          GCLOUD_PROJECT_ID: ${{secrets.GCLOUD_PROJECT_ID}}
-          ARTIFACT_ID: ${{secrets.GCLOUD_ARTIFACT_REPOSITORY_ID}}
-          TELEGRAM_ID: ${{secrets.TELEGRAM_ID}}
         run: |
-          gcloud run deploy scripturebot --image ${{ secrets.GCLOUD_REGION }}-docker.pkg.dev/$GCLOUD_PROJECT_ID/$ARTIFACT_ID/root:latest --region ${{ secrets.GCLOUD_REGION }} --allow-unauthenticated
-          SERVICE_URL=$(gcloud run services describe scripturebot --region ${{ secrets.GCLOUD_REGION }} --format 'value(status.url)')
+          gcloud run deploy scripturebot --image $GCLOUD_REGION-docker.pkg.dev/$GCLOUD_PROJECT_ID/$ARTIFACT_ID/root:latest --region $GCLOUD_REGION --service-account $GCLOUD_SERVICE_ACCOUNT --allow-unauthenticated
+          SERVICE_URL=$(gcloud run services describe scripturebot --region $GCLOUD_REGION --format 'value(status.url)')
           echo "Setting webhook for $SERVICE_URL"
           go run cmd/webhook/main.go -url "$SERVICE_URL"

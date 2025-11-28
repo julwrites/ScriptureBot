@@ -7,6 +7,8 @@ on:
 jobs:
   build-and-test:
     runs-on: ubuntu-latest
+    env:
+      GCLOUD_PROJECT_ID: ${{ secrets.GCLOUD_PROJECT_ID }}
 
     steps:
       - name: Install Go
@@ -26,8 +28,6 @@ jobs:
           project_id: ${{secrets.GCLOUD_PROJECT_ID}}
 
       - name: Install, Build, Test 🔧 # This runs a series of commands as if building a live version of the project
-        env:
-          GCLOUD_PROJECT_ID: ${{ secrets.GCLOUD_PROJECT_ID }}
         run: |
           go mod tidy
           go test github.com/julwrites/ScriptureBot/pkg/utils \
