@@ -1,11 +1,15 @@
 name: Build, Stage and Deploy Automation
 on: 
-  push:
+  workflow_run:
+    workflows: ["Build Test Automation"]
+    types:
+      - completed
     branches:
       - master
 jobs:
-  build-and-test:
+  build-and-deploy:
     runs-on: ubuntu-latest
+    if: ${{ github.event.workflow_run.conclusion == 'success' }}
 
     steps:
       - name: Install Go
@@ -18,24 +22,11 @@ jobs:
         with:
           persist-credentials: false
 
-      - name: gcloud Auth
+      - name: gcloud Auth (Deployment)
         uses: google-github-actions/auth@v2
         with:
-          credentials_json: ${{ secrets.GCLOUD_SA_KEY }}
+          credentials_json: ${{ secrets.GCLOUD_CICD_SA_KEY }}
           project_id: ${{secrets.GCLOUD_PROJECT_ID}}
-
-      - name: Test gcloud
-        run: |
-          gcloud info
-
-      - name: Install, Build, Test 🔧 # This runs a series of commands as if building a live version of the project
-        env:
-          GCLOUD_PROJECT_ID: ${{secrets.GCLOUD_PROJECT_ID}}
-        run: |
-          go mod tidy
-          go test github.com/julwrites/ScriptureBot/pkg/utils \
-                  github.com/julwrites/ScriptureBot/pkg/app \
-                  github.com/julwrites/ScriptureBot/pkg/bot
 
       - name: Configure gcloud auth with Docker
         run: |
@@ -57,11 +48,9 @@ jobs:
         env:
           GCLOUD_PROJECT_ID: ${{secrets.GCLOUD_PROJECT_ID}}
           ARTIFACT_ID: ${{secrets.GCLOUD_ARTIFACT_REPOSITORY_ID}}
-          APPLICATION_CREDENTIALS: ${{ secrets.GOOGLE_APPLICATION_CREDENTIALS }}
           TELEGRAM_ID: ${{secrets.TELEGRAM_ID}}
         run: |
           gcloud run deploy scripturebot --image ${{ secrets.GCLOUD_REGION }}-docker.pkg.dev/$GCLOUD_PROJECT_ID/$ARTIFACT_ID/root:latest --region ${{ secrets.GCLOUD_REGION }} --allow-unauthenticated
           SERVICE_URL=$(gcloud run services describe scripturebot --region ${{ secrets.GCLOUD_REGION }} --format 'value(status.url)')
           echo "Setting webhook for $SERVICE_URL"
           go run cmd/webhook/main.go -url "$SERVICE_URL"
-
