@@ -7,12 +7,12 @@ RUN go mod download
 RUN go mod verify
 RUN CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build -ldflags="-w -s" -o /go/bin/main main.go
 
-FROM alpine:latest as certificates
+FROM alpine:latest AS certificates
 
 RUN apk --no-cache add ca-certificates
 
-FROM scratch as runner
-# FROM ubuntu:latest as runner
+FROM scratch AS runner
+# FROM ubuntu:latest AS runner
 
 ARG GCLOUD_PROJECT_ID
 ENV GCLOUD_PROJECT_ID=$GCLOUD_PROJECT_ID

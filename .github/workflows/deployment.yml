@@ -1,15 +1,11 @@
 name: Build, Stage and Deploy Automation
 on: 
-  workflow_run:
-    workflows: ["Build Test Automation"]
-    types:
-      - completed
+  push:
     branches:
       - master
 jobs:
   build-and-deploy:
     runs-on: ubuntu-latest
-    if: ${{ github.event.workflow_run.conclusion == 'success' }}
 
     steps:
       - name: Install Go
