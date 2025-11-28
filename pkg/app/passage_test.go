@@ -139,6 +139,14 @@ func TestParsePassageFromHtml(t *testing.T) {
 			t.Errorf("ParsePassageFromHtml() = %v, want %v", got, expected)
 		}
 	})
+
+	t.Run("Dot escaping", func(t *testing.T) {
+		html := `heaven.`
+		expected := `heaven\.`
+		if got := ParsePassageFromHtml(html); got != expected {
+			t.Errorf("ParsePassageFromHtml() = %v, want %v", got, expected)
+		}
+	})
 }
 
 func TestCheckBibleReference(t *testing.T) {
