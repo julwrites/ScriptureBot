@@ -18,13 +18,6 @@ jobs:
         with:
           persist-credentials: false
 
-      - name: Install, Build, Test 🔧 # This runs a series of commands as if building a live version of the project
-        run: |
-          go mod tidy
-          go test github.com/julwrites/ScriptureBot/pkg/utils \
-                  github.com/julwrites/ScriptureBot/pkg/app \
-                  github.com/julwrites/ScriptureBot/pkg/bot
-
       - name: gcloud Auth
         uses: google-github-actions/auth@v2
         with:
@@ -34,6 +27,15 @@ jobs:
       - name: Test gcloud
         run: |
           gcloud info
+
+      - name: Install, Build, Test 🔧 # This runs a series of commands as if building a live version of the project
+        env:
+          GCLOUD_PROJECT_ID: ${{secrets.GCLOUD_PROJECT_ID}}
+        run: |
+          go mod tidy
+          go test github.com/julwrites/ScriptureBot/pkg/utils \
+                  github.com/julwrites/ScriptureBot/pkg/app \
+                  github.com/julwrites/ScriptureBot/pkg/bot
 
       - name: Configure gcloud auth with Docker
         run: |

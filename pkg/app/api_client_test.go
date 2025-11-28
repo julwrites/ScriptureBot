@@ -7,12 +7,7 @@ import (
 )
 
 func TestSubmitQuery(t *testing.T) {
-	handler := newMockApiHandler()
-	ts := httptest.NewServer(handler)
-	defer ts.Close()
-
 	t.Run("Success", func(t *testing.T) {
-		defer setEnv("BIBLE_API_URL", ts.URL)()
 		ResetAPIConfigCache()
 
 		req := QueryRequest{Query: QueryObject{Prompt: "hello"}}
@@ -21,18 +16,20 @@ func TestSubmitQuery(t *testing.T) {
 		if err != nil {
 			t.Errorf("Unexpected error: %v", err)
 		}
-		if resp.Text != "Answer text" {
-			t.Errorf("Expected 'Answer text', got '%s'", resp.Text)
+		// In integration test mode, we expect some content but can't assert exact text
+		// because the live API response might vary.
+		if len(resp.Text) == 0 && len(resp.References) == 0 {
+			t.Errorf("Expected some content (text or references), got empty response")
 		}
 	})
 
 	t.Run("API Error", func(t *testing.T) {
+		handler := newMockApiHandler()
+		ts := httptest.NewServer(handler)
+		defer ts.Close()
+
 		handler.statusCode = http.StatusInternalServerError
 		handler.rawResponse = `{"error": {"code": 500, "message": "simulated error"}}`
-		defer func() { // Reset handler
-			handler.statusCode = http.StatusOK
-			handler.rawResponse = ""
-		}()
 
 		defer setEnv("BIBLE_API_URL", ts.URL)()
 		ResetAPIConfigCache()
@@ -49,8 +46,11 @@ func TestSubmitQuery(t *testing.T) {
 	})
 
 	t.Run("Bad JSON", func(t *testing.T) {
+		handler := newMockApiHandler()
+		ts := httptest.NewServer(handler)
+		defer ts.Close()
+
 		handler.rawResponse = `{invalid json`
-		defer func() { handler.rawResponse = "" }()
 
 		defer setEnv("BIBLE_API_URL", ts.URL)()
 		ResetAPIConfigCache()
