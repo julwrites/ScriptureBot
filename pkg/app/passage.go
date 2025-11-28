@@ -83,17 +83,29 @@ func parseNode(node *html.Node) string {
 		return "\n"
 	}
 
-	if tag == "p" {
+	// Treat headers and paragraphs as block elements
+	if tag == "p" || isHeaderTag(tag) {
 		var content strings.Builder
 		content.WriteString("\n")
+
+		// Buffer to hold content of the block
+		var blockContent strings.Builder
+
 		for c := node.FirstChild; c != nil; c = c.NextSibling {
-			content.WriteString(parseNode(c))
+			blockContent.WriteString(parseNode(c))
 		}
+
+		if isHeaderTag(tag) {
+			content.WriteString(platform.TelegramBold(blockContent.String()))
+		} else {
+			content.WriteString(blockContent.String())
+		}
+
 		content.WriteString("\n")
 		return content.String()
 	}
 
-	if !isFormattingTag(tag) && !isHeaderTag(tag) {
+	if !isFormattingTag(tag) {
 		var content strings.Builder
 		for c := node.FirstChild; c != nil; c = c.NextSibling {
 			content.WriteString(parseNode(c))
@@ -121,7 +133,8 @@ func parseNode(node *html.Node) string {
 	}
 
 	for c := node.FirstChild; c != nil; c = c.NextSibling {
-		if c.Type == html.ElementNode && (isFormattingTag(c.Data) || isHeaderTag(c.Data)) {
+		// Note: isHeaderTag is removed here because it's handled above as a block element
+		if c.Type == html.ElementNode && isFormattingTag(c.Data) {
 			flushTextBuffer()
 			content.WriteString(parseNode(c))
 		} else {
