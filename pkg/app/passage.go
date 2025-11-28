@@ -181,10 +181,6 @@ func GetBiblePassage(env def.SessionData) def.SessionData {
 
 		config := utils.DeserializeUserConfig(env.User.Config)
 
-		// To be replaced with a simpler algorithm
-		doc := GetPassageHTML(env.Msg.Message, config.Version)
-		ref := GetReference(doc)
-
 		// If indeed a reference, attempt to query
 		if len(ref) > 0 {
 			log.Printf("%s", ref);
@@ -192,7 +188,7 @@ func GetBiblePassage(env def.SessionData) def.SessionData {
 			// Attempt to retrieve from API
 			req := QueryRequest{
 				Query: QueryObject{
-					Verses: []string{ref},
+					Verses: []string{env.Msg.Message},
 				},
 				Context: QueryContext{
 					User: UserContext{
@@ -212,12 +208,10 @@ func GetBiblePassage(env def.SessionData) def.SessionData {
 			} 
 
 			if len(resp.Verse) > 0 {
-				env.Res.Message = ParsePassageFromHtml(ref, resp.Verse, config.Version)
+				env.Res.Message = ParsePassageFromHtml(env.Msg.Message, resp.Verse, config.Version)
 				return env
 			}
 		}
-
-		env.Res.Message = "No verses found."
 	}
 
 	return env
