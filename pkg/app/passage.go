@@ -175,7 +175,9 @@ func GetBiblePassageFallback(env def.SessionData) def.SessionData {
 func GetBiblePassage(env def.SessionData) def.SessionData {
 	if len(env.Msg.Message) > 0 {
 		// Identify and normalize bible reference
-		if ref, ok := ParseBibleReference(env.Msg.Message); ok {
+		ref, ok := ParseBibleReference(env.Msg.Message)
+
+		if ok {
 			env.Msg.Message = ref
 		}
 
