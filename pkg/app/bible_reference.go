@@ -110,63 +110,15 @@ func init() {
 // ParseBibleReference parses a string to identify and normalize a Bible reference.
 // It returns the normalized reference string and a boolean indicating validity.
 func ParseBibleReference(input string) (string, bool) {
-	trimmedInput := strings.TrimSpace(input)
-	if trimmedInput == "" {
+	ref, consumedLen, ok := ParseBibleReferenceFromStart(input)
+	if !ok {
 		return "", false
 	}
-	lowerInput := strings.ToLower(trimmedInput)
-
-	var foundBook string
-	var bookName string
-	var remainder string
-
-	// 1. Try exact match (Greedy)
-	for _, key := range sortedBookKeys {
-		if strings.HasPrefix(lowerInput, key) {
-			matchLen := len(key)
-			if len(lowerInput) > matchLen {
-				nextChar := lowerInput[matchLen]
-				if isLetter(nextChar) {
-					continue
-				}
-			}
-
-			foundBook = key
-			bookName = BibleBooks[key]
-			remainder = strings.TrimSpace(trimmedInput[matchLen:])
-			break
-		}
-	}
-
-	// 2. If no exact match, try fuzzy matching
-	if foundBook == "" {
-		fBook, matchLen := findFuzzyMatch(trimmedInput) // Pass original case for splitting, but logic handles case
-		if fBook != "" {
-			bookName = fBook
-			foundBook = fBook // Mark as found
-			remainder = strings.TrimSpace(trimmedInput[matchLen:])
-		}
-	}
-
-	if foundBook == "" {
+	// Verify that we consumed the entire string (ignoring whitespace)
+	if len(strings.TrimSpace(input[consumedLen:])) > 0 {
 		return "", false
 	}
-
-	// Check remainder
-	if remainder == "" {
-		if SingleChapterBooks[bookName] {
-			return bookName, true
-		}
-		// Multi-chapter book defaults to chapter 1
-		return bookName + " 1", true
-	}
-
-	// Remainder validation
-	if isValidReferenceSyntax(remainder) {
-		return bookName + " " + remainder, true
-	}
-
-	return "", false
+	return ref, true
 }
 
 func findFuzzyMatch(input string) (string, int) {
@@ -246,19 +198,147 @@ func isLetter(c byte) bool {
 	return (c >= 'a' && c <= 'z') || (c >= 'A' && c <= 'Z')
 }
 
-func isValidReferenceSyntax(s string) bool {
-	hasDigit := false
-	for _, r := range s {
-		switch {
-		case r >= '0' && r <= '9':
-			hasDigit = true
-		case r == ' ' || r == ':' || r == '-' || r == '.' || r == ',' || r == '\t':
+// ExtractBibleReferences extracts all valid Bible references from a text.
+func ExtractBibleReferences(input string) []string {
+	var refs []string
+
+	startIdx := 0
+	length := len(input)
+
+	for startIdx < length {
+		// If we are at a whitespace, advance.
+		if input[startIdx] == ' ' || input[startIdx] == '\t' || input[startIdx] == '\n' || input[startIdx] == '\r' {
+			startIdx++
 			continue
-		default:
-			return false // Invalid character
+		}
+
+		ref, consumed, ok := ParseBibleReferenceFromStart(input[startIdx:])
+		if ok {
+			refs = append(refs, ref)
+			startIdx += consumed
+		} else {
+			// Advance to next word
+			nextSpace := strings.IndexAny(input[startIdx:], " \t\n\r")
+			if nextSpace == -1 {
+				break
+			}
+			startIdx += nextSpace
 		}
 	}
-	return hasDigit
+	return refs
+}
+
+// ParseBibleReferenceFromStart attempts to parse a Bible reference at the beginning of the string.
+// Returns the normalized reference, the length of text consumed from input, and whether a match was found.
+func ParseBibleReferenceFromStart(input string) (string, int, bool) {
+	// 1. Skip leading whitespace
+	startOffset := 0
+	for startOffset < len(input) && (input[startOffset] == ' ' || input[startOffset] == '\t' || input[startOffset] == '\n' || input[startOffset] == '\r') {
+		startOffset++
+	}
+	if startOffset == len(input) {
+		return "", 0, false
+	}
+
+	currentInput := input[startOffset:]
+	lowerInput := strings.ToLower(currentInput)
+
+	var foundBook string
+	var bookName string
+	var matchLen int // Length in currentInput
+
+	// 1. Try exact match (Greedy)
+	for _, key := range sortedBookKeys {
+		if strings.HasPrefix(lowerInput, key) {
+			mLen := len(key)
+			// Ensure whole word match
+			if len(lowerInput) > mLen {
+				nextChar := lowerInput[mLen]
+				if isLetter(nextChar) {
+					continue
+				}
+			}
+
+			foundBook = key
+			bookName = BibleBooks[key]
+			matchLen = mLen
+			break
+		}
+	}
+
+	// 2. If no exact match, try fuzzy matching
+	if foundBook == "" {
+		fBook, mLen := findFuzzyMatch(currentInput)
+		if fBook != "" {
+			bookName = fBook
+			foundBook = fBook
+			matchLen = mLen
+		}
+	}
+
+	if foundBook == "" {
+		return "", 0, false
+	}
+
+	// We found a book. Now parse the numbers (remainder).
+	remainderStart := matchLen
+	// Skip spaces after book
+	for remainderStart < len(currentInput) && (currentInput[remainderStart] == ' ' || currentInput[remainderStart] == '\t') {
+		remainderStart++
+	}
+
+	remainder := currentInput[remainderStart:]
+
+	// Consume valid reference syntax
+	syntax, syntaxLen := consumeReferenceSyntax(remainder)
+
+	totalConsumed := startOffset + remainderStart + syntaxLen
+
+	if syntax == "" {
+		if SingleChapterBooks[bookName] {
+			return bookName, totalConsumed, true
+		}
+		// Multi-chapter book defaults to chapter 1
+		return bookName + " 1", totalConsumed, true
+	}
+
+	if hasDigit(syntax) {
+		return bookName + " " + syntax, totalConsumed, true
+	}
+
+	if SingleChapterBooks[bookName] {
+		return bookName, startOffset + matchLen, true // Don't consume the invalid syntax
+	}
+	return bookName + " 1", startOffset + matchLen, true
+}
+
+func consumeReferenceSyntax(s string) (string, int) {
+	lastDigit := -1
+
+	for i, r := range s {
+		if r >= '0' && r <= '9' {
+			lastDigit = i
+		} else if r == ':' || r == '-' || r == '.' || r == ',' || r == ' ' || r == '\t' {
+			continue
+		} else {
+			break
+		}
+	}
+
+	if lastDigit == -1 {
+		return "", 0
+	}
+
+	return s[:lastDigit+1], lastDigit+1
+}
+
+func hasDigit(s string) bool {
+	for _, r := range s {
+		if r >= '0' && r <= '9' {
+			return true
+		}
+	}
+	return false
 }
 
 func levenshteinDistance(s1, s2 string) int {

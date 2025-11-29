@@ -11,6 +11,10 @@ import (
 )
 
 func GetBibleAsk(env def.SessionData) def.SessionData {
+	return GetBibleAskWithContext(env, nil)
+}
+
+func GetBibleAskWithContext(env def.SessionData, contextVerses []string) def.SessionData {
 	if len(env.Msg.Message) > 0 {
 		config := utils.DeserializeUserConfig(env.User.Config)
 
@@ -22,6 +26,7 @@ func GetBibleAsk(env def.SessionData) def.SessionData {
 				User: UserContext{
 					Version: config.Version,
 				},
+				Verses: contextVerses,
 			},
 		}
 
