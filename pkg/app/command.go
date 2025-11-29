@@ -25,9 +25,6 @@ func ProcessCommand(env def.SessionData, bot platform.Platform) def.SessionData 
 	case CMD_SUBSCRIBE:
 		env = UpdateSubscription(env)
 		break
-	case CMD_LEXICON:
-		env = GetBibleWord(env)
-		break
 	case CMD_SEARCH:
 		env = GetBibleSearch(env)
 		break
