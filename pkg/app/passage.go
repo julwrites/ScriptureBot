@@ -55,11 +55,8 @@ func ParseNodesForPassage(node *html.Node) string {
 		switch tag := child.Data; tag {
 		case "span":
 			childText := ParseNodesForPassage(child)
-			if len(childText) > 0 {
-				parts = append(parts, childText)
-				parts = append(parts, "\n")
-			} else {
-				parts = append(parts, child.Data)
+			parts = append(parts, childText)
+			if len(strings.TrimSpace(childText)) > 0 {
 				parts = append(parts, "\n")
 			}
 		case "sup":
