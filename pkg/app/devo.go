@@ -167,7 +167,7 @@ func GetDevotionalData(env def.SessionData, devo string) def.ResponseData {
 	return response
 }
 
-func GetDevo(env def.SessionData) def.SessionData {
+func GetDevo(env def.SessionData, bot platform.Platform) def.SessionData {
 	switch env.User.Action {
 	case CMD_DEVO:
 		log.Printf("Detected existing action /devo")
@@ -180,7 +180,7 @@ func GetDevo(env def.SessionData) def.SessionData {
 			env.Res.Message = "Just a moment..."
 
 			log.Printf("Affordances before posting: %+v", env.Res.Affordances)
-			platform.PostFromProps(env)
+			bot.Post(env)
 
 			// Retrieve devotional
 			env.Res = GetDevotionalData(env, devo)

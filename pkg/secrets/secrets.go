@@ -15,8 +15,9 @@ import (
 
 // SecretsData holds all the secrets for the application.
 type SecretsData struct {
-	TELEGRAM_ID string
-	PROJECT_ID  string
+	TELEGRAM_ID       string
+	TELEGRAM_ADMIN_ID string
+	PROJECT_ID        string
 	// Add other secrets here as needed
 }
 
@@ -49,7 +50,7 @@ func LoadSecrets() (SecretsData, error) {
 	var errs = make(chan error, 1) // Buffer to hold the first error
 
 	// List of secret names to fetch
-	secretNames := []string{"TELEGRAM_ID"} // Add other secret names here
+	secretNames := []string{"TELEGRAM_ID", "TELEGRAM_ADMIN_ID"} // Add other secret names here
 
 	for _, secretName := range secretNames {
 		wg.Add(1)
@@ -66,6 +67,8 @@ func LoadSecrets() (SecretsData, error) {
 			switch name {
 			case "TELEGRAM_ID":
 				secrets.TELEGRAM_ID = value
+			case "TELEGRAM_ADMIN_ID":
+				secrets.TELEGRAM_ADMIN_ID = value
 			}
 		}(secretName)
 	}

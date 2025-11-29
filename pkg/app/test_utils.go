@@ -2,7 +2,19 @@ package app
 
 import (
 	"os"
+
+	"github.com/julwrites/BotPlatform/pkg/def"
 )
+
+type MockBot struct{}
+
+func (b *MockBot) Translate(body []byte) (def.SessionData, error) {
+	return def.SessionData{}, nil
+}
+
+func (b *MockBot) Post(env def.SessionData) bool {
+	return true
+}
 
 // SetEnv is a helper function to temporarily set an environment variable and return a function to restore it.
 func SetEnv(key, value string) func() {

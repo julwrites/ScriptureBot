@@ -101,7 +101,7 @@ func TestGetDevo(t *testing.T) {
 		env.User.Action = ""
 		env.Msg.Message = CMD_DEVO
 
-		env = GetDevo(env)
+		env = GetDevo(env, &MockBot{})
 		if len(env.Res.Message) == 0 {
 			t.Error("Failed TestGetDevo initial, no message")
 		}
@@ -123,7 +123,7 @@ func TestGetDevo(t *testing.T) {
 			env.Msg.Message = devoName
 			env.ResourcePath = "../../resource"
 
-			env = GetDevo(env)
+			env = GetDevo(env, &MockBot{})
 
 			if len(env.Res.Message) == 0 && len(env.Res.Affordances.Options) == 0 {
 				t.Fatalf("Failed TestGetDevo for %s: no message or affordances", devoName)

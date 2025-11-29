@@ -4,48 +4,50 @@
 package bot
 
 import (
+	"io"
 	"log"
 	"net/http"
 
-	"github.com/julwrites/BotPlatform/pkg/def"
 	"github.com/julwrites/BotPlatform/pkg/platform"
-	bpsecrets "github.com/julwrites/BotPlatform/pkg/secrets"
 	"github.com/julwrites/ScriptureBot/pkg/secrets"
 	"github.com/julwrites/ScriptureBot/pkg/utils"
 )
 
 func TelegramHandler(res http.ResponseWriter, req *http.Request, secrets *secrets.SecretsData) {
 	log.Printf("Loading session data...")
-	env, ok := platform.TranslateToProps(req, def.TYPE_TELEGRAM)
-	if !ok {
-		log.Printf("This message was not translatable to bot language")
+
+	body, err := io.ReadAll(req.Body)
+	if err != nil {
+		log.Printf("Failed to read request body: %v", err)
 		return
 	}
 
-	// Create a BotPlatform-compatible SecretsData struct using an import alias
-	platformSecrets := bpsecrets.SecretsData{
-		TELEGRAM_ID: secrets.TELEGRAM_ID,
-		PROJECT_ID:  secrets.PROJECT_ID,
+	bot := platform.NewTelegram(secrets.TELEGRAM_ID, secrets.TELEGRAM_ADMIN_ID)
+
+	env, err := bot.Translate(body)
+	if err != nil {
+		log.Printf("This message was not translatable to bot language: %v", err)
+		return
 	}
-	env.Secrets = platformSecrets
+
 	// log.Printf("Loaded secrets...")
 
 	env.ResourcePath = "/go/bin/"
 
-	user := utils.RegisterUser(env.User, env.Secrets.PROJECT_ID)
+	user := utils.RegisterUser(env.User, secrets.PROJECT_ID)
 	env.User = user
 	// log.Printf("Loaded user...")
 
-	env = HandleBotLogic(env)
+	env = HandleBotLogic(env, bot)
 	// log.Printf("Handled bot logic...")
 
-	if !platform.PostFromProps(env) {
+	if !bot.Post(env) {
 		log.Printf("This message was not translatable from bot language")
 		return
 	}
 
 	if env.User != user {
 		log.Printf("Updating user %v", env.User)
-		utils.PushUser(env.User, env.Secrets.PROJECT_ID) // Any change to the user throughout the commands should be put to database
+		utils.PushUser(env.User, secrets.PROJECT_ID) // Any change to the user throughout the commands should be put to database
 	}
 }

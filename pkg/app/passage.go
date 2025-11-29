@@ -13,6 +13,7 @@ import (
 
 	"github.com/julwrites/BotPlatform/pkg/def"
 	"github.com/julwrites/BotPlatform/pkg/platform"
+	"github.com/julwrites/ScriptureBot/pkg/secrets"
 	"github.com/julwrites/ScriptureBot/pkg/utils"
 )
 
@@ -54,10 +55,9 @@ func ParseNodesForPassage(node *html.Node) string {
 		switch tag := child.Data; tag {
 		case "span":
 			childText := ParseNodesForPassage(child)
-			if len(childText) > 0 {
-				parts = append(parts, childText)
-			} else {
-				parts = append(parts, child.Data)
+			parts = append(parts, childText)
+			if len(strings.TrimSpace(childText)) > 0 {
+				parts = append(parts, "\n")
 			}
 		case "sup":
 			isFootnote := func(node *html.Node) bool {
@@ -200,7 +200,8 @@ func GetBiblePassage(env def.SessionData) def.SessionData {
 			}
 
 			var resp VerseResponse
-			err := SubmitQuery(req, &resp, env.Secrets.PROJECT_ID)
+			projectID, _ := secrets.Get("GCLOUD_PROJECT_ID")
+			err := SubmitQuery(req, &resp, projectID)
 
 			// Fallback to direct passage retrieval logic
 			if err != nil {

@@ -4,6 +4,7 @@ import (
 	"testing"
 
 	"github.com/julwrites/BotPlatform/pkg/def"
+	"github.com/julwrites/ScriptureBot/pkg/app"
 	"github.com/julwrites/ScriptureBot/pkg/utils"
 )
 
@@ -16,7 +17,7 @@ func TestHandleSubscriptionLogic(t *testing.T) {
 	conf.Subscriptions = "DTMSV"
 	env.User.Config = utils.SerializeUserConfig(conf)
 
-	env = HandleSubscriptionLogic(env)
+	env = HandleSubscriptionLogic(env, &app.MockBot{})
 
 	if len(env.Res.Message) == 0 {
 		t.Errorf("Failed TestHandleSubscriptionLogic")
