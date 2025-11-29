@@ -57,8 +57,10 @@ func ParseNodesForPassage(node *html.Node) string {
 			childText := ParseNodesForPassage(child)
 			if len(childText) > 0 {
 				parts = append(parts, childText)
+				parts = append(parts, "\n")
 			} else {
 				parts = append(parts, child.Data)
+				parts = append(parts, "\n")
 			}
 		case "sup":
 			isFootnote := func(node *html.Node) bool {
