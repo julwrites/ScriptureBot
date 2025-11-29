@@ -54,6 +54,11 @@ func GetUser(user def.UserData, project string) def.UserData {
 	ctx := context.Background()
 	client := OpenClient(&ctx, project)
 
+	if client == nil {
+		return user
+	}
+	defer client.Close()
+
 	key := datastore.NameKey("User", user.Id, nil)
 	var entity def.UserData
 	err := client.Get(ctx, key, &entity)
@@ -74,6 +79,11 @@ func GetAllUsers(project string) []def.UserData {
 	ctx := context.Background()
 	client := OpenClient(&ctx, project)
 
+	if client == nil {
+		return []def.UserData{}
+	}
+	defer client.Close()
+
 	var users []def.UserData
 
 	_, err := client.GetAll(ctx, datastore.NewQuery("User"), &users)
@@ -92,6 +102,11 @@ func PushUser(user def.UserData, project string) bool {
 
 	ctx := context.Background()
 	client := OpenClient(&ctx, project)
+
+	if client == nil {
+		return false
+	}
+	defer client.Close()
 
 	key := datastore.NameKey("User", user.Id, nil)
 

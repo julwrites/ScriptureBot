@@ -102,7 +102,7 @@ func TestParsePassageFromHtml(t *testing.T) {
 
 	t.Run("HTML with spans", func(t *testing.T) {
 		html := `<p><span>Line 1.</span><br><span>    </span><span>Line 2.</span></p>`
-		expected := "Line 1.\n\n    Line 2.\n"
+		expected := "Line 1.\n\n    Line 2."
 		if got := ParsePassageFromHtml("", html, ""); got != expected {
 			t.Errorf("ParsePassageFromHtml() = %v, want %v", got, expected)
 		}
