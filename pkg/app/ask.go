@@ -6,6 +6,7 @@ import (
 	"strings"
 
 	"github.com/julwrites/BotPlatform/pkg/def"
+	"github.com/julwrites/ScriptureBot/pkg/secrets"
 	"github.com/julwrites/ScriptureBot/pkg/utils"
 )
 
@@ -25,7 +26,8 @@ func GetBibleAsk(env def.SessionData) def.SessionData {
 		}
 
 		var resp OQueryResponse
-		err := SubmitQuery(req, &resp, env.Secrets.PROJECT_ID)
+		projectID, _ := secrets.Get("GCLOUD_PROJECT_ID")
+		err := SubmitQuery(req, &resp, projectID)
 		if err != nil {
 			log.Printf("Error asking bible: %v", err)
 			env.Res.Message = "Sorry, I encountered an error processing your question."

@@ -107,3 +107,25 @@ func TestGetSecret(t *testing.T) {
 		}
 	})
 }
+
+func TestLoadSecrets(t *testing.T) {
+	// Mock environment variables
+	t.Setenv("TELEGRAM_ID", "test_telegram_id")
+	t.Setenv("TELEGRAM_ADMIN_ID", "test_admin_id")
+	t.Setenv("GCLOUD_PROJECT_ID", "test_project_id")
+
+	secrets, err := LoadSecrets()
+	if err != nil {
+		t.Fatalf("LoadSecrets failed: %v", err)
+	}
+
+	if secrets.TELEGRAM_ID != "test_telegram_id" {
+		t.Errorf("Expected TELEGRAM_ID 'test_telegram_id', got '%s'", secrets.TELEGRAM_ID)
+	}
+	if secrets.TELEGRAM_ADMIN_ID != "test_admin_id" {
+		t.Errorf("Expected TELEGRAM_ADMIN_ID 'test_admin_id', got '%s'", secrets.TELEGRAM_ADMIN_ID)
+	}
+	if secrets.PROJECT_ID != "test_project_id" {
+		t.Errorf("Expected PROJECT_ID 'test_project_id', got '%s'", secrets.PROJECT_ID)
+	}
+}
