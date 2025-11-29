@@ -5,14 +5,17 @@ import (
 	"strings"
 
 	"github.com/julwrites/BotPlatform/pkg/def"
+	"github.com/julwrites/ScriptureBot/pkg/secrets"
 	"github.com/julwrites/ScriptureBot/pkg/utils"
 )
 
 func DumpUserList(env def.SessionData) def.SessionData {
-	if env.User.Id == env.Secrets.ADMIN_ID {
+	adminID, _ := secrets.Get("TELEGRAM_ADMIN_ID")
+	if env.User.Id == adminID {
 		var message = ""
 
-		users := utils.GetAllUsers(env.Secrets.PROJECT_ID)
+		projectID, _ := secrets.Get("GCLOUD_PROJECT_ID")
+		users := utils.GetAllUsers(projectID)
 		message += fmt.Sprintf("%d Users: \n", len(users))
 		for _, user := range users {
 			message += user.Firstname + " " + user.Lastname + " - @" + user.Username + "\n"
@@ -27,8 +30,10 @@ func DumpUserList(env def.SessionData) def.SessionData {
 }
 
 func Migrate(env def.SessionData) def.SessionData {
-	if env.User.Id == env.Secrets.ADMIN_ID {
-		users := utils.GetAllUsers(env.Secrets.PROJECT_ID)
+	adminID, _ := secrets.Get("TELEGRAM_ADMIN_ID")
+	if env.User.Id == adminID {
+		projectID, _ := secrets.Get("GCLOUD_PROJECT_ID")
+		users := utils.GetAllUsers(projectID)
 		for _, user := range users {
 			config := utils.DeserializeUserConfig(user.Config)
 			if len(config.Subscriptions) > 0 {
@@ -50,7 +55,7 @@ func Migrate(env def.SessionData) def.SessionData {
 
 				user.Config = utils.SerializeUserConfig(config)
 
-				utils.PushUser(user, env.Secrets.PROJECT_ID)
+				utils.PushUser(user, projectID)
 			}
 		}
 	}

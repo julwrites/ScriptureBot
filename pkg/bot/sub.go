@@ -6,13 +6,12 @@ import (
 
 	"github.com/julwrites/BotPlatform/pkg/def"
 	"github.com/julwrites/BotPlatform/pkg/platform"
-	bpsecrets "github.com/julwrites/BotPlatform/pkg/secrets"
 	"github.com/julwrites/ScriptureBot/pkg/app"
 	"github.com/julwrites/ScriptureBot/pkg/secrets"
 	"github.com/julwrites/ScriptureBot/pkg/utils"
 )
 
-func HandleSubscriptionLogic(env def.SessionData) def.SessionData {
+func HandleSubscriptionLogic(env def.SessionData, bot platform.Platform) def.SessionData {
 	user := env.User
 	config := utils.DeserializeUserConfig(user.Config)
 
@@ -25,7 +24,7 @@ func HandleSubscriptionLogic(env def.SessionData) def.SessionData {
 		env.Res.Message = "Here are today's devotions!"
 		env.Res.Affordances.Remove = true
 
-		platform.PostFromProps(env)
+		bot.Post(env)
 
 		// Send the devotional
 		for _, devo := range subscriptions {
@@ -33,22 +32,22 @@ func HandleSubscriptionLogic(env def.SessionData) def.SessionData {
 			log.Printf("Getting data for <%s>", devo)
 			env.Res = app.GetDevotionalData(env, devo)
 
-			platform.PostFromProps(env)
+			bot.Post(env)
 		}
 	}
 
 	return env
 }
 
-func HandleSubscriptionPublish(env def.SessionData) def.SessionData {
+func HandleSubscriptionPublish(env def.SessionData, bot platform.Platform, projectID string) def.SessionData {
 	// Check all users
-	users := utils.GetAllUsers(env.Secrets.PROJECT_ID)
+	users := utils.GetAllUsers(projectID)
 	log.Printf("Retrieved %d users", len(users))
 	for _, user := range users {
 		env.User = user
 		env.User.Action = app.CMD_DEVO
 
-		env = HandleSubscriptionLogic(env)
+		env = HandleSubscriptionLogic(env, bot)
 	}
 
 	return env
@@ -57,23 +56,19 @@ func HandleSubscriptionPublish(env def.SessionData) def.SessionData {
 func SubscriptionHandler(localSecrets *secrets.SecretsData) {
 	env := def.SessionData{}
 
-	platformSecrets := bpsecrets.SecretsData{
-		TELEGRAM_ID: localSecrets.TELEGRAM_ID,
-		PROJECT_ID:  localSecrets.PROJECT_ID,
-	}
+	bot := platform.NewTelegram(localSecrets.TELEGRAM_ID, localSecrets.TELEGRAM_ADMIN_ID)
 
-	env.Secrets = platformSecrets
-	log.Printf("Loaded secrets...")
+	// log.Printf("Loaded secrets...")
 
 	env.ResourcePath = "/go/bin/"
 
 	// TODO: Iterate through types
 	env.Type = def.TYPE_TELEGRAM
 
-	env = HandleSubscriptionPublish(env)
+	env = HandleSubscriptionPublish(env, bot, localSecrets.PROJECT_ID)
 	log.Printf("Handled bot publish...")
 
-	if !platform.PostFromProps(env) {
+	if !bot.Post(env) {
 		log.Printf("This message was not translatable from bot language")
 		return
 	}

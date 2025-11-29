@@ -13,6 +13,7 @@ import (
 
 	"github.com/julwrites/BotPlatform/pkg/def"
 	"github.com/julwrites/BotPlatform/pkg/platform"
+	"github.com/julwrites/ScriptureBot/pkg/secrets"
 	"github.com/julwrites/ScriptureBot/pkg/utils"
 )
 
@@ -200,7 +201,8 @@ func GetBiblePassage(env def.SessionData) def.SessionData {
 			}
 
 			var resp VerseResponse
-			err := SubmitQuery(req, &resp, env.Secrets.PROJECT_ID)
+			projectID, _ := secrets.Get("GCLOUD_PROJECT_ID")
+			err := SubmitQuery(req, &resp, projectID)
 
 			// Fallback to direct passage retrieval logic
 			if err != nil {

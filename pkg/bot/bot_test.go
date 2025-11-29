@@ -20,7 +20,7 @@ func TestRunCommands(t *testing.T) {
 	env.User.Config = utils.SerializeUserConfig(conf)
 	env.Msg.Message = "psalm 1"
 
-	env = RunCommands(env)
+	env = RunCommands(env, &app.MockBot{})
 
 	if !strings.Contains(env.Res.Message, "wicked") && !strings.Contains(env.Res.Message, "Blessed") {
 		t.Errorf("Failed TestRunCommands Passage command. Got: %s", env.Res.Message)
