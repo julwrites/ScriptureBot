@@ -13,17 +13,14 @@ import (
 
 	"github.com/julwrites/BotPlatform/pkg/def"
 	"github.com/julwrites/BotPlatform/pkg/platform"
-	"github.com/julwrites/ScriptureBot/pkg/secrets"
 	"github.com/julwrites/ScriptureBot/pkg/utils"
 )
 
-// Direct Scraping, not using Bible AI API for intelligence, but fast for checking some simple things like references
+// CheckBibleReference validates if the string is a valid Bible reference using local logic.
 func CheckBibleReference(ref string) bool {
 	log.Printf("Checking reference %s", ref)
-
-	doc := GetPassageHTML(ref, "NIV")
-	ref = GetReference(doc)
-	return len(ref) > 0
+	_, ok := ParseBibleReference(ref)
+	return ok
 }
 
 var GetPassageHTML = func(ref, ver string) *html.Node {
@@ -200,8 +197,7 @@ func GetBiblePassage(env def.SessionData) def.SessionData {
 			}
 
 			var resp VerseResponse
-			projectID, _ := secrets.Get("GCLOUD_PROJECT_ID")
-			err := SubmitQuery(req, &resp, projectID)
+			err := SubmitQuery(req, &resp)
 
 			// Fallback to direct passage retrieval logic
 			if err != nil {

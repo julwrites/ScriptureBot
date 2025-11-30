@@ -6,7 +6,6 @@ import (
 	"strings"
 
 	"github.com/julwrites/BotPlatform/pkg/def"
-	"github.com/julwrites/ScriptureBot/pkg/secrets"
 	"github.com/julwrites/ScriptureBot/pkg/utils"
 )
 
@@ -39,8 +38,7 @@ func GetBibleSearch(env def.SessionData) def.SessionData {
 		}
 
 		var resp WordSearchResponse
-		projectID, _ := secrets.Get("GCLOUD_PROJECT_ID")
-		err := SubmitQuery(req, &resp, projectID)
+		err := SubmitQuery(req, &resp)
 		if err != nil {
 			log.Printf("Error searching bible: %v", err)
 			env.Res.Message = "Sorry, I encountered an error while searching."

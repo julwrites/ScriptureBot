@@ -66,7 +66,7 @@ func getAPIConfig() (string, string) {
 
 // SubmitQuery sends the QueryRequest to the Bible API and unmarshals the response into result.
 // result should be a pointer to the expected response struct.
-func SubmitQuery(req QueryRequest, result interface{}, projectID string) error {
+func SubmitQuery(req QueryRequest, result interface{}) error {
 	apiURL, apiKey := getAPIConfig()
 	if apiURL == "" {
 		return fmt.Errorf("BIBLE_API_URL environment variable is not set")
