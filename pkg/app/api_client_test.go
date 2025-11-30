@@ -20,7 +20,7 @@ func TestSubmitQuery(t *testing.T) {
 			Context: QueryContext{User: UserContext{Version: "NIV"}},
 		}
 		var resp VerseResponse
-		err := SubmitQuery(req, &resp, "")
+		err := SubmitQuery(req, &resp)
 		if err != nil {
 			t.Errorf("Unexpected error: %v", err)
 		}
@@ -36,7 +36,7 @@ func TestSubmitQuery(t *testing.T) {
 
 		req := QueryRequest{}
 		var resp VerseResponse
-		err := SubmitQuery(req, &resp, "")
+		err := SubmitQuery(req, &resp)
 		if err == nil {
 			t.Error("Expected error when BIBLE_API_URL is unset")
 		}
