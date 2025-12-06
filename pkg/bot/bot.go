@@ -14,7 +14,7 @@ import (
 )
 
 func HelpMessage(env *def.SessionData) string {
-	return fmt.Sprintf("Hello %s! Give me a Bible reference and I'll give you the passage!\nHere are some other things I can do:\n/version - Choose your preferred Bible version\n/tms - Get a card from the Navigators' Topical Memory System\n/devo - Get reading material right now\n/lexicon - Search for a passage, lexicon entry, word or phrase\n", env.User.Firstname)
+	return fmt.Sprintf("Hello %s! Give me a Bible reference and I'll give you the passage!\nHere are some other things I can do:\n/version - Choose your preferred Bible version\n/search - Search for words in the Bible\n/ask - Ask a question about the Bible\n/tms - Get a card from the Navigators' Topical Memory System\n/devo - Get reading material right now\n", env.User.Firstname)
 	//\n/subscribe - Subscribe to / Unsubscribe from daily reading material
 }
 

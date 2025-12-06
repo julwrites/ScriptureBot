@@ -66,3 +66,31 @@ func TestParseBibleReference(t *testing.T) {
 		}
 	}
 }
+
+func TestExtractBibleReferences(t *testing.T) {
+	tests := []struct {
+		input    string
+		expected []string
+	}{
+		{"Read John 3:16", []string{"John 3:16"}},
+		{"Compare Gen 1:1 and Ex 20", []string{"Genesis 1:1", "Exodus 20"}},
+		{"What does it say in Mark 5?", []string{"Mark 5"}},
+		{"I like Genesis", []string{"Genesis 1"}}, // Defaults to 1? Yes, per current logic.
+		{"No references here", nil},
+		{"John said hello", []string{"John 1"}}, // False positive risk, but per logic.
+		{"Read 1 John 3 and 2 John", []string{"1 John 3", "2 John"}},
+	}
+
+	for _, tt := range tests {
+		result := ExtractBibleReferences(tt.input)
+		if len(result) != len(tt.expected) {
+			t.Errorf("ExtractBibleReferences(%q) length = %d, want %d", tt.input, len(result), len(tt.expected))
+			continue
+		}
+		for i, ref := range result {
+			if ref != tt.expected[i] {
+				t.Errorf("ExtractBibleReferences(%q)[%d] = %q, want %q", tt.input, i, ref, tt.expected[i])
+			}
+		}
+	}
+}

@@ -4,6 +4,13 @@
 
 This Telegram bot hopes to make the Bible more accessible, and hopefully to give a timely answer to those looking for it. 
 
+### Features
+*   **Bible Passage**: Get any Bible passage by typing the reference (e.g., "John 3:16").
+*   **Bible Search**: Search for words in the Bible using `/search` (e.g., `/search grace`).
+*   **Bible Ask**: Ask questions about the Bible using `/ask` (e.g., `/ask Who is Moses?`).
+*   **Devotionals**: Get daily reading material with `/devo`.
+*   **TMS**: Get Topical Memory System verses with `/tms`.
+
 ### Feedback
 Star this repo if you found it useful. Use the github issue tracker to give
 feedback on this repo.

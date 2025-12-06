@@ -146,8 +146,9 @@ func FormatQuery(query string, t TMSQueryType) string {
 		query = strings.ReplaceAll(query, " \t\n", "")
 		break
 	case Reference:
-		doc := GetPassageHTML(query, "NIV")
-		query = GetReference(doc)
+		if ref, ok := ParseBibleReference(query); ok {
+			query = ref
+		}
 		break
 	}
 
