@@ -30,5 +30,5 @@ func ProcessNaturalLanguage(env def.SessionData) def.SessionData {
 	}
 
 	// 4. Assume Query Prompt (Ask)
-	return GetBibleAskWithContext(env, nil)
+	return env
 }

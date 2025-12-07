@@ -6,10 +6,23 @@ import (
 	"strings"
 
 	"github.com/julwrites/BotPlatform/pkg/def"
+	"github.com/julwrites/ScriptureBot/pkg/secrets"
 	"github.com/julwrites/ScriptureBot/pkg/utils"
 )
 
 func GetBibleAsk(env def.SessionData) def.SessionData {
+	adminID, err := secrets.Get("TELEGRAM_ADMIN_ID")
+	if err != nil {
+		log.Printf("Failed to get admin ID: %v", err)
+		env.Res.Message = "Sorry, I encountered an error processing your request."
+		return env
+	}
+
+	if env.User.Id != adminID {
+		env.Res.Message = "Sorry, this feature is only available to the administrator."
+		return env
+	}
+
 	return GetBibleAskWithContext(env, nil)
 }
 
@@ -43,7 +56,7 @@ func GetBibleAskWithContext(env def.SessionData, contextVerses []string) def.Ses
 		if len(resp.References) > 0 {
 			sb.WriteString("\n\n*References:*")
 			for _, ref := range resp.References {
-				sb.WriteString(fmt.Sprintf("\n- [%s](%s)", ref.Verse, ref.URL))
+				sb.WriteString(fmt.Sprintf("\n- %s", ref.Verse))
 			}
 		}
 
