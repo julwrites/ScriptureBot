@@ -1,37 +1,37 @@
-# ScriptureBot Architecture & Guidelines
+# ScriptureBot Developer Guide
 
-## Architecture Overview
+**CURRENT STATUS: MAINTENANCE MODE**
 
-ScriptureBot is a Go-based bot application designed to provide Bible passages and related resources. It is built on top of `github.com/julwrites/BotPlatform`.
+## Helper Scripts
+- `scripts/tasks.py`: Manage development tasks.
+  - `python3 scripts/tasks.py list`: List tasks.
+  - `python3 scripts/tasks.py create <category> <title>`: Create a task.
+  - `python3 scripts/tasks.py update <id> <status>`: Update task status.
 
-### Directory Structure
+## Documentation
+- `docs/architecture/`: System architecture and directory structure.
+- `docs/features/`: Feature specifications.
+- `docs/tasks/`: Active and pending tasks.
 
-- `pkg/app`: Contains the core application logic.
-  - `passage.go`: Currently handles Bible passage retrieval via web scraping (classic.biblegateway.com).
-  - `devo*.go`: Handles devotionals.
-  - `command.go`: Command handling logic.
-- `pkg/bot`: Contains bot interface implementations (e.g., Telegram).
-- `pkg/utils`: Shared utility functions.
+## Project Specific Instructions
 
-### Key Dependencies
+### Core Directives
+- **API First**: The Bible AI API is the primary source for data. Scraping (`pkg/app/passage.go` fallback) is deprecated and should be avoided for new features.
+- **Secrets**: Do not commit secrets. Use `pkg/secrets` to retrieve them from Environment or Google Secret Manager.
+- **Testing**: Run tests from the root using `go test ./pkg/...`.
 
-- `github.com/julwrites/BotPlatform`: The underlying bot framework.
-- `golang.org/x/net/html`: Used for parsing HTML (currently used for scraping).
-- `cloud.google.com/go/datastore`: Used for data persistence.
+### Code Guidelines
+- **Go Version**: 1.24+
+- **Naming**:
+  - Variables: `camelCase`
+  - Functions: `PascalCase` (exported), `camelCase` (internal)
+  - Packages: `underscore_case`
+- **Structure**:
+  - `pkg/app`: Business logic.
+  - `pkg/bot`: Platform integration.
+  - `pkg/utils`: Shared utilities.
 
-## Development Guidelines
-
-- **Passage Retrieval**: The current scraping mechanism in `pkg/app/passage.go` is being replaced by a new Bible AI API service.
-- **New Features**:
-  - Word Search: Search for words in the Bible.
-  - Bible Query: Ask questions using natural language (LLM-backed).
-- **Code Style**: Follow standard Go idioms. Ensure error handling is robust.
-
-## API Integration
-
-The new Bible AI API exposes a `/query` endpoint.
-- **Verses**: `query.verses`
-- **Word Search**: `query.words`
-- **Prompt/Query**: `query.prompt`
-
-Refer to `openapi.yaml` for the full specification.
+### Local Development
+- **Setup**: Create a `.env` file with `TELEGRAM_ID` and `TELEGRAM_ADMIN_ID`.
+- **Run**: `go run main.go`
+- **Testing**: Use `ngrok` to tunnel webhooks or send mock HTTP requests.
