@@ -50,8 +50,7 @@ func GetBibleSearch(env def.SessionData) def.SessionData {
 			sb.WriteString(fmt.Sprintf("Found %d results for '%s':\n", len(resp), env.Msg.Message))
 			for _, res := range resp {
 				// Format: - Verse (URL)
-				// Markdown link: [Verse](URL)
-				sb.WriteString(fmt.Sprintf("- [%s](%s)\n", res.Verse, res.URL))
+				sb.WriteString(fmt.Sprintf("- %s\n", res.Verse))
 			}
 			env.Res.Message = sb.String()
 		} else {

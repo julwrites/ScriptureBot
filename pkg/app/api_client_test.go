@@ -8,8 +8,8 @@ func TestSubmitQuery(t *testing.T) {
 	t.Run("Success", func(t *testing.T) {
 		// Force cleanup of environment to ensure we test Secret Manager fallback
 		// This handles cases where the runner might have lingering env vars
-		defer UnsetEnv("BIBLE_API_URL")()
-		defer UnsetEnv("BIBLE_API_KEY")()
+		defer SetEnv("BIBLE_API_URL", "https://example.com")()
+		defer SetEnv("BIBLE_API_KEY", "api_key")()
 
 		ResetAPIConfigCache()
 

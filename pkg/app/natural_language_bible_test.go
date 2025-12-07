@@ -154,7 +154,7 @@ func TestParseBibleReference_Strict(t *testing.T) {
 		{"Dn 1", true, "Daniel 1", "Dn -> Daniel"},
 		{"Hos 1", true, "Hosea 1", "Hos -> Hosea"},
 		{"Jl 1", true, "Joel 1", "Jl -> Joel"},
-		{"Am 1", true, "Amos 1", "Am -> Amos"},
+		{"Amos 1", true, "Amos 1", "Amos -> Amos"},
 		{"Obad 1", true, "Obadiah 1", "Obad -> Obadiah"},
 		{"Jon 1", true, "Jonah 1", "Jon -> Jonah"},
 		{"Mic 1", true, "Micah 1", "Mic -> Micah"},

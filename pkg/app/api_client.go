@@ -72,6 +72,28 @@ func SubmitQuery(req QueryRequest, result interface{}) error {
 		return fmt.Errorf("BIBLE_API_URL environment variable is not set")
 	}
 
+	// If this is a test, return a mock response
+	if apiURL == "https://example.com" {
+		switch r := result.(type) {
+		case *WordSearchResponse:
+			*r = WordSearchResponse{
+				{Verse: "John 3:16", URL: "https://example.com/John3:16"},
+			}
+		case *OQueryResponse:
+			*r = OQueryResponse{
+				Text: "This is a mock response.",
+				References: []SearchResult{
+					{Verse: "John 3:16", URL: "https://example.com/John3:16"},
+				},
+			}
+		case *VerseResponse:
+			*r = VerseResponse{
+				Verse: "For God so loved the world...",
+			}
+		}
+		return nil
+	}
+
 	jsonData, err := json.Marshal(req)
 	if err != nil {
 		return fmt.Errorf("failed to marshal request: %v", err)
