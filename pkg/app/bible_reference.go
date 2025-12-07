@@ -36,7 +36,7 @@ var BibleBooks = map[string]string{
 	"daniel": "Daniel", "dan": "Daniel", "dn": "Daniel",
 	"hosea": "Hosea", "hos": "Hosea",
 	"joel": "Joel", "jl": "Joel",
-	"amos": "Amos",
+	"amos": "Amos", "am": "Amos",
 	"obadiah": "Obadiah", "obad": "Obadiah", "ob": "Obadiah",
 	"jonah": "Jonah", "jon": "Jonah", "jnh": "Jonah",
 	"micah": "Micah", "mic": "Micah",
