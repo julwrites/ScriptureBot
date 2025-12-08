@@ -11,6 +11,9 @@ func TestGetBibleAsk(t *testing.T) {
 	t.Run("Non-admin user", func(t *testing.T) {
 		// Set admin ID to something else
 		defer SetEnv("TELEGRAM_ADMIN_ID", "admin_id")()
+		// Set mock API config so search works
+		ResetAPIConfigCache()
+		SetAPIConfigOverride("https://example.com", "api_key")
 
 		var env def.SessionData
 		env.User.Id = "user_id"
@@ -20,16 +23,17 @@ func TestGetBibleAsk(t *testing.T) {
 
 		env = GetBibleAsk(env)
 
-		if env.Res.Message != "Sorry, this feature is only available to the administrator." {
-			t.Errorf("Expected permission denied message, got: %s", env.Res.Message)
+		// Expect fallback to search
+		expected := "Found 1 results for 'Question':\n- John 3:16\n"
+		if env.Res.Message != expected {
+			t.Errorf("Expected search result message, got: %s", env.Res.Message)
 		}
 	})
 
 	t.Run("Admin user", func(t *testing.T) {
 		defer SetEnv("TELEGRAM_ADMIN_ID", "admin_id")()
-		defer SetEnv("BIBLE_API_URL", "https://example.com")()
-		defer SetEnv("BIBLE_API_KEY", "api_key")()
 		ResetAPIConfigCache()
+		SetAPIConfigOverride("https://example.com", "api_key")
 
 		var env def.SessionData
 		env.User.Id = "admin_id"
@@ -37,12 +41,11 @@ func TestGetBibleAsk(t *testing.T) {
 		conf := utils.UserConfig{Version: "NIV"}
 		env.User.Config = utils.SerializeUserConfig(conf)
 
-		// This will still fail because it makes a real API call
-		// but it will pass the admin check
 		env = GetBibleAsk(env)
 
-		if env.Res.Message == "Sorry, this feature is only available to the administrator." {
-			t.Errorf("Expected to pass admin check, but it failed")
+		expected := "This is a mock response.\n\n*References:*\n- John 3:16"
+		if env.Res.Message != expected {
+			t.Errorf("Expected admin response, got: %s", env.Res.Message)
 		}
 	})
 }
