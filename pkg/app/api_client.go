@@ -66,13 +66,14 @@ func getAPIConfig() (string, string) {
 
 // SubmitQuery sends the QueryRequest to the Bible API and unmarshals the response into result.
 // result should be a pointer to the expected response struct.
-func SubmitQuery(req QueryRequest, result interface{}) error {
+var SubmitQuery = func(req QueryRequest, result interface{}) error {
 	apiURL, apiKey := getAPIConfig()
 	if apiURL == "" {
 		return fmt.Errorf("BIBLE_API_URL environment variable is not set")
 	}
 
-	// If this is a test, return a mock response
+	// If this is a test using the legacy mock URL, return a mock response
+	// This supports existing tests that haven't been updated to mock the function variable directly.
 	if apiURL == "https://example.com" {
 		switch r := result.(type) {
 		case *WordSearchResponse:

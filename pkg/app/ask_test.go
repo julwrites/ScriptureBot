@@ -8,12 +8,78 @@ import (
 )
 
 func TestGetBibleAsk(t *testing.T) {
+	// Restore original SubmitQuery after test
+	originalSubmitQuery := SubmitQuery
+	defer func() { SubmitQuery = originalSubmitQuery }()
+
+	t.Run("Success: Verify Request", func(t *testing.T) {
+		defer SetEnv("TELEGRAM_ADMIN_ID", "12345")()
+		ResetAPIConfigCache()
+
+		var capturedReq QueryRequest
+		SubmitQuery = MockSubmitQuery(t, func(req QueryRequest) {
+			capturedReq = req
+		})
+
+		var env def.SessionData
+		env.Msg.Message = "Who is God?"
+		env.User.Id = "12345"
+		conf := utils.UserConfig{Version: "NIV"}
+		env.User.Config = utils.SerializeUserConfig(conf)
+
+		// Set dummy API config
+		SetAPIConfigOverride("https://mock", "key")
+
+		GetBibleAsk(env)
+
+		if capturedReq.Query.Prompt != "Who is God?" {
+			t.Errorf("Expected Query.Prompt to be 'Who is God?', got '%s'", capturedReq.Query.Prompt)
+		}
+		if len(capturedReq.Query.Verses) > 0 {
+			t.Errorf("Expected Query.Verses to be empty, got %v", capturedReq.Query.Verses)
+		}
+		if len(capturedReq.Query.Words) > 0 {
+			t.Errorf("Expected Query.Words to be empty, got %v", capturedReq.Query.Words)
+		}
+	})
+
+	t.Run("Success: Verify Request with Context", func(t *testing.T) {
+		ResetAPIConfigCache()
+
+		var capturedReq QueryRequest
+		SubmitQuery = MockSubmitQuery(t, func(req QueryRequest) {
+			capturedReq = req
+		})
+
+		var env def.SessionData
+		env.Msg.Message = "Explain this"
+		conf := utils.UserConfig{Version: "NIV"}
+		env.User.Config = utils.SerializeUserConfig(conf)
+		contextVerses := []string{"John 3:16", "Genesis 1:1"}
+
+		// Set dummy API config
+		SetAPIConfigOverride("https://mock", "key")
+
+		GetBibleAskWithContext(env, contextVerses)
+
+		if capturedReq.Query.Prompt != "Explain this" {
+			t.Errorf("Expected Query.Prompt to be 'Explain this', got '%s'", capturedReq.Query.Prompt)
+		}
+		if len(capturedReq.Context.Verses) != 2 {
+			t.Errorf("Expected Context.Verses to have 2 items, got %v", capturedReq.Context.Verses)
+		}
+		if capturedReq.Context.Verses[0] != "John 3:16" {
+			t.Errorf("Expected Context.Verses[0] to be 'John 3:16', got '%s'", capturedReq.Context.Verses[0])
+		}
+	})
+
 	t.Run("Non-admin user", func(t *testing.T) {
 		// Set admin ID to something else
 		defer SetEnv("TELEGRAM_ADMIN_ID", "admin_id")()
 		// Set mock API config so search works
 		ResetAPIConfigCache()
 		SetAPIConfigOverride("https://example.com", "api_key")
+		SubmitQuery = originalSubmitQuery
 
 		var env def.SessionData
 		env.User.Id = "user_id"
@@ -34,6 +100,7 @@ func TestGetBibleAsk(t *testing.T) {
 		defer SetEnv("TELEGRAM_ADMIN_ID", "admin_id")()
 		ResetAPIConfigCache()
 		SetAPIConfigOverride("https://example.com", "api_key")
+		SubmitQuery = originalSubmitQuery
 
 		var env def.SessionData
 		env.User.Id = "admin_id"
