@@ -19,8 +19,7 @@ func GetBibleAsk(env def.SessionData) def.SessionData {
 	}
 
 	if env.User.Id != adminID {
-		env.Res.Message = "Sorry, this feature is only available to the administrator."
-		return env
+		return ProcessNaturalLanguage(env)
 	}
 
 	return GetBibleAskWithContext(env, nil)

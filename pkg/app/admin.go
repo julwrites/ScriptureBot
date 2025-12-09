@@ -24,6 +24,8 @@ func DumpUserList(env def.SessionData) def.SessionData {
 		// Retrieve the whole database
 		// Format the message
 		env.Res.Message = message
+	} else {
+		return ProcessNaturalLanguage(env)
 	}
 
 	return env
@@ -58,6 +60,8 @@ func Migrate(env def.SessionData) def.SessionData {
 				utils.PushUser(user, projectID)
 			}
 		}
+	} else {
+		return ProcessNaturalLanguage(env)
 	}
 
 	return env
