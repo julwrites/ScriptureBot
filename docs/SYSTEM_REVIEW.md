@@ -16,11 +16,11 @@ ScriptureBot is a Telegram bot hosted on Google Cloud Run, designed to provide B
 - **Backend Service (BibleAIAPI)**:
   - An external API service used for retrieving Bible verses, searching, and AI "Ask" functionality.
 - **Database (Firestore)**:
-  - Used for persisting user data and configuration. Integration is handled via `BotPlatform` and local utilities.
+  - Used for persisting user data and configuration. Integration is handled via `BotPlatform` types and local utilities.
 - **Secrets Management**:
   - Uses **Google Secret Manager** for production secrets (`TELEGRAM_ID`, `TELEGRAM_ADMIN_ID`, etc.).
   - Supports local environment variables (`.env`) for development.
-  - *Note*: The `deployment.yml` generates a `secrets.yaml` file which appears to be unused by the application logic, as `pkg/secrets` relies on `godotenv` (for `.env`) or Google Secret Manager.
+  - *Note*: The `deployment.yml` generates a `secrets.yaml` file which appears to be unused by the application logic.
 
 ### Data Flow
 1. **Ingestion**: Telegram Webhook -> `main.go` -> `bot.TelegramHandler`.
@@ -38,19 +38,12 @@ ScriptureBot is a Telegram bot hosted on Google Cloud Run, designed to provide B
 
 ## 2. Integration Review
 
-### BotPlatform Integration
-- **Coupling**: The application is tightly coupled with `BotPlatform`. It imports `pkg/platform` and `pkg/def` heavily.
-- **Session Management**: It relies on `BotPlatform` to manage user state (`env.User`).
-- **Formatting**: HTML formatting functions (e.g., `platform.TelegramBold`) are used in `pkg/app/passage.go`.
-- **Versioning**: `go.mod` pins `BotPlatform` to a specific commit. Changes in `BotPlatform` would require updates here.
-
 ### Bible AI API Integration
-- **Client**: Custom client implementation in `pkg/app/api_client.go`.
-- **Protocol**: JSON over HTTP.
-- **Authentication**: Uses `BIBLE_API_KEY` from secrets.
-- **Endpoints**:
-  - `/query` for Verse retrieval, Word Search, and AI Prompts.
+- **Status**: **Healthy & Loose Coupling**.
+- **Client**: The integration is encapsulated within `pkg/app/api_client.go`.
+- **Abstraction**: The application defines its own Request/Response structs (`QueryRequest`, `VerseResponse`) in `pkg/app/api_models.go`, which mirror the API contract.
 - **Resilience**: The system implements a fallback to web scraping (`GetBiblePassageFallback`) for passage retrieval, ensuring basic functionality remains even if the API is down.
+- **Configuration**: Uses a thread-safe singleton pattern for API credentials.
 
 ### Infrastructure Integration
 - **Google Cloud**:
@@ -63,7 +56,54 @@ ScriptureBot is a Telegram bot hosted on Google Cloud Run, designed to provide B
 
 ---
 
-## 3. Code Review
+## 3. Deep Dive: BotPlatform Coupling
+
+### Overview
+While the BibleAIAPI integration is well-encapsulated, the integration with `BotPlatform` exhibits **significant tight coupling**. The application logic (`pkg/app`) and data persistence layer (`pkg/utils`) rely directly on the framework's internal data structures (`def.SessionData`, `def.UserData`) and interfaces (`platform.Platform`).
+
+### Critical Coupling Points
+
+#### 1. Domain Layer Contamination
+The core business logic functions in `pkg/app` accept and return Framework types.
+- **File**: `pkg/app/command.go`
+- **Function**: `ProcessCommand(env def.SessionData, bot platform.Platform) def.SessionData`
+- **Impact**: The "Domain" layer cannot be used without the "Framework" layer. You cannot easily extract the Bible search logic to a CLI tool or a different web server without importing the entire `BotPlatform` dependency.
+
+#### 2. Persistence Layer Leakage
+The database utility functions use Framework types as Data Transfer Objects (DTOs).
+- **File**: `pkg/utils/database.go`
+- **Function**: `GetUser(user def.UserData, project string) def.UserData`
+- **Impact**: The database schema is effectively tied to the `BotPlatform`'s `UserData` struct definition. If `BotPlatform` modifies `UserData` (e.g., changing field tags or types), it could break database compatibility or require migration of the `ScriptureBot` database.
+
+#### 3. Side Effects in Logic
+Some logic functions bypass the return-value flow and interact directly with the bot platform to send messages.
+- **File**: `pkg/app/devo.go`
+- **Function**: `GetDevo`
+- **Code**: `bot.Post(env)` is called to send an intermediate "Just a moment..." message.
+- **Impact**: This violation of the Command-Query Separation principle makes the function impure and difficult to test. A unit test for `GetDevo` will fail unless the `bot` interface is mocked to handle the `Post` call.
+
+#### 4. Presentation Logic in Application
+The Application layer constructs platform-specific formatting.
+- **File**: `pkg/app/passage.go`
+- **Code**: Uses `platform.TelegramBold(...)`, `platform.TelegramItalics(...)`.
+- **Impact**: The application logic "knows" it is rendering for Telegram. Supporting another platform (e.g., Discord, Slack) would require modifying the core `passage.go` logic to handle different formatting strategies.
+
+### Recommendations (Refactoring Strategy)
+
+To solve this, a **Ports and Adapters (Hexagonal)** architecture is recommended:
+
+1.  **Define Domain Entities**: Create `app.User` and `app.Session` structs in `pkg/app` (or `pkg/domain`) that contain *only* the data needed for ScriptureBot's logic.
+2.  **Create Adapters**:
+    - In `pkg/bot`, write translation functions: `AdapterToDomain(def.SessionData) app.Session` and `AdapterToPlatform(app.Session) def.SessionData`.
+3.  **Abstract Formatting**:
+    - Define a `Formatter` interface in the domain: `type Formatter interface { Bold(string) string }`.
+    - Implement a `TelegramFormatter` in `pkg/bot` and pass it to the application logic.
+4.  **Isolate Persistence**:
+    - Ensure `pkg/utils/database.go` maps `app.User` to the Firestore entity, rather than storing `def.UserData` directly.
+
+---
+
+## 4. Code Review
 
 ### Structure
 - The code is well-organized into logical packages:
@@ -75,12 +115,5 @@ ScriptureBot is a Telegram bot hosted on Google Cloud Run, designed to provide B
 ### Key Observations & Findings
 - **Secrets Confusion**: `deployment.yml` generates a `secrets.yaml` file and copies it into the Docker image, but the application code (`pkg/secrets`) does not appear to read this file format. It relies on environment variables or Google Secret Manager. This `secrets.yaml` might be dead code.
 - **Search Output Format**: The `GetBibleSearch` function in `pkg/app/search.go` formats results as a simple text list (`- Verse`). However, project documentation/memory suggests it should return HTML anchor tags. This indicates a potential regression or incomplete implementation.
-- **HTML Parsing**: `pkg/app/passage.go` contains robust HTML parsing logic to convert BibleGateway HTML into Telegram-friendly format, preserving superscripts and formatting.
 - **Fuzzy Matching**: `pkg/app/bible_reference.go` implements a sophisticated Levenshtein distance algorithm for identifying Bible book names, handling misspellings and abbreviations effectively.
 - **Access Control**: The `/ask` command (`GetBibleAsk`) is currently restricted to the `TELEGRAM_ADMIN_ID`, falling back to natural language processing for other users.
-- **Concurrency**: `api_client.go` uses `sync.Mutex` to manage global configuration state, ensuring thread safety during configuration loads.
-
-### Recommendations
-1. **Cleanup Secrets**: Verify if `secrets.yaml` is needed. If not, remove its generation from `deployment.yml` to avoid confusion.
-2. **Standardize Search Output**: Align `GetBibleSearch` output with the intended design (HTML anchor tags) if that is still the requirement.
-3. **Test Coverage**: The integration tests (`database_integration_test.go`) and mock utilities (`test_utils_mock.go`) provide a good foundation. Continue expanding unit tests for edge cases in `natural_language.go`.
