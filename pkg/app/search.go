@@ -49,8 +49,11 @@ func GetBibleSearch(env def.SessionData) def.SessionData {
 			var sb strings.Builder
 			sb.WriteString(fmt.Sprintf("Found %d results for '%s':\n", len(resp), env.Msg.Message))
 			for _, res := range resp {
-				// Format: - Verse (URL)
-				sb.WriteString(fmt.Sprintf("- %s\n", res.Verse))
+				if res.URL != "" {
+					sb.WriteString(fmt.Sprintf("- <a href=\"%s\">%s</a>\n", res.URL, res.Verse))
+				} else {
+					sb.WriteString(fmt.Sprintf("- %s\n", res.Verse))
+				}
 			}
 			env.Res.Message = sb.String()
 		} else {

@@ -17,7 +17,6 @@ FROM scratch AS runner
 ARG GCLOUD_PROJECT_ID
 ENV GCLOUD_PROJECT_ID=$GCLOUD_PROJECT_ID
 
-COPY --from=builder /go/src/app/secrets.yaml /go/bin/secrets.yaml
 COPY --from=builder /go/src/app/resource/* /go/bin/
 COPY --from=builder /go/bin/main /go/bin/main
 COPY --from=certificates /etc/ssl/certs/ca-certificates.crt /etc/ssl/certs/ca-certificates.crt
