@@ -54,7 +54,26 @@ func ParseNodesForPassage(node *html.Node) string {
 			childText := ParseNodesForPassage(child)
 			parts = append(parts, childText)
 			if len(strings.TrimSpace(childText)) > 0 {
-				parts = append(parts, "\n")
+				isNextBr := false
+				next := child.NextSibling
+				for next != nil {
+					if next.Type == html.TextNode {
+						if len(strings.TrimSpace(next.Data)) == 0 {
+							next = next.NextSibling
+							continue
+						} else {
+							break
+						}
+					}
+					if next.Data == "br" {
+						isNextBr = true
+					}
+					break
+				}
+
+				if !isNextBr {
+					parts = append(parts, "\n")
+				}
 			}
 		case "sup":
 			isFootnote := func(node *html.Node) bool {
