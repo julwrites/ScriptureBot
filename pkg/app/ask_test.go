@@ -90,7 +90,7 @@ func TestGetBibleAsk(t *testing.T) {
 		env = GetBibleAsk(env)
 
 		// Expect fallback to search
-		expected := "Found 1 results for 'Question':\n- John 3:16\n"
+		expected := "Found 1 results for 'Question':\n- <a href=\"https://example.com/John3:16\">John 3:16</a>\n"
 		if env.Res.Message != expected {
 			t.Errorf("Expected search result message, got: %s", env.Res.Message)
 		}
