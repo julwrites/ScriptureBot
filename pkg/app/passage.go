@@ -42,6 +42,22 @@ func GetReference(doc *html.Node) string {
 }
 
 
+func isNextSiblingBr(node *html.Node) bool {
+	for next := node.NextSibling; next != nil; next = next.NextSibling {
+		if next.Type == html.TextNode {
+			if len(strings.TrimSpace(next.Data)) == 0 {
+				continue
+			}
+			return false
+		}
+		if next.Type == html.ElementNode && next.Data == "br" {
+			return true
+		}
+		return false
+	}
+	return false
+}
+
 func ParseNodesForPassage(node *html.Node) string {
 	var text string
 	var parts []string
@@ -53,27 +69,8 @@ func ParseNodesForPassage(node *html.Node) string {
 		case "span":
 			childText := ParseNodesForPassage(child)
 			parts = append(parts, childText)
-			if len(strings.TrimSpace(childText)) > 0 {
-				isNextBr := false
-				next := child.NextSibling
-				for next != nil {
-					if next.Type == html.TextNode {
-						if len(strings.TrimSpace(next.Data)) == 0 {
-							next = next.NextSibling
-							continue
-						} else {
-							break
-						}
-					}
-					if next.Data == "br" {
-						isNextBr = true
-					}
-					break
-				}
-
-				if !isNextBr {
-					parts = append(parts, "\n")
-				}
+			if len(strings.TrimSpace(childText)) > 0 && !isNextSiblingBr(child) {
+				parts = append(parts, "\n")
 			}
 		case "sup":
 			isFootnote := func(node *html.Node) bool {
