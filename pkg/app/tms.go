@@ -9,6 +9,7 @@ import (
 	"strings"
 
 	"github.com/julwrites/BotPlatform/pkg/def"
+	"github.com/julwrites/ScriptureBot/pkg/utils"
 	"gopkg.in/yaml.v2"
 )
 
@@ -156,7 +157,7 @@ func FormatQuery(query string, t TMSQueryType) string {
 }
 
 func GetRandomTMSVerse(env def.SessionData) string {
-	tmsDB := GetTMSData(env.ResourcePath)
+	tmsDB := GetTMSData(utils.GetResourcePath(env))
 
 	seriesId := rand.Int() % len(tmsDB.Series)
 
@@ -176,7 +177,7 @@ func GetRandomTMSVerse(env def.SessionData) string {
 }
 
 func GetTMSVerse(env def.SessionData) def.SessionData {
-	tmsDB := GetTMSData(env.ResourcePath)
+	tmsDB := GetTMSData(utils.GetResourcePath(env))
 
 	if len(env.Msg.Message) == 0 {
 		log.Printf("Activating action /tms")
@@ -187,7 +188,7 @@ func GetTMSVerse(env def.SessionData) def.SessionData {
 			series = append(series, s.ID)
 		}
 
-		env.User.Action = CMD_TMS
+		env = utils.SetUserAction(env, CMD_TMS)
 		env.Res.Message = fmt.Sprintf("Tell me which TMS verse you would like using the number (e.g. A1) the reference (e.g. 2 Corinthians 5 : 17)\nAlternatively, give me a topic and I'll try to find a suitable verse!\nSupported TMS Series:\n%s", strings.Join(series, "\n- "))
 	} else {
 		log.Printf("Retrieving verse with query: %s", env.Msg.Message)
@@ -238,7 +239,7 @@ func GetTMSVerse(env def.SessionData) def.SessionData {
 			log.Printf("Query TMS Database failed %v", err)
 		}
 
-		env.User.Action = ""
+		env = utils.SetUserAction(env, "")
 		env.Msg.Message = verse.Reference
 		env = GetBiblePassage(env)
 

@@ -11,7 +11,7 @@ import (
 
 func GetBibleSearch(env def.SessionData) def.SessionData {
 	if len(env.Msg.Message) > 0 {
-		config := utils.DeserializeUserConfig(env.User.Config)
+		config := utils.DeserializeUserConfig(utils.GetUserConfig(env))
 
 		// Parse message into words?
 		// The API expects a list of words.

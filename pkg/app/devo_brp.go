@@ -123,7 +123,7 @@ func GetNavigators5xDatabase(dataPath string) DailyChapterBRP {
 func GetDiscipleshipJournalReferences(env def.SessionData) []def.Option {
 	var options []def.Option
 
-	djBRP := GetDiscipleshipJournalDatabase(env.ResourcePath)
+	djBRP := GetDiscipleshipJournalDatabase(utils.GetResourcePath(env))
 
 	// We will read the entry using the date, format: Year, Month, Day
 
@@ -147,7 +147,7 @@ func GetDiscipleshipJournalReferences(env def.SessionData) []def.Option {
 	return options
 }
 func GetDailyNewTestamentReadingReferences(env def.SessionData) string {
-	DNTBRP := GetDailyNewTestamentDatabase(env.ResourcePath)
+	DNTBRP := GetDailyNewTestamentDatabase(utils.GetResourcePath(env))
 
 	// We will read the entry using the date, format: Year, Month, Day
 	baseline := time.Date(2000, time.January, 1, 0, 0, 0, 0, time.UTC)
@@ -161,7 +161,7 @@ func GetDailyNewTestamentReadingReferences(env def.SessionData) string {
 func GetNavigators5xRestDayPrompt(env def.SessionData) (string, []def.Option) {
 	var options []def.Option
 
-	N5XBRP := GetNavigators5xDatabase(env.ResourcePath)
+	N5XBRP := GetNavigators5xDatabase(utils.GetResourcePath(env))
 
 	// We will read the entry using the date, format: Year, Month, Day
 	dateIndex := time.Now().YearDay()
@@ -196,7 +196,7 @@ Here are this week's passages!
 }
 
 func GetNavigators5xReferences(env def.SessionData) string {
-	N5XBRP := GetNavigators5xDatabase(env.ResourcePath)
+	N5XBRP := GetNavigators5xDatabase(utils.GetResourcePath(env))
 
 	// We will read the entry using the date, format: Year, Month, Day
 	day := time.Now().YearDay()

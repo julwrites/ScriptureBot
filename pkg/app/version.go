@@ -29,9 +29,9 @@ func SanitizeVersion(msg string) (string, error) {
 }
 
 func SetVersion(env def.SessionData) def.SessionData {
-	config := utils.DeserializeUserConfig(env.User.Config)
+	config := utils.DeserializeUserConfig(utils.GetUserConfig(env))
 
-	if env.User.Action == CMD_VERSION {
+	if utils.GetUserAction(env) == CMD_VERSION {
 		log.Printf("Detected existing action /version")
 
 		version, err := SanitizeVersion(env.Msg.Message)
@@ -39,9 +39,9 @@ func SetVersion(env def.SessionData) def.SessionData {
 			log.Printf("Version is valid, setting to %s", version)
 
 			config.Version = version
-			env.User.Config = utils.SerializeUserConfig(config)
+			env = utils.SetUserConfig(env, utils.SerializeUserConfig(config))
 
-			env.User.Action = ""
+			env = utils.SetUserAction(env, "")
 			env.Res.Message = fmt.Sprintf("Got it, I've changed your version to %s", config.Version)
 			env.Res.Affordances.Remove = true
 		} else {
@@ -59,7 +59,7 @@ func SetVersion(env def.SessionData) def.SessionData {
 
 		env.Res.Affordances.Options = options
 
-		env.User.Action = CMD_VERSION
+		env = utils.SetUserAction(env, CMD_VERSION)
 
 		env.Res.Message = fmt.Sprintf("Your current version is %s, what would you like to change it to?", config.Version)
 	}

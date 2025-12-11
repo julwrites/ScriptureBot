@@ -9,6 +9,7 @@ import (
 	"github.com/julwrites/BotPlatform/pkg/platform"
 
 	"github.com/julwrites/BotPlatform/pkg/def"
+	"github.com/julwrites/ScriptureBot/pkg/utils"
 )
 
 const (
@@ -168,7 +169,7 @@ func GetDevotionalData(env def.SessionData, devo string) def.ResponseData {
 }
 
 func GetDevo(env def.SessionData, bot platform.Platform) def.SessionData {
-	switch env.User.Action {
+	switch utils.GetUserAction(env) {
 	case CMD_DEVO:
 		log.Printf("Detected existing action /devo")
 
@@ -185,7 +186,7 @@ func GetDevo(env def.SessionData, bot platform.Platform) def.SessionData {
 			// Retrieve devotional
 			env.Res = GetDevotionalData(env, devo)
 
-			env.User.Action = ""
+			env = utils.SetUserAction(env, "")
 		} else {
 			log.Printf("AcronymizeDevo failed %v", err)
 			env.Res.Message = "I didn't recognize that devo, please try again"
@@ -202,7 +203,7 @@ func GetDevo(env def.SessionData, bot platform.Platform) def.SessionData {
 
 		env.Res.Affordances.Options = options
 
-		env.User.Action = CMD_DEVO
+		env = utils.SetUserAction(env, CMD_DEVO)
 
 		env.Res.Message = "Choose a Devotional to read!"
 	}

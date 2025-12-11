@@ -32,10 +32,13 @@ func TelegramHandler(res http.ResponseWriter, req *http.Request, secrets *secret
 
 	// log.Printf("Loaded secrets...")
 
-	env.ResourcePath = "/go/bin/"
+	if env.Props == nil {
+		env.Props = make(map[string]interface{})
+	}
+	env.Props["ResourcePath"] = "/go/bin/"
 
 	user := utils.RegisterUser(env.User, secrets.PROJECT_ID)
-	env.User = user
+	env.Props["User"] = user
 	// log.Printf("Loaded user...")
 
 	env = HandleBotLogic(env, bot)
@@ -46,8 +49,9 @@ func TelegramHandler(res http.ResponseWriter, req *http.Request, secrets *secret
 		return
 	}
 
-	if env.User != user {
-		log.Printf("Updating user %v", env.User)
-		utils.PushUser(env.User, secrets.PROJECT_ID) // Any change to the user throughout the commands should be put to database
+	finalUser, ok := env.Props["User"].(utils.User)
+	if ok && finalUser != user {
+		log.Printf("Updating user %v", finalUser)
+		utils.PushUser(finalUser, secrets.PROJECT_ID) // Any change to the user throughout the commands should be put to database
 	}
 }

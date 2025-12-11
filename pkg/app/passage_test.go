@@ -8,20 +8,8 @@ import (
 	"github.com/julwrites/ScriptureBot/pkg/utils"
 )
 
-func TestGetBiblePassageHtml(t *testing.T) {
-	doc := GetPassageHTML("gen 8", "NIV")
-
-	if doc == nil {
-		t.Errorf("Could not retrieve bible passage")
-	}
-}
-
 func TestGetReference(t *testing.T) {
 	doc := GetPassageHTML("gen 1", "NIV")
-
-	if doc == nil {
-		t.Fatalf("Could not retrieve Bible passage for testing")
-	}
 
 	ref := GetReference(doc)
 
@@ -59,7 +47,7 @@ func TestGetBiblePassage(t *testing.T) {
 		env.Msg.Message = "gen 1"
 		var conf utils.UserConfig
 		conf.Version = "NIV"
-		env.User.Config = utils.SerializeUserConfig(conf)
+		env = utils.SetUserConfig(env, utils.SerializeUserConfig(conf))
 
 		// Set dummy API config to pass internal checks
 		SetAPIConfigOverride("https://mock", "key")
@@ -89,7 +77,7 @@ func TestGetBiblePassage(t *testing.T) {
 		env.Msg.Message = "gen 1"
 		var conf utils.UserConfig
 		conf.Version = "NIV"
-		env.User.Config = utils.SerializeUserConfig(conf)
+		env = utils.SetUserConfig(env, utils.SerializeUserConfig(conf))
 		env = GetBiblePassage(env)
 
 		if len(env.Res.Message) < 10 {

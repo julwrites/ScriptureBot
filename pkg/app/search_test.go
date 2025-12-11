@@ -24,7 +24,7 @@ func TestGetBibleSearch(t *testing.T) {
 		var env def.SessionData
 		env.Msg.Message = "God is love"
 		conf := utils.UserConfig{Version: "NIV"}
-		env.User.Config = utils.SerializeUserConfig(conf)
+		env = utils.SetUserConfig(env, utils.SerializeUserConfig(conf))
 
 		// Set dummy API config to pass internal checks
 		SetAPIConfigOverride("https://mock", "key")
@@ -60,7 +60,7 @@ func TestGetBibleSearch(t *testing.T) {
 		var env def.SessionData
 		env.Msg.Message = "God"
 		conf := utils.UserConfig{Version: "NIV"}
-		env.User.Config = utils.SerializeUserConfig(conf)
+		env = utils.SetUserConfig(env, utils.SerializeUserConfig(conf))
 
 		env = GetBibleSearch(env)
 

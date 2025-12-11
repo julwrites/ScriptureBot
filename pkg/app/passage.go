@@ -162,7 +162,7 @@ func ParsePassageFromHtml(ref string, rawHtml string, version string) string {
 }
 
 func GetBiblePassageFallback(env def.SessionData) def.SessionData {
-	config := utils.DeserializeUserConfig(env.User.Config)
+	config := utils.DeserializeUserConfig(utils.GetUserConfig(env))
 
 	doc := GetPassageHTML(env.Msg.Message, config.Version)
 	ref := GetReference(doc)
@@ -194,7 +194,7 @@ func GetBiblePassage(env def.SessionData) def.SessionData {
 			env.Msg.Message = ref
 		}
 
-		config := utils.DeserializeUserConfig(env.User.Config)
+		config := utils.DeserializeUserConfig(utils.GetUserConfig(env))
 
 		// If indeed a reference, attempt to query
 		if len(ref) > 0 {

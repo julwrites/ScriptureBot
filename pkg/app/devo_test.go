@@ -5,6 +5,7 @@ import (
 	"time"
 
 	"github.com/julwrites/BotPlatform/pkg/def"
+	"github.com/julwrites/ScriptureBot/pkg/utils"
 )
 
 func TestGetMCheyneHtml(t *testing.T) {
@@ -33,13 +34,12 @@ func TestGetDiscipleshipJournalDatabase(t *testing.T) {
 
 func TestGetDiscipleshipJournalReferences(t *testing.T) {
 	var env def.SessionData
-
-	env.ResourcePath = "../../resource"
+	env.Props = map[string]interface{}{"ResourcePath": "../../resource"}
 
 	options := GetDiscipleshipJournalReferences(env)
 
 	if len(options) == 0 {
-		djBRP := GetDiscipleshipJournalDatabase(env.ResourcePath)
+		djBRP := GetDiscipleshipJournalDatabase(utils.GetResourcePath(env))
 
 		length := len(djBRP.BibleReadingPlan) / 12
 
@@ -82,7 +82,7 @@ func TestGetDevotionalData(t *testing.T) {
 		ResetAPIConfigCache()
 
 		var env def.SessionData
-		env.ResourcePath = "../../resource"
+		env.Props = map[string]interface{}{"ResourcePath": "../../resource"}
 		env.Res = GetDevotionalData(env, "DTMSV")
 
 		if len(env.Res.Message) == 0 {
@@ -98,7 +98,7 @@ func TestGetDevo(t *testing.T) {
 		ResetAPIConfigCache()
 
 		var env def.SessionData
-		env.User.Action = ""
+		env = utils.SetUserAction(env, "")
 		env.Msg.Message = CMD_DEVO
 
 		env = GetDevo(env, &MockBot{})
@@ -119,9 +119,9 @@ func TestGetDevo(t *testing.T) {
 			ResetAPIConfigCache()
 
 			var env def.SessionData
-			env.User.Action = CMD_DEVO
+			env = utils.SetUserAction(env, CMD_DEVO)
 			env.Msg.Message = devoName
-			env.ResourcePath = "../../resource"
+			env.Props = map[string]interface{}{"ResourcePath": "../../resource"}
 
 			env = GetDevo(env, &MockBot{})
 
