@@ -4,12 +4,12 @@ import "github.com/julwrites/BotPlatform/pkg/def"
 
 type User struct {
 	Id        string `datastore:"-"` // ID is the key
-	Username  string `datastore:""`
-	Firstname string `datastore:""`
-	Lastname  string `datastore:""`
-	Type      string `datastore:""`
-	Action    string `datastore:""`
-	Config    string `datastore:""`
+	Username  string `datastore:",noindex"`
+	Firstname string `datastore:",noindex"`
+	Lastname  string `datastore:",noindex"`
+	Type      string `datastore:",noindex"`
+	Action    string `datastore:",noindex"`
+	Config    string `datastore:",noindex"`
 }
 
 func GetUserFromSession(env def.SessionData) User {
