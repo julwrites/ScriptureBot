@@ -37,8 +37,6 @@ jobs:
 
       - name: Docker Build and Stage
         run: |
-          printf "TELEGRAM_ID: \"$TELEGRAM_ID\"\nADMIN_ID: \"$ADMIN_ID\"\nGCLOUD_PROJECT_ID: \"$GCLOUD_PROJECT_ID\"\n" >> secrets.yaml
-          cat secrets.yaml
           docker build --build-arg GCLOUD_PROJECT_ID=$GCLOUD_PROJECT_ID -f Dockerfile -t $GCLOUD_REGION-docker.pkg.dev/$GCLOUD_PROJECT_ID/$ARTIFACT_ID/root:latest .
           docker push $GCLOUD_REGION-docker.pkg.dev/$GCLOUD_PROJECT_ID/$ARTIFACT_ID/root:latest
 

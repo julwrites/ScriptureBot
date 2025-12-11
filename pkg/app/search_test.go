@@ -67,5 +67,10 @@ func TestGetBibleSearch(t *testing.T) {
 		if !strings.Contains(env.Res.Message, "Found") && !strings.Contains(env.Res.Message, "No results") {
 			t.Errorf("Expected result count, got: %s", env.Res.Message)
 		}
+
+		expected := `- <a href="https://example.com/John3:16">John 3:16</a>`
+		if !strings.Contains(env.Res.Message, expected) {
+			t.Errorf("Expected HTML link in response, got: %s", env.Res.Message)
+		}
 	})
 }
