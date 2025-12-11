@@ -8,7 +8,7 @@ require (
 	cloud.google.com/go/datastore v1.20.0
 	cloud.google.com/go/secretmanager v1.16.0
 	github.com/joho/godotenv v1.5.1
-	github.com/julwrites/BotPlatform v0.0.0-20251211011140-ceb9fd2844a7
+	github.com/julwrites/BotPlatform v0.0.0-20251211050425-935946c19bdb
 	golang.org/x/net v0.43.0
 	google.golang.org/api v0.247.0
 	gopkg.in/yaml.v2 v2.4.0

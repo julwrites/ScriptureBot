@@ -58,6 +58,7 @@ func SetVersion(env def.SessionData) def.SessionData {
 		}
 
 		env.Res.Affordances.Options = options
+		env.Res.Affordances.ColWidth = 3
 
 		env = utils.SetUserAction(env, CMD_VERSION)
 

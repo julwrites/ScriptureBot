@@ -1,6 +1,7 @@
 package app
 
 import (
+	"context"
 	"testing"
 
 	"github.com/julwrites/BotPlatform/pkg/def"
@@ -21,6 +22,14 @@ func TestUserDatabaseIntegration(t *testing.T) {
 	if projectID == "" {
 		t.Skip("Skipping database test: GCLOUD_PROJECT_ID not set")
 	}
+
+	// Verify client connectivity before proceeding
+	ctx := context.Background()
+	client := utils.OpenClient(&ctx, projectID)
+	if client == nil {
+		t.Skip("Skipping database test: Could not create Firestore client (check credentials)")
+	}
+	client.Close()
 
 	// Use a unique ID to avoid conflict with real users
 	dummyID := "test-integration-user-DO-NOT-DELETE"
