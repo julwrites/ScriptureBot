@@ -27,7 +27,7 @@ func GetBibleAsk(env def.SessionData) def.SessionData {
 
 func GetBibleAskWithContext(env def.SessionData, contextVerses []string) def.SessionData {
 	if len(env.Msg.Message) > 0 {
-		config := utils.DeserializeUserConfig(env.User.Config)
+		config := utils.DeserializeUserConfig(utils.GetUserConfig(env))
 
 		req := QueryRequest{
 			Query: QueryObject{

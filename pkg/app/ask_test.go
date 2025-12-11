@@ -25,7 +25,7 @@ func TestGetBibleAsk(t *testing.T) {
 		env.Msg.Message = "Who is God?"
 		env.User.Id = "12345"
 		conf := utils.UserConfig{Version: "NIV"}
-		env.User.Config = utils.SerializeUserConfig(conf)
+		env = utils.SetUserConfig(env, utils.SerializeUserConfig(conf))
 
 		// Set dummy API config
 		SetAPIConfigOverride("https://mock", "key")
@@ -54,7 +54,7 @@ func TestGetBibleAsk(t *testing.T) {
 		var env def.SessionData
 		env.Msg.Message = "Explain this"
 		conf := utils.UserConfig{Version: "NIV"}
-		env.User.Config = utils.SerializeUserConfig(conf)
+		env = utils.SetUserConfig(env, utils.SerializeUserConfig(conf))
 		contextVerses := []string{"John 3:16", "Genesis 1:1"}
 
 		// Set dummy API config
@@ -85,7 +85,7 @@ func TestGetBibleAsk(t *testing.T) {
 		env.User.Id = "user_id"
 		env.Msg.Message = "Question"
 		conf := utils.UserConfig{Version: "NIV"}
-		env.User.Config = utils.SerializeUserConfig(conf)
+		env = utils.SetUserConfig(env, utils.SerializeUserConfig(conf))
 
 		env = GetBibleAsk(env)
 
@@ -106,7 +106,7 @@ func TestGetBibleAsk(t *testing.T) {
 		env.User.Id = "admin_id"
 		env.Msg.Message = "Question"
 		conf := utils.UserConfig{Version: "NIV"}
-		env.User.Config = utils.SerializeUserConfig(conf)
+		env = utils.SetUserConfig(env, utils.SerializeUserConfig(conf))
 
 		env = GetBibleAsk(env)
 

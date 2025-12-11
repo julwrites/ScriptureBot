@@ -28,7 +28,7 @@ func TestSetVersion(t *testing.T) {
 	var env def.SessionData
 	var conf utils.UserConfig
 	conf.Version = "NIV"
-	env.User.Config = utils.SerializeUserConfig(conf)
+	env = utils.SetUserConfig(env, utils.SerializeUserConfig(conf))
 
 	env = SetVersion(env)
 	if len(env.Res.Affordances.Options) < 1 {
@@ -38,7 +38,7 @@ func TestSetVersion(t *testing.T) {
 		t.Errorf("Failed TestSetVersion initial scenario message")
 	}
 
-	env.User.Action = CMD_VERSION
+	env = utils.SetUserAction(env, CMD_VERSION)
 	env = SetVersion(env)
 	if len(env.Res.Message) == 0 {
 		t.Errorf("Failed TestSetVersion error scenario message")

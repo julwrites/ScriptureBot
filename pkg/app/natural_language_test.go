@@ -5,6 +5,7 @@ import (
 	"testing"
 
 	"github.com/julwrites/BotPlatform/pkg/def"
+	"github.com/julwrites/ScriptureBot/pkg/utils"
 )
 
 func TestProcessNaturalLanguage(t *testing.T) {
@@ -102,7 +103,7 @@ func TestProcessNaturalLanguage(t *testing.T) {
 		t.Run(tt.name, func(t *testing.T) {
 			env := def.SessionData{}
 			env.Msg.Message = tt.message
-			env.User.Config = `{"version":"NIV"}`
+			env = utils.SetUserConfig(env, `{"version":"NIV"}`)
 
 			res := ProcessNaturalLanguage(env)
 

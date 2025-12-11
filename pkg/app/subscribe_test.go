@@ -12,7 +12,7 @@ func TestUpdateSubscription(t *testing.T) {
 	var env def.SessionData
 	var conf utils.UserConfig
 	conf.Subscriptions = "MCBRP"
-	env.User.Config = utils.SerializeUserConfig(conf)
+	env = utils.SetUserConfig(env, utils.SerializeUserConfig(conf))
 
 	env = UpdateSubscription(env)
 	if len(env.Res.Affordances.Options) < 1 {
@@ -21,7 +21,7 @@ func TestUpdateSubscription(t *testing.T) {
 	if len(env.Res.Message) == 0 {
 		t.Errorf("Failed TestUpdateSubscription initial scenario message")
 	}
-	if env.User.Action != CMD_SUBSCRIBE {
+	if utils.GetUserAction(env) != CMD_SUBSCRIBE {
 		t.Errorf("Failed TestUpdateSubscription initial scenario state")
 	}
 
@@ -30,10 +30,10 @@ func TestUpdateSubscription(t *testing.T) {
 		t.Errorf("Failed TestUpdateSubscription error scenario message")
 	}
 
-	env.User.Action = CMD_SUBSCRIBE
+	env = utils.SetUserAction(env, CMD_SUBSCRIBE)
 	env.Msg.Message = "Discipleship Journal Bible Reading Plan"
 	env = UpdateSubscription(env)
-	config := utils.DeserializeUserConfig(env.User.Config)
+	config := utils.DeserializeUserConfig(utils.GetUserConfig(env))
 	log.Printf("Subscriptions: %s", config.Subscriptions)
 	if len(env.Res.Affordances.Options) < 1 {
 		t.Errorf("Failed TestUpdateSubscription fulfillment scenario options")

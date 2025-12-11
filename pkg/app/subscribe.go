@@ -10,9 +10,9 @@ import (
 )
 
 func UpdateSubscription(env def.SessionData) def.SessionData {
-	config := utils.DeserializeUserConfig(env.User.Config)
+	config := utils.DeserializeUserConfig(utils.GetUserConfig(env))
 
-	switch env.User.Action {
+	switch utils.GetUserAction(env) {
 	case CMD_SUBSCRIBE:
 		log.Printf("Detected existing action /subscribe")
 
@@ -46,9 +46,9 @@ func UpdateSubscription(env def.SessionData) def.SessionData {
 			}
 
 			config.Subscriptions = strings.Join(subscriptions, ",")
-			env.User.Config = utils.SerializeUserConfig(config)
+			env = utils.SetUserConfig(env, utils.SerializeUserConfig(config))
 
-			env.User.Action = ""
+			env = utils.SetUserAction(env, "")
 			env.Res.Affordances.Remove = true
 		} else {
 			log.Printf("AcronymizeDevo failed %v", err)
@@ -77,7 +77,7 @@ func UpdateSubscription(env def.SessionData) def.SessionData {
 
 		env.Res.Affordances.Options = options
 
-		env.User.Action = CMD_SUBSCRIBE
+		env = utils.SetUserAction(env, CMD_SUBSCRIBE)
 
 		env.Res.Message = "Choose a Devotional to receive!"
 

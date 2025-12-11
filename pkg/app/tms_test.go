@@ -162,8 +162,8 @@ func TestGetRandomTMSVerse(t *testing.T) {
 	var env def.SessionData
 	var conf utils.UserConfig
 	conf.Version = "NIV"
-	env.User.Config = utils.SerializeUserConfig(conf)
-	env.ResourcePath = "../../resource"
+	env = utils.SetUserConfig(env, utils.SerializeUserConfig(conf))
+	env.Props = map[string]interface{}{"ResourcePath": "../../resource"}
 
 	env.Msg.Message = GetRandomTMSVerse(env)
 
@@ -182,8 +182,8 @@ func TestGetTMSVerse(t *testing.T) {
 	var env def.SessionData
 	var conf utils.UserConfig
 	conf.Version = "NIV"
-	env.User.Config = utils.SerializeUserConfig(conf)
-	env.ResourcePath = "../../resource"
+	env = utils.SetUserConfig(env, utils.SerializeUserConfig(conf))
+	env.Props = map[string]interface{}{"ResourcePath": "../../resource"}
 
 	env.Msg.Message = "A1"
 	env = GetTMSVerse(env)

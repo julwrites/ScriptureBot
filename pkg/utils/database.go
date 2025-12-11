@@ -50,54 +50,54 @@ func OpenClient(ctx *context.Context, project string) *datastore.Client {
 	return client
 }
 
-func GetUser(user def.UserData, project string) def.UserData {
+func GetUser(id string, project string) User {
 	ctx := context.Background()
 	client := OpenClient(&ctx, project)
+
+	var user User
+	user.Id = id
 
 	if client == nil {
 		return user
 	}
 	defer client.Close()
 
-	key := datastore.NameKey("User", user.Id, nil)
-	var entity def.UserData
-	err := client.Get(ctx, key, &entity)
+	key := datastore.NameKey("User", id, nil)
+	err := client.Get(ctx, key, &user)
 	if err != nil {
 		log.Printf("Failed to get user: %v", err)
 
 		return user
 	}
 
-	user = entity
-
 	log.Printf("Found user %s", user.Username)
 
 	return user
 }
 
-func GetAllUsers(project string) []def.UserData {
+func GetAllUsers(project string) []User {
 	ctx := context.Background()
 	client := OpenClient(&ctx, project)
 
 	if client == nil {
-		return []def.UserData{}
+		return []User{}
 	}
 	defer client.Close()
 
-	var users []def.UserData
+	var users []User
 
 	_, err := client.GetAll(ctx, datastore.NewQuery("User"), &users)
 
 	if err != nil {
 		log.Printf("Failed to get users: %v", err)
 
-		return []def.UserData{}
+		return []User{}
 	}
 
 	return users
 }
 
-func PushUser(user def.UserData, project string) bool {
+func PushUser(user User, project string) bool {
 	log.Printf("Updating user data %v", user)
 
 	ctx := context.Background()
@@ -138,9 +138,21 @@ func SerializeUserConfig(config UserConfig) string {
 	return string(strConfig)
 }
 
-func RegisterUser(user def.UserData, project string) def.UserData {
-	// Get stored user if any, else default to what we currently have
-	user = GetUser(user, project)
+func RegisterUser(platformUser def.UserData, project string) User {
+	// Map identity from platform user to local user
+	var user User
+	user.Id = platformUser.Id
+	user.Username = platformUser.Username
+	user.Firstname = platformUser.Firstname
+	user.Lastname = platformUser.Lastname
+	user.Type = string(platformUser.Type)
+
+	// Get stored user from DB to retrieve state (Action, Config)
+	dbUser := GetUser(user.Id, project)
+
+	// Preserve state from DB
+	user.Action = dbUser.Action
+	user.Config = dbUser.Config
 
 	// Read the stored config
 	config := DeserializeUserConfig(user.Config)

@@ -34,15 +34,18 @@ func TestUserDatabaseIntegration(t *testing.T) {
 
 	// Create/Update user
 	// This exercises the connection to Datastore/Firestore
-	updatedUser := utils.RegisterUser(user, projectID)
+	localUser := utils.RegisterUser(user, projectID)
 
-	if updatedUser.Id != dummyID {
-		t.Errorf("Expected user ID %s, got %s", dummyID, updatedUser.Id)
+	if localUser.Id != dummyID {
+		t.Errorf("Expected user ID %s, got %s", dummyID, localUser.Id)
 	}
 
 	// Verify update capability
-	updatedUser.Action = "testing"
-	finalUser := utils.RegisterUser(updatedUser, projectID)
+	localUser.Action = "testing"
+	utils.PushUser(localUser, projectID)
+
+	// Retrieve again
+	finalUser := utils.RegisterUser(user, projectID)
 
 	if finalUser.Action != "testing" {
 		t.Errorf("Expected user Action 'testing', got '%s'", finalUser.Action)
