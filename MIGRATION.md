@@ -31,6 +31,8 @@ Update the following secrets in the GitHub Repository settings:
 *   `GCLOUD_ARTIFACT_REPOSITORY_ID`: The name of the repository created in Artifact Registry.
 *   `TELEGRAM_ID`: The Telegram Bot Token (ensure it matches the one used in the source project if preserving identity).
 *   `TELEGRAM_ADMIN_ID`: Your Telegram User ID.
+*   `BIBLE_API_URL`: The URL for the Bible API (required for new features).
+*   `BIBLE_API_KEY`: The API Key for the Bible API.
 
 ## 2. Data Migration
 

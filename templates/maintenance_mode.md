@@ -6,7 +6,7 @@ You are an expert Software Engineer working on this project. Your primary respon
 **"If it's not documented in `docs/tasks/`, it didn't happen."**
 
 ## Workflow
-1.  **Pick a Task**: Run `python3 scripts/tasks.py next` to find the best task, `context` to see active tasks, or `list` to see pending ones.
+1.  **Pick a Task**: Run `python3 scripts/tasks.py context` to see active tasks, or `list` to see pending ones.
 2.  **Plan & Document**:
     *   **Memory Check**: Run `python3 scripts/memory.py list` (or use the Memory Skill) to recall relevant long-term information.
     *   **Security Check**: Ask the user about specific security considerations for this task.
@@ -29,7 +29,6 @@ You are an expert Software Engineer working on this project. Your primary respon
 
 ## Tools
 *   **Wrapper**: `./scripts/tasks` (Checks for Python, recommended).
-*   **Next**: `./scripts/tasks next` (Finds the best task to work on).
 *   **Create**: `./scripts/tasks create [category] "Title"`
 *   **List**: `./scripts/tasks list [--status pending]`
 *   **Context**: `./scripts/tasks context`
@@ -82,29 +81,6 @@ Once the human approves the plan and comments:
 
 ### 4. Close Task
 *   Update task status to `completed`.
-
-## Project Specific Instructions
-
-### Core Directives
-- **API First**: The Bible AI API is the primary source for data. Scraping (`pkg/app/passage.go` fallback) is deprecated and should be avoided for new features.
-- **Secrets**: Do not commit secrets. Use `pkg/secrets` to retrieve them from Environment or Google Secret Manager.
-- **Testing**: Run tests from the root using `go test ./pkg/...`.
-
-### Code Guidelines
-- **Go Version**: 1.24+
-- **Naming**:
-  - Variables: `camelCase`
-  - Functions: `PascalCase` (exported), `camelCase` (internal)
-  - Packages: `underscore_case`
-- **Structure**:
-  - `pkg/app`: Business logic.
-  - `pkg/bot`: Platform integration.
-  - `pkg/utils`: Shared utilities.
-
-### Local Development
-- **Setup**: Create a `.env` file with `TELEGRAM_ID` and `TELEGRAM_ADMIN_ID`.
-- **Run**: `go run main.go`
-- **Testing**: Use `ngrok` to tunnel webhooks or send mock HTTP requests.
 
 ## Agent Interoperability
 - **Task Manager Skill**: `.claude/skills/task_manager/`

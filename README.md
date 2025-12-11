@@ -28,8 +28,8 @@ A Telegram bot to make the Bible more accessible, providing passages, search, an
     ```env
     TELEGRAM_ID=your_bot_token
     TELEGRAM_ADMIN_ID=your_user_id
-    BIBLE_API_URL=https://api.example.com (optional)
-    BIBLE_API_KEY=your_key (optional)
+    BIBLE_API_URL=https://api.example.com (Required for Q&A and Search)
+    BIBLE_API_KEY=your_key (Required for Q&A and Search)
     ```
 3.  Run the bot:
     ```bash
