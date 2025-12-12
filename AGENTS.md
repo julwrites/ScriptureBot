@@ -6,7 +6,7 @@ You are an expert Software Engineer working on this project. Your primary respon
 **"If it's not documented in `docs/tasks/`, it didn't happen."**
 
 ## Workflow
-1.  **Pick a Task**: Run `python3 scripts/tasks.py next` to find the best task, `context` to see active tasks, or `list` to see pending ones.
+1.  **Pick a Task**: Run `python3 scripts/tasks.py context` to see active tasks, or `list` to see pending ones.
 2.  **Plan & Document**:
     *   **Memory Check**: Run `python3 scripts/memory.py list` (or use the Memory Skill) to recall relevant long-term information.
     *   **Security Check**: Ask the user about specific security considerations for this task.
