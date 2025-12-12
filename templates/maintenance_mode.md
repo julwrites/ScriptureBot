@@ -29,6 +29,7 @@ You are an expert Software Engineer working on this project. Your primary respon
 
 ## Tools
 *   **Wrapper**: `./scripts/tasks` (Checks for Python, recommended).
+*   **Next**: `./scripts/tasks next` (Finds the best task to work on).
 *   **Create**: `./scripts/tasks create [category] "Title"`
 *   **List**: `./scripts/tasks list [--status pending]`
 *   **Context**: `./scripts/tasks context`
