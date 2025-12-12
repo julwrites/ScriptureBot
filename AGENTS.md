@@ -35,6 +35,11 @@ You are an expert Software Engineer working on this project. Your primary respon
 *   **Context**: `./scripts/tasks context`
 *   **Update**: `./scripts/tasks update [ID] [status]`
 *   **Migrate**: `./scripts/tasks migrate` (Migrate legacy tasks to new format)
+*   **Link**: `./scripts/tasks link [ID] [DEP_ID]` (Add dependency).
+*   **Unlink**: `./scripts/tasks unlink [ID] [DEP_ID]` (Remove dependency).
+*   **Index**: `./scripts/tasks index` (Generate INDEX.yaml).
+*   **Graph**: `./scripts/tasks graph` (Visualize dependencies).
+*   **Validate**: `./scripts/tasks validate` (Check task files).
 *   **Memory**: `./scripts/memory.py [create|list|read]`
 *   **JSON Output**: Add `--format json` to any command for machine parsing.
 
