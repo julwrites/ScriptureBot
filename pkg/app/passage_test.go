@@ -1,16 +1,33 @@
 package app
 
 import (
+	"errors"
 	"strings"
 	"testing"
+
+	"golang.org/x/net/html"
 
 	"github.com/julwrites/BotPlatform/pkg/def"
 	"github.com/julwrites/ScriptureBot/pkg/utils"
 )
 
-func TestGetReference(t *testing.T) {
-	doc := GetPassageHTML("gen 1", "NIV")
+func mockGetPassageHTML(htmlStr string) *html.Node {
+	doc, _ := html.Parse(strings.NewReader(htmlStr))
+	return doc
+}
 
+func TestGetReference(t *testing.T) {
+	// Mock GetPassageHTML
+	originalGetPassageHTML := GetPassageHTML
+	defer func() { GetPassageHTML = originalGetPassageHTML }()
+
+	GetPassageHTML = func(ref, ver string) *html.Node {
+		return mockGetPassageHTML(`
+			<div class="bcv">Genesis 1</div>
+		`)
+	}
+
+	doc := GetPassageHTML("gen 1", "NIV")
 	ref := GetReference(doc)
 
 	if ref != "Genesis 1" {
@@ -19,6 +36,18 @@ func TestGetReference(t *testing.T) {
 }
 
 func TestGetPassage(t *testing.T) {
+	// Mock GetPassageHTML
+	originalGetPassageHTML := GetPassageHTML
+	defer func() { GetPassageHTML = originalGetPassageHTML }()
+
+	GetPassageHTML = func(ref, ver string) *html.Node {
+		return mockGetPassageHTML(`
+			<div class="passage-text">
+				<p>In the beginning was the Word.</p>
+			</div>
+		`)
+	}
+
 	doc := GetPassageHTML("john 8", "NIV")
 
 	passage := GetPassage("John 8", doc, "NIV")
@@ -98,6 +127,52 @@ func TestGetBiblePassage(t *testing.T) {
 		// If parsing fails, it might return empty string
 		if len(env.Res.Message) > 0 && !strings.Contains(env.Res.Message, "No verses found") && !strings.Contains(env.Res.Message, "Sorry") {
 			t.Errorf("Expected failure message, got '%s'", env.Res.Message)
+		}
+	})
+
+	t.Run("Fallback: Scrape", func(t *testing.T) {
+		defer UnsetEnv("BIBLE_API_URL")()
+		defer UnsetEnv("BIBLE_API_KEY")()
+		ResetAPIConfigCache()
+
+		// Mock GetPassageHTML for fallback
+		originalGetPassageHTML := GetPassageHTML
+		defer func() { GetPassageHTML = originalGetPassageHTML }()
+
+		GetPassageHTML = func(ref, ver string) *html.Node {
+			return mockGetPassageHTML(`
+				<div class="bcv">Genesis 1</div>
+				<div class="passage-text">
+					<p>In the beginning God created the heavens and the earth.</p>
+				</div>
+			`)
+		}
+
+		var env def.SessionData
+		env.Msg.Message = "gen 1"
+		var conf utils.UserConfig
+		conf.Version = "NIV"
+		env = utils.SetUserConfig(env, utils.SerializeUserConfig(conf))
+
+		// Force API error by ensuring SubmitQuery fails or by not mocking it (without creds it fails)
+		// But TestGetBiblePassage above overrides SubmitQuery. We should ensure it's not overridden or fails.
+		// Since we deferred restore in TestGetBiblePassage main body, we need to handle it.
+		// Wait, the main TestGetBiblePassage body restores SubmitQuery at end.
+		// So here SubmitQuery is likely still the mock from previous subtests if run sequentially?
+		// No, t.Run subtests share the parent scope but deferred calls in parent happen after all subtests.
+		// But in "Success: Verify Request" we set SubmitQuery = MockSubmitQuery.
+		// We should restore it inside that subtest or assume it persists.
+		// The parent TestGetBiblePassage deferred restore.
+		// So SubmitQuery is currently the Mock.
+		// We want it to fail.
+		SubmitQuery = func(req QueryRequest, result interface{}) error {
+			return errors.New("forced api error")
+		}
+
+		env = GetBiblePassage(env)
+
+		if !strings.Contains(env.Res.Message, "In the beginning") {
+			t.Errorf("Expected fallback passage content, got '%s'", env.Res.Message)
 		}
 	})
 }
