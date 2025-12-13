@@ -3,7 +3,9 @@ package utils
 import "github.com/julwrites/BotPlatform/pkg/def"
 
 type User struct {
-	Id        string `datastore:"-"` // ID is the key
+	// Id is the user's identifier on the chat platform (e.g., Telegram user ID).
+	// This field is not used as a database index - the datastore key serves as the primary identifier.
+	Id        string `datastore:",noindex"`
 	Username  string `datastore:",noindex"`
 	Firstname string `datastore:",noindex"`
 	Lastname  string `datastore:",noindex"`
