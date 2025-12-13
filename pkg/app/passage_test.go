@@ -154,17 +154,9 @@ func TestGetBiblePassage(t *testing.T) {
 		conf.Version = "NIV"
 		env = utils.SetUserConfig(env, utils.SerializeUserConfig(conf))
 
-		// Force API error by ensuring SubmitQuery fails or by not mocking it (without creds it fails)
-		// But TestGetBiblePassage above overrides SubmitQuery. We should ensure it's not overridden or fails.
-		// Since we deferred restore in TestGetBiblePassage main body, we need to handle it.
-		// Wait, the main TestGetBiblePassage body restores SubmitQuery at end.
-		// So here SubmitQuery is likely still the mock from previous subtests if run sequentially?
-		// No, t.Run subtests share the parent scope but deferred calls in parent happen after all subtests.
-		// But in "Success: Verify Request" we set SubmitQuery = MockSubmitQuery.
-		// We should restore it inside that subtest or assume it persists.
-		// The parent TestGetBiblePassage deferred restore.
-		// So SubmitQuery is currently the Mock.
-		// We want it to fail.
+		// Override SubmitQuery to force failure
+		originalSubmitQuerySub := SubmitQuery
+		defer func() { SubmitQuery = originalSubmitQuerySub }()
 		SubmitQuery = func(req QueryRequest, result interface{}) error {
 			return errors.New("forced api error")
 		}
