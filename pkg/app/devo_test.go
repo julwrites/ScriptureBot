@@ -4,6 +4,8 @@ import (
 	"testing"
 	"time"
 
+	"golang.org/x/net/html"
+
 	"github.com/julwrites/BotPlatform/pkg/def"
 	"github.com/julwrites/ScriptureBot/pkg/utils"
 )
@@ -80,6 +82,19 @@ func TestGetDevotionalData(t *testing.T) {
 		defer UnsetEnv("BIBLE_API_URL")()
 		defer UnsetEnv("BIBLE_API_KEY")()
 		ResetAPIConfigCache()
+
+		// Mock GetPassageHTML to prevent external calls during fallback
+		originalGetPassageHTML := GetPassageHTML
+		defer func() { GetPassageHTML = originalGetPassageHTML }()
+
+		GetPassageHTML = func(ref, ver string) *html.Node {
+			return mockGetPassageHTML(`
+				<div class="bcv">Genesis 1</div>
+				<div class="passage-text">
+					<p>Mock devotional content.</p>
+				</div>
+			`)
+		}
 
 		var env def.SessionData
 		env.Props = map[string]interface{}{"ResourcePath": "../../resource"}

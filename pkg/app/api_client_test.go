@@ -1,15 +1,26 @@
 package app
 
 import (
+	"os"
 	"testing"
 )
 
 func TestSubmitQuery(t *testing.T) {
 	t.Run("Success", func(t *testing.T) {
-		// Force cleanup of environment to ensure we test Secret Manager fallback
-		// This handles cases where the runner might have lingering env vars
-		defer SetEnv("BIBLE_API_URL", "https://example.com")()
-		defer SetEnv("BIBLE_API_KEY", "api_key")()
+		// Check if we should run integration test against real API
+		// If BIBLE_API_URL is set and not example.com, we assume integration test mode
+		realURL, hasURL := os.LookupEnv("BIBLE_API_URL")
+		if hasURL && realURL != "" && realURL != "https://example.com" {
+			t.Logf("Running integration test against real API: %s", realURL)
+			// Ensure we have a key
+			if _, hasKey := os.LookupEnv("BIBLE_API_KEY"); !hasKey {
+				t.Log("Warning: BIBLE_API_URL set but BIBLE_API_KEY missing. Test might fail.")
+			}
+		} else {
+			// Mock mode
+			defer SetEnv("BIBLE_API_URL", "https://example.com")()
+			defer SetEnv("BIBLE_API_KEY", "api_key")()
+		}
 
 		ResetAPIConfigCache()
 
