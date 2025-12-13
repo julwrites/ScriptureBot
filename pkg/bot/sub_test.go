@@ -10,12 +10,12 @@ import (
 
 func TestHandleSubscriptionLogic(t *testing.T) {
 	var env def.SessionData
-	env.ResourcePath = "../../resource"
+	env.Props = map[string]interface{}{"ResourcePath": "../../resource"}
 
 	var conf utils.UserConfig
 	conf.Version = "NIV"
 	conf.Subscriptions = "DTMSV"
-	env.User.Config = utils.SerializeUserConfig(conf)
+	env = utils.SetUserConfig(env, utils.SerializeUserConfig(conf))
 
 	env = HandleSubscriptionLogic(env, &app.MockBot{})
 

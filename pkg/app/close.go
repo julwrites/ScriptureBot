@@ -5,6 +5,7 @@ import (
 	"math/rand"
 
 	"github.com/julwrites/BotPlatform/pkg/def"
+	"github.com/julwrites/ScriptureBot/pkg/utils"
 )
 
 var CLOSEMSGS = []string{
@@ -17,7 +18,7 @@ var CLOSEMSGS = []string{
 
 func CloseAction(env def.SessionData) def.SessionData {
 	env.Res.Affordances.Remove = true
-	env.User.Action = ""
+	env = utils.SetUserAction(env, "")
 
 	fmtMessage := CLOSEMSGS[rand.Intn(len(CLOSEMSGS))]
 

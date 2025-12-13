@@ -1,6 +1,7 @@
 package app
 
 import (
+	"context"
 	"testing"
 
 	"github.com/julwrites/BotPlatform/pkg/def"
@@ -22,6 +23,14 @@ func TestUserDatabaseIntegration(t *testing.T) {
 		t.Skip("Skipping database test: GCLOUD_PROJECT_ID not set")
 	}
 
+	// Verify client connectivity before proceeding
+	ctx := context.Background()
+	client := utils.OpenClient(&ctx, projectID)
+	if client == nil {
+		t.Skip("Skipping database test: Could not create Firestore client (check credentials)")
+	}
+	client.Close()
+
 	// Use a unique ID to avoid conflict with real users
 	dummyID := "test-integration-user-DO-NOT-DELETE"
 
@@ -34,15 +43,18 @@ func TestUserDatabaseIntegration(t *testing.T) {
 
 	// Create/Update user
 	// This exercises the connection to Datastore/Firestore
-	updatedUser := utils.RegisterUser(user, projectID)
+	localUser := utils.RegisterUser(user, projectID)
 
-	if updatedUser.Id != dummyID {
-		t.Errorf("Expected user ID %s, got %s", dummyID, updatedUser.Id)
+	if localUser.Id != dummyID {
+		t.Errorf("Expected user ID %s, got %s", dummyID, localUser.Id)
 	}
 
 	// Verify update capability
-	updatedUser.Action = "testing"
-	finalUser := utils.RegisterUser(updatedUser, projectID)
+	localUser.Action = "testing"
+	utils.PushUser(localUser, projectID)
+
+	// Retrieve again
+	finalUser := utils.RegisterUser(user, projectID)
 
 	if finalUser.Action != "testing" {
 		t.Errorf("Expected user Action 'testing', got '%s'", finalUser.Action)

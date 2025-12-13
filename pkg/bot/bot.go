@@ -11,6 +11,7 @@ import (
 	"github.com/julwrites/BotPlatform/pkg/platform"
 
 	"github.com/julwrites/ScriptureBot/pkg/app"
+	"github.com/julwrites/ScriptureBot/pkg/utils"
 )
 
 func HelpMessage(env *def.SessionData) string {
@@ -19,9 +20,9 @@ func HelpMessage(env *def.SessionData) string {
 }
 
 func RunCommands(env def.SessionData, bot platform.Platform) def.SessionData {
-	if len(env.User.Action) > 0 {
-		log.Printf("Detected user has active action %s", env.User.Action)
-		env.Msg.Command = env.User.Action
+	if action := utils.GetUserAction(env); len(action) > 0 {
+		log.Printf("Detected user has active action %s", action)
+		env.Msg.Command = action
 	}
 
 	if env.Msg.Message == app.CMD_CLOSE {

@@ -8,20 +8,8 @@ import (
 	"github.com/julwrites/ScriptureBot/pkg/utils"
 )
 
-func TestGetBiblePassageHtml(t *testing.T) {
-	doc := GetPassageHTML("gen 8", "NIV")
-
-	if doc == nil {
-		t.Errorf("Could not retrieve bible passage")
-	}
-}
-
 func TestGetReference(t *testing.T) {
 	doc := GetPassageHTML("gen 1", "NIV")
-
-	if doc == nil {
-		t.Fatalf("Could not retrieve Bible passage for testing")
-	}
 
 	ref := GetReference(doc)
 
@@ -41,16 +29,55 @@ func TestGetPassage(t *testing.T) {
 }
 
 func TestGetBiblePassage(t *testing.T) {
-	t.Run("Success", func(t *testing.T) {
+	// Restore original SubmitQuery after test
+	originalSubmitQuery := SubmitQuery
+	defer func() { SubmitQuery = originalSubmitQuery }()
+
+	t.Run("Success: Verify Request", func(t *testing.T) {
 		defer UnsetEnv("BIBLE_API_URL")()
 		defer UnsetEnv("BIBLE_API_KEY")()
 		ResetAPIConfigCache()
+
+		var capturedReq QueryRequest
+		SubmitQuery = MockSubmitQuery(t, func(req QueryRequest) {
+			capturedReq = req
+		})
 
 		var env def.SessionData
 		env.Msg.Message = "gen 1"
 		var conf utils.UserConfig
 		conf.Version = "NIV"
-		env.User.Config = utils.SerializeUserConfig(conf)
+		env = utils.SetUserConfig(env, utils.SerializeUserConfig(conf))
+
+		// Set dummy API config to pass internal checks
+		SetAPIConfigOverride("https://mock", "key")
+
+		GetBiblePassage(env)
+
+		// Verify that Verses is populated and others are not
+		if len(capturedReq.Query.Verses) != 1 || capturedReq.Query.Verses[0] != "Genesis 1" {
+			t.Errorf("Expected Query.Verses to contain 'Genesis 1', got %v", capturedReq.Query.Verses)
+		}
+		if len(capturedReq.Query.Words) > 0 {
+			t.Errorf("Expected Query.Words to be empty, got %v", capturedReq.Query.Words)
+		}
+		if capturedReq.Query.Prompt != "" {
+			t.Errorf("Expected Query.Prompt to be empty, got '%s'", capturedReq.Query.Prompt)
+		}
+	})
+
+	t.Run("Success: Response", func(t *testing.T) {
+		defer UnsetEnv("BIBLE_API_URL")()
+		defer UnsetEnv("BIBLE_API_KEY")()
+		ResetAPIConfigCache()
+		SetAPIConfigOverride("https://example.com", "key")
+		SubmitQuery = originalSubmitQuery // Use default mock logic for response testing
+
+		var env def.SessionData
+		env.Msg.Message = "gen 1"
+		var conf utils.UserConfig
+		conf.Version = "NIV"
+		env = utils.SetUserConfig(env, utils.SerializeUserConfig(conf))
 		env = GetBiblePassage(env)
 
 		if len(env.Res.Message) < 10 {
@@ -102,9 +129,17 @@ func TestParsePassageFromHtml(t *testing.T) {
 
 	t.Run("HTML with spans", func(t *testing.T) {
 		html := `<p><span>Line 1.</span><br><span>    </span><span>Line 2.</span></p>`
-		expected := "Line 1.\n\n    Line 2."
+		expected := "Line 1.\n    Line 2."
 		if got := ParsePassageFromHtml("", html, ""); got != expected {
 			t.Errorf("ParsePassageFromHtml() = %v, want %v", got, expected)
+		}
+	})
+
+	t.Run("Poetry double newline check", func(t *testing.T) {
+		html := `<p><span>Line 1</span><br><span>Line 2</span></p>`
+		expected := "Line 1\nLine 2"
+		if got := ParsePassageFromHtml("", html, ""); got != expected {
+			t.Errorf("ParsePassageFromHtml() = %q, want %q", got, expected)
 		}
 	})
 

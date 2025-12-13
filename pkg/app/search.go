@@ -11,7 +11,7 @@ import (
 
 func GetBibleSearch(env def.SessionData) def.SessionData {
 	if len(env.Msg.Message) > 0 {
-		config := utils.DeserializeUserConfig(env.User.Config)
+		config := utils.DeserializeUserConfig(utils.GetUserConfig(env))
 
 		// Parse message into words?
 		// The API expects a list of words.
@@ -49,9 +49,11 @@ func GetBibleSearch(env def.SessionData) def.SessionData {
 			var sb strings.Builder
 			sb.WriteString(fmt.Sprintf("Found %d results for '%s':\n", len(resp), env.Msg.Message))
 			for _, res := range resp {
-				// Format: - Verse (URL)
-				// Markdown link: [Verse](URL)
-				sb.WriteString(fmt.Sprintf("- [%s](%s)\n", res.Verse, res.URL))
+				if res.URL != "" {
+					sb.WriteString(fmt.Sprintf("- <a href=\"%s\">%s</a>\n", res.URL, res.Verse))
+				} else {
+					sb.WriteString(fmt.Sprintf("- %s\n", res.Verse))
+				}
 			}
 			env.Res.Message = sb.String()
 		} else {

@@ -1,37 +1,117 @@
-# ScriptureBot Architecture & Guidelines
+# AI Agent Instructions
 
-## Architecture Overview
+You are an expert Software Engineer working on this project. Your primary responsibility is to implement features and fixes while strictly adhering to the **Task Documentation System**.
 
-ScriptureBot is a Go-based bot application designed to provide Bible passages and related resources. It is built on top of `github.com/julwrites/BotPlatform`.
+## Core Philosophy
+**"If it's not documented in `docs/tasks/`, it didn't happen."**
 
-### Directory Structure
+## Workflow
+1.  **Pick a Task**: Run `python3 scripts/tasks.py context` to see active tasks, or `list` to see pending ones.
+2.  **Plan & Document**:
+    *   **Memory Check**: Run `python3 scripts/memory.py list` (or use the Memory Skill) to recall relevant long-term information.
+    *   **Security Check**: Ask the user about specific security considerations for this task.
+    *   If starting a new task, use `scripts/tasks.py create` (or `python3 scripts/tasks.py create`) to generate a new task file.
+    *   Update the task status: `python3 scripts/tasks.py update [TASK_ID] in_progress`.
+3.  **Implement**: Write code, run tests.
+4.  **Update Documentation Loop**:
+    *   As you complete sub-tasks, check them off in the task document.
+    *   If you hit a blocker, update status to `wip_blocked` and describe the issue in the file.
+    *   Record key architectural decisions in the task document.
+    *   **Memory Update**: If you learn something valuable for the long term, use `scripts/memory.py create` to record it.
+5.  **Review & Verify**:
+    *   Once implementation is complete, update status to `review_requested`: `python3 scripts/tasks.py update [TASK_ID] review_requested`.
+    *   Ask a human or another agent to review the code.
+    *   Once approved and tested, update status to `verified`.
+6.  **Finalize**:
+    *   Update status to `completed`: `python3 scripts/tasks.py update [TASK_ID] completed`.
+    *   Record actual effort in the file.
+    *   Ensure all acceptance criteria are met.
 
-- `pkg/app`: Contains the core application logic.
-  - `passage.go`: Currently handles Bible passage retrieval via web scraping (classic.biblegateway.com).
-  - `devo*.go`: Handles devotionals.
-  - `command.go`: Command handling logic.
-- `pkg/bot`: Contains bot interface implementations (e.g., Telegram).
-- `pkg/utils`: Shared utility functions.
+## Tools
+*   **Wrapper**: `./scripts/tasks` (Checks for Python, recommended).
+*   **Next**: `./scripts/tasks next` (Finds the best task to work on).
+*   **Create**: `./scripts/tasks create [category] "Title"`
+*   **List**: `./scripts/tasks list [--status pending]`
+*   **Context**: `./scripts/tasks context`
+*   **Update**: `./scripts/tasks update [ID] [status]`
+*   **Migrate**: `./scripts/tasks migrate` (Migrate legacy tasks to new format)
+*   **Link**: `./scripts/tasks link [ID] [DEP_ID]` (Add dependency).
+*   **Unlink**: `./scripts/tasks unlink [ID] [DEP_ID]` (Remove dependency).
+*   **Index**: `./scripts/tasks index` (Generate INDEX.yaml).
+*   **Graph**: `./scripts/tasks graph` (Visualize dependencies).
+*   **Validate**: `./scripts/tasks validate` (Check task files).
+*   **Memory**: `./scripts/memory.py [create|list|read]`
+*   **JSON Output**: Add `--format json` to any command for machine parsing.
 
-### Key Dependencies
+## Documentation Reference
+*   **Guide**: Read `docs/tasks/GUIDE.md` for strict formatting and process rules.
+*   **Architecture**: Refer to `docs/architecture/` for system design.
+*   **Features**: Refer to `docs/features/` for feature specifications.
+*   **Security**: Refer to `docs/security/` for risk assessments and mitigations.
+*   **Memories**: Refer to `docs/memories/` for long-term project context.
 
-- `github.com/julwrites/BotPlatform`: The underlying bot framework.
-- `golang.org/x/net/html`: Used for parsing HTML (currently used for scraping).
-- `cloud.google.com/go/datastore`: Used for data persistence.
+## Code Style & Standards
+*   Follow the existing patterns in the codebase.
+*   Ensure all new code is covered by tests (if testing infrastructure exists).
 
-## Development Guidelines
+## PR Review Methodology
+When performing a PR review, follow this "Human-in-the-loop" process to ensure depth and efficiency.
 
-- **Passage Retrieval**: The current scraping mechanism in `pkg/app/passage.go` is being replaced by a new Bible AI API service.
-- **New Features**:
-  - Word Search: Search for words in the Bible.
-  - Bible Query: Ask questions using natural language (LLM-backed).
-- **Code Style**: Follow standard Go idioms. Ensure error handling is robust.
+### 1. Preparation
+1.  **Create Task**: `python3 scripts/tasks.py create review "Review PR #<N>: <Title>"`
+2.  **Fetch Details**: Use `gh` to get the PR context.
+    *   `gh pr view <N>`
+    *   `gh pr diff <N>`
 
-## API Integration
+### 2. Analysis & Planning (The "Review Plan")
+**Do not review line-by-line yet.** Instead, analyze the changes and document a **Review Plan** in the task file (or present it for approval).
 
-The new Bible AI API exposes a `/query` endpoint.
-- **Verses**: `query.verses`
-- **Word Search**: `query.words`
-- **Prompt/Query**: `query.prompt`
+Your plan must include:
+*   **High-Level Summary**: Purpose, new APIs, breaking changes.
+*   **Dependency Check**: New libraries, maintenance status, security.
+*   **Impact Assessment**: Effect on existing code/docs.
+*   **Focus Areas**: Prioritized list of files/modules to check.
+*   **Suggested Comments**: Draft comments for specific lines.
+    *   Format: `File: <path> | Line: <N> | Comment: <suggestion>`
+    *   Tone: Friendly, suggestion-based ("Consider...", "Nit: ...").
 
-Refer to `openapi.yaml` for the full specification.
+### 3. Execution
+Once the human approves the plan and comments:
+1.  **Pending Review**: Create a pending review using `gh`.
+    *   `COMMIT_SHA=$(gh pr view <N> --json headRefOid -q .headRefOid)`
+    *   `gh api repos/{owner}/{repo}/pulls/{N}/reviews -f commit_id="$COMMIT_SHA"`
+2.  **Batch Comments**: Add comments to the pending review.
+    *   `gh api repos/{owner}/{repo}/pulls/{N}/comments -f body="..." -f path="..." -f commit_id="$COMMIT_SHA" -F line=<L> -f side="RIGHT"`
+3.  **Submit**:
+    *   `gh pr review <N> --approve --body "Summary..."` (or `--request-changes`).
+
+### 4. Close Task
+*   Update task status to `completed`.
+
+## Project Specific Instructions
+
+### Core Directives
+- **API First**: The Bible AI API is the primary source for data. Scraping (`pkg/app/passage.go` fallback) is deprecated and should be avoided for new features.
+- **Secrets**: Do not commit secrets. Use `pkg/secrets` to retrieve them from Environment or Google Secret Manager.
+- **Testing**: Run tests from the root using `go test ./pkg/...`.
+
+### Code Guidelines
+- **Go Version**: 1.24+
+- **Naming**:
+  - Variables: `camelCase`
+  - Functions: `PascalCase` (exported), `camelCase` (internal)
+  - Packages: `underscore_case`
+- **Structure**:
+  - `pkg/app`: Business logic.
+  - `pkg/bot`: Platform integration.
+  - `pkg/utils`: Shared utilities.
+
+### Local Development
+- **Setup**: Create a `.env` file with `TELEGRAM_ID` and `TELEGRAM_ADMIN_ID`.
+- **Run**: `go run main.go`
+- **Testing**: Use `ngrok` to tunnel webhooks or send mock HTTP requests.
+
+## Agent Interoperability
+- **Task Manager Skill**: `.claude/skills/task_manager/`
+- **Memory Skill**: `.claude/skills/memory/`
+- **Tool Definitions**: `docs/interop/tool_definitions.json`

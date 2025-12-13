@@ -12,7 +12,7 @@ import (
 )
 
 func HandleSubscriptionLogic(env def.SessionData, bot platform.Platform) def.SessionData {
-	user := env.User
+	user := utils.GetUserFromSession(env)
 	config := utils.DeserializeUserConfig(user.Config)
 
 	if len(config.Subscriptions) > 0 {
@@ -44,8 +44,16 @@ func HandleSubscriptionPublish(env def.SessionData, bot platform.Platform, proje
 	users := utils.GetAllUsers(projectID)
 	log.Printf("Retrieved %d users", len(users))
 	for _, user := range users {
-		env.User = user
-		env.User.Action = app.CMD_DEVO
+		env = utils.UpdateUserInSession(env, user)
+
+		// Sync platform identity so the bot knows who to message
+		env.User.Id = user.Id
+		env.User.Firstname = user.Firstname
+		env.User.Lastname = user.Lastname
+		env.User.Username = user.Username
+		env.User.Type = user.Type
+
+		env = utils.SetUserAction(env, app.CMD_DEVO)
 
 		env = HandleSubscriptionLogic(env, bot)
 	}
@@ -60,7 +68,7 @@ func SubscriptionHandler(localSecrets *secrets.SecretsData) {
 
 	// log.Printf("Loaded secrets...")
 
-	env.ResourcePath = "/go/bin/"
+	env.Props = map[string]interface{}{"ResourcePath": "/go/bin/"}
 
 	// TODO: Iterate through types
 	env.Type = def.TYPE_TELEGRAM
