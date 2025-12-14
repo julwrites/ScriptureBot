@@ -1,16 +1,33 @@
 package app
 
 import (
+	"errors"
 	"strings"
 	"testing"
+
+	"golang.org/x/net/html"
 
 	"github.com/julwrites/BotPlatform/pkg/def"
 	"github.com/julwrites/ScriptureBot/pkg/utils"
 )
 
-func TestGetReference(t *testing.T) {
-	doc := GetPassageHTML("gen 1", "NIV")
+func mockGetPassageHTML(htmlStr string) *html.Node {
+	doc, _ := html.Parse(strings.NewReader(htmlStr))
+	return doc
+}
 
+func TestGetReference(t *testing.T) {
+	// Mock GetPassageHTML
+	originalGetPassageHTML := GetPassageHTML
+	defer func() { GetPassageHTML = originalGetPassageHTML }()
+
+	GetPassageHTML = func(ref, ver string) *html.Node {
+		return mockGetPassageHTML(`
+			<div class="bcv">Genesis 1</div>
+		`)
+	}
+
+	doc := GetPassageHTML("gen 1", "NIV")
 	ref := GetReference(doc)
 
 	if ref != "Genesis 1" {
@@ -19,6 +36,18 @@ func TestGetReference(t *testing.T) {
 }
 
 func TestGetPassage(t *testing.T) {
+	// Mock GetPassageHTML
+	originalGetPassageHTML := GetPassageHTML
+	defer func() { GetPassageHTML = originalGetPassageHTML }()
+
+	GetPassageHTML = func(ref, ver string) *html.Node {
+		return mockGetPassageHTML(`
+			<div class="passage-text">
+				<p>In the beginning was the Word.</p>
+			</div>
+		`)
+	}
+
 	doc := GetPassageHTML("john 8", "NIV")
 
 	passage := GetPassage("John 8", doc, "NIV")
@@ -98,6 +127,44 @@ func TestGetBiblePassage(t *testing.T) {
 		// If parsing fails, it might return empty string
 		if len(env.Res.Message) > 0 && !strings.Contains(env.Res.Message, "No verses found") && !strings.Contains(env.Res.Message, "Sorry") {
 			t.Errorf("Expected failure message, got '%s'", env.Res.Message)
+		}
+	})
+
+	t.Run("Fallback: Scrape", func(t *testing.T) {
+		defer UnsetEnv("BIBLE_API_URL")()
+		defer UnsetEnv("BIBLE_API_KEY")()
+		ResetAPIConfigCache()
+
+		// Mock GetPassageHTML for fallback
+		originalGetPassageHTML := GetPassageHTML
+		defer func() { GetPassageHTML = originalGetPassageHTML }()
+
+		GetPassageHTML = func(ref, ver string) *html.Node {
+			return mockGetPassageHTML(`
+				<div class="bcv">Genesis 1</div>
+				<div class="passage-text">
+					<p>In the beginning God created the heavens and the earth.</p>
+				</div>
+			`)
+		}
+
+		var env def.SessionData
+		env.Msg.Message = "gen 1"
+		var conf utils.UserConfig
+		conf.Version = "NIV"
+		env = utils.SetUserConfig(env, utils.SerializeUserConfig(conf))
+
+		// Override SubmitQuery to force failure
+		originalSubmitQuerySub := SubmitQuery
+		defer func() { SubmitQuery = originalSubmitQuerySub }()
+		SubmitQuery = func(req QueryRequest, result interface{}) error {
+			return errors.New("forced api error")
+		}
+
+		env = GetBiblePassage(env)
+
+		if !strings.Contains(env.Res.Message, "In the beginning") {
+			t.Errorf("Expected fallback passage content, got '%s'", env.Res.Message)
 		}
 	})
 }
