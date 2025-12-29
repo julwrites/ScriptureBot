@@ -91,21 +91,17 @@ Use the `scripts/tasks` wrapper to manage tasks.
 ./scripts/tasks update [TASK_ID] verified
 ./scripts/tasks update [TASK_ID] completed
 
+# Manage Dependencies
+./scripts/tasks link [TASK_ID] [DEP_ID]
+./scripts/tasks unlink [TASK_ID] [DEP_ID]
+
+# Visualization & Analysis
+./scripts/tasks graph      # Show dependency graph
+./scripts/tasks index      # Generate INDEX.yaml
+./scripts/tasks validate   # Check for errors
+
 # Migrate legacy tasks (if updating from older version)
 ./scripts/tasks migrate
-
-# Manage Dependencies
-./scripts/tasks link [TASK_ID] [DEPENDENCY_ID]
-./scripts/tasks unlink [TASK_ID] [DEPENDENCY_ID]
-
-# Generate Dependency Index (docs/tasks/INDEX.yaml)
-./scripts/tasks index
-
-# Visualize Dependencies (Mermaid Graph)
-./scripts/tasks graph
-
-# Validate Task Files
-./scripts/tasks validate
 ```
 
 ## Agile Methodology
