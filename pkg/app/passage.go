@@ -7,6 +7,7 @@ import (
 	"fmt"
 	"log"
 	"net/url"
+	"regexp"
 	"strings"
 	stdhtml "html"
 
@@ -55,6 +56,19 @@ func isNextSiblingBr(node *html.Node) bool {
 			return true
 		}
 		return false
+	}
+	return false
+}
+
+func hasNextSignificantSibling(node *html.Node) bool {
+	for next := node.NextSibling; next != nil; next = next.NextSibling {
+		if next.Type == html.TextNode {
+			if len(strings.TrimSpace(next.Data)) == 0 {
+				continue
+			}
+			return true
+		}
+		return true // Any element
 	}
 	return false
 }
@@ -114,7 +128,7 @@ func ParseNodesForPassage(node *html.Node) string {
 			if headerText == "Footnotes" || headerText == "Cross references" {
 				continue
 			}
-			parts = append(parts, fmt.Sprintf("\n\n<b>%s</b>\n", headerText))
+			parts = append(parts, fmt.Sprintf("\n\n<b>%s</b>\n", strings.TrimSpace(headerText)))
 		case "ul", "ol":
 			parts = append(parts, ParseNodesForPassage(child))
 		case "li":
@@ -136,11 +150,21 @@ func ParseNodesForPassage(node *html.Node) string {
 	return strings.Join(parts, "")
 }
 
+// Collapse multiple newlines (potentially with spaces in between) to max 2 newlines
+// \n\s*\n\s*\n+ -> \n\n
+var newlineRegex = regexp.MustCompile(`\n\s*\n[\s\n]*`)
+
+func CleanPassageText(text string) string {
+	text = newlineRegex.ReplaceAllString(text, "\n\n")
+	return strings.TrimSpace(text)
+}
+
 func GetPassage(ref string, doc *html.Node, version string) string {
 	// Replaced FilterTree with direct parsing of the root node
 	// This allows handling arbitrary structure (divs, lists) returned by the API
 
 	text := ParseNodesForPassage(doc)
+	text = CleanPassageText(text)
 
 	var passage strings.Builder
 
@@ -151,7 +175,7 @@ func GetPassage(ref string, doc *html.Node, version string) string {
 	}
 
 	passage.WriteString("\n")
-	passage.WriteString(strings.TrimSpace(text))
+	passage.WriteString(text)
 
 	return passage.String()
 }
