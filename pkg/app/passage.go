@@ -8,6 +8,7 @@ import (
 	"log"
 	"net/url"
 	"strings"
+	stdhtml "html"
 
 	"golang.org/x/net/html"
 
@@ -59,20 +60,30 @@ func isNextSiblingBr(node *html.Node) bool {
 }
 
 func ParseNodesForPassage(node *html.Node) string {
-	var text string
 	var parts []string
 
 	for child := node.FirstChild; child != nil; child = child.NextSibling {
-		parts = append(parts, text)
+		// Filter out footnotes sections/cross-refs if they appear as divs
+		if child.Type == html.ElementNode {
+			for _, attr := range child.Attr {
+				if attr.Key == "class" {
+					if strings.Contains(attr.Val, "footnotes") || strings.Contains(attr.Val, "cross-refs") {
+						continue
+					}
+				}
+			}
+		}
 
 		switch tag := child.Data; tag {
 		case "span":
+			// Keep existing logic for span (likely poetry lines in legacy/scraped HTML)
 			childText := ParseNodesForPassage(child)
 			parts = append(parts, childText)
 			if len(strings.TrimSpace(childText)) > 0 && !isNextSiblingBr(child) {
 				parts = append(parts, "\n")
 			}
 		case "sup":
+			// Handle superscripts (verse numbers/footnotes)
 			isFootnote := func(node *html.Node) bool {
 				for _, attr := range node.Attr {
 					if attr.Key == "class" && attr.Val == "footnote" {
@@ -85,67 +96,62 @@ func ParseNodesForPassage(node *html.Node) string {
 				break
 			}
 			childText := ParseNodesForPassage(child)
+			// Use TelegramSuperscript for unicode conversion
 			if len(childText) > 0 {
-				parts = append(parts, fmt.Sprintf("^%s^", childText))
+				parts = append(parts, platform.TelegramSuperscript(childText))
 			}
 			break
 		case "p":
 			parts = append(parts, ParseNodesForPassage(child))
-			break
-		case "b":
-			parts = append(parts, platform.TelegramBold(ParseNodesForPassage(child)))
-		case "i":
-			parts = append(parts, platform.TelegramItalics(ParseNodesForPassage(child)))
-			break
+			parts = append(parts, "\n\n")
+		case "b", "strong":
+			parts = append(parts, fmt.Sprintf("<b>%s</b>", ParseNodesForPassage(child)))
+		case "i", "em":
+			parts = append(parts, fmt.Sprintf("<i>%s</i>", ParseNodesForPassage(child)))
+		case "h1", "h2", "h3", "h4", "h5", "h6":
+			// Ignore "Footnotes" or "Cross references" headers
+			headerText := ParseNodesForPassage(child)
+			if headerText == "Footnotes" || headerText == "Cross references" {
+				continue
+			}
+			parts = append(parts, fmt.Sprintf("\n\n<b>%s</b>\n", headerText))
+		case "ul", "ol":
+			parts = append(parts, ParseNodesForPassage(child))
+		case "li":
+			parts = append(parts, fmt.Sprintf("• %s\n", ParseNodesForPassage(child)))
 		case "br":
 			parts = append(parts, "\n")
-			break
+		case "div":
+			parts = append(parts, ParseNodesForPassage(child))
 		default:
-			parts = append(parts, child.Data)
+			if child.Type == html.TextNode {
+				parts = append(parts, stdhtml.EscapeString(child.Data))
+			} else if child.Type == html.ElementNode {
+				// Recurse for unknown elements to preserve content
+				parts = append(parts, ParseNodesForPassage(child))
+			}
 		}
 	}
 
-	text = strings.Join(parts, "")
-
-	if node.Data == "h1" || node.Data == "h2" || node.Data == "h3" || node.Data == "h4" {
-		text = fmt.Sprintf("*%s*", text)
-	}
-	return text
+	return strings.Join(parts, "")
 }
 
 func GetPassage(ref string, doc *html.Node, version string) string {
-	filtNodes := utils.FilterTree(doc, func(child *html.Node) bool {
-		switch tag := child.Data; tag {
-		case "h1":
-			fallthrough
-		case "h2":
-			fallthrough
-		case "h3":
-			fallthrough
-		case "h4":
-			if child.FirstChild.Data == "Footnotes" || child.FirstChild.Data == "Cross references" {
-				return false
-			}
-			fallthrough
-		case "p":
-			return true
-		}
-		return false
-	})
+	// Replaced FilterTree with direct parsing of the root node
+	// This allows handling arbitrary structure (divs, lists) returned by the API
 
-	textBlocks := utils.MapNodeListToString(filtNodes, ParseNodesForPassage)
+	text := ParseNodesForPassage(doc)
 
 	var passage strings.Builder
 
 	if len(ref) > 0 {
-		refString := fmt.Sprintf("_%s_ (%s)", ref, version)
+		// Use HTML formatting for reference
+		refString := fmt.Sprintf("<i>%s</i> (%s)", ref, version)
 		passage.WriteString(refString)
 	}
 
-	for _, block := range textBlocks {
-		passage.WriteString("\n")
-		passage.WriteString(block)
-	}
+	passage.WriteString("\n")
+	passage.WriteString(strings.TrimSpace(text))
 
 	return passage.String()
 }
@@ -158,6 +164,11 @@ func ParsePassageFromHtml(ref string, rawHtml string, version string) string {
 		return rawHtml
 	}
 
+	// html.Parse returns a doc with html->body structure.
+	// GetPassage -> ParseNodesForPassage will traverse it.
+	// We might want to find 'body' to avoid processing 'head'?
+	// ParseNodesForPassage iterates children. doc->html->body.
+	// We can let it recurse.
 	return strings.TrimSpace(GetPassage(ref, doc, version))
 }
 
@@ -181,6 +192,7 @@ func GetBiblePassageFallback(env def.SessionData) def.SessionData {
 
 	// Attempt to get the passage
 	env.Res.Message = GetPassage(ref, passageNode, config.Version)
+	env.Res.ParseMode = def.TELEGRAM_PARSE_MODE_HTML
 
 	return env
 }
@@ -224,6 +236,7 @@ func GetBiblePassage(env def.SessionData) def.SessionData {
 
 			if len(resp.Verse) > 0 {
 				env.Res.Message = ParsePassageFromHtml(env.Msg.Message, resp.Verse, config.Version)
+				env.Res.ParseMode = def.TELEGRAM_PARSE_MODE_HTML
 				return env
 			}
 		}
