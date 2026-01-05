@@ -112,6 +112,10 @@ func TestGetBiblePassage(t *testing.T) {
 		if len(env.Res.Message) < 10 {
 			t.Errorf("Expected passage text, got '%s'", env.Res.Message)
 		}
+		// Verify ParseMode is set
+		if env.Res.ParseMode != "HTML" {
+			t.Errorf("Expected ParseMode 'HTML', got '%s'", env.Res.ParseMode)
+		}
 	})
 
 	t.Run("Empty", func(t *testing.T) {
@@ -166,21 +170,26 @@ func TestGetBiblePassage(t *testing.T) {
 		if !strings.Contains(env.Res.Message, "In the beginning") {
 			t.Errorf("Expected fallback passage content, got '%s'", env.Res.Message)
 		}
+		// Fallback should also use HTML mode
+		if env.Res.ParseMode != "HTML" {
+			t.Errorf("Expected ParseMode 'HTML' in fallback, got '%s'", env.Res.ParseMode)
+		}
 	})
 }
 
 func TestParsePassageFromHtml(t *testing.T) {
 	t.Run("Valid HTML with superscript", func(t *testing.T) {
 		html := `<p><span><sup>12 </sup>But to all who did receive him, who believed in his name, he gave the right to become children of God,</span></p>`
-		expected := `^12 ^But to all who did receive him, who believed in his name, he gave the right to become children of God,`
+		// Updated expectation: unicode superscripts and HTML formatting
+		expected := `¹²But to all who did receive him, who believed in his name, he gave the right to become children of God,`
 		if got := ParsePassageFromHtml("", html, ""); got != expected {
-			t.Errorf("ParsePassageFromHtml() = %v, want %v", got, expected)
+			t.Errorf("ParsePassageFromHtml() = %s, want %s", got, expected)
 		}
 	})
 
 	t.Run("HTML with italics", func(t *testing.T) {
 		html := `<p><i>This is italic.</i></p>`
-		expected := `_This is italic._`
+		expected := `<i>This is italic.</i>`
 		if got := ParsePassageFromHtml("", html, ""); got != expected {
 			t.Errorf("ParsePassageFromHtml() = %v, want %v", got, expected)
 		}
@@ -188,7 +197,7 @@ func TestParsePassageFromHtml(t *testing.T) {
 
 	t.Run("HTML with bold", func(t *testing.T) {
 		html := `<p><b>This is bold.</b></p>`
-		expected := `*This is bold.*`
+		expected := `<b>This is bold.</b>`
 		if got := ParsePassageFromHtml("", html, ""); got != expected {
 			t.Errorf("ParsePassageFromHtml() = %v, want %v", got, expected)
 		}
@@ -228,21 +237,38 @@ func TestParsePassageFromHtml(t *testing.T) {
 
 	t.Run("Nested HTML tags", func(t *testing.T) {
 		html := `<p><b>This is bold, <i>and this is italic.</i></b></p>`
-		expected := `*This is bold, _and this is italic._*`
+		expected := `<b>This is bold, <i>and this is italic.</i></b>`
 		if got := ParsePassageFromHtml("", html, ""); got != expected {
 			t.Errorf("ParsePassageFromHtml() = %v, want %v", got, expected)
 		}
 	})
 
-	t.Run("MarkdownV2 escaping", func(t *testing.T) {
-		// Note: We no longer escape explicitly in ParsePassageFromHtml as we rely on the platform
-		// to handle it later (via PostTelegram).
-		// However, returning raw characters like * might cause issues if not handled by platform.
-		// For now, we expect them to be returned raw.
-		html := `<p>This has special characters: *_. [hello](world)!</p>`
-		expected := `This has special characters: *_. [hello](world)!`
+	t.Run("Lists", func(t *testing.T) {
+		html := `<ul><li>Item 1</li><li>Item 2</li></ul>`
+		// Note: The ParseNodesForPassage appends newline after each Item.
+		// strings.TrimSpace removes the last newline.
+		// Item 1\nItem 2\n -> Item 1\nItem 2
+		expected := "• Item 1\n• Item 2"
 		if got := ParsePassageFromHtml("", html, ""); got != expected {
-			t.Errorf("ParsePassageFromHtml() = %v, want %v", got, expected)
+			t.Errorf("ParsePassageFromHtml() = %q, want %q", got, expected)
+		}
+	})
+
+	t.Run("Headers", func(t *testing.T) {
+		html := `<h1>Header</h1>`
+		// Code: \n\n<b>Header</b>\n
+		// TrimSpace -> <b>Header</b>
+		expected := "<b>Header</b>"
+		if got := ParsePassageFromHtml("", html, ""); got != expected {
+			t.Errorf("ParsePassageFromHtml() = %q, want %q", got, expected)
+		}
+	})
+
+	t.Run("Divs and escaping", func(t *testing.T) {
+		html := `<div>Text &lt;with&gt; symbols</div>`
+		expected := "Text &lt;with&gt; symbols"
+		if got := ParsePassageFromHtml("", html, ""); got != expected {
+			t.Errorf("ParsePassageFromHtml() = %q, want %q", got, expected)
 		}
 	})
 }
