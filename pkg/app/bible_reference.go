@@ -329,7 +329,7 @@ func consumeReferenceSyntax(s string) (string, int) {
 		return "", 0
 	}
 
-	return s[:lastDigit+1], lastDigit+1
+	return s[:lastDigit+1], lastDigit + 1
 }
 
 func hasDigit(s string) bool {

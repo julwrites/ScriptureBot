@@ -5,11 +5,11 @@ package app
 
 import (
 	"fmt"
+	stdhtml "html"
 	"log"
 	"net/url"
 	"regexp"
 	"strings"
-	stdhtml "html"
 
 	"golang.org/x/net/html"
 
@@ -42,7 +42,6 @@ func GetReference(doc *html.Node) string {
 
 	return utils.GetTextNode(refNode).Data
 }
-
 
 func isNextSiblingBr(node *html.Node) bool {
 	for next := node.NextSibling; next != nil; next = next.NextSibling {
@@ -234,7 +233,7 @@ func GetBiblePassage(env def.SessionData) def.SessionData {
 
 		// If indeed a reference, attempt to query
 		if len(ref) > 0 {
-			log.Printf("%s", ref);
+			log.Printf("%s", ref)
 
 			// Attempt to retrieve from API
 			req := QueryRequest{
@@ -256,7 +255,7 @@ func GetBiblePassage(env def.SessionData) def.SessionData {
 				log.Printf("Error retrieving passage from API: %v. Falling back to deprecated method.", err)
 
 				return GetBiblePassageFallback(env)
-			} 
+			}
 
 			if len(resp.Verse) > 0 {
 				env.Res.Message = ParsePassageFromHtml(env.Msg.Message, resp.Verse, config.Version)
