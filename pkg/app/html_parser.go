@@ -2,8 +2,8 @@ package app
 
 import (
 	"fmt"
-	"strings"
 	stdhtml "html"
+	"strings"
 
 	"golang.org/x/net/html"
 )
