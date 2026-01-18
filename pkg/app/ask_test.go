@@ -1,6 +1,7 @@
 package app
 
 import (
+	"strings"
 	"testing"
 
 	"github.com/julwrites/BotPlatform/pkg/def"
@@ -110,9 +111,50 @@ func TestGetBibleAsk(t *testing.T) {
 
 		env = GetBibleAsk(env)
 
-		expected := "This is a mock response.\n\n*References:*\n- John 3:16"
+		expected := "This is a mock response.\n\n<b>References:</b>\n• John 3:16"
 		if env.Res.Message != expected {
 			t.Errorf("Expected admin response, got: %s", env.Res.Message)
+		}
+	})
+
+	t.Run("HTML Response Handling", func(t *testing.T) {
+		ResetAPIConfigCache()
+		SetAPIConfigOverride("https://mock", "key")
+
+		// Mock SubmitQuery to return HTML
+		SubmitQuery = func(req QueryRequest, result interface{}) error {
+			if r, ok := result.(*OQueryResponse); ok {
+				*r = OQueryResponse{
+					Text: "<p>God is <b>Love</b></p>",
+					References: []SearchResult{
+						{Verse: "1 John 4:8"},
+					},
+				}
+			}
+			return nil
+		}
+
+		var env def.SessionData
+		env.Msg.Message = "Who is God?"
+		conf := utils.UserConfig{Version: "NIV"}
+		env = utils.SetUserConfig(env, utils.SerializeUserConfig(conf))
+
+		env = GetBibleAskWithContext(env, nil)
+
+		// Check ParseMode
+		if env.Res.ParseMode != def.TELEGRAM_PARSE_MODE_HTML {
+			t.Errorf("Expected ParseMode to be HTML, got %v", env.Res.ParseMode)
+		}
+
+		// Check Content
+		if !strings.Contains(env.Res.Message, "God is <b>Love</b>") {
+			t.Errorf("Expected message to contain parsed HTML, got: %s", env.Res.Message)
+		}
+		if strings.Contains(env.Res.Message, "<p>") {
+			t.Errorf("Expected message to NOT contain <p> tag, got: %s", env.Res.Message)
+		}
+		if !strings.Contains(env.Res.Message, "<b>References:</b>") {
+			t.Errorf("Expected message to contain bold References header, got: %s", env.Res.Message)
 		}
 	})
 }

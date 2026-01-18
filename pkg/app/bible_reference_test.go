@@ -28,20 +28,20 @@ func TestParseBibleReference(t *testing.T) {
 		{"Phlm 1", "Philemon 1", true},
 
 		// Fuzzy Matches (Typos)
-		{"Gensis 1", "Genesis 1", true},       // Missing 'e', dist 1
-		{"Genisis 1", "Genesis 1", true},      // 'i' instead of 'e', dist 1
-		{"Mathew 5", "Matthew 5", true},       // Missing 't', dist 1
-		{"Revalation 3", "Revelation 3", true},// 'a' instead of 'e', dist 1
-		{"Philipians 4", "Philippians 4", true},// Missing 'p', dist 1
-		{"1 Jhn 3", "1 John 3", true},         // Missing 'o', dist 1. "1 Jhn" vs "1 John".
+		{"Gensis 1", "Genesis 1", true},         // Missing 'e', dist 1
+		{"Genisis 1", "Genesis 1", true},        // 'i' instead of 'e', dist 1
+		{"Mathew 5", "Matthew 5", true},         // Missing 't', dist 1
+		{"Revalation 3", "Revelation 3", true},  // 'a' instead of 'e', dist 1
+		{"Philipians 4", "Philippians 4", true}, // Missing 'p', dist 1
+		{"1 Jhn 3", "1 John 3", true},           // Missing 'o', dist 1. "1 Jhn" vs "1 John".
 
 		// Thresholds / False Positives
-		{"Genius 1", "", false},               // Dist to Genesis is > threshold? "Genius" (6) vs "Genesis" (7). Dist 3. Threshold 1. False.
-		{"Mary 1", "", false},                 // "Mary" (4). Threshold 0. "Mark" (4). Dist 1. No fuzzy allowed for len < 5.
-		{"Mark 1", "Mark 1", true},            // Exact match.
-		{"Luke 1", "Luke 1", true},            // Exact match.
-		{"Luke", "Luke 1", true},              // Exact match.
-		{"Luek 1", "", false},                 // "Luek" (4). Threshold 0. No match.
+		{"Genius 1", "", false},    // Dist to Genesis is > threshold? "Genius" (6) vs "Genesis" (7). Dist 3. Threshold 1. False.
+		{"Mary 1", "", false},      // "Mary" (4). Threshold 0. "Mark" (4). Dist 1. No fuzzy allowed for len < 5.
+		{"Mark 1", "Mark 1", true}, // Exact match.
+		{"Luke 1", "Luke 1", true}, // Exact match.
+		{"Luke", "Luke 1", true},   // Exact match.
+		{"Luek 1", "", false},      // "Luek" (4). Threshold 0. No match.
 
 		// Invalid References
 		{"John is here", "", false},
