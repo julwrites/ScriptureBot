@@ -2,6 +2,7 @@ package app
 
 import (
 	"fmt"
+	stdhtml "html"
 	"log"
 	"strings"
 
@@ -50,16 +51,17 @@ func GetBibleAskWithContext(env def.SessionData, contextVerses []string) def.Ses
 		}
 
 		var sb strings.Builder
-		sb.WriteString(resp.Text)
+		sb.WriteString(ParseToTelegramHTML(resp.Text))
 
 		if len(resp.References) > 0 {
-			sb.WriteString("\n\n*References:*")
+			sb.WriteString("\n\n<b>References:</b>")
 			for _, ref := range resp.References {
-				sb.WriteString(fmt.Sprintf("\n- %s", ref.Verse))
+				sb.WriteString(fmt.Sprintf("\n• %s", stdhtml.EscapeString(ref.Verse)))
 			}
 		}
 
 		env.Res.Message = sb.String()
+		env.Res.ParseMode = def.TELEGRAM_PARSE_MODE_HTML
 	}
 	return env
 }
