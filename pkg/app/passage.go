@@ -240,10 +240,8 @@ func GetBiblePassage(env def.SessionData) def.SessionData {
 				Query: QueryObject{
 					Verses: []string{env.Msg.Message},
 				},
-				Context: QueryContext{
-					User: UserContext{
-						Version: config.Version,
-					},
+				User: UserOptions{
+					Version: config.Version,
 				},
 			}
 

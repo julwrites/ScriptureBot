@@ -12,15 +12,15 @@ func TestQueryRequest_Marshal(t *testing.T) {
 			Verses: []string{"John 3:16"},
 			Words:  []string{"Love"},
 			Prompt: "Tell me about love",
-		},
-		Context: QueryContext{
-			History: []string{"Previous query"},
-			Schema:  "custom",
-			Verses:  []string{"Gen 1:1"},
-			Words:   []string{"Create"},
-			User: UserContext{
-				Version: "NIV",
+			Context: QueryContext{
+				History: []string{"Previous query"},
+				Schema:  "custom",
+				Verses:  []string{"Gen 1:1"},
+				Words:   []string{"Create"},
 			},
+		},
+		User: UserOptions{
+			Version: "NIV",
 		},
 	}
 
@@ -78,7 +78,35 @@ func TestWordSearchResponse_Unmarshal(t *testing.T) {
 	}
 }
 
+func TestPromptResponse_Unmarshal(t *testing.T) {
+	jsonStr := `{
+		"data": {
+			"text": "God is love.",
+			"references": [{"verse": "1 John 4:8", "url": "http://bible.com"}]
+		},
+		"meta": {
+			"ai_provider": "openai"
+		}
+	}`
+	var resp PromptResponse
+	err := json.Unmarshal([]byte(jsonStr), &resp)
+	if err != nil {
+		t.Fatalf("Failed to unmarshal PromptResponse: %v", err)
+	}
+
+	if resp.Data.Text != "God is love." {
+		t.Errorf("Expected text 'God is love.', got '%s'", resp.Data.Text)
+	}
+	if len(resp.Data.References) != 1 {
+		t.Errorf("Expected 1 reference, got %d", len(resp.Data.References))
+	}
+	if resp.Meta.AIProvider != "openai" {
+		t.Errorf("Expected AI provider 'openai', got '%s'", resp.Meta.AIProvider)
+	}
+}
+
 func TestOQueryResponse_Unmarshal(t *testing.T) {
+	// This tests direct unmarshal of OQueryResponse, which is still used internally or if schema matches
 	jsonStr := `{
 		"text": "God is love.",
 		"references": [{"verse": "1 John 4:8", "url": "http://bible.com"}]
