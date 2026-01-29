@@ -30,10 +30,8 @@ func GetBibleSearch(env def.SessionData) def.SessionData {
 			Query: QueryObject{
 				Words: words,
 			},
-			Context: QueryContext{
-				User: UserContext{
-					Version: config.Version,
-				},
+			User: UserOptions{
+				Version: config.Version,
 			},
 		}
 

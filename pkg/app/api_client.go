@@ -7,6 +7,7 @@ import (
 	"io"
 	"log"
 	"net/http"
+	"net/url"
 	"sync"
 
 	"github.com/julwrites/ScriptureBot/pkg/secrets"
@@ -87,6 +88,16 @@ var SubmitQuery = func(req QueryRequest, result interface{}) error {
 					{Verse: "John 3:16", URL: "https://example.com/John3:16"},
 				},
 			}
+		case *PromptResponse:
+			*r = PromptResponse{
+				Data: OQueryResponse{
+					Text: "This is a mock response.",
+					References: []SearchResult{
+						{Verse: "John 3:16", URL: "https://example.com/John3:16"},
+					},
+				},
+				Meta: Meta{AIProvider: "mock"},
+			}
 		case *VerseResponse:
 			*r = VerseResponse{
 				Verse: "For God so loved the world...",
@@ -136,4 +147,85 @@ var SubmitQuery = func(req QueryRequest, result interface{}) error {
 	}
 
 	return nil
+}
+
+// GetVersions retrieves the list of available Bible versions.
+var GetVersions = func(page, limit int, name, language, sort string) (*VersionsResponse, error) {
+	apiURL, apiKey := getAPIConfig()
+	if apiURL == "" {
+		return nil, fmt.Errorf("BIBLE_API_URL environment variable is not set")
+	}
+
+	// Mock response for tests
+	if apiURL == "https://example.com" {
+		return &VersionsResponse{
+			Data: []Version{
+				{Code: "ESV", Name: "English Standard Version", Language: "English"},
+				{Code: "NIV", Name: "New International Version", Language: "English"},
+			},
+			Total: 2,
+			Page:  1,
+			Limit: 20,
+		}, nil
+	}
+
+	client := &http.Client{}
+
+	reqURL, err := url.Parse(apiURL + "/bible-versions")
+	if err != nil {
+		return nil, fmt.Errorf("failed to parse url: %v", err)
+	}
+	q := reqURL.Query()
+	if page > 0 {
+		q.Set("page", fmt.Sprintf("%d", page))
+	}
+	if limit > 0 {
+		q.Set("limit", fmt.Sprintf("%d", limit))
+	}
+	if name != "" {
+		q.Set("name", name)
+	}
+	if language != "" {
+		q.Set("language", language)
+	}
+	if sort != "" {
+		q.Set("sort", sort)
+	}
+	reqURL.RawQuery = q.Encode()
+
+	httpReq, err := http.NewRequest("GET", reqURL.String(), nil)
+	if err != nil {
+		return nil, fmt.Errorf("failed to create request: %v", err)
+	}
+
+	httpReq.Header.Set("Content-Type", "application/json")
+	if apiKey != "" {
+		httpReq.Header.Set("X-API-KEY", apiKey)
+	}
+
+	resp, err := client.Do(httpReq)
+	if err != nil {
+		return nil, fmt.Errorf("request failed: %v", err)
+	}
+	defer resp.Body.Close()
+
+	body, err := io.ReadAll(resp.Body)
+	if err != nil {
+		return nil, fmt.Errorf("failed to read response body: %v", err)
+	}
+
+	if resp.StatusCode != http.StatusOK {
+		var errResp ErrorResponse
+		if jsonErr := json.Unmarshal(body, &errResp); jsonErr == nil && errResp.Error.Message != "" {
+			return nil, fmt.Errorf("api error (%d): %s", errResp.Error.Code, errResp.Error.Message)
+		}
+		return nil, fmt.Errorf("api request failed with status %d: %s", resp.StatusCode, string(body))
+	}
+
+	var result VersionsResponse
+	if err := json.Unmarshal(body, &result); err != nil {
+		return nil, fmt.Errorf("failed to unmarshal response: %v", err)
+	}
+
+	return &result, nil
 }

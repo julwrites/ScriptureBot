@@ -49,6 +49,9 @@ func TestGetBibleSearch(t *testing.T) {
 		if capturedReq.Query.Prompt != "" {
 			t.Errorf("Expected Query.Prompt to be empty, got '%s'", capturedReq.Query.Prompt)
 		}
+		if capturedReq.User.Version != "NIV" {
+			t.Errorf("Expected User.Version to be 'NIV', got '%s'", capturedReq.User.Version)
+		}
 	})
 
 	t.Run("Success: Response", func(t *testing.T) {
