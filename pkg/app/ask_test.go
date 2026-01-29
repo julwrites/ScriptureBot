@@ -66,11 +66,11 @@ func TestGetBibleAsk(t *testing.T) {
 		if capturedReq.Query.Prompt != "Explain this" {
 			t.Errorf("Expected Query.Prompt to be 'Explain this', got '%s'", capturedReq.Query.Prompt)
 		}
-		if len(capturedReq.Context.Verses) != 2 {
-			t.Errorf("Expected Context.Verses to have 2 items, got %v", capturedReq.Context.Verses)
+		if len(capturedReq.Query.Context.Verses) != 2 {
+			t.Errorf("Expected Context.Verses to have 2 items, got %v", capturedReq.Query.Context.Verses)
 		}
-		if capturedReq.Context.Verses[0] != "John 3:16" {
-			t.Errorf("Expected Context.Verses[0] to be 'John 3:16', got '%s'", capturedReq.Context.Verses[0])
+		if capturedReq.Query.Context.Verses[0] != "John 3:16" {
+			t.Errorf("Expected Context.Verses[0] to be 'John 3:16', got '%s'", capturedReq.Query.Context.Verses[0])
 		}
 	})
 
@@ -123,11 +123,13 @@ func TestGetBibleAsk(t *testing.T) {
 
 		// Mock SubmitQuery to return HTML
 		SubmitQuery = func(req QueryRequest, result interface{}) error {
-			if r, ok := result.(*OQueryResponse); ok {
-				*r = OQueryResponse{
-					Text: "<p>God is <b>Love</b></p>",
-					References: []SearchResult{
-						{Verse: "1 John 4:8"},
+			if r, ok := result.(*PromptResponse); ok {
+				*r = PromptResponse{
+					Data: OQueryResponse{
+						Text: "<p>God is <b>Love</b></p>",
+						References: []SearchResult{
+							{Verse: "1 John 4:8"},
+						},
 					},
 				}
 			}

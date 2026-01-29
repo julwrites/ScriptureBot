@@ -19,6 +19,16 @@ func MockSubmitQuery(t HelperT, callback func(QueryRequest)) func(QueryRequest, 
 					{Verse: "John 3:16", URL: "https://example.com/John3:16"},
 				},
 			}
+		case *PromptResponse:
+			*r = PromptResponse{
+				Data: OQueryResponse{
+					Text: "This is a mock response.",
+					References: []SearchResult{
+						{Verse: "John 3:16", URL: "https://example.com/John3:16"},
+					},
+				},
+				Meta: Meta{AIProvider: "mock"},
+			}
 		case *VerseResponse:
 			*r = VerseResponse{
 				Verse: "For God so loved the world...",

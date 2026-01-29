@@ -28,7 +28,7 @@ func TestSubmitQuery(t *testing.T) {
 		// Avoid using Prompt ("hello") as it triggers the LLM which might be unstable (500 errors).
 		req := QueryRequest{
 			Query:   QueryObject{Verses: []string{"John 3:16"}},
-			Context: QueryContext{User: UserContext{Version: "NIV"}},
+			User:    UserOptions{Version: "NIV"},
 		}
 		var resp VerseResponse
 		err := SubmitQuery(req, &resp)
@@ -48,6 +48,35 @@ func TestSubmitQuery(t *testing.T) {
 		req := QueryRequest{}
 		var resp VerseResponse
 		err := SubmitQuery(req, &resp)
+		if err == nil {
+			t.Error("Expected error when BIBLE_API_URL is unset")
+		}
+	})
+}
+
+func TestGetVersions(t *testing.T) {
+	t.Run("Success", func(t *testing.T) {
+		defer SetEnv("BIBLE_API_URL", "https://example.com")()
+		defer SetEnv("BIBLE_API_KEY", "api_key")()
+		ResetAPIConfigCache()
+
+		resp, err := GetVersions(1, 10, "", "", "")
+		if err != nil {
+			t.Errorf("Unexpected error: %v", err)
+		}
+		if resp.Total != 2 {
+			t.Errorf("Expected total 2, got %d", resp.Total)
+		}
+		if len(resp.Data) != 2 {
+			t.Errorf("Expected 2 versions, got %d", len(resp.Data))
+		}
+	})
+
+	t.Run("No URL", func(t *testing.T) {
+		defer SetEnv("BIBLE_API_URL", "")()
+		ResetAPIConfigCache()
+
+		_, err := GetVersions(1, 10, "", "", "")
 		if err == nil {
 			t.Error("Expected error when BIBLE_API_URL is unset")
 		}

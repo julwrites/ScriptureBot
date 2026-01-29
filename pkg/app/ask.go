@@ -33,16 +33,16 @@ func GetBibleAskWithContext(env def.SessionData, contextVerses []string) def.Ses
 		req := QueryRequest{
 			Query: QueryObject{
 				Prompt: env.Msg.Message,
-			},
-			Context: QueryContext{
-				User: UserContext{
-					Version: config.Version,
+				Context: QueryContext{
+					Verses: contextVerses,
 				},
-				Verses: contextVerses,
+			},
+			User: UserOptions{
+				Version: config.Version,
 			},
 		}
 
-		var resp OQueryResponse
+		var resp PromptResponse
 		err := SubmitQuery(req, &resp)
 		if err != nil {
 			log.Printf("Error asking bible: %v", err)
@@ -51,11 +51,11 @@ func GetBibleAskWithContext(env def.SessionData, contextVerses []string) def.Ses
 		}
 
 		var sb strings.Builder
-		sb.WriteString(ParseToTelegramHTML(resp.Text))
+		sb.WriteString(ParseToTelegramHTML(resp.Data.Text))
 
-		if len(resp.References) > 0 {
+		if len(resp.Data.References) > 0 {
 			sb.WriteString("\n\n<b>References:</b>")
-			for _, ref := range resp.References {
+			for _, ref := range resp.Data.References {
 				sb.WriteString(fmt.Sprintf("\n• %s", stdhtml.EscapeString(ref.Verse)))
 			}
 		}
