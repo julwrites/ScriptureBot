@@ -45,6 +45,7 @@ func TestGetBibleAsk(t *testing.T) {
 	})
 
 	t.Run("Success: Verify Request with Context", func(t *testing.T) {
+		defer SetEnv("TELEGRAM_ADMIN_ID", "12345")()
 		ResetAPIConfigCache()
 
 		var capturedReq QueryRequest
@@ -53,6 +54,7 @@ func TestGetBibleAsk(t *testing.T) {
 		})
 
 		var env def.SessionData
+		env.User.Id = "12345"
 		env.Msg.Message = "Explain this"
 		conf := utils.UserConfig{Version: "NIV"}
 		env = utils.SetUserConfig(env, utils.SerializeUserConfig(conf))
