@@ -4,6 +4,7 @@ import (
 	"strings"
 
 	"github.com/julwrites/BotPlatform/pkg/def"
+	"github.com/julwrites/ScriptureBot/pkg/secrets"
 )
 
 func ProcessNaturalLanguage(env def.SessionData) def.SessionData {
@@ -19,7 +20,15 @@ func ProcessNaturalLanguage(env def.SessionData) def.SessionData {
 	// If it contains references, we assume it's a query about them, so we Ask.
 	refs := ExtractBibleReferences(msg)
 	if len(refs) > 0 {
-		return GetBibleAskWithContext(env, refs)
+		adminID, err := secrets.Get("TELEGRAM_ADMIN_ID")
+		// If user is admin (and we successfully got the ID), route to Ask
+		if err == nil && env.User.Id == adminID {
+			return GetBibleAskWithContext(env, refs)
+		}
+
+		// Fallback for non-admins or error cases: just get the first passage
+		env.Msg.Message = refs[0]
+		return GetBiblePassage(env)
 	}
 
 	// 3. Check for "short phrase" (Search)

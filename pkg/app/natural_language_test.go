@@ -12,6 +12,7 @@ func TestProcessNaturalLanguage(t *testing.T) {
 	// Set dummy API keys to prevent real API calls
 	defer SetEnv("BIBLE_API_URL", "https://example.com")()
 	defer SetEnv("BIBLE_API_KEY", "api_key")()
+	defer SetEnv("TELEGRAM_ADMIN_ID", "12345")()
 	ResetAPIConfigCache()
 
 	tests := []struct {
@@ -106,6 +107,7 @@ func TestProcessNaturalLanguage(t *testing.T) {
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
 			env := def.SessionData{}
+			env.User.Id = "12345"
 			env.Msg.Message = tt.message
 			env = utils.SetUserConfig(env, `{"version":"NIV"}`)
 
