@@ -122,6 +122,9 @@ func PushUser(user User, project string) bool {
 
 func DeserializeUserConfig(config string) UserConfig {
 	var userConfig UserConfig
+	if len(config) == 0 {
+		return userConfig
+	}
 	err := json.Unmarshal([]byte(config), &userConfig)
 	if err != nil {
 		log.Printf("Failed to unmarshal User Config: %v", err)
