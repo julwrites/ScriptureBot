@@ -120,18 +120,17 @@ func TestGetBibleAsk(t *testing.T) {
 	})
 
 	t.Run("HTML Response Handling", func(t *testing.T) {
+		defer SetEnv("TELEGRAM_ADMIN_ID", "12345")()
 		ResetAPIConfigCache()
 		SetAPIConfigOverride("https://mock", "key")
 
 		// Mock SubmitQuery to return HTML
 		SubmitQuery = func(req QueryRequest, result interface{}) error {
-			if r, ok := result.(*PromptResponse); ok {
-				*r = PromptResponse{
-					Data: OQueryResponse{
-						Text: "<p>God is <b>Love</b></p>",
-						References: []SearchResult{
-							{Verse: "1 John 4:8"},
-						},
+			if r, ok := result.(*OQueryResponse); ok {
+				*r = OQueryResponse{
+					Text: "<p>God is <b>Love</b></p>",
+					References: []SearchResult{
+						{Verse: "1 John 4:8"},
 					},
 				}
 			}
@@ -139,6 +138,7 @@ func TestGetBibleAsk(t *testing.T) {
 		}
 
 		var env def.SessionData
+		env.User.Id = "12345"
 		env.Msg.Message = "Who is God?"
 		conf := utils.UserConfig{Version: "NIV"}
 		env = utils.SetUserConfig(env, utils.SerializeUserConfig(conf))
