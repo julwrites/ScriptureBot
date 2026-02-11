@@ -1,0 +1,13 @@
+.git
+.github
+.gitignore
+AGENTS.md
+AGENTS.md.bak
+CLAUDE.md@
+MIGRATION.md
+README.md
+docs/
+scripts/
+templates/
+resources/
+cmd/
