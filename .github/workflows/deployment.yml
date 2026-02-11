@@ -15,13 +15,8 @@ jobs:
       GCLOUD_SERVICE_ACCOUNT: ${{secrets.GCLOUD_SERVICE_ACCOUNT}}
 
     steps:
-      - name: Install Go
-        uses: actions/setup-go@v4
-        with:
-          go-version: 1.23.x
-
       - name: Checkout 🛎️
-        uses: actions/checkout@v4 # If you're using actions/checkout@v2 you must set persist-credentials to false in most cases for the deployment to work correctly.
+        uses: actions/checkout@v4
         with:
           persist-credentials: false
 
@@ -45,4 +40,4 @@ jobs:
           gcloud run deploy scripturebot --image $GCLOUD_REGION-docker.pkg.dev/$GCLOUD_PROJECT_ID/$ARTIFACT_ID/root:latest --region $GCLOUD_REGION --service-account $GCLOUD_SERVICE_ACCOUNT --allow-unauthenticated
           SERVICE_URL=$(gcloud run services describe scripturebot --region $GCLOUD_REGION --format 'value(status.url)')
           echo "Setting webhook for $SERVICE_URL"
-          go run cmd/webhook/main.go -url "$SERVICE_URL"
+          curl -G -s "https://api.telegram.org/bot${TELEGRAM_ID}/setWebhook" --data-urlencode "url=${SERVICE_URL}/${TELEGRAM_ID}"
