@@ -1,0 +1,402 @@
+diff --git a/docs/AI_SECURITY_REVIEW.md b/docs/AI_SECURITY_REVIEW.md
+new file mode 100644
+index 0000000..9bbf142
+--- /dev/null
++++ b/docs/AI_SECURITY_REVIEW.md
+@@ -0,0 +1,40 @@
++# AI Features and Security Review
++
++## Summary
++This document summarizes the findings from a review of the ScriptureBot's AI features and security implementation.
++
++## AI Features
++
++### 1. Limited Access
++Currently, AI features (`/ask` command and context-aware queries) are strictly gated to the `TELEGRAM_ADMIN_ID`. Regular users cannot access these capabilities.
++
++### 2. Statelessness
++The AI interaction is largely stateless. While the `QueryContext` structure supports a `History` field, it is currently not populated with conversation history, meaning the AI treats each request in isolation.
++
++### 3. Basic Prompting
++The prompt sent to the AI is simply the user's raw message. There is no "System Prompt" or instruction tuning to guide the AI's persona, tone, or formatting, relying entirely on the model's default behavior.
++
++### 4. Natural Language Fallback
++The natural language processing pipeline (`ProcessNaturalLanguage`) has a "catch-all" case that currently does nothing for unrecognized inputs. This leaves users without feedback if their query doesn't match a specific pattern (like a Bible reference or search command).
++
++## Security Implementation
++
++### 1. Inefficient Secret Management
++The `pkg/secrets` package loads secrets (including making calls to Google Secret Manager) on every request in `main.go`. This is highly inefficient and could lead to API rate limiting and increased costs.
++
++### 2. Hardcoded Admin Checks
++The logic to check if a user is an admin (`env.User.Id == adminID`) is duplicated across multiple files (`pkg/app/admin.go`, `pkg/app/ask.go`, `pkg/app/natural_language.go`). This makes it difficult to maintain or modify admin permissions (e.g., adding multiple admins).
++
++### 3. HTML Sanitization
++The bot uses `ParseToTelegramHTML` to sanitize HTML output from the AI. This implementation appears robust, correctly escaping text content while allowing a safe subset of tags (`<b>`, `<i>`, etc.).
++
++### 4. Error Handling
++In some cases, raw API error messages might be returned to the user. While sensitive headers like `X-API-KEY` are handled separately, exposing internal error details is generally discouraged.
++
++## Recommendations
++
++1.  **Refactor Secret Management:** Implement caching for secrets to prevent redundant external calls.
++2.  **Centralize Admin Logic:** Create a `utils.IsAdmin(env)` helper to unify permission checks.
++3.  **Enhance Natural Language Processing:** Provide a meaningful fallback response for unrecognized queries, and consider enabling AI features for all users (potentially with rate limits).
++4.  **Improve AI Context:** populate the conversation history in `QueryContext` to enable multi-turn conversations.
++5.  **Implement System Prompts:** Add a system prompt to guide the AI's behavior and ensure consistent, high-quality responses.
+diff --git a/pkg/app/admin.go b/pkg/app/admin.go
+index 4fdd120..1522303 100644
+--- a/pkg/app/admin.go
++++ b/pkg/app/admin.go
+@@ -10,8 +10,7 @@ import (
+ )
+ 
+ func DumpUserList(env def.SessionData) def.SessionData {
+-	adminID, _ := secrets.Get("TELEGRAM_ADMIN_ID")
+-	if env.User.Id == adminID {
++	if utils.IsAdmin(env) {
+ 		var message = ""
+ 
+ 		projectID, _ := secrets.Get("GCLOUD_PROJECT_ID")
+@@ -32,8 +31,7 @@ func DumpUserList(env def.SessionData) def.SessionData {
+ }
+ 
+ func Migrate(env def.SessionData) def.SessionData {
+-	adminID, _ := secrets.Get("TELEGRAM_ADMIN_ID")
+-	if env.User.Id == adminID {
++	if utils.IsAdmin(env) {
+ 		projectID, _ := secrets.Get("GCLOUD_PROJECT_ID")
+ 		users := utils.GetAllUsers(projectID)
+ 		for _, user := range users {
+diff --git a/pkg/app/ask.go b/pkg/app/ask.go
+index de94e8b..77d49d8 100644
+--- a/pkg/app/ask.go
++++ b/pkg/app/ask.go
+@@ -7,19 +7,11 @@ import (
+ 	"strings"
+ 
+ 	"github.com/julwrites/BotPlatform/pkg/def"
+-	"github.com/julwrites/ScriptureBot/pkg/secrets"
+ 	"github.com/julwrites/ScriptureBot/pkg/utils"
+ )
+ 
+ func GetBibleAsk(env def.SessionData) def.SessionData {
+-	adminID, err := secrets.Get("TELEGRAM_ADMIN_ID")
+-	if err != nil {
+-		log.Printf("Failed to get admin ID: %v", err)
+-		env.Res.Message = "Sorry, I encountered an error processing your request."
+-		return env
+-	}
+-
+-	if env.User.Id != adminID {
++	if !utils.IsAdmin(env) {
+ 		return ProcessNaturalLanguage(env)
+ 	}
+ 
+@@ -27,14 +19,7 @@ func GetBibleAsk(env def.SessionData) def.SessionData {
+ }
+ 
+ func GetBibleAskWithContext(env def.SessionData, contextVerses []string) def.SessionData {
+-	adminID, err := secrets.Get("TELEGRAM_ADMIN_ID")
+-	if err != nil {
+-		log.Printf("Failed to get admin ID: %v", err)
+-		env.Res.Message = "Sorry, I encountered an error processing your request."
+-		return env
+-	}
+-
+-	if env.User.Id != adminID {
++	if !utils.IsAdmin(env) {
+ 		return env
+ 	}
+ 	if len(env.Msg.Message) > 0 {
+diff --git a/pkg/app/natural_language.go b/pkg/app/natural_language.go
+index 3db72e1..4237a4c 100644
+--- a/pkg/app/natural_language.go
++++ b/pkg/app/natural_language.go
+@@ -4,7 +4,7 @@ import (
+ 	"strings"
+ 
+ 	"github.com/julwrites/BotPlatform/pkg/def"
+-	"github.com/julwrites/ScriptureBot/pkg/secrets"
++	"github.com/julwrites/ScriptureBot/pkg/utils"
+ )
+ 
+ func ProcessNaturalLanguage(env def.SessionData) def.SessionData {
+@@ -20,13 +20,12 @@ func ProcessNaturalLanguage(env def.SessionData) def.SessionData {
+ 	// If it contains references, we assume it's a query about them, so we Ask.
+ 	refs := ExtractBibleReferences(msg)
+ 	if len(refs) > 0 {
+-		adminID, err := secrets.Get("TELEGRAM_ADMIN_ID")
+-		// If user is admin (and we successfully got the ID), route to Ask
+-		if err == nil && env.User.Id == adminID {
++		// If user is admin, route to Ask
++		if utils.IsAdmin(env) {
+ 			return GetBibleAskWithContext(env, refs)
+ 		}
+ 
+-		// Fallback for non-admins or error cases: just get the first passage
++		// Fallback for non-admins: just get the first passage
+ 		env.Msg.Message = refs[0]
+ 		return GetBiblePassage(env)
+ 	}
+@@ -39,5 +38,10 @@ func ProcessNaturalLanguage(env def.SessionData) def.SessionData {
+ 	}
+ 
+ 	// 4. Assume Query Prompt (Ask)
++	if utils.IsAdmin(env) {
++		return GetBibleAskWithContext(env, nil)
++	}
++
++	env.Res.Message = "I'm sorry, I didn't understand that. Try searching for a verse (e.g. John 3:16) or using /search <keyword>."
+ 	return env
+ }
+diff --git a/pkg/app/natural_language_test.go b/pkg/app/natural_language_test.go
+index 1260453..0af7082 100644
+--- a/pkg/app/natural_language_test.go
++++ b/pkg/app/natural_language_test.go
+@@ -18,6 +18,7 @@ func TestProcessNaturalLanguage(t *testing.T) {
+ 	tests := []struct {
+ 		name          string
+ 		message       string
++		isAdmin       bool
+ 		expectedCheck func(string) bool
+ 		desc          string
+ 	}{
+@@ -25,6 +26,7 @@ func TestProcessNaturalLanguage(t *testing.T) {
+ 		{
+ 			name:    "Passage: Reference",
+ 			message: "John 3:16",
++			isAdmin: true,
+ 			expectedCheck: func(msg string) bool {
+ 				return strings.Contains(msg, "John 3") || strings.Contains(msg, "loved the world")
+ 			},
+@@ -33,6 +35,7 @@ func TestProcessNaturalLanguage(t *testing.T) {
+ 		{
+ 			name:    "Passage: Short Book",
+ 			message: "Jude",
++			isAdmin: true,
+ 			expectedCheck: func(msg string) bool {
+ 				return strings.Contains(msg, "Jude") || strings.Contains(msg, "servant of Jesus Christ")
+ 			},
+@@ -41,6 +44,7 @@ func TestProcessNaturalLanguage(t *testing.T) {
+ 		{
+ 			name:          "Passage: Book only",
+ 			message:       "Genesis",
++			isAdmin:       true,
+ 			expectedCheck: func(msg string) bool { return strings.Contains(msg, "Genesis 1") },
+ 			desc:          "Should retrieve Genesis 1",
+ 		},
+@@ -49,65 +53,95 @@ func TestProcessNaturalLanguage(t *testing.T) {
+ 		{
+ 			name:          "Search: One word",
+ 			message:       "Grace",
++			isAdmin:       true,
+ 			expectedCheck: func(msg string) bool { return strings.Contains(msg, "Found") || strings.Contains(msg, "No results") },
+ 			desc:          "Should perform search for Grace",
+ 		},
+ 		{
+ 			name:          "Search: Short phrase",
+ 			message:       "Jesus wept",
++			isAdmin:       true,
+ 			expectedCheck: func(msg string) bool { return strings.Contains(msg, "Found") },
+ 			desc:          "Should perform search for Jesus wept",
+ 		},
+ 		{
+ 			name:          "Search: 3 words",
+ 			message:       "Love of God",
++			isAdmin:       true,
+ 			expectedCheck: func(msg string) bool { return strings.Contains(msg, "Found") },
+ 			desc:          "Should perform search for Love of God",
+ 		},
+ 
+-		// Ask Scenarios
++		// Ask Scenarios (Admin)
+ 		{
+-			name:          "Ask: Question",
++			name:          "Ask: Question (Admin)",
+ 			message:       "What does the bible say about love?",
+-			expectedCheck: func(msg string) bool { return len(msg) == 0 },
+-			desc:          "Should not ask the AI (Question)",
++			isAdmin:       true,
++			expectedCheck: func(msg string) bool { return strings.Contains(msg, "mock response") },
++			desc:          "Should ask the AI (Question)",
+ 		},
+ 		{
+-			name:          "Ask: With Reference",
++			name:          "Ask: With Reference (Admin)",
+ 			message:       "Explain John 3:16",
+-			expectedCheck: func(msg string) bool { return !strings.Contains(msg, "Found") },
++			isAdmin:       true,
++			expectedCheck: func(msg string) bool { return strings.Contains(msg, "mock response") },
+ 			desc:          "Should ask the AI (With Reference)",
+ 		},
+ 		{
+-			name:          "Ask: Compare",
++			name:          "Ask: Compare (Admin)",
+ 			message:       "Compare Genesis 1 and John 1",
+-			expectedCheck: func(msg string) bool { return true },
++			isAdmin:       true,
++			expectedCheck: func(msg string) bool { return strings.Contains(msg, "mock response") },
+ 			desc:          "Should ask the AI (Compare)",
+ 		},
+ 		{
+-			name:          "Ask: Short Question",
++			name:          "Ask: Short Question (Admin)",
+ 			message:       "Who is Jesus?",
+-			expectedCheck: func(msg string) bool { return len(msg) == 0 && !strings.Contains(msg, "Found") },
+-			desc:          "Should not ask the AI (Short Question)",
++			isAdmin:       true,
++			expectedCheck: func(msg string) bool { return strings.Contains(msg, "mock response") },
++			desc:          "Should ask the AI (Short Question)",
+ 		},
+ 		{
+-			name:          "Ask: Embedded Reference",
++			name:          "Ask: Embedded Reference (Admin)",
+ 			message:       "What does it say in Mark 5?",
+-			expectedCheck: func(msg string) bool { return true },
++			isAdmin:       true,
++			expectedCheck: func(msg string) bool { return strings.Contains(msg, "mock response") },
+ 			desc:          "Should ask the AI (Embedded Reference)",
+ 		},
+ 		{
+-			name:          "Ask: Book name in text",
++			name:          "Ask: Book name in text (Admin)",
+ 			message:       "I like Genesis",
+-			expectedCheck: func(msg string) bool { return !strings.Contains(msg, "Found") },
++			isAdmin:       true,
++			expectedCheck: func(msg string) bool { return strings.Contains(msg, "mock response") },
+ 			desc:          "Should ask the AI (Found reference Genesis)",
+ 		},
++
++		// Ask Scenarios (Non-Admin)
++		{
++			name:          "Ask: Question (Non-Admin)",
++			message:       "What does the bible say about love?",
++			isAdmin:       false,
++			expectedCheck: func(msg string) bool { return strings.Contains(msg, "I'm sorry, I didn't understand that") },
++			desc:          "Should return fallback message for non-admin question",
++		},
++		{
++			name:    "Ask: With Reference (Non-Admin)",
++			message: "Explain John 3:16",
++			isAdmin: false,
++			// Since "John 3:16" is extracted, non-admin falls back to GetBiblePassage for the first reference.
++			expectedCheck: func(msg string) bool { return strings.Contains(msg, "John 3") || strings.Contains(msg, "loved the world") },
++			desc:          "Should retrieve passage for non-admin with reference",
++		},
+ 	}
+ 
+ 	for _, tt := range tests {
+ 		t.Run(tt.name, func(t *testing.T) {
+ 			env := def.SessionData{}
+-			env.User.Id = "12345"
++			if tt.isAdmin {
++				env.User.Id = "12345"
++			} else {
++				env.User.Id = "67890"
++			}
+ 			env.Msg.Message = tt.message
+ 			env = utils.SetUserConfig(env, `{"version":"NIV"}`)
+ 
+diff --git a/pkg/app/test_utils.go b/pkg/app/test_utils.go
+index c065d54..eb6fd63 100644
+--- a/pkg/app/test_utils.go
++++ b/pkg/app/test_utils.go
+@@ -4,6 +4,7 @@ import (
+ 	"os"
+ 
+ 	"github.com/julwrites/BotPlatform/pkg/def"
++	"github.com/julwrites/ScriptureBot/pkg/secrets"
+ )
+ 
+ type MockBot struct{}
+@@ -21,6 +22,9 @@ func SetEnv(key, value string) func() {
+ 	originalValue, isSet := os.LookupEnv(key)
+ 	os.Setenv(key, value)
+ 
++	// Reset cache so new value is picked up
++	secrets.ResetCache()
++
+ 	// Unset GCLOUD_PROJECT_ID to prevent Secret Manager usage during tests,
+ 	// unless we are explicitly setting GCLOUD_PROJECT_ID itself.
+ 	var projectID string
+@@ -43,6 +47,9 @@ func SetEnv(key, value string) func() {
+ 		if key != "GCLOUD_PROJECT_ID" && projectIDSet {
+ 			os.Setenv("GCLOUD_PROJECT_ID", projectID)
+ 		}
++
++		// Reset cache again on cleanup
++		secrets.ResetCache()
+ 	}
+ }
+ 
+@@ -50,9 +57,12 @@ func SetEnv(key, value string) func() {
+ func UnsetEnv(key string) func() {
+ 	originalValue, isSet := os.LookupEnv(key)
+ 	os.Unsetenv(key)
++	secrets.ResetCache()
++
+ 	return func() {
+ 		if isSet {
+ 			os.Setenv(key, originalValue)
+ 		}
++		secrets.ResetCache()
+ 	}
+ }
+diff --git a/pkg/secrets/secrets.go b/pkg/secrets/secrets.go
+index f8d40fe..a728904 100644
+--- a/pkg/secrets/secrets.go
++++ b/pkg/secrets/secrets.go
+@@ -21,10 +21,23 @@ type SecretsData struct {
+ 	// Add other secrets here as needed
+ }
+ 
++var (
++	cache sync.Map
++)
++
+ func init() {
+ 	LoadAndLog()
+ }
+ 
++// ResetCache clears the secrets cache.
++// This is primarily for testing purposes to ensure environment variable changes are picked up.
++func ResetCache() {
++	cache.Range(func(key, value interface{}) bool {
++		cache.Delete(key)
++		return true
++	})
++}
++
+ // LoadAndLog loads environment variables from a .env file (if present) and logs
+ // the status of the GCLOUD_PROJECT_ID.
+ func LoadAndLog() {
+@@ -86,11 +99,18 @@ func LoadSecrets() (SecretsData, error) {
+ // Get retrieves a secret.
+ // It prioritizes environment variables. If not found, and GCLOUD_PROJECT_ID is set,
+ // it fetches from Google Secret Manager.
++// It caches the result to prevent repeated calls to Secret Manager.
+ func Get(secretName string) (string, error) {
++	// Check cache first
++	if val, ok := cache.Load(secretName); ok {
++		return val.(string), nil
++	}
++
+ 	// Check environment variables first.
+ 	// This allows overriding secrets for local development or testing.
+ 	if value, ok := os.LookupEnv(secretName); ok {
+ 		log.Printf("Loaded '%s' from environment", secretName)
++		cache.Store(secretName, value)
+ 		return value, nil
+ 	}
+ 
+@@ -102,6 +122,7 @@ func Get(secretName string) (string, error) {
+ 			return "", fmt.Errorf("failed to get secret '%s' from Secret Manager: %v", secretName, err)
+ 		}
+ 		log.Printf("Loaded '%s' from Secret Manager", secretName)
++		cache.Store(secretName, secretValue)
+ 		return secretValue, nil
+ 	}
+ 
+diff --git a/pkg/utils/user.go b/pkg/utils/user.go
+index d4d7323..4db52da 100644\n--- a/pkg/utils/user.go\n+++ b/pkg/utils/user.go\n@@ -1,6 +1,11 @@\n package utils\n \n-import \"github.com/julwrites/BotPlatform/pkg/def\"\n+import (\n+\t\"log\"\n+\n+\t\"github.com/julwrites/BotPlatform/pkg/def\"\n+\t\"github.com/julwrites/ScriptureBot/pkg/secrets\"\n+)\n \n type User struct {\n \t// Id is the user's identifier on the chat platform (e.g., Telegram user ID).\n@@ -55,3 +60,12 @@ func GetResourcePath(env def.SessionData) string {\n \t}\n \treturn \"\"\n }\n+\n+func IsAdmin(env def.SessionData) bool {\n+\tadminID, err := secrets.Get(\"TELEGRAM_ADMIN_ID\")\n+\tif err != nil {\n+\t\tlog.Printf(\"Failed to get admin ID: %v\", err)\n+\t\treturn false\n+\t}\n+\treturn env.User.Id == adminID\n+}\n
