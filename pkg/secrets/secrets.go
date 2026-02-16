@@ -21,8 +21,21 @@ type SecretsData struct {
 	// Add other secrets here as needed
 }
 
+var (
+	cache sync.Map
+)
+
 func init() {
 	LoadAndLog()
+}
+
+// ResetCache clears the secrets cache.
+// This is primarily for testing purposes to ensure environment variable changes are picked up.
+func ResetCache() {
+	cache.Range(func(key, value interface{}) bool {
+		cache.Delete(key)
+		return true
+	})
 }
 
 // LoadAndLog loads environment variables from a .env file (if present) and logs
@@ -86,11 +99,18 @@ func LoadSecrets() (SecretsData, error) {
 // Get retrieves a secret.
 // It prioritizes environment variables. If not found, and GCLOUD_PROJECT_ID is set,
 // it fetches from Google Secret Manager.
+// It caches the result to prevent repeated calls to Secret Manager.
 func Get(secretName string) (string, error) {
+	// Check cache first
+	if val, ok := cache.Load(secretName); ok {
+		return val.(string), nil
+	}
+
 	// Check environment variables first.
 	// This allows overriding secrets for local development or testing.
 	if value, ok := os.LookupEnv(secretName); ok {
 		log.Printf("Loaded '%s' from environment", secretName)
+		cache.Store(secretName, value)
 		return value, nil
 	}
 
@@ -102,6 +122,7 @@ func Get(secretName string) (string, error) {
 			return "", fmt.Errorf("failed to get secret '%s' from Secret Manager: %v", secretName, err)
 		}
 		log.Printf("Loaded '%s' from Secret Manager", secretName)
+		cache.Store(secretName, secretValue)
 		return secretValue, nil
 	}
 
