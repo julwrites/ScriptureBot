@@ -10,8 +10,7 @@ import (
 )
 
 func DumpUserList(env def.SessionData) def.SessionData {
-	adminID, _ := secrets.Get("TELEGRAM_ADMIN_ID")
-	if env.User.Id == adminID {
+	if utils.IsAdmin(env) {
 		var message = ""
 
 		projectID, _ := secrets.Get("GCLOUD_PROJECT_ID")
@@ -32,8 +31,7 @@ func DumpUserList(env def.SessionData) def.SessionData {
 }
 
 func Migrate(env def.SessionData) def.SessionData {
-	adminID, _ := secrets.Get("TELEGRAM_ADMIN_ID")
-	if env.User.Id == adminID {
+	if utils.IsAdmin(env) {
 		projectID, _ := secrets.Get("GCLOUD_PROJECT_ID")
 		users := utils.GetAllUsers(projectID)
 		for _, user := range users {
