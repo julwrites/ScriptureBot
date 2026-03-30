@@ -96,6 +96,7 @@ func LoadSecrets() (SecretsData, error) {
 	return secrets, nil
 }
 
+
 // Get retrieves a secret.
 // It prioritizes environment variables. If not found, and GCLOUD_PROJECT_ID is set,
 // it fetches from Google Secret Manager.
@@ -114,6 +115,7 @@ func Get(secretName string) (string, error) {
 		return value, nil
 	}
 
+
 	projectID, isCloudRun := os.LookupEnv("GCLOUD_PROJECT_ID")
 	if isCloudRun && projectID != "" {
 		// Cloud environment: Use Secret Manager if not found in environment.
@@ -122,6 +124,7 @@ func Get(secretName string) (string, error) {
 			return "", fmt.Errorf("failed to get secret '%s' from Secret Manager: %v", secretName, err)
 		}
 		log.Printf("Loaded '%s' from Secret Manager", secretName)
+		// Cache the successfully retrieved secret
 		cache.Store(secretName, secretValue)
 		return secretValue, nil
 	}
