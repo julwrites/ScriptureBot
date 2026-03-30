@@ -4,6 +4,7 @@ import (
 	"os"
 
 	"github.com/julwrites/BotPlatform/pkg/def"
+	"github.com/julwrites/ScriptureBot/pkg/secrets"
 )
 
 type MockBot struct{}
@@ -20,6 +21,9 @@ func (b *MockBot) Post(env def.SessionData) bool {
 func SetEnv(key, value string) func() {
 	originalValue, isSet := os.LookupEnv(key)
 	os.Setenv(key, value)
+
+	// Reset cache so new value is picked up
+	secrets.ResetCache()
 
 	// Unset GCLOUD_PROJECT_ID to prevent Secret Manager usage during tests,
 	// unless we are explicitly setting GCLOUD_PROJECT_ID itself.
@@ -43,6 +47,9 @@ func SetEnv(key, value string) func() {
 		if key != "GCLOUD_PROJECT_ID" && projectIDSet {
 			os.Setenv("GCLOUD_PROJECT_ID", projectID)
 		}
+
+		// Reset cache again on cleanup
+		secrets.ResetCache()
 	}
 }
 
@@ -50,9 +57,12 @@ func SetEnv(key, value string) func() {
 func UnsetEnv(key string) func() {
 	originalValue, isSet := os.LookupEnv(key)
 	os.Unsetenv(key)
+	secrets.ResetCache()
+
 	return func() {
 		if isSet {
 			os.Setenv(key, originalValue)
 		}
+		secrets.ResetCache()
 	}
 }

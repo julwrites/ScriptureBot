@@ -1,6 +1,11 @@
 package utils
 
-import "github.com/julwrites/BotPlatform/pkg/def"
+import (
+	"log"
+
+	"github.com/julwrites/BotPlatform/pkg/def"
+	"github.com/julwrites/ScriptureBot/pkg/secrets"
+)
 
 type User struct {
 	// Id is the user's identifier on the chat platform (e.g., Telegram user ID).
@@ -54,4 +59,13 @@ func GetResourcePath(env def.SessionData) string {
 		return s
 	}
 	return ""
+}
+
+func IsAdmin(env def.SessionData) bool {
+	adminID, err := secrets.Get("TELEGRAM_ADMIN_ID")
+	if err != nil {
+		log.Printf("Failed to get admin ID: %v", err)
+		return false
+	}
+	return env.User.Id == adminID
 }
